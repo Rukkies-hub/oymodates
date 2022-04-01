@@ -1,10 +1,12 @@
-import { View, Text } from 'react-native'
+import { View, SafeAreaView, Text } from 'react-native'
+// import { StatusBar } from 'expo-status-bar';
 import React from 'react'
 
 export default function Feed() {
   return (
-    <View>
+    <SafeAreaView>
+      {/* <StatusBar style="auto" /> */}
       <Text>Feed</Text>
-    </View>
+    </SafeAreaView>
   )
 }

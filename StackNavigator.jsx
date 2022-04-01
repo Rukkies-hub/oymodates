@@ -20,6 +20,7 @@ import EditPassword from './screens/EditPassword'
 import EditPhone from './screens/EditPhone'
 import EditGender from './screens/EditGender'
 import EditDateOfBirth from './screens/EditDateOfBirth'
+import EditJob from './screens/EditJob'
 
 import useAuth from "./hooks/useAuth"
 
@@ -30,18 +31,21 @@ const StackNavigator = () => {
     <Stack.Navigator>
       {user ? (
         <>
-          <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
-          <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
-          <Stack.Screen name="EditPersonalInformation" component={EditPersonalInformation} options={{ headerShown: false }} />
-          <Stack.Screen name="EditUsername" component={EditUsername} options={{ headerShown: false }} />
-          <Stack.Screen name="EditName" component={EditName} options={{ headerShown: false }} />
-          <Stack.Screen name="EditBio" component={EditBio} options={{ headerShown: false }} />
-          <Stack.Screen name="EditPassword" component={EditPassword} options={{ headerShown: false }} />
-          <Stack.Screen name="EditPhone" component={EditPhone} options={{ headerShown: false }} />
-          <Stack.Screen name="EditGender" component={EditGender} options={{ headerShown: false }} />
-          <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} options={{ headerShown: false }} />
+          <Stack.Group>
+            <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
+            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+            <Stack.Screen name="EditPersonalInformation" component={EditPersonalInformation} options={{ headerShown: false }} />
+            <Stack.Screen name="EditUsername" component={EditUsername} options={{ headerShown: false }} />
+            <Stack.Screen name="EditName" component={EditName} options={{ headerShown: false }} />
+            <Stack.Screen name="EditBio" component={EditBio} options={{ headerShown: false }} />
+            <Stack.Screen name="EditPassword" component={EditPassword} options={{ headerShown: false }} />
+            <Stack.Screen name="EditPhone" component={EditPhone} options={{ headerShown: false }} />
+            <Stack.Screen name="EditGender" component={EditGender} options={{ headerShown: false }} />
+            <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} options={{ headerShown: false }} />
+            <Stack.Screen name="EditJob" component={EditJob} options={{ headerShown: false }} />
+          </Stack.Group>
         </>
       ) :
         <>

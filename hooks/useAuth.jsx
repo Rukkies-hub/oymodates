@@ -48,6 +48,9 @@ export const AuthProvider = ({ children }) => {
   // EDIT GENDER
   const [date, setDate] = useState("");
 
+  // EDIT GENDER
+  const [job, setJob] = useState("");
+
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState("")
   const [uploadeding, setupLoadeding] = React.useState(false);
@@ -104,6 +107,22 @@ export const AuthProvider = ({ children }) => {
     date,
     setDate
   }
+
+  const updateJobState = {
+    job,
+    setJob
+  }
+
+  useEffect(() =>
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        setUser(user)
+        getUserProfile(user)
+      }
+      else setUser(null)
+      setLoadingInitial(false)
+    })
+    , [])
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -183,18 +202,6 @@ export const AuthProvider = ({ children }) => {
       })
   }
 
-  useEffect(() => {
-    setLoadingInitial(true)
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        setUser(user)
-        getUserProfile(user)
-      }
-      else setUser(null)
-      setLoadingInitial(false)
-    })
-  }, [])
-
   const signupUser = async () => {
     const { signupEmail, signupPassword, username } = signupState
     let email = signupEmail
@@ -232,8 +239,9 @@ export const AuthProvider = ({ children }) => {
 
   const signinUser = async () => {
     const { signinEmail, signinPassword } = signinState
-    let email = signupEmail
-    let password = signupPassword
+
+    let email = signinEmail
+    let password = signinPassword
 
     if (signinEmail && signinPassword) {
       setSpiner(true)
@@ -368,9 +376,24 @@ export const AuthProvider = ({ children }) => {
       })
   }
 
+  const updateJob = async () => {
+    const { job } = updateJobState
+
+    firebase.firestore()
+      .collection("users")
+      .doc(`${user.uid}`)
+      .update({
+        job
+      }).then(() => {
+        getUserProfile(user)
+        navigation.goBack();
+      })
+  }
+
   return (
     <AuthContext.Provider value={{
       user,
+      loadingInitial,
       signupState,
       signinState,
       signupUser,
@@ -391,9 +414,11 @@ export const AuthProvider = ({ children }) => {
       updateGenderState,
       updateGender,
       updateDateState,
-      updateDateOfBirth
+      updateDateOfBirth,
+      updateJobState,
+      updateJob
     }}>
-      {children}
+      {!loadingInitial && children}
     </AuthContext.Provider>
   )
 }

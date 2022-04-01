@@ -4,7 +4,6 @@ import {
   StatusBar,
   TouchableOpacity,
   ActivityIndicator,
-  Image,
   Pressable,
   TextInput,
   View,
@@ -12,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from 'react-native'
+
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 

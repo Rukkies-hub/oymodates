@@ -7,7 +7,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 
 const Tab = createMaterialBottomTabNavigator();
 
-import Feed from "./Feed"
+import HomeScreen from "./HomeScreen"
 import Add from "./Add"
 import Discover from "./Discover"
 import Activity from "./Activity"
@@ -21,16 +21,16 @@ export default function Index () {
   return (
     <Tab.Navigator
       labeled={false}
-      initialRouteName="Feed"
+      initialRouteName="HomeScreen"
       barStyle={{
         backgroundColor: "#ffffff",
         borderColor: "#ffffff",
         shadowOpacity: 0,
       }}>
-      <Tab.Screen name="Feed" component={Feed}
+      <Tab.Screen name="HomeScreen" component={HomeScreen}
         options={{
           headerShown: true,
-          tabBarLabel: "Feed",
+          tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <SimpleLineIcons name="home" color={color} size={22} />
           ),

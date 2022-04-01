@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 
 import editProfile from '../style/editProfile'
+import color from '../style/color'
 
 import Bar from "./StatusBar"
 
@@ -28,7 +29,7 @@ const EditProfile = ({ navigation }) => {
           <View style={editProfile.avatar}>
             <Image
               style={editProfile.avatarImage}
-              source={userProfile.avatar ? { uri: userProfile.avatar } : require('../assets/pph.jpg') }
+              source={userProfile.avatar ? { uri: userProfile.avatar } : require('../assets/pph.jpg')}
             />
             <TouchableOpacity style={editProfile.changeProfilePhoto} onPress={pickImage}>
               <Text style={editProfile.changeProfilePhotoText}>Change profile photo</Text>
@@ -52,6 +53,30 @@ const EditProfile = ({ navigation }) => {
               <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Bio</Text>
               <TouchableWithoutFeedback style={editProfile.input} onPress={() => navigation.navigate("EditBio")}>
                 <Text style={editProfile.inputText}>{userProfile.bio}</Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={editProfile.inputField}>
+              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Phone number</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditPhone")} style={editProfile.input} >
+                <Text style={editProfile.inputText}>{userProfile.phone}</Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={editProfile.inputField}>
+              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Gender</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditGender")} style={editProfile.input} >
+                <Text style={editProfile.inputText}>{userProfile.gender}</Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={editProfile.inputField}>
+              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Birthday</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditDateOfBirth')} style={editProfile.input} >
+                <Text style={editProfile.inputText}>{userProfile.date}</Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={editProfile.inputField}>
+              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Occupation</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditJob')} style={editProfile.input} >
+                <Text style={editProfile.inputText}>{userProfile.job}</Text>
               </TouchableWithoutFeedback>
             </View>
 
