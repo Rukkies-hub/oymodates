@@ -217,7 +217,8 @@ export const AuthProvider = ({ children }) => {
             .set({
               email,
               username,
-              avatar: ""
+              avatar: "",
+              id: firebase.auth().currentUser.uid
             })
           console.log(result)
           setSpiner(false)

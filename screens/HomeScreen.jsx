@@ -1,5 +1,7 @@
 import { SafeAreaView, Text, View, TouchableOpacity, Image } from 'react-native'
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect, useLayoutEffect } from 'react'
+
+import firebase from "../hooks/firebase"
 
 import useAuth from "../hooks/useAuth"
 import Bar from "./StatusBar"
@@ -11,42 +13,156 @@ import Swiper from "react-native-deck-swiper"
 
 import home from "../style/home"
 
-const DUMY_DATA = [
-  {
-    id: 1,
-    username: "rukkiecodes",
-    occupation: "Software developer",
-    age: "27",
-    avatar: "https://vuesax.com/foto5.png"
-  },
-  {
-    id: 2,
-    username: "rukkiecodes2",
-    occupation: "Software developer",
-    age: "27",
-    avatar: "https://vuesax.com/foto6.png"
-  },
-  {
-    id: 3,
-    username: "rukkiecodes3",
-    occupation: "Software developer",
-    age: "27",
-    avatar: "https://vuesax.com/foto1.png"
-  },
-]
+import generateId from '../lib/generateId'
 
-const HomeScreen = ({ navigation }) => {
-  const { user, userProfile } = useAuth()
+import { useNavigation } from '@react-navigation/native';
+
+// import moment from "moment"
+
+const HomeScreen = () => {
+  const navigation = useNavigation()
+
   const swipeRef = useRef(null)
+
+  const { user, userProfile } = useAuth()
+
+  const [profils, setProfiles] = useState([])
+
+  useEffect(() => {
+    firebase.firestore().collection("users")
+      .doc(user.uid)
+      .get()
+      .then(doc => {
+        if (doc.data().avatar == "")
+          navigation.navigate("EditProfile")
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      })
+
+    const fetchUsers = async () => {
+      const passes = await firebase.firestore()
+        .collection("users")
+        .doc(user.uid)
+        .collection("passes")
+        .get()
+        .then(snapshot => snapshot.docs.map(doc => doc.id))
+
+      const swipes = await firebase.firestore()
+        .collection("users")
+        .doc(user.uid)
+        .collection("swipes")
+        .get()
+        .then(snapshot => snapshot.docs.map(doc => doc.id))
+
+
+      const passedUserIds = passes.length > 0 ? passes : ['test']
+      const swipedUserIds = swipes.length > 0 ? swipes : ['test']
+
+      console.log("passedUserIds: ", [...passedUserIds, ...swipedUserIds])
+
+      await firebase.firestore()
+        .collection("users")
+        .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
+        .get()
+        .then((snapshot) => {
+          setProfiles(
+            snapshot.docs
+              .filter(doc => doc.id !== user.uid)
+              .map(doc => ({
+                id: doc.id,
+                ...doc.data()
+              }))
+          )
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+
+    fetchUsers()
+  }, [])
+
+  const swipeLeft = async (cardIndex) => {
+    if (!profils[cardIndex]) return
+
+    const userSwiped = profils[cardIndex]
+    console.log(`You swiped PASS on ${userSwiped.username}`)
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .collection("passes")
+      .doc(userSwiped.id)
+      .set(userSwiped)
+  }
+
+  const swipeRight = async (cardIndex) => {
+    if (!profils[cardIndex]) return
+
+    const userSwiped = profils[cardIndex]
+
+    console.log(userProfile)
+
+    // // check if the user swiped on you...
+    await firebase.firestore()
+      .collection("users")
+      .doc(userSwiped.id)
+      .collection("swipes")
+      .doc(user.uid)
+      .get()
+      .then(documentSnapShot => {
+        console.log(documentSnapShot)
+        if (documentSnapShot.exists) {
+          // user ha matched with you before
+          // create match
+          console.log(`Hooray, You MATCHED with ${userSwiped.username}`)
+
+          firebase.firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("swipes")
+            .doc(userSwiped.id)
+            .set(userSwiped)
+
+          // CREATE A MATCH
+          firebase.firestore()
+            .collection("matches")
+            .doc(generateId(user.uid, userSwiped.id))
+            .set({
+              users: {
+                [user.uid]: userProfile,
+                [userSwiped.id]: userSwiped
+              },
+              usersMatched: [user.uid, userSwiped.id],
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+          
+          navigation.navigate("Match", {
+            userProfile,
+            userSwiped
+          })
+        } else {
+          // User has swiped as first interaction between the two or didnt get swiped on...
+          console.log(`You SWIPED on ${userSwiped.username}`)
+
+          firebase.firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("swipes")
+            .doc(userSwiped.id)
+            .set(userSwiped)
+        }
+      })
+  }
 
   return (
     <SafeAreaView style={home.container}>
       <Bar />
       <View style={home.header}>
         <TouchableOpacity onPress={() => navigation.navigate("Modal")}>
-          <Text>Oymo</Text>
+          <Image style={{ height: 40, width: 100 }} source={require('../assets/logo.png')} />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
           <SimpleLineIcons name="bubble" color="rgba(0,0,0,0.6)" size={20} />
         </TouchableOpacity>
       </View>
@@ -55,16 +171,18 @@ const HomeScreen = ({ navigation }) => {
         <Swiper
           ref={swipeRef}
           containerStyle={{ backgroundColor: "transparent" }}
-          cards={DUMY_DATA}
+          cards={profils}
           stackSize={5}
           cardIndex={0}
           verticalSwipe={false}
           animateCardOpacity
-          onSwipedLeft={() => {
+          onSwipedLeft={(cardIndex) => {
             console.log("Swipe PASS")
+            swipeLeft(cardIndex)
           }}
-          onSwipedRight={() => {
+          onSwipedRight={(cardIndex) => {
             console.log("Swipe MATCH")
+            swipeRight(cardIndex)
           }}
           backgroundColor={"#4fd0e9"}
           overlayLabels={{
@@ -86,7 +204,7 @@ const HomeScreen = ({ navigation }) => {
               }
             }
           }}
-          renderCard={card => (
+          renderCard={card => card ? (
             <View key={card.id} style={{
               backgroundColor: "#fff",
               height: 500,
@@ -112,7 +230,7 @@ const HomeScreen = ({ navigation }) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                paddingHorizontal: 10,
+                paddingHorizontal: 20,
                 borderBottomRightRadius: 24,
                 borderBottomLeftRadius: 24,
                 shadowColor: "#000",
@@ -127,10 +245,25 @@ const HomeScreen = ({ navigation }) => {
               }}>
                 <View>
                   <Text style={{ fontSize: 20, fontWeight: "600" }}>{card.username}</Text>
-                  <Text>{card.occupation}</Text>
+                  <Text>{card.job}</Text>
                 </View>
-                <Text style={{ fontSize: 20, fontWeight: "600" }}>{card.age}</Text>
+                <Text style={{ fontSize: 20, fontWeight: "600" }}>{card.date}</Text>
+                {/* <Text style={{ fontSize: 20, fontWeight: "600" }}>{moment().diff(new Date(card.date), "years")}</Text> */}
               </View>
+            </View>
+          ) : (
+            <View style={{
+              flex: 1,
+              backgroundColor: "#fff",
+              justifyContent: "center",
+              alignItems: "center"
+            }}>
+              <Image
+                style={{ width: 105, height: 105 }}
+                width={105}
+                height={105}
+                source={require("../assets/sad.png")} />
+              <Text style={{ fontSize: 20, fontWeight: "600" }}>No more profiles</Text>
             </View>
           )}
         />
