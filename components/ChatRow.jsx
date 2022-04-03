@@ -26,8 +26,8 @@ const ChatRow = ({ matchDetails }) => {
       .collection("messages")
       .orderBy("timestamp", "desc")
       .limit(1)
-      .onSnapshot(snapshot => 
-        setLastMessage(snapshot.docs[0].data().message)
+      .onSnapshot(snapshot =>
+        setLastMessage(snapshot.docs[0]?.data()?.message)
       )
     , [matchDetails, firebase.collection])
 
