@@ -1,5 +1,5 @@
-import { SafeAreaView, Text, View, TouchableOpacity, Image } from 'react-native'
-import React, { useRef, useState, useEffect, useLayoutEffect } from 'react'
+import { SafeAreaView, Text, View, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import React, { useRef, useState, useEffect } from 'react'
 
 import firebase from "../hooks/firebase"
 
@@ -16,8 +16,6 @@ import home from "../style/home"
 import generateId from '../lib/generateId'
 
 import { useNavigation } from '@react-navigation/native';
-
-// import moment from "moment"
 
 const HomeScreen = () => {
   const navigation = useNavigation()
@@ -136,7 +134,7 @@ const HomeScreen = () => {
               usersMatched: [user.uid, userSwiped.id],
               timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
-          
+
           navigation.navigate("Match", {
             userProfile,
             userSwiped
@@ -162,139 +160,138 @@ const HomeScreen = () => {
         <TouchableOpacity onPress={() => navigation.navigate("Modal")}>
           <Image style={{ height: 40, width: 100 }} source={require('../assets/logo.png')} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+        <TouchableOpacity style={{
+          width: 40,
+          height: 40,
+          borderRadius: 12,
+          justifyContent: "center",
+          alignItems: "center"
+        }} onPress={() => navigation.navigate("Chat")}>
           <SimpleLineIcons name="bubble" color="rgba(0,0,0,0.6)" size={20} />
         </TouchableOpacity>
       </View>
 
       <View style={{ flex: 1, marginTop: -6 }}>
-        <Swiper
-          ref={swipeRef}
-          containerStyle={{ backgroundColor: "transparent" }}
-          cards={profils}
-          stackSize={5}
-          cardIndex={0}
-          verticalSwipe={false}
-          animateCardOpacity
-          onSwipedLeft={(cardIndex) => {
-            console.log("Swipe PASS")
-            swipeLeft(cardIndex)
-          }}
-          onSwipedRight={(cardIndex) => {
-            console.log("Swipe MATCH")
-            swipeRight(cardIndex)
-          }}
-          backgroundColor={"#4fd0e9"}
-          overlayLabels={{
-            left: {
-              title: "NOPE",
-              style: {
-                label: {
-                  textAlign: "right",
-                  color: "red"
-                }
-              }
-            },
-            right: {
-              title: "MATH",
-              style: {
-                label: {
-                  color: "#4ded30"
-                }
-              }
-            }
-          }}
-          renderCard={card => card ? (
-            <View key={card.id} style={{
-              backgroundColor: "#fff",
-              height: 500,
-              width: "100%",
-              borderRadius: 24,
-              position: "relative"
-            }}>
-              <Image style={{
-                flex: 1,
-                width: "100%",
-                height: "100%",
-                borderRadius: 24,
-                position: "absolute",
-                top: 0,
-                left: 0
-              }} source={{ uri: card.avatar }} />
-
-              <View style={{
+        {profils.length >= 1 ? (
+          <Swiper
+            ref={swipeRef}
+            containerStyle={{ backgroundColor: "transparent" }}
+            cards={profils}
+            stackSize={5}
+            cardIndex={0}
+            verticalSwipe={false}
+            animateCardOpacity
+            onSwipedLeft={(cardIndex) => {
+              swipeLeft(cardIndex)
+            }}
+            onSwipedRight={(cardIndex) => {
+              swipeRight(cardIndex)
+            }}
+            backgroundColor={"#4fd0e9"}
+            renderCard={card => card ? (
+              <View key={card.id} style={{
                 backgroundColor: "#fff",
-                width: "100%", height: 60,
-                position: "absolute",
-                bottom: 0,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 20,
-                borderBottomRightRadius: 24,
-                borderBottomLeftRadius: 24,
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 3,
-                },
-                shadowOpacity: 0.29,
-                shadowRadius: 4.65,
-
-                elevation: 7,
+                height: 500,
+                width: "100%",
+                borderRadius: 24,
+                position: "relative"
               }}>
-                <View>
+                <Image style={{
+                  flex: 1,
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: 24,
+                  position: "absolute",
+                  top: 0,
+                  left: 0
+                }} source={{ uri: card.avatar }} />
+
+                <View style={{
+                  backgroundColor: "#fff",
+                  width: "100%", height: 60,
+                  position: "absolute",
+                  bottom: 0,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingHorizontal: 20,
+                  borderBottomRightRadius: 24,
+                  borderBottomLeftRadius: 24,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 3,
+                  },
+                  shadowOpacity: 0.29,
+                  shadowRadius: 4.65,
+
+                  elevation: 7,
+                }}>
                   <Text style={{ fontSize: 20, fontWeight: "600" }}>{card.username}</Text>
                   <Text>{card.job}</Text>
                 </View>
-                <Text style={{ fontSize: 20, fontWeight: "600" }}>{card.date}</Text>
-                {/* <Text style={{ fontSize: 20, fontWeight: "600" }}>{moment().diff(new Date(card.date), "years")}</Text> */}
               </View>
-            </View>
-          ) : (
-            <View style={{
-              flex: 1,
-              backgroundColor: "#fff",
-              justifyContent: "center",
-              alignItems: "center"
-            }}>
-              <Image
-                style={{ width: 105, height: 105 }}
-                width={105}
-                height={105}
-                source={require("../assets/sad.png")} />
-              <Text style={{ fontSize: 20, fontWeight: "600" }}>No more profiles</Text>
-            </View>
-          )}
-        />
+            ) : (
+              <View style={{
+                flex: 1,
+                backgroundColor: "#fff",
+                justifyContent: "center",
+                alignItems: "center"
+              }}>
+                <Image
+                  style={{ width: 105, height: 105 }}
+                  width={105}
+                  height={105}
+                  source={require("../assets/sad.png")} />
+                <Text style={{ fontSize: 20, fontWeight: "600" }}>No more profiles</Text>
+              </View>
+            )}
+          />
+        ) : (
+          <View style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+            <ActivityIndicator size="large" color="rgba(0,0,0,0.6)" />
+          </View>
+        )}
       </View>
 
-      <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
-        <TouchableOpacity
-          onPress={() => swipeRef.current.swipeLeft()}
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 50,
-            width: 60,
-            height: 60,
-            backgroundColor: "rgba(255,71,87, 0.2)"
-          }}>
-          <MaterialCommunityIcons name="close" color="#FF4757" size={32} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => swipeRef.current.swipeRight()}
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 50,
-            width: 60,
-            height: 60,
-            backgroundColor: "rgba(70,201,58, 0.2)"
-          }}>
-          <MaterialCommunityIcons name="heart" color="#46C93A" size={32} />
-        </TouchableOpacity>
-      </View>
+      {
+        profils.length >= 1 ? (
+          <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginBottom: 20 }}>
+            <TouchableOpacity
+              onPress={() => swipeRef.current.swipeLeft()}
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 50,
+                width: 60,
+                height: 60,
+                backgroundColor: "rgba(255,71,87, 0.2)"
+              }}>
+              <MaterialCommunityIcons name="close" color="#FF4757" size={32} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => swipeRef.current.swipeRight()}
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 50,
+                width: 60,
+                height: 60,
+                backgroundColor: "rgba(70,201,58, 0.2)"
+              }}>
+              <MaterialCommunityIcons name="heart" color="#46C93A" size={32} />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={{ display: "none" }}></View>
+        )
+      }
+
     </SafeAreaView>
   )
 }

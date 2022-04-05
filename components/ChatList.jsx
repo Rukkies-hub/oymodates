@@ -31,7 +31,7 @@ const ChatList = () => {
         renderItem={({ item }) => <ChatRow matchDetails={item} />}
       />
     ) : (
-      <View style={{ padding: 20 }}>
+      <View style={{ flex: 1, padding: 20, justifyContent: "center", alignItems: "center" }}>
         <Text style={{ textAlign: "center", fontSize: 24 }}>No matches at the moment</Text>
       </View>
     )

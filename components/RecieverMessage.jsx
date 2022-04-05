@@ -11,7 +11,7 @@ const RecieverMessage = ({ messages }) => {
       <View
         style={{
           backgroundColor: "#FF4757",
-          paddingVertical: 10,
+          paddingVertical: 6,
           paddingHorizontal: 15,
           alignSelf: "flex-end",
           borderTopRightRadius: 12,
@@ -20,7 +20,7 @@ const RecieverMessage = ({ messages }) => {
           marginLeft: 10
         }}
       >
-        <Text style={{ color: "#fff", fontSize: 18 }}>{messages.message}</Text>
+        <Text style={{ color: "#fff", fontSize: 18, textAlign: "left" }}>{messages.message}</Text>
       </View>
     </View>
   )

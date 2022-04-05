@@ -1,4 +1,4 @@
-import { View, SafeAreaView, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, FlatList, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, SafeAreaView, TextInput, TouchableOpacity, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { useState, useEffect } from 'react'
 
 import { useRoute } from '@react-navigation/core'
@@ -38,18 +38,19 @@ const MessageScreen = () => {
     , [matchDetails, firebase.collection])
 
   const sendMessage = () => {
-    firebase.firestore()
-      .collection("matches")
-      .doc(matchDetails.id)
-      .collection("messages")
-      .doc()
-      .set({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        userId: user.uid,
-        username: userProfile.username,
-        avatar: userProfile.avatar,
-        message: input
-      })
+    if (input != "")
+      firebase.firestore()
+        .collection("matches")
+        .doc(matchDetails.id)
+        .collection("messages")
+        .doc()
+        .set({
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          userId: user.uid,
+          username: userProfile.username,
+          avatar: userProfile.avatar,
+          message: input
+        })
     setInput("")
   }
 
@@ -57,11 +58,6 @@ const MessageScreen = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <Header title={getMatchedUserInfo(matchDetails.users, user.uid).username} callEnabled />
 
-      {/* <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={10}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      > */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <FlatList
           data={messages}
@@ -77,22 +73,35 @@ const MessageScreen = () => {
           }
         />
       </TouchableWithoutFeedback>
-      <View style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingHorizontal: 10,
-        borderTopWidth: .3,
-        backgroundColor: "#fff",
-        height: 50
-      }}>
+
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingHorizontal: 10,
+          borderTopWidth: .3,
+          backgroundColor: "#fff",
+          height: 50
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            width: 40,
+            height: 40,
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+          <SimpleLineIcons name="emotsmile" color="rgba(0,0,0,0.6)" size={20} />
+        </TouchableOpacity>
         <TextInput
           value={input}
           placeholder="Aa.."
           onChangeText={setInput}
           onSubmitEditing={sendMessage}
-          style={{ height: "100%", fontSize: 18, flex: 1 }}
+          style={{ fontSize: 18, flex: 1, width: "100%", height: "100%" }}
         />
+
         <TouchableOpacity
           onPress={sendMessage}
           style={{
@@ -104,7 +113,6 @@ const MessageScreen = () => {
           <SimpleLineIcons name="paper-plane" color="rgba(0,0,0,0.6)" size={20} />
         </TouchableOpacity>
       </View>
-      {/* </KeyboardAvoidingView> */}
     </SafeAreaView>
   )
 }

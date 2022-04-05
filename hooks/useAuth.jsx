@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { View, Text, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker'
+import moment from 'moment';
 
 import firebase from "./firebase"
 
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
   const [loadingInitial, setLoadingInitial] = React.useState(true)
 
   // USER PROFILE
-  const [userProfile, setUserProfile] = useState(null)
+  const [userProfile, setUserProfile] = useState({})
 
   // EDIT USERNAME
   const [editUsername, setEditUsername] = useState("")
@@ -151,14 +152,11 @@ export const AuthProvider = ({ children }) => {
         setupLoadeding(true)
       }, (error) => {
         setupLoadeding(false)
-        console.log(error)
         blob.close()
         return
       }, () => {
         snapshot.snapshot.ref.getDownloadURL().then(url => {
           setupLoadeding(false)
-          console.log("download url: ", url)
-          console.log("download url: ", userProfile.avatar)
 
           if (userProfile.avatar) {
             const fileRef = firebase.storage().refFromURL(userProfile.avatar)
@@ -192,13 +190,13 @@ export const AuthProvider = ({ children }) => {
   }
 
   const getUserProfile = async (user) => {
-    firebase.firestore().collection("users")
+    await firebase.firestore().collection("users")
       .doc(`${user.uid}`)
       .get().then(doc => {
-        setUserProfile(doc.data())
-        setEditUsername(doc.data().username)
-        setName(doc.data().name)
-        setBio(doc.data().bio)
+        setUserProfile(doc?.data())
+        setEditUsername(doc.data()?.username)
+        setName(doc.data()?.name)
+        setBio(doc.data()?.bio)
       })
   }
 
@@ -270,7 +268,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     setLoading(true)
-    firebase.auth().signOut()
+    await firebase.auth().signOut()
       .catch(error => setError(error))
       .finally(() => setLoading(false))
   }
@@ -278,7 +276,7 @@ export const AuthProvider = ({ children }) => {
   const updateUsername = async () => {
     const { username } = usernameState
 
-    firebase.firestore()
+    await firebase.firestore()
       .collection("users")
       .doc(`${user.uid}`)
       .update({
@@ -292,7 +290,7 @@ export const AuthProvider = ({ children }) => {
   const updateName = async () => {
     const { name } = nameState
 
-    firebase.firestore()
+    await firebase.firestore()
       .collection("users")
       .doc(`${user.uid}`)
       .update({
@@ -306,7 +304,7 @@ export const AuthProvider = ({ children }) => {
   const updateBio = async () => {
     const { bio } = bioState
 
-    firebase.firestore()
+    await firebase.firestore()
       .collection("users")
       .doc(`${user.uid}`)
       .update({
@@ -338,7 +336,7 @@ export const AuthProvider = ({ children }) => {
   const updatePhone = async () => {
     const { phone } = updatePhoneState
 
-    firebase.firestore()
+    await firebase.firestore()
       .collection("users")
       .doc(`${user.uid}`)
       .update({
@@ -352,7 +350,7 @@ export const AuthProvider = ({ children }) => {
   const updateGender = async () => {
     const { gender } = updateGenderState
 
-    firebase.firestore()
+    await firebase.firestore()
       .collection("users")
       .doc(`${user.uid}`)
       .update({
@@ -366,11 +364,11 @@ export const AuthProvider = ({ children }) => {
   const updateDateOfBirth = async () => {
     const { date } = updateDateState
 
-    firebase.firestore()
+    await firebase.firestore()
       .collection("users")
       .doc(`${user.uid}`)
       .update({
-        date
+        date: moment().diff(new Date(date), "years")
       }).then(() => {
         getUserProfile(user)
         navigation.goBack();
@@ -380,7 +378,7 @@ export const AuthProvider = ({ children }) => {
   const updateJob = async () => {
     const { job } = updateJobState
 
-    firebase.firestore()
+    await firebase.firestore()
       .collection("users")
       .doc(`${user.uid}`)
       .update({

@@ -12,7 +12,7 @@ const SenderMessage = ({ messages }) => {
       <View
         style={{
           backgroundColor: color.purple,
-          paddingVertical: 10,
+          paddingVertical: 6,
           paddingHorizontal: 15,
           alignSelf: "flex-end",
           borderTopLeftRadius: 12,
@@ -23,7 +23,7 @@ const SenderMessage = ({ messages }) => {
         }}
       >
         <Text
-          style={{ color: "#fff", fontSize: 18 }}
+          style={{ color: "#fff", fontSize: 18, textAlign: "right" }}
         >
           {messages.message}
         </Text>
