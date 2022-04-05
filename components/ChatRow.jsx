@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Pressable, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
@@ -14,6 +14,7 @@ const ChatRow = ({ matchDetails }) => {
 
   const [matchedUserInfo, setMatchedUserInfo] = useState({})
   const [lastMessage, setLastMessage] = useState("")
+  const [unseenMessage, setUnseenMessage] = useState([])
 
   useEffect(() => {
     setMatchedUserInfo(getMatchedUserInfo(matchDetails.users, user.uid))
@@ -32,7 +33,7 @@ const ChatRow = ({ matchDetails }) => {
     , [matchDetails, firebase.collection])
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() => navigation.navigate("MessageScreen", {
         matchDetails
       })}
@@ -54,7 +55,7 @@ const ChatRow = ({ matchDetails }) => {
           <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.6)" }}>{lastMessage || "Say Hi!"}</Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 

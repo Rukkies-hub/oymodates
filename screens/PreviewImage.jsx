@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, ImageBackground, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, ImageBackground, TouchableOpacity, TextInput } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 
 import { useNavigation, useRoute } from '@react-navigation/core'
@@ -14,6 +14,9 @@ const PreviewImage = () => {
   const { user, userProfile } = useAuth()
   const navigation = useNavigation()
   const { params } = useRoute()
+
+  const [caption, setCaption] = useState("")
+  const [height, setHeight] = useState(50)
 
   console.log(params)
 
@@ -49,8 +52,11 @@ const PreviewImage = () => {
             userId: user.uid,
             username: userProfile.username,
             avatar: userProfile.avatar,
-            image: params.image
+            image: params.image,
+            caption: caption
           })
+        
+        setCaption("")
 
         navigation.goBack()
 
@@ -88,22 +94,49 @@ const PreviewImage = () => {
         >
           <SimpleLineIcons name="arrow-left" color="#000" size={22} />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={sendImage}
+
+        <View
           style={{
-            backgroundColor: "#FF4757",
-            width: 60,
-            height: 60,
-            borderRadius: 50,
             position: "absolute",
-            bottom: 15,
-            right: 15,
-            justifyContent: "center",
-            alignItems: "center"
+            bottom: 0,
+            left: 0,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+            paddingHorizontal: 10,
+            borderTopWidth: .3,
+            backgroundColor: "#fff",
+            minHeight: 50,
+            overflow: "hidden"
           }}
         >
-          <SimpleLineIcons name="paper-plane" color="#fff" size={30} />
-        </TouchableOpacity>
+          <TextInput
+            multiline
+            value={caption}
+            placeholder="Caption..."
+            onChangeText={setCaption}
+            onSubmitEditing={sendImage}
+            onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+            style={{
+              fontSize: 18,
+              flex: 1,
+              width: 50,
+              height: height,
+              maxHeight: 70
+            }}
+          />
+          <TouchableOpacity
+            onPress={sendImage}
+            style={{
+              width: 40,
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <SimpleLineIcons name="paper-plane" color="#000" size={22} />
+          </TouchableOpacity>
+        </View>
       </ImageBackground>
     </View>
   )

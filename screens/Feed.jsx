@@ -10,7 +10,7 @@ import {
   Dimensions
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient'
 
 import firebase from "../hooks/firebase"
 
@@ -19,10 +19,10 @@ import useAuth from "../hooks/useAuth"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 
-import moment from 'moment';
+import moment from 'moment'
 
 const { width, height } = Dimensions.get("window")
-const ITEM_SIZE = width * 5
+const ITEM_SIZE = (height - 50) * 1
 const SPACING = 10
 const FULLSIZE = ITEM_SIZE + SPACING * 1
 

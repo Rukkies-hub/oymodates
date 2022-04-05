@@ -1,5 +1,5 @@
 import { View, SafeAreaView, TextInput, TouchableOpacity, FlatList, TouchableWithoutFeedback, Keyboard, LayoutAnimation, UIManager, Text } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { useRoute, useNavigation } from '@react-navigation/core'
 
@@ -21,7 +21,7 @@ if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
 )
-  UIManager.setLayoutAnimationEnabledExperimental(true);
+  UIManager.setLayoutAnimationEnabledExperimental(true)
 
 import * as ImagePicker from 'expo-image-picker'
 
@@ -33,10 +33,9 @@ const MessageScreen = () => {
 
   const [input, setInput] = useState("")
   const [messages, setMessages] = useState([])
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
   const [height, setHeight] = useState(50)
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
-  const [image, setImage] = useState(null)
 
   useEffect(() =>
     firebase.firestore()
@@ -52,13 +51,28 @@ const MessageScreen = () => {
       })
     , [matchDetails, firebase.collection])
 
-  useEffect(() => {
+  useEffect(() =>
     Keyboard.addListener("keyboardDidShow", () => {
       setExpanded(false)
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
       setMediaVidiblity(!mediaVidiblity)
     })
-  }, [])
+    , [])
+
+  useEffect(() =>
+    firebase.firestore()
+      .collection("matches")
+      .doc(matchDetails.id)
+      .collection("messages")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          doc.ref.update({
+            seen: true
+          })
+        })
+      })
+    , [])
 
   const sendMessage = () => {
     setExpanded(false)
@@ -73,7 +87,8 @@ const MessageScreen = () => {
           userId: user.uid,
           username: userProfile.username,
           avatar: userProfile.avatar,
-          message: input
+          message: input,
+          seen: false
         })
     setInput("")
   }
@@ -93,20 +108,40 @@ const MessageScreen = () => {
     }
   }
 
+  const openCamera = async () => {
+    // Ask the user for the permission to access the camera
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync();
+
+    if (!result.cancelled) {
+      navigation.navigate("PreviewImage", {
+        image: result.uri,
+        matchDetails
+      })
+    }
+  }
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <Header title={getMatchedUserInfo(matchDetails.users, user.uid).username} callEnabled />
 
-      <TouchableWithoutFeedback onPress={() => {
-        Keyboard.dismiss()
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setMediaVidiblity(true)
-      }}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss()
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+          setMediaVidiblity(true)
+        }}>
         <FlatList
           data={messages}
           inverted={-1}
-          style={{ flex: 1, padding: 10 }}
+          style={{ flex: 1, paddingHorizontal: 10 }}
           keyExtractor={item => item.id}
           renderItem={({ item: message }) =>
             message.userId === user.uid ? (
@@ -133,6 +168,7 @@ const MessageScreen = () => {
         {
           mediaVidiblity && <>
             <TouchableOpacity
+              onPress={openCamera}
               style={{
                 width: 40,
                 height: 50,
@@ -157,8 +193,8 @@ const MessageScreen = () => {
         <TouchableOpacity
           onPress={() => {
             Keyboard.dismiss()
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-            setExpanded(!expanded);
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+            setExpanded(!expanded)
           }}
           style={{
             width: 40,

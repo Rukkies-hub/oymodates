@@ -13,7 +13,7 @@ const Header = ({ title, callEnabled }) => {
       justifyContent: "space-between",
       alignItems: "center",
       height: 45,
-      paddingHorizontal: 10,
+      paddingHorizontal: 10
     }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
         <TouchableOpacity style={{
@@ -24,7 +24,7 @@ const Header = ({ title, callEnabled }) => {
           alignItems: "center"
         }}
           onPress={() => navigation.goBack()}>
-          <SimpleLineIcons name="arrow-left" color="#FF4757" size={20} />
+          <SimpleLineIcons name="arrow-left" color="#000" size={20} />
         </TouchableOpacity>
         <Text style={{ fontSize: 18, fontWeight: "600", marginLeft: 10, color: "#000" }}>{title}</Text>
       </View>
@@ -36,7 +36,7 @@ const Header = ({ title, callEnabled }) => {
           justifyContent: "center",
           alignItems: "center"
         }}>
-          <SimpleLineIcons name="phone" color="#FF4757" size={20} />
+          <SimpleLineIcons name="phone" color="#000" size={20} />
         </TouchableOpacity>
       )}
     </View>

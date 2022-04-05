@@ -1,7 +1,7 @@
 import { View, Text, SafeAreaView, Image, TouchableOpacity, TouchableWithoutFeedback, Button } from 'react-native'
 import React, { useRef } from 'react'
 
-import RBSheet from "react-native-raw-bottom-sheet";
+import RBSheet from "react-native-raw-bottom-sheet"
 
 import Bar from "./StatusBar"
 
@@ -16,7 +16,7 @@ import useAuth from "../hooks/useAuth"
 const Account = ({ navigation }) => {
   const { userProfile, logout } = useAuth()
 
-  const refRBSheet = useRef();
+  const refRBSheet = useRef()
 
   return (
     <SafeAreaView style={account.container}>
