@@ -24,6 +24,7 @@ import EditJob from './screens/EditJob'
 import Match from './screens/Match'
 import MessageScreen from './screens/MessageScreen'
 import Add from './screens/Add'
+import PreviewImage from './screens/PreviewImage'
 
 import useAuth from "./hooks/useAuth"
 
@@ -54,6 +55,7 @@ const StackNavigator = () => {
 
           <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
             <Stack.Screen name="Match" component={Match} options={{ headerShown: false }} />
+            <Stack.Screen name="PreviewImage" component={PreviewImage} options={{ headerShown: false }} />
           </Stack.Group>
         </>
       ) :
