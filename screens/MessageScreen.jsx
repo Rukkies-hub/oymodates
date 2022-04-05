@@ -31,6 +31,7 @@ const MessageScreen = () => {
   const [input, setInput] = useState("")
   const [messages, setMessages] = useState([])
   const [expanded, setExpanded] = useState(false);
+  const [height, setHeight] = useState(50)
 
   useEffect(() =>
     firebase.firestore()
@@ -45,7 +46,7 @@ const MessageScreen = () => {
         })))
       })
     , [matchDetails, firebase.collection])
-  
+
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", () => {
       setExpanded(false)
@@ -69,7 +70,7 @@ const MessageScreen = () => {
         })
     setInput("")
   }
-  
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -95,11 +96,11 @@ const MessageScreen = () => {
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "baseline",
           paddingHorizontal: 10,
           borderTopWidth: .3,
           backgroundColor: "#fff",
-          height: 50,
+          minHeight: 50,
           overflow: "hidden"
         }}
       >
@@ -111,25 +112,27 @@ const MessageScreen = () => {
           }}
           style={{
             width: 40,
-            height: 40,
+            height: 50,
             justifyContent: "center",
             alignItems: "center"
           }}>
           <SimpleLineIcons name="emotsmile" color="rgba(0,0,0,0.6)" size={20} />
         </TouchableOpacity>
         <TextInput
+          multiline
           value={input}
           placeholder="Aa.."
           onChangeText={setInput}
           onSubmitEditing={sendMessage}
-          style={{ fontSize: 18, flex: 1, width: "100%", height: "100%" }}
+          style={{ fontSize: 18, flex: 1, width: "100%", height: height, maxHeight: 70 }}
+          onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
         />
 
         <TouchableOpacity
           onPress={sendMessage}
           style={{
             width: 40,
-            height: 40,
+            height: 50,
             justifyContent: "center",
             alignItems: "center"
           }}>
