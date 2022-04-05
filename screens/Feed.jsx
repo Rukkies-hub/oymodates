@@ -6,7 +6,8 @@ import {
   ImageBackground,
   useWindowDimensions,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
@@ -19,6 +20,11 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 
 import moment from 'moment';
+
+const { width, height } = Dimensions.get("window")
+const ITEM_SIZE = width * 5
+const SPACING = 10
+const FULLSIZE = ITEM_SIZE + SPACING * 1
 
 const Feed = () => {
   const { user, userProfile } = useAuth()
@@ -43,8 +49,6 @@ const Feed = () => {
     getPostes()
   }, [])
 
-  console.log("posts: ", posts)
-
   return (
     <View style={{
       flex: 1,
@@ -57,6 +61,10 @@ const Feed = () => {
       <View style={{ flex: 1 }}>
         <FlatList
           data={posts}
+          bounces={false}
+          snapToAlignment="center"
+          snapToInterval={FULLSIZE}
+          decelerationRate="fast"
           keyExtractor={item => item.id}
           style={{
             flex: 1
@@ -199,7 +207,7 @@ const Feed = () => {
                   <SimpleLineIcons name="bubbles" color="#fff" size={30} />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                  <SimpleLineIcons name="share-alt" color="#fff" size={30} />
+                  <SimpleLineIcons name="action-redo" color="#fff" size={30} />
                 </TouchableOpacity>
               </View>
             </ImageBackground>

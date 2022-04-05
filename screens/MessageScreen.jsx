@@ -1,4 +1,4 @@
-import { View, SafeAreaView, TextInput, TouchableOpacity, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, SafeAreaView, TextInput, TouchableOpacity, FlatList, TouchableWithoutFeedback, Keyboard, LayoutAnimation, UIManager, Text } from 'react-native'
 import React, { useState, useEffect } from 'react'
 
 import { useRoute } from '@react-navigation/core'
@@ -15,6 +15,14 @@ import RecieverMessage from "../components/RecieverMessage"
 
 import firebase from "../hooks/firebase"
 
+import EmojiSelector, { Categories } from 'react-native-emoji-selector'
+
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+)
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+
 const MessageScreen = () => {
   const { user, userProfile } = useAuth()
   const { params } = useRoute()
@@ -22,6 +30,7 @@ const MessageScreen = () => {
 
   const [input, setInput] = useState("")
   const [messages, setMessages] = useState([])
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() =>
     firebase.firestore()
@@ -36,8 +45,15 @@ const MessageScreen = () => {
         })))
       })
     , [matchDetails, firebase.collection])
+  
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", () => {
+      setExpanded(false)
+    })
+  }, [])
 
   const sendMessage = () => {
+    setExpanded(false)
     if (input != "")
       firebase.firestore()
         .collection("matches")
@@ -53,6 +69,7 @@ const MessageScreen = () => {
         })
     setInput("")
   }
+  
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -82,10 +99,16 @@ const MessageScreen = () => {
           paddingHorizontal: 10,
           borderTopWidth: .3,
           backgroundColor: "#fff",
-          height: 50
+          height: 50,
+          overflow: "hidden"
         }}
       >
         <TouchableOpacity
+          onPress={() => {
+            Keyboard.dismiss()
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+            setExpanded(!expanded);
+          }}
           style={{
             width: 40,
             height: 40,
@@ -113,6 +136,17 @@ const MessageScreen = () => {
           <SimpleLineIcons name="paper-plane" color="rgba(0,0,0,0.6)" size={20} />
         </TouchableOpacity>
       </View>
+      {expanded && (
+        <View style={{ minWidth: 250, flex: 1 }}>
+          <EmojiSelector
+            columns={9}
+            showSearchBar={false}
+            showSectionTitles={false}
+            category={Categories.emotion}
+            onEmojiSelected={emoji => setInput(input + " " + emoji)}
+          />
+        </View>
+      )}
     </SafeAreaView>
   )
 }

@@ -54,7 +54,6 @@ const Add = () => {
 
   const pickImage = async () => {
     setCameraVisible(false)
-    // Ask the user for the permission to access the media library 
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
     if (permissionResult.granted === false) {
       alert("You've refused to allow this appp to access your photos!")
