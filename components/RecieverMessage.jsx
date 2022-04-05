@@ -20,7 +20,23 @@ const RecieverMessage = ({ messages }) => {
           marginLeft: 10
         }}
       >
-        <Text style={{ color: "#fff", fontSize: 18, textAlign: "left" }}>{messages.message}</Text>
+        {
+          messages.message && <Text
+            style={{ color: "#fff", fontSize: 18, textAlign: "left" }}
+          >
+            {messages.message}
+          </Text>
+        }
+        {
+          messages.image && <Image style={{
+            flex: 1,
+            width: window.width - 100,
+            height: 300,
+            borderRadius: 20
+          }}
+            source={{ uri: messages.image }}
+          />
+        }
       </View>
     </View>
   )

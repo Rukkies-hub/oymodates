@@ -23,15 +23,17 @@ const SenderMessage = ({ messages }) => {
           maxWidth: "80%"
         }}
       >
-        <Text
-          style={{ color: "#fff", fontSize: 18, textAlign: "right" }}
-        >
-          {messages.message}
-        </Text>
+        {
+          messages.message && <Text
+            style={{ color: "#fff", fontSize: 18, textAlign: "right" }}
+          >
+            {messages.message}
+          </Text>
+        }
         {
           messages.image && <Image style={{
             flex: 1,
-            width: window.width -100,
+            width: window.width - 100,
             height: 300,
             borderRadius: 20
           }}
