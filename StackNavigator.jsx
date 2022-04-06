@@ -25,6 +25,7 @@ import Match from './screens/Match'
 import MessageScreen from './screens/MessageScreen'
 import Add from './screens/Add'
 import PreviewImage from './screens/PreviewImage'
+import ViewProfile from './screens/ViewProfile'
 
 import useAuth from "./hooks/useAuth"
 
@@ -56,6 +57,10 @@ const StackNavigator = () => {
           <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
             <Stack.Screen name="Match" component={Match} options={{ headerShown: false }} />
             <Stack.Screen name="PreviewImage" component={PreviewImage} options={{ headerShown: false }} />
+          </Stack.Group>
+
+          <Stack.Group screenOptions={{ presentation: "modal" }}>
+            <Stack.Screen name="ViewProfile" component={ViewProfile} options={{ headerShown: false }} />
           </Stack.Group>
         </>
       ) :

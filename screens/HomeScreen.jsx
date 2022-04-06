@@ -15,7 +15,7 @@ import home from "../style/home"
 
 import generateId from '../lib/generateId'
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
@@ -27,7 +27,8 @@ const HomeScreen = () => {
   const [profils, setProfiles] = useState([])
 
   useEffect(() => {
-    firebase.firestore().collection("users")
+    firebase.firestore()
+      .collection("users")
       .doc(user.uid)
       .get()
       .then(doc => {
@@ -98,8 +99,6 @@ const HomeScreen = () => {
     if (!profils[cardIndex]) return
 
     const userSwiped = profils[cardIndex]
-
-    console.log(userProfile)
 
     // // check if the user swiped on you...
     await firebase.firestore()

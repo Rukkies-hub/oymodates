@@ -88,7 +88,7 @@ export default StyleSheet.create({
     actionEditProfile: {
         height: 40,
         width: 335,
-        backgroundColor: "rgba(0,0,0,0)",
+        backgroundColor: "transparent",
         borderWidth: 1,
         borderColor: "rgba(0,0,0,0.2)",
         borderRadius: 12,

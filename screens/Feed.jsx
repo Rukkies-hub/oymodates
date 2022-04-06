@@ -21,6 +21,8 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 
 import moment from 'moment'
 
+import { useNavigation } from '@react-navigation/native'
+
 const { width, height } = Dimensions.get("window")
 const ITEM_SIZE = (height - 50) * 1
 const SPACING = 10
@@ -29,9 +31,11 @@ const FULLSIZE = ITEM_SIZE + SPACING * 1
 const Feed = () => {
   const { user, userProfile } = useAuth()
   const [posts, setPosts] = useState([])
-  const [refreshing, setRefreshing] = useState(false);
+  const [following, setFollowing] = useState([])
 
   const window = useWindowDimensions()
+
+  const navigation = useNavigation()
 
   useEffect(async () =>
     firebase.firestore()
@@ -44,6 +48,27 @@ const Feed = () => {
         })))
       })
     , [])
+
+  const followUser = async (item) => {
+    firebase.firestore()
+      .collection("following")
+      .doc(user.uid)
+      .collection("userFollowing")
+      .doc(item.user.id)
+      .set({})
+  }
+
+  const unFollowUser = async (item) => {
+    firebase.firestore()
+      .collection("following")
+      .doc(user.uid)
+      .collection("userFollowing")
+      .doc(item.user.id)
+      .delete()
+  }
+
+  useEffect(() => {
+  }, [])
 
   return (
     <View style={{
@@ -138,7 +163,10 @@ const Feed = () => {
                   borderRadius: 50
                 }}
               >
-                <View
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("ViewProfile", {
+                    user: item.user
+                  })}
                   style={{
                     position: "relative",
                     marginBottom: 25,
@@ -146,7 +174,7 @@ const Feed = () => {
                     borderRadius: 50,
                     width: 44.2,
                     height: 44.2,
-                    borderColor: "#651FFF"
+                    borderColor: "#FF4757"
                   }}
                 >
                   <Image
@@ -158,36 +186,7 @@ const Feed = () => {
                       borderRadius: 50,
                     }}
                   />
-                  {
-                    user.uid === item.user.id ? (
-                      <View style={{ display: "none" }}></View>
-                    ) : (
-                      <TouchableOpacity
-                        style={{
-                          position: "absolute",
-                          bottom: -8,
-                          left: 14,
-                          backgroundColor: "#651FFF",
-                          width: 15,
-                          height: 15,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: 50,
-                          shadowColor: "#000",
-                          shadowOffset: {
-                            width: 0,
-                            height: 2,
-                          },
-                          shadowOpacity: 0.25,
-                          shadowRadius: 3.84,
-                          elevation: 5,
-                        }}
-                      >
-                        <MaterialCommunityIcons name="plus" color="#fff" size={12} />
-                      </TouchableOpacity>
-                    )
-                  }
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity
                   style={{
                     marginBottom: 20

@@ -13,6 +13,7 @@ import {
   ScrollView,
   LogBox
 } from 'react-native'
+
 import React, { useRef, useState, useEffect } from 'react'
 
 import RBSheet from "react-native-raw-bottom-sheet"
@@ -44,7 +45,6 @@ const Account = () => {
   const [expanded, setExpanded] = useState(true)
   const [profils, setProfiles] = useState([])
   const [posts, setPosts] = useState([])
-  const [refreshing, setRefreshing] = useState(false)
 
   useEffect(() => {
     const fetchUsers = async () => {

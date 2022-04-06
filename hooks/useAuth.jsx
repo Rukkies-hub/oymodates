@@ -191,7 +191,7 @@ export const AuthProvider = ({ children }) => {
 
   const getUserProfile = async (user) => {
     await firebase.firestore().collection("users")
-      .doc(`${user.uid}`)
+      .doc(user.uid)
       .get().then(doc => {
         setUserProfile(doc?.data())
         setEditUsername(doc.data()?.username)

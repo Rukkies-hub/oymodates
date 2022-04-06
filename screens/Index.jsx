@@ -69,7 +69,7 @@ export default function Index () {
           headerShown: false,
           tabBarLabel: "Add",
           tabBarIcon: ({ color, size }) => (
-            <SimpleLineIcons name="social-youtube" color={color} size={22} />
+            <MaterialCommunityIcons name="feather" color={color} size={22} />
           ),
         }} />
       <Tab.Screen
