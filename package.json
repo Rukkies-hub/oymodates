@@ -41,6 +41,7 @@
     "react-native-screens": "~3.10.1",
     "react-native-select-dropdown": "^1.9.0",
     "react-native-smart-emoji-picker": "^0.1.2",
+    "react-native-super-grid": "^4.2.0",
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
     "rn-emoji-keyboard": "^0.7.1",

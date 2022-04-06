@@ -33,7 +33,7 @@ const Feed = () => {
 
   const window = useWindowDimensions()
 
-  const getPostes = async () => {
+  useEffect(async () =>
     firebase.firestore()
       .collection("posts")
       .orderBy("timestamp", "desc")
@@ -43,11 +43,7 @@ const Feed = () => {
           ...doc.data()
         })))
       })
-  }
-
-  useEffect(async () => {
-    getPostes()
-  }, [])
+    , [])
 
   return (
     <View style={{

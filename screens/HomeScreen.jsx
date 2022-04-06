@@ -44,7 +44,7 @@ const HomeScreen = () => {
         .doc(user.uid)
         .collection("passes")
         .get()
-        .then(snapshot => snapshot.docs.map(doc => doc.id))
+        .then(snapshot => snapshot?.docs?.map(doc => doc.id))
 
       const swipes = await firebase.firestore()
         .collection("users")

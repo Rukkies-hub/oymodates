@@ -100,7 +100,7 @@ const Add = () => {
           .collection("posts")
           .doc()
           .set({
-            media: image,
+            media: url,
             caption,
             user: userProfile,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()

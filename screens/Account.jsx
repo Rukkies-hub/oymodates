@@ -1,5 +1,19 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity, TouchableWithoutFeedback, Button } from 'react-native'
-import React, { useRef } from 'react'
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  LayoutAnimation,
+  Platform,
+  UIManager,
+  FlatList,
+  Pressable,
+  ScrollView,
+  LogBox
+} from 'react-native'
+import React, { useRef, useState, useEffect } from 'react'
 
 import RBSheet from "react-native-raw-bottom-sheet"
 
@@ -11,12 +25,89 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import account from "../style/account"
 import editProfile from '../style/editProfile'
 
+import firebase from '../hooks/firebase'
 import useAuth from "../hooks/useAuth"
+import { useNavigation } from '@react-navigation/native'
+import { FlatGrid } from 'react-native-super-grid'
 
-const Account = ({ navigation }) => {
-  const { userProfile, logout } = useAuth()
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+)
+  UIManager.setLayoutAnimationEnabledExperimental(true)
 
+const Account = () => {
+  const navigation = useNavigation()
+  const { user, userProfile, logout } = useAuth()
   const refRBSheet = useRef()
+
+  const [expanded, setExpanded] = useState(true)
+  const [profils, setProfiles] = useState([])
+  const [posts, setPosts] = useState([])
+  const [refreshing, setRefreshing] = useState(false)
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const passes = await firebase.firestore()
+        .collection("users")
+        .doc(user.uid)
+        .collection("passes")
+        .get()
+        .then(snapshot => snapshot?.docs?.map(doc => doc.id))
+
+      const swipes = await firebase.firestore()
+        .collection("users")
+        .doc(user.uid)
+        .collection("swipes")
+        .get()
+        .then(snapshot => snapshot.docs.map(doc => doc.id))
+
+
+      const passedUserIds = passes.length > 0 ? passes : ['test']
+      const swipedUserIds = swipes.length > 0 ? swipes : ['test']
+
+      console.log("passedUserIds: ", [...passedUserIds, ...swipedUserIds])
+
+      await firebase.firestore()
+        .collection("users")
+        .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
+        .get()
+        .then((snapshot) => {
+          setProfiles(
+            snapshot.docs
+              .filter(doc => doc.id !== user.uid)
+              .map(doc => ({
+                id: doc.id,
+                ...doc.data()
+              }))
+          )
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+
+    fetchUsers()
+  }, [])
+
+  useEffect(async () =>
+    firebase.firestore()
+      .collection("posts")
+      .orderBy("timestamp", "desc")
+      .onSnapshot(snapshot => {
+        setPosts(snapshot?.docs?.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })))
+      })
+    , [])
+
+  useEffect(() =>
+    LogBox.ignoreLogs([
+      "VirtualizedLists should never be nested",
+      "Setting a timer for a long period of time"
+    ])
+    , [])
 
   return (
     <SafeAreaView style={account.container}>
@@ -47,7 +138,7 @@ const Account = ({ navigation }) => {
 
           <View style={account.detailCount}>
             <View style={account.detailCountInfo}>
-              <Text style={account.number}>0</Text>
+              <Text style={account.number}>{posts.length}</Text>
               <Text style={account.numberTitle}>Posts</Text>
             </View>
             <View style={account.detailCountInfo}>
@@ -69,16 +160,96 @@ const Account = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate("EditProfile")} style={account.actionEditProfile}>
           <Text>Edit profile</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={account.explor}>
+        <TouchableOpacity
+          onPress={() => {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+            setExpanded(!expanded)
+          }}
+          style={account.explor}
+        >
           <MaterialCommunityIcons name="account-plus" color="rgba(0,0,0,0.8)" size={23} />
         </TouchableOpacity>
       </View>
+
+      {expanded && (
+        <View
+          style={{
+            flex: 1,
+            maxHeight: 100,
+            minHeight: 100,
+            margin: 10,
+            backgroundColor: "#F4F7F8",
+            borderRadius: 12,
+            overflow: "hidden"
+          }}
+        >
+          <FlatList
+            horizontal
+            data={profils}
+            scrollEnabled={false}
+            keyExtractor={item => item.id}
+            style={{
+              flex: 1
+            }}
+            renderItem={({ item: profile }) => (
+              <Pressable
+                style={{
+                  marginRight: 5,
+                  borderRadius: 12,
+                  overflow: "hidden"
+                }}
+              >
+                <Image
+                  source={{ uri: profile.avatar }}
+                  style={{
+                    flex: 1,
+                    width: 70,
+                    height: 100
+                  }}
+                />
+              </Pressable>
+            )}
+          />
+        </View>
+      )}
+
+      <ScrollView
+        style={{
+          flex: 1
+        }}
+      >
+        <FlatGrid
+          data={posts}
+          itemDimension={70}
+          scrollEnabled={false}
+          keyExtractor={item => item.id}
+          renderItem={({ item: post }) => (
+            <Pressable
+              style={{
+                borderRadius: 12,
+                overflow: "hidden"
+              }}
+            >
+              <Image
+                source={{ uri: post.media }}
+                style={{
+                  flex: 1,
+                  width: "100%",
+                  height: 160
+                }}
+              />
+            </Pressable>
+          )}
+        />
+      </ScrollView>
+
 
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={true}
         closeDuration={300}
+        height={140}
         customStyles={{
           wrapper: {
             backgroundColor: "transparent"
