@@ -93,6 +93,7 @@ const Account = () => {
   useEffect(async () =>
     firebase.firestore()
       .collection("posts")
+      .where("user.id", "==", user.uid)
       .orderBy("timestamp", "desc")
       .onSnapshot(snapshot => {
         setPosts(snapshot?.docs?.map(doc => ({
@@ -105,7 +106,8 @@ const Account = () => {
   useEffect(() =>
     LogBox.ignoreLogs([
       "VirtualizedLists should never be nested",
-      "Setting a timer for a long period of time"
+      "Setting a timer for a long period of time",
+      "Uncaught Error in snapshot listener"
     ])
     , [])
 
@@ -258,7 +260,7 @@ const Account = () => {
             backgroundColor: "#000"
           },
           container: {
-            paddingHorizontal: 10,
+            paddingHorizontal: 10
           }
         }}
       >
