@@ -145,9 +145,9 @@ const MessageScreen = () => {
           keyExtractor={item => item.id}
           renderItem={({ item: message }) =>
             message.userId === user.uid ? (
-              <SenderMessage key={message.id} messages={message} />
+              <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} />
             ) : (
-              <RecieverMessage key={message.id} messages={message} />
+              <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} />
             )
           }
         />
@@ -189,6 +189,22 @@ const MessageScreen = () => {
               <SimpleLineIcons name="picture" color="rgba(0,0,0,0.6)" size={20} />
             </TouchableOpacity>
           </>
+        }
+        {
+          !mediaVidiblity &&
+          <TouchableOpacity
+            onPress={() => {
+              Keyboard.dismiss()
+              setMediaVidiblity(!mediaVidiblity)
+            }}
+            style={{
+              width: 40,
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center"
+            }}>
+            <SimpleLineIcons name="arrow-right" color="rgba(0,0,0,0.6)" size={20} />
+          </TouchableOpacity>
         }
         <TouchableOpacity
           onPress={() => {

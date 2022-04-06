@@ -14,12 +14,48 @@ import RBSheet from "react-native-raw-bottom-sheet"
 
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 
-const SenderMessage = ({ messages }) => {
+import firebase from '../hooks/firebase'
+
+const SenderMessage = ({ messages, matchDetails }) => {
   const { userProfile } = useAuth()
 
   const refRBSheet = useRef()
 
   const [expanded, setExpanded] = useState(false)
+  const [message, setMessage] = useState({})
+
+  const delectMessage = () => {
+    if (messages?.image) {
+      const fileRef = firebase.storage().refFromURL(messages?.image)
+
+      fileRef.delete().then(() => {
+        firebase.firestore()
+          .collection("matches")
+          .doc(matchDetails.id)
+          .collection("messages")
+          .doc(message.id)
+          .delete()
+          .then(() => {
+            console.log("Document successfully deleted!")
+          }).catch((error) => {
+            console.error("Error removing document: ", error)
+          })
+      })
+    } else {
+      firebase.firestore()
+        .collection("matches")
+        .doc(matchDetails.id)
+        .collection("messages")
+        .doc(message.id)
+        .delete()
+        .then(() => {
+          console.log("Document successfully deleted!")
+        }).catch((error) => {
+          console.error("Error removing document: ", error)
+        })
+    }
+  }
+
 
   return (
     <View style={{ flexDirection: "row-reverse", marginBottom: 10 }}>
@@ -32,7 +68,10 @@ const SenderMessage = ({ messages }) => {
         }}
       >
         <Pressable
-          onLongPress={() => refRBSheet.current.open()}
+          onLongPress={() => {
+            setMessage(messages)
+            refRBSheet.current.open()
+          }}
           onPress={() => {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
             setExpanded(!expanded)
@@ -152,6 +191,7 @@ const SenderMessage = ({ messages }) => {
             <Text>Forward</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={delectMessage}
             style={{
               height: "100%",
               width: "25%",

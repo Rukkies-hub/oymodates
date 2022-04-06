@@ -10,7 +10,7 @@ if (
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
-const RecieverMessage = ({ messages }) => {
+const RecieverMessage = ({ messages, matchDetails }) => {
   const { userProfile } = useAuth()
 
   const [expanded, setExpanded] = useState(false)

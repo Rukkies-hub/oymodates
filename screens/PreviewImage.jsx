@@ -18,8 +18,6 @@ const PreviewImage = () => {
   const [caption, setCaption] = useState("")
   const [height, setHeight] = useState(50)
 
-  console.log(params)
-
   const sendImage = async () => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
@@ -52,7 +50,7 @@ const PreviewImage = () => {
             userId: user.uid,
             username: userProfile.username,
             avatar: userProfile.avatar,
-            image: params.image,
+            image: url,
             caption: caption
           })
         
