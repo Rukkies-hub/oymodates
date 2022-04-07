@@ -94,8 +94,8 @@ const Account = () => {
     firebase.firestore()
       .collection("posts")
       .where("user.id", "==", user.uid)
-      .orderBy("timestamp", "desc")
-      .onSnapshot(snapshot => {
+      .get()
+      .then(snapshot => {
         setPosts(snapshot?.docs?.map(doc => ({
           id: doc.id,
           ...doc.data()
@@ -180,9 +180,7 @@ const Account = () => {
             maxHeight: 100,
             minHeight: 100,
             margin: 10,
-            backgroundColor: "#F4F7F8",
-            borderRadius: 12,
-            overflow: "hidden"
+            backgroundColor: "#F4F7F8"
           }}
         >
           <FlatList
@@ -196,9 +194,7 @@ const Account = () => {
             renderItem={({ item: profile }) => (
               <Pressable
                 style={{
-                  marginRight: 5,
-                  borderRadius: 12,
-                  overflow: "hidden"
+                  marginRight: 5
                 }}
               >
                 <Image
@@ -215,35 +211,25 @@ const Account = () => {
         </View>
       )}
 
-      <ScrollView
-        style={{
-          flex: 1
-        }}
-      >
-        <FlatGrid
-          data={posts}
-          itemDimension={70}
-          scrollEnabled={false}
-          keyExtractor={item => item.id}
-          renderItem={({ item: post }) => (
-            <Pressable
+
+      <FlatGrid
+        data={posts}
+        spacing={5}
+        itemDimension={90}
+        scrollEnabled={false}
+        keyExtractor={item => item.id}
+        renderItem={({ item: post }) => (
+          <Pressable>
+            <Image
+              source={{ uri: post.media }}
               style={{
-                borderRadius: 12,
-                overflow: "hidden"
+                width: '100%',
+                height: 120,
               }}
-            >
-              <Image
-                source={{ uri: post.media }}
-                style={{
-                  flex: 1,
-                  width: "100%",
-                  height: 160
-                }}
-              />
-            </Pressable>
-          )}
-        />
-      </ScrollView>
+            />
+          </Pressable>
+        )}
+      />
 
 
       <RBSheet

@@ -40,12 +40,12 @@ const ViewProfile = () => {
       })
     , [])
 
-  useEffect(async () =>
+  useEffect(() =>
     firebase.firestore()
       .collection("posts")
       .where("user.id", "==", params.user.id)
-      .orderBy("timestamp", "desc")
-      .onSnapshot(snapshot => {
+      .get()
+      .then(snapshot => {
         setPosts(snapshot?.docs?.map(doc => ({
           id: doc.id,
           ...doc.data()
@@ -142,35 +142,28 @@ const ViewProfile = () => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView
-        style={{
-          flex: 1
-        }}
-      >
-        <FlatGrid
-          data={posts}
-          itemDimension={70}
-          scrollEnabled={false}
-          keyExtractor={item => item.id}
-          renderItem={({ item: post }) => (
-            <Pressable
+      <FlatGrid
+        data={posts}
+        itemDimension={70}
+        scrollEnabled={false}
+        keyExtractor={item => item.id}
+        renderItem={({ item: post }) => (
+          <Pressable
+            style={{
+              borderRadius: 12,
+              overflow: "hidden"
+            }}
+          >
+            <Image
+              source={{ uri: post.media }}
               style={{
-                borderRadius: 12,
-                overflow: "hidden"
+                width: '100%',
+                height: 120,
               }}
-            >
-              <Image
-                source={{ uri: post.media }}
-                style={{
-                  flex: 1,
-                  width: "100%",
-                  height: 160
-                }}
-              />
-            </Pressable>
-          )}
-        />
-      </ScrollView>
+            />
+          </Pressable>
+        )}
+      />
     </SafeAreaView>
   )
 }
