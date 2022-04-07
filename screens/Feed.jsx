@@ -1,41 +1,30 @@
 import {
+  SafeAreaView,
   View,
   Text,
-  StatusBar,
   FlatList,
-  ImageBackground,
-  useWindowDimensions,
   Image,
+  useWindowDimensions,
   TouchableOpacity,
-  Dimensions
+  StatusBar
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { LinearGradient } from 'expo-linear-gradient'
 
 import firebase from "../hooks/firebase"
 
 import useAuth from "../hooks/useAuth"
-
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
-
-import moment from 'moment'
 
 import { useNavigation } from '@react-navigation/native'
 
-const { width, height } = Dimensions.get("window")
-const ITEM_SIZE = (height - 50) * 1
-const SPACING = 10
-const FULLSIZE = ITEM_SIZE + SPACING * 1
+import Bar from "./StatusBar"
 
 const Feed = () => {
   const { user, userProfile } = useAuth()
-  const [posts, setPosts] = useState([])
-  const [following, setFollowing] = useState([])
-
+  const navigation = useNavigation()
   const window = useWindowDimensions()
 
-  const navigation = useNavigation()
+  const [posts, setPosts] = useState([])
 
   useEffect(async () =>
     firebase.firestore()
@@ -49,167 +38,117 @@ const Feed = () => {
       })
     , [])
 
-  const followUser = async (item) => {
-    firebase.firestore()
-      .collection("following")
-      .doc(user.uid)
-      .collection("userFollowing")
-      .doc(item.user.id)
-      .set({})
-  }
-
-  const unFollowUser = async (item) => {
-    firebase.firestore()
-      .collection("following")
-      .doc(user.uid)
-      .collection("userFollowing")
-      .doc(item.user.id)
-      .delete()
-  }
-
-  useEffect(() => {
-  }, [])
+  console.log("posts: ", posts)
 
   return (
-    <View style={{
-      flex: 1,
-      backgroundColor: "#fff"
-    }}>
-      <StatusBar
-        backgroundColor="#fff"
-        barStyle="dark-content"
-      />
-      <View style={{ flex: 1 }}>
-        <FlatList
-          data={posts}
-          bounces={false}
-          snapToAlignment="center"
-          snapToInterval={FULLSIZE}
-          decelerationRate="fast"
-          keyExtractor={item => item.id}
-          style={{
-            flex: 1
-          }}
-          renderItem={({ item }) => (
-            <ImageBackground
-              source={{ uri: item.media }}
-              resizeMode="cover"
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "#fff"
+      }}
+    >
+      <Bar />
+      <FlatList
+        data={posts}
+        keyExtractor={item => item.id}
+        renderItem={({ item: post }) => (
+          <View
+            style={{
+              marginBottom: 10
+            }}
+          >
+            <View
               style={{
-                flex: 1,
-                width: window.width,
-                height: window.height - 50,
-                position: "relative",
-              }}>
-              <LinearGradient
-                colors={['transparent', 'rgba(0,0,0,0.4)']}
+                marginHorizontal: 10,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                height: 50
+              }}
+            >
+              <View
                 style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  minHeight: 100,
-                  maxHeight: 150,
-                  width: window.width,
+                  flexDirection: "row",
                   justifyContent: "center",
-                  alignItems: "flex-start",
-                  paddingHorizontal: 10
+                  alignItems: "center"
                 }}
               >
-                <View
+                <Image
+                  source={{ uri: post.user.avatar }}
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
+                    width: 35,
+                    height: 35,
+                    borderRadius: 50
+                  }}
+                />
+                <Text style={{ marginLeft: 10, fontSize: 16 }}>{post.user.username}</Text>
+              </View>
+              <TouchableOpacity
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <SimpleLineIcons name="options-vertical" color="#000" size={15} />
+              </TouchableOpacity>
+            </View>
+
+            <View>
+              <Image
+                resizeMode="cover"
+                source={{ uri: post.media }}
+                style={{
+                  width: window.width,
+                  height: window.width
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingHorizontal: 10,
+                height: 50
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <TouchableOpacity
+                  style={{
+                    marginRight: 10,
+                    width: 40,
+                    height: 40,
+                    justifyContent: "center",
                     alignItems: "center"
                   }}
                 >
-                  <Text
-                    style={{
-                      color: "#fff",
-                      fontSize: 16,
-                      textTransform: "capitalize"
-                    }}
-                  >
-                    @{item.user.username}
-                  </Text>
-
-                  <Text
-                    style={{
-                      color: "rgba(255,255,255,0.4)",
-                      marginLeft: 10,
-                      fontSize: 14
-                    }}
-                  >
-                    {moment().startOf(item?.timestamp?.seconds).fromNow()}
-                  </Text>
-                </View>
-                <Text
-                  style={{
-                    color: "#fff",
-                    fontSize: 18
-                  }}
-                >
-                  {item.caption}
-                </Text>
-              </LinearGradient>
-
-              <View
-                style={{
-                  position: "absolute",
-                  bottom: 200,
-                  right: 10,
-                  alignItems: "center",
-                  backgroundColor: "rgba(0,0,0,0.3)",
-                  paddingVertical: 10,
-                  paddingHorizontal: 5,
-                  borderRadius: 50
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("ViewProfile", {
-                    user: item.user
-                  })}
-                  style={{
-                    position: "relative",
-                    marginBottom: 25,
-                    borderWidth: 2,
-                    borderRadius: 50,
-                    width: 44.2,
-                    height: 44.2,
-                    borderColor: "#FF4757"
-                  }}
-                >
-                  <Image
-                    source={{ uri: item.user.avatar }}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      position: "absolute",
-                      borderRadius: 50,
-                    }}
-                  />
+                  <SimpleLineIcons name="heart" color="#000" size={20} />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{
-                    marginBottom: 20
+                    width: 40,
+                    height: 40,
+                    justifyContent: "center",
+                    alignItems: "center"
                   }}
                 >
-                  <SimpleLineIcons name="heart" color="#fff" size={30} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    marginBottom: 20
-                  }}
-                >
-                  <SimpleLineIcons name="bubbles" color="#fff" size={30} />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <SimpleLineIcons name="action-redo" color="#fff" size={30} />
+                  <SimpleLineIcons name="bubble" color="#000" size={20} />
                 </TouchableOpacity>
               </View>
-            </ImageBackground>
-          )}
-        />
-      </View>
-    </View>
+            </View>
+          </View>
+        )}
+      />
+    </SafeAreaView>
   )
 }
 

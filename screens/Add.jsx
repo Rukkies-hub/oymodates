@@ -23,6 +23,8 @@ import firebase from "../hooks/firebase"
 
 import { useNavigation } from '@react-navigation/native'
 
+import Bar from "./StatusBar"
+
 const Add = () => {
   const { user, userProfile } = useAuth()
   const navigation = useNavigation()
@@ -128,6 +130,7 @@ const Add = () => {
             backgroundColor: "#fff"
           }}
         >
+          <Bar />
           <View
             style={{
               flexDirection: "row",
