@@ -10,7 +10,6 @@ import {
   UIManager,
   FlatList,
   Pressable,
-  ScrollView,
   LogBox
 } from 'react-native'
 
@@ -45,6 +44,8 @@ const Account = () => {
   const [expanded, setExpanded] = useState(true)
   const [profils, setProfiles] = useState([])
   const [posts, setPosts] = useState([])
+  const [following, setFollowing] = useState(false)
+  const [followingList, setFollowingList] = useState([])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -111,6 +112,19 @@ const Account = () => {
     ])
     , [])
 
+  useEffect(() => {
+    firebase.firestore()
+      .collection("following")
+      .doc(user.uid)
+      .collection("userFollowing")
+      .onSnapshot(snapshot => {
+        setFollowingList(
+          snapshot.docs
+            .map(doc => doc.id)
+        )
+      })
+  }, [userProfile.id])
+
   return (
     <SafeAreaView style={account.container}>
       <Bar />
@@ -148,7 +162,11 @@ const Account = () => {
               <Text style={account.numberTitle}>Followers</Text>
             </View>
             <View style={account.detailCountInfo}>
-              <Text style={account.number}>0</Text>
+              {
+                followingList.length ?
+                  <Text style={account.number}>{followingList.length}</Text>
+                  : <Text style={account.number}>0</Text>
+              }
               <Text style={account.numberTitle}>Following</Text>
             </View>
           </View>

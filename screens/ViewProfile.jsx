@@ -90,7 +90,11 @@ const ViewProfile = () => {
       .doc(user.uid)
       .collection("userFollowing")
       .onSnapshot(snapshot => {
-        setFollowingList(snapshot.docs.map(doc => doc.id))
+        setFollowingList(
+          snapshot.docs
+            .filter(doc => doc.id == guestUserProfile.id)
+            .map(doc => doc.id)
+        )
 
         if (followingList.indexOf(guestUserProfile.id) > -1)
           setFollowing(true)
@@ -148,7 +152,11 @@ const ViewProfile = () => {
               <Text style={account.numberTitle}>Posts</Text>
             </View>
             <View style={account.detailCountInfo}>
-              <Text style={account.number}>{followingList.length}</Text>
+              {
+                followingList.indexOf(guestUserProfile.id) > -1 ?
+                  <Text style={account.number}>{followingList.length}</Text>
+                  : <Text style={account.number}>0</Text>
+              }
               <Text style={account.numberTitle}>Followers</Text>
             </View>
             <View style={account.detailCountInfo}>
@@ -164,7 +172,7 @@ const ViewProfile = () => {
 
       <View style={account.action}>
         {
-          (following || followingList.length) ? (
+          (following || (followingList.indexOf(guestUserProfile.id) > -1)) ? (
             <TouchableOpacity
               onPress={unfollow}
               style={{
