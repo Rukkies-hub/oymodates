@@ -52,7 +52,6 @@ const Feed = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true)
-    // wait(2000).then(() => setRefreshing(false))
     wait(2000).then(() => {
       getPosts()
     })
@@ -162,6 +161,8 @@ const Feed = () => {
                 <View>
                   <AutoHeightImage
                     width={window.width}
+                    maxHeight={450}
+                    animated={true}
                     source={{ uri: post.media }}
                   />
                 </View>

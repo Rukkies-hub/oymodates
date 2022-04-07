@@ -58,8 +58,6 @@ const HomeScreen = () => {
       const passedUserIds = passes.length > 0 ? passes : ['test']
       const swipedUserIds = swipes.length > 0 ? swipes : ['test']
 
-      console.log("passedUserIds: ", [...passedUserIds, ...swipedUserIds])
-
       await firebase.firestore()
         .collection("users")
         .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
@@ -108,7 +106,6 @@ const HomeScreen = () => {
       .doc(user.uid)
       .get()
       .then(documentSnapShot => {
-        console.log(documentSnapShot)
         if (documentSnapShot.exists) {
           // user ha matched with you before
           // create match

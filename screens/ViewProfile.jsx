@@ -24,19 +24,24 @@ import editProfile from '../style/editProfile'
 import firebase from '../hooks/firebase'
 import { FlatGrid } from 'react-native-super-grid'
 
+import useAuth from "../hooks/useAuth"
+
 const ViewProfile = () => {
   const { params } = useRoute()
+  const { user, userProfile } = useAuth()
 
   const navigation = useNavigation()
 
   const [posts, setPosts] = useState([])
-  const [userProfile, setUserProfile] = useState({})
+  const [guestUserProfile, setGuestUserProfile] = useState({})
+  const [following, setFollowing] = useState(false)
+  const [followingList, setFollowingList] = useState([])
 
   useEffect(async () =>
     await firebase.firestore().collection("users")
       .doc(params.user.id)
       .get().then(doc => {
-        setUserProfile(doc?.data())
+        setGuestUserProfile(doc?.data())
       })
     , [])
 
@@ -61,6 +66,39 @@ const ViewProfile = () => {
     ])
     , [])
 
+  const follow = () => {
+    firebase.firestore()
+      .collection("following")
+      .doc(user.uid)
+      .collection("userFollowing")
+      .doc(guestUserProfile.id)
+      .set({})
+  }
+
+  const unfollow = () => {
+    firebase.firestore()
+      .collection("following")
+      .doc(user.uid)
+      .collection("userFollowing")
+      .doc(guestUserProfile.id)
+      .delete()
+  }
+
+  useEffect(() => {
+    firebase.firestore()
+      .collection("following")
+      .doc(user.uid)
+      .collection("userFollowing")
+      .onSnapshot(snapshot => {
+        setFollowingList(snapshot.docs.map(doc => doc.id))
+
+        if (followingList.indexOf(guestUserProfile.id) > -1)
+          setFollowing(true)
+        else setFollowing(false)
+      })
+  }, [guestUserProfile.id, following])
+
+
   return (
     <SafeAreaView style={account.container}>
       <Bar />
@@ -84,13 +122,13 @@ const ViewProfile = () => {
             <SimpleLineIcons name="arrow-left" color="rgba(0,0,0,0.8)" size={23} />
           </TouchableOpacity>
 
-          <Text style={account.username}>{userProfile.username}</Text>
+          <Text style={account.username}>{guestUserProfile.username}</Text>
         </View>
 
 
         <View style={account.headerActions}>
           <TouchableOpacity style={account.headerActionsButton}>
-            <SimpleLineIcons name="options-vertical" color="rgba(0,0,0,0.8)" size={23} />
+            <SimpleLineIcons name="options-vertical" color="rgba(0,0,0,0.8)" size={19} />
           </TouchableOpacity>
         </View>
       </View>
@@ -100,7 +138,7 @@ const ViewProfile = () => {
           <TouchableWithoutFeedback style={account.avatar}>
             <Image
               style={editProfile.avatarImage}
-              source={userProfile.avatar ? { uri: userProfile.avatar } : require('../assets/pph.jpg')}
+              source={guestUserProfile.avatar ? { uri: guestUserProfile.avatar } : require('../assets/pph.jpg')}
             />
           </TouchableWithoutFeedback>
 
@@ -110,7 +148,7 @@ const ViewProfile = () => {
               <Text style={account.numberTitle}>Posts</Text>
             </View>
             <View style={account.detailCountInfo}>
-              <Text style={account.number}>0</Text>
+              <Text style={account.number}>{followingList.length}</Text>
               <Text style={account.numberTitle}>Followers</Text>
             </View>
             <View style={account.detailCountInfo}>
@@ -120,21 +158,40 @@ const ViewProfile = () => {
           </View>
         </View>
         <View style={account.about}>
-          <Text>{userProfile.bio}</Text>
+          <Text>{guestUserProfile.bio}</Text>
         </View>
       </View>
 
       <View style={account.action}>
-        <TouchableOpacity style={{
-          height: 40,
-          width: 335,
-          backgroundColor: "#FF4757",
-          borderRadius: 12,
-          justifyContent: "center",
-          alignItems: "center",
-        }}>
-          <Text style={{ color: "#fff" }}>Follow</Text>
-        </TouchableOpacity>
+        {
+          (following || followingList.length) ? (
+            <TouchableOpacity
+              onPress={unfollow}
+              style={{
+                height: 40,
+                width: 335,
+                backgroundColor: "#FF4757",
+                borderRadius: 12,
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <Text style={{ color: "#fff" }}>Unfollow</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={follow}
+              style={{
+                height: 40,
+                width: 335,
+                backgroundColor: "#FF4757",
+                borderRadius: 12,
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <Text style={{ color: "#fff" }}>Follow</Text>
+            </TouchableOpacity>
+          )
+        }
         <TouchableOpacity
           style={account.explor}
         >
