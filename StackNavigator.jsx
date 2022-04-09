@@ -23,7 +23,6 @@ import EditDateOfBirth from './screens/EditDateOfBirth'
 import EditJob from './screens/EditJob'
 import Match from './screens/Match'
 import MessageScreen from './screens/MessageScreen'
-import Add from './screens/Add'
 import PreviewImage from './screens/PreviewImage'
 import ViewProfile from './screens/ViewProfile'
 
@@ -51,7 +50,6 @@ const StackNavigator = () => {
             <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} options={{ headerShown: false }} />
             <Stack.Screen name="EditJob" component={EditJob} options={{ headerShown: false }} />
             <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Add" component={Add} options={{ headerShown: false }} />
           </Stack.Group>
 
           <Stack.Group screenOptions={{ presentation: "transparentModal" }}>

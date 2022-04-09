@@ -110,7 +110,7 @@ const Add = () => {
           })
 
         if (uploadLoading == false)
-          navigation.navigate("Index")
+          navigation.navigate("Feed")
 
         blob.close()
         return url

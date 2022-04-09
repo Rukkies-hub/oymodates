@@ -10,6 +10,7 @@ import {
   UIManager,
   FlatList,
   Pressable,
+  ScrollView,
   LogBox
 } from 'react-native'
 
@@ -44,8 +45,6 @@ const Account = () => {
   const [expanded, setExpanded] = useState(true)
   const [profils, setProfiles] = useState([])
   const [posts, setPosts] = useState([])
-  const [following, setFollowing] = useState(false)
-  const [followingList, setFollowingList] = useState([])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -67,8 +66,6 @@ const Account = () => {
       const passedUserIds = passes.length > 0 ? passes : ['test']
       const swipedUserIds = swipes.length > 0 ? swipes : ['test']
 
-      console.log("passedUserIds: ", [...passedUserIds, ...swipedUserIds])
-
       await firebase.firestore()
         .collection("users")
         .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
@@ -82,9 +79,6 @@ const Account = () => {
                 ...doc.data()
               }))
           )
-        })
-        .catch(error => {
-          console.log(error)
         })
     }
 
@@ -112,19 +106,6 @@ const Account = () => {
     ])
     , [])
 
-  useEffect(() => {
-    firebase.firestore()
-      .collection("following")
-      .doc(user.uid)
-      .collection("userFollowing")
-      .onSnapshot(snapshot => {
-        setFollowingList(
-          snapshot.docs
-            .map(doc => doc.id)
-        )
-      })
-  }, [userProfile.id])
-
   return (
     <SafeAreaView style={account.container}>
       <Bar />
@@ -134,7 +115,10 @@ const Account = () => {
 
 
         <View style={account.headerActions}>
-          <TouchableOpacity style={account.headerActionsButton}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Add")}
+            style={account.headerActionsButton}
+          >
             <SimpleLineIcons name="plus" color="rgba(0,0,0,0.8)" size={23} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => refRBSheet.current.open()} style={account.headerActionsButton}>
@@ -162,11 +146,7 @@ const Account = () => {
               <Text style={account.numberTitle}>Followers</Text>
             </View>
             <View style={account.detailCountInfo}>
-              {
-                followingList.length ?
-                  <Text style={account.number}>{followingList.length}</Text>
-                  : <Text style={account.number}>0</Text>
-              }
+              <Text style={account.number}>0</Text>
               <Text style={account.numberTitle}>Following</Text>
             </View>
           </View>
@@ -195,10 +175,9 @@ const Account = () => {
         <View
           style={{
             flex: 1,
-            maxHeight: 100,
-            minHeight: 100,
-            margin: 10,
-            backgroundColor: "#F4F7F8"
+            maxHeight: 60,
+            minHeight: 60,
+            margin: 10
           }}
         >
           <FlatList
@@ -212,15 +191,16 @@ const Account = () => {
             renderItem={({ item: profile }) => (
               <Pressable
                 style={{
-                  marginRight: 5
+                  marginRight: 5,
+                  borderRadius: 50,
+                  overflow: "hidden"
                 }}
               >
                 <Image
                   source={{ uri: profile.avatar }}
                   style={{
                     flex: 1,
-                    width: 70,
-                    height: 100
+                    aspectRatio: 1 / 1
                   }}
                 />
               </Pressable>
@@ -241,8 +221,8 @@ const Account = () => {
             <Image
               source={{ uri: post.media }}
               style={{
-                width: '100%',
-                height: 120,
+                flex: 1,
+                aspectRatio: 1 / 1
               }}
             />
           </Pressable>

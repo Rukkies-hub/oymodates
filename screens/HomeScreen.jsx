@@ -153,9 +153,7 @@ const HomeScreen = () => {
     <SafeAreaView style={home.container}>
       <Bar />
       <View style={home.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("Modal")}>
-          <Image style={{ height: 40, width: 100 }} source={require('../assets/logo.png')} />
-        </TouchableOpacity>
+        <Image style={{ height: 40, width: 100 }} source={require('../assets/logo.png')} />
         <TouchableOpacity style={{
           width: 40,
           height: 40,

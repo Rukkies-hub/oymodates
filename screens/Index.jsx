@@ -9,15 +9,9 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 const Tab = createMaterialBottomTabNavigator();
 
 import HomeScreen from "./HomeScreen"
-import Feed from "./Feed"
-import Activity from "./Activity"
 import Account from "./Account"
 
 import useAuth from "../hooks/useAuth"
-
-const EmptyScreen = () => {
-  return null
-}
 
 export default function Index () {
   const { userProfile, loadingInitial } = useAuth()
@@ -25,58 +19,21 @@ export default function Index () {
   return (
     <Tab.Navigator
       labeled={false}
-      initialRouteName="Feed"
+      initialRouteName="HomeScreen"
       barStyle={{
         backgroundColor: "#ffffff",
         borderColor: "#ffffff",
         shadowOpacity: 0,
       }}
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName
-
-          if (route.name === "HomeScreen")
-            iconName = focused ? "magnify" : "magnify"
-          else if (route.name === "Feed")
-            iconName = focused ? "home" : "home-outline"
-          else if (route.name === "Activity")
-            iconName = focused ? "heart" : "heart-outline"
-
-
-          return <MaterialCommunityIcons name={iconName} color={color} size={26} />
-        }
-      })}
     >
-      <Tab.Screen name="Feed" component={Feed}
-        options={{
-          headerShown: true,
-          tabBarLabel: "Search"
-        }} />
       <Tab.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{
           headerShown: true,
-        }} />
-      <Tab.Screen name="EmptyScreen" component={EmptyScreen}
-        listeners={({ navigation }) => ({
-          tabPress: event => {
-            event.preventDefault()
-            navigation.navigate("Add")
-          }
-        })}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Add",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="feather" color={color} size={22} />
+            <SimpleLineIcons name="home" color={color} size={20} />
           ),
-        }} />
-      <Tab.Screen
-        name="Activity"
-        component={Activity}
-        options={{
-          headerShown: true,
         }} />
       <Tab.Screen name="Account" component={Account}
         options={{

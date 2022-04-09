@@ -67,40 +67,43 @@ const ViewProfile = () => {
     , [])
 
   const follow = () => {
-    firebase.firestore()
-      .collection("following")
-      .doc(user.uid)
-      .collection("userFollowing")
-      .doc(guestUserProfile.id)
-      .set({})
+    setFollowing(true)
+    // firebase.firestore()
+    //   .collection("following")
+    //   .doc(user.uid)
+    //   .collection("userFollowing")
+    //   .doc(guestUserProfile.id)
+    //   .set({})
   }
 
   const unfollow = () => {
-    firebase.firestore()
-      .collection("following")
-      .doc(user.uid)
-      .collection("userFollowing")
-      .doc(guestUserProfile.id)
-      .delete()
+    setFollowing(false)
+    // firebase.firestore()
+    //   .collection("following")
+    //   .doc(user.uid)
+    //   .collection("userFollowing")
+    //   .doc(guestUserProfile.id)
+    //   .delete()
   }
 
-  useEffect(() => {
-    firebase.firestore()
-      .collection("following")
-      .doc(user.uid)
-      .collection("userFollowing")
-      .onSnapshot(snapshot => {
-        setFollowingList(
-          snapshot.docs
-            .filter(doc => doc.id == guestUserProfile.id)
-            .map(doc => doc.id)
-        )
+  // useEffect(() => {
+  //   firebase.firestore()
+  //     .collection("following")
+  //     .doc(user.uid)
+  //     .collection("userFollowing")
+  //     .onSnapshot(snapshot => {
+  //       console.log(snapshot)
+  //       setFollowingList(
+  //         snapshot.docs
+  //           .filter(doc => doc.id == guestUserProfile.id)
+  //           .map(doc => doc.id)
+  //       )
 
-        if (followingList.indexOf(guestUserProfile.id) > -1)
-          setFollowing(true)
-        else setFollowing(false)
-      })
-  }, [guestUserProfile.id, following])
+  //       if (followingList.indexOf(guestUserProfile.id) > -1)
+  //         setFollowing(true)
+  //       else setFollowing(false)
+  //     })
+  // }, [guestUserProfile.id, following])
 
 
   return (
@@ -152,11 +155,7 @@ const ViewProfile = () => {
               <Text style={account.numberTitle}>Posts</Text>
             </View>
             <View style={account.detailCountInfo}>
-              {
-                followingList.indexOf(guestUserProfile.id) > -1 ?
-                  <Text style={account.number}>{followingList.length}</Text>
-                  : <Text style={account.number}>0</Text>
-              }
+              <Text style={account.number}>0</Text>
               <Text style={account.numberTitle}>Followers</Text>
             </View>
             <View style={account.detailCountInfo}>
