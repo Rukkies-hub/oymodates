@@ -26,6 +26,9 @@ import { FlatGrid } from 'react-native-super-grid'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import * as ImagePicker from 'expo-image-picker'
 
+import Constants from 'expo-constants'
+import * as Location from 'expo-location'
+
 
 const Setup = () => {
   const { user } = useAuth()
@@ -34,6 +37,10 @@ const Setup = () => {
   const [nameLoading, setNameLoading] = useState(false)
   const [showName, setShowName] = useState(true)
   const [showPhoto, setShowPhoto] = useState(true)
+  const [showLocation, setShowLocation] = useState(true)
+  const [location, setLocation] = useState(null)
+  const [address, setAddress] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   const getUserProfile = async (user) => {
     await firebase.firestore()
@@ -53,8 +60,8 @@ const Setup = () => {
   useLayoutEffect(() => {
     if (userProfile.name)
       setShowName(false)
-    // if (userProfile.name && userProfile.avatar?.length)
-    //   setShowPhoto(false)
+    if (userProfile.name && userProfile.avatar?.length)
+      setShowPhoto(false)
   }, [userProfile.name, userProfile.avatar?.length])
 
   const updateName = async () => {
@@ -137,6 +144,32 @@ const Setup = () => {
           })
       })
   }
+
+  const getLocation = async () => {
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      setErrorMsg(
+        'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
+      )
+      return
+    }
+    let { status } = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied')
+      return
+    }
+
+    let location = await Location.getCurrentPositionAsync({})
+    const address = await Location.reverseGeocodeAsync(location.coords)
+    setLocation(location)
+    setAddress(...address)
+  }
+
+  let text = 'Waiting..';
+  if (errorMsg)
+    text = errorMsg;
+  else if (location)
+    text = JSON.stringify(location);
+
 
   return (
     <KeyboardAvoidingView
@@ -334,7 +367,11 @@ const Setup = () => {
                   {
                     userProfile.avatar?.length >= 3 &&
                     <TouchableOpacity
-                      onPress={pickImage}
+                      onPress={() => {
+                        setShowName(false)
+                        setShowPhoto(false)
+                        setShowLocation(true)
+                      }}
                       style={{
                         width: "100%",
                         height: 50,
@@ -350,6 +387,80 @@ const Setup = () => {
                   }
                 </View>
               }
+            </View>
+          }
+          {
+            (showName == false && showPhoto == false && showLocation == true) &&
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#fff",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "relative",
+                paddingHorizontal: 10
+              }}
+            >
+              <Image
+                style={{
+                  width: 200,
+                  height: 200
+                }}
+                source={require("../assets/location.png")}
+              />
+              <View
+                style={{
+                  width: "100%",
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  minHeight: 50,
+                  borderWidth: 1,
+                  borderColor: "rgba(0,0,0,0.2)",
+                  borderRadius: 12,
+                  paddingHorizontal: 10,
+                }}
+              >
+                <Text>
+                  {address.subregion}, {address.country}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}
+              >
+                <TouchableOpacity
+                  onPress={getLocation}
+                  style={{
+                    width: "48%",
+                    height: 50,
+                    backgroundColor: "#F0F2F5",
+                    borderRadius: 12,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 20
+                  }}
+                >
+                  <Text style={{ color: "#000", fontSize: 18 }}>Get location</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    width: "48%",
+                    height: 50,
+                    borderRadius: 12,
+                    backgroundColor: "#FF4757",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 20
+                  }}
+                >
+                  <MaterialCommunityIcons name='google-maps' size={20} color="#fff" />
+                  <Text style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>Update</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           }
         </>
