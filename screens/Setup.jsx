@@ -41,6 +41,13 @@ const Setup = () => {
   const [location, setLocation] = useState(null)
   const [address, setAddress] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
+  const [locationLoading, setLocationLoading] = useState(false)
+  const [showOccupation, setShowOccupation] = useState(true)
+  const [occupation, setOccupation] = useState("")
+  const [occupationLoading, setOccupationLoading] = useState(false)
+  const [showIntrests, setShowIntrests] = useState(true)
+  const [intrests, setIntrests] = useState([])
+  const [intrestsLoading, setIntrestsLoading] = useState(false)
 
   const getUserProfile = async (user) => {
     await firebase.firestore()
@@ -50,6 +57,8 @@ const Setup = () => {
       .then(doc => {
         setUserProfile(doc?.data())
         setName(doc.data()?.name)
+        setAddress(doc.data()?.address)
+        setOccupation(doc.data()?.occupation)
       })
   }
 
@@ -62,6 +71,10 @@ const Setup = () => {
       setShowName(false)
     if (userProfile.name && userProfile.avatar?.length)
       setShowPhoto(false)
+    if (userProfile.name && userProfile.avatar?.length && userProfile.address)
+      setShowLocation(false)
+    if (userProfile.name && userProfile.avatar?.length && userProfile.address && userProfile.occupation)
+      setShowOccupation(false)
   }, [userProfile.name, userProfile.avatar?.length])
 
   const updateName = async () => {
@@ -164,11 +177,47 @@ const Setup = () => {
     setAddress(...address)
   }
 
-  let text = 'Waiting..';
+  let text = 'Waiting..'
   if (errorMsg)
     text = errorMsg;
   else if (location)
-    text = JSON.stringify(location);
+    text = JSON.stringify(location)
+
+  const saveLocation = () => {
+    if (address != null && location != null)
+      setLocationLoading(true)
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        location,
+        address
+      }).then(() => {
+        setLocationLoading(false)
+      })
+      .catch(error => setLocationLoading(false))
+  }
+
+  const updateOccupation = async () => {
+    if (occupation != "") {
+      setOccupationLoading(true)
+      await firebase.firestore()
+        .collection("users")
+        .doc(`${user.uid}`)
+        .update({
+          occupation
+        }).then(() => {
+          setOccupationLoading(false)
+          getUserProfile(user)
+          setShowName(false)
+          setShowPhoto(false)
+          setShowLocation(false)
+          setShowOccupation(false)
+          setShowIntrests(true)
+        })
+        .catch(() => setOccupationLoading(false))
+    }
+  }
 
 
   return (
@@ -253,7 +302,7 @@ const Setup = () => {
                           fontSize: 18
                         }}
                       >
-                        Update Name
+                        Update name
                       </Text>
                   }
                 </TouchableOpacity>
@@ -401,6 +450,24 @@ const Setup = () => {
                 paddingHorizontal: 10
               }}
             >
+              <TouchableOpacity
+                onPress={() => {
+                  setShowName(false)
+                  setShowLocation(false)
+                  setShowPhoto(true)
+                }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "absolute",
+                  top: 10,
+                  left: 10
+                }}
+              >
+                <MaterialCommunityIcons name='chevron-left' color="#000" size={30} />
+              </TouchableOpacity>
               <Image
                 style={{
                   width: 200,
@@ -420,9 +487,12 @@ const Setup = () => {
                   paddingHorizontal: 10,
                 }}
               >
-                <Text>
-                  {address.subregion}, {address.country}
-                </Text>
+                {
+                  address == null ? <Text>Waiting...</Text>
+                    : <Text>
+                      {address?.subregion}, {address?.country}
+                    </Text>
+                }
               </View>
               <View
                 style={{
@@ -446,6 +516,7 @@ const Setup = () => {
                   <Text style={{ color: "#000", fontSize: 18 }}>Get location</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  onPress={saveLocation}
                   style={{
                     width: "48%",
                     height: 50,
@@ -457,8 +528,137 @@ const Setup = () => {
                     marginTop: 20
                   }}
                 >
-                  <MaterialCommunityIcons name='google-maps' size={20} color="#fff" />
-                  <Text style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>Update</Text>
+                  {
+                    locationLoading ? <ActivityIndicator size="small" color="#fff" />
+                      : <>
+                        <MaterialCommunityIcons name='google-maps' size={20} color="#fff" />
+                        <Text style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>Update</Text>
+                      </>
+                  }
+                </TouchableOpacity>
+              </View>
+            </View>
+          }
+          {
+            showOccupation == true &&
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#fff",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "relative",
+                paddingHorizontal: 10
+              }}
+            >
+              <View style={editProfile.form}>
+                <View
+                  style={{
+                    height: 50,
+                    marginBottom: 30,
+                    borderWidth: 1,
+                    borderColor: "rgba(0,0,0,0.2)",
+                    borderRadius: 12,
+                    paddingHorizontal: 10,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <TextInput
+                    placeholder="Occupation"
+                    value={occupation}
+                    onChangeText={setOccupation}
+                    style={{
+                      width: "100%"
+                    }}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  onPress={updateOccupation}
+                  style={{
+                    backgroundColor: "#FF4757",
+                    height: 50,
+                    borderRadius: 12,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  {
+                    occupationLoading ?
+                      <ActivityIndicator size="small" color="#fff" />
+                      :
+                      <Text
+                        style={{
+                          color: "#fff",
+                          fontSize: 18
+                        }}
+                      >
+                        Update occupation
+                      </Text>
+                  }
+                </TouchableOpacity>
+              </View>
+            </View>
+          }
+          {
+            showIntrests == true &&
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#fff",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "relative",
+                paddingHorizontal: 10
+              }}
+            >
+              <View style={editProfile.form}>
+                <View
+                  style={{
+                    height: 50,
+                    marginBottom: 30,
+                    borderWidth: 1,
+                    borderColor: "rgba(0,0,0,0.2)",
+                    borderRadius: 12,
+                    paddingHorizontal: 10,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <TextInput
+                    placeholder="Occupation"
+                    value={occupation}
+                    onChangeText={setOccupation}
+                    style={{
+                      width: "100%"
+                    }}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  onPress={updateOccupation}
+                  style={{
+                    backgroundColor: "#FF4757",
+                    height: 50,
+                    borderRadius: 12,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  {
+                    intrestsLoading ?
+                      <ActivityIndicator size="small" color="#fff" />
+                      :
+                      <Text
+                        style={{
+                          color: "#fff",
+                          fontSize: 18
+                        }}
+                      >
+                        Update intrests
+                      </Text>
+                  }
                 </TouchableOpacity>
               </View>
             </View>
