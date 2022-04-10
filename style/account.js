@@ -5,7 +5,9 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         width: "100%",
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        justifyContent: "center",
+        position: "relative"
     },
 
     header: {
@@ -33,25 +35,6 @@ export default StyleSheet.create({
     detail: {
         paddingHorizontal: 10,
         width: "100%",
-    },
-
-    state: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        width: "100%",
-    },
-
-    avatar: {
-        width: 90,
-        height: 90,
-        borderRadius: 50
-    },
-
-    avatarImage: {
-        width: 90,
-        height: 90,
-        borderRadius: 50
     },
 
     detailCount: {
@@ -87,7 +70,7 @@ export default StyleSheet.create({
 
     actionEditProfile: {
         height: 40,
-        width: 335,
+        width: "100%",
         backgroundColor: "transparent",
         borderWidth: 1,
         borderColor: "rgba(0,0,0,0.2)",

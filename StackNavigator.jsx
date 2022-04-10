@@ -7,15 +7,14 @@ const Stack = createNativeStackNavigator();
 
 import SignupScreen from './screens/SignupScreen';
 import LoginScreen from './screens/LoginScreen';
-import Index from "./screens/Index"
 
+import Index from "./screens/Index"
 import HomeScreen from "./screens/HomeScreen"
 import ChatScreen from "./screens/ChatScreen"
 import EditProfile from './screens/EditProfile'
 import EditPersonalInformation from './screens/EditPersonalInformation'
 import EditUsername from './screens/EditUsername'
 import EditName from './screens/EditName'
-import EditBio from './screens/EditBio'
 import EditPassword from './screens/EditPassword'
 import EditPhone from './screens/EditPhone'
 import EditGender from './screens/EditGender'
@@ -25,6 +24,7 @@ import Match from './screens/Match'
 import MessageScreen from './screens/MessageScreen'
 import PreviewImage from './screens/PreviewImage'
 import ViewProfile from './screens/ViewProfile'
+import Account from './screens/Account'
 
 import useAuth from "./hooks/useAuth"
 
@@ -38,12 +38,12 @@ const StackNavigator = () => {
           <Stack.Group>
             <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
             <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Account" component={Account} options={{ headerShown: false }} />
             <Stack.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
             <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
             <Stack.Screen name="EditPersonalInformation" component={EditPersonalInformation} options={{ headerShown: false }} />
             <Stack.Screen name="EditUsername" component={EditUsername} options={{ headerShown: false }} />
             <Stack.Screen name="EditName" component={EditName} options={{ headerShown: false }} />
-            <Stack.Screen name="EditBio" component={EditBio} options={{ headerShown: false }} />
             <Stack.Screen name="EditPassword" component={EditPassword} options={{ headerShown: false }} />
             <Stack.Screen name="EditPhone" component={EditPhone} options={{ headerShown: false }} />
             <Stack.Screen name="EditGender" component={EditGender} options={{ headerShown: false }} />

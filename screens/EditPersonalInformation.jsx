@@ -9,7 +9,7 @@ import color from '../style/color'
 import useAuth from "../hooks/useAuth"
 
 const EditPersonalInformation = ({ navigation }) => {
-  const { userProfile } = useAuth()
+  const { userProfile, logout } = useAuth()
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
@@ -48,15 +48,30 @@ const EditPersonalInformation = ({ navigation }) => {
               </TouchableWithoutFeedback>
             </View>
             <View>
-              <TouchableOpacity onPress={() => navigation.navigate("EditPassword")} style={{
-                backgroundColor: color.purple,
-                width: '100%',
-                height: 50,
-                borderRadius: 12,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }} >
+              <TouchableOpacity
+                onPress={() => navigation.navigate("EditPassword")}
+                style={{
+                  backgroundColor: color.purple,
+                  width: '100%',
+                  height: 50,
+                  borderRadius: 12,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }} >
                 <Text style={{ color: '#fff', fontSize: 18 }}>Reset password</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={logout}
+                style={{
+                  backgroundColor: "#FF4757",
+                  width: '100%',
+                  height: 50,
+                  borderRadius: 12,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 10
+                }} >
+                <Text style={{ color: '#fff', fontSize: 18 }}>Logout</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -5,44 +5,25 @@ import {
   Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  LayoutAnimation,
-  Platform,
-  UIManager,
-  FlatList,
-  Pressable,
-  ScrollView,
-  LogBox
+  LogBox,
 } from 'react-native'
 
-import React, { useRef, useState, useEffect } from 'react'
-
-import RBSheet from "react-native-raw-bottom-sheet"
+import React, { useState, useEffect } from 'react'
 
 import Bar from "./StatusBar"
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import account from "../style/account"
-import editProfile from '../style/editProfile'
 
 import firebase from '../hooks/firebase'
 import useAuth from "../hooks/useAuth"
 import { useNavigation } from '@react-navigation/native'
-import { FlatGrid } from 'react-native-super-grid'
-
-if (
-  Platform.OS === "android" &&
-  UIManager.setLayoutAnimationEnabledExperimental
-)
-  UIManager.setLayoutAnimationEnabledExperimental(true)
+import moment from 'moment'
 
 const Account = () => {
   const navigation = useNavigation()
   const { user, userProfile, logout } = useAuth()
-  const refRBSheet = useRef()
-
-  const [expanded, setExpanded] = useState(true)
   const [profils, setProfiles] = useState([])
   const [posts, setPosts] = useState([])
 
@@ -109,154 +90,99 @@ const Account = () => {
   return (
     <SafeAreaView style={account.container}>
       <Bar />
-      <View style={account.header}>
-
-        <Text style={account.username}>{userProfile.username}</Text>
-
-
-        <View style={account.headerActions}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Add")}
-            style={account.headerActionsButton}
-          >
-            <SimpleLineIcons name="plus" color="rgba(0,0,0,0.8)" size={23} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => refRBSheet.current.open()} style={account.headerActionsButton}>
-            <SimpleLineIcons name="menu" color="rgba(0,0,0,0.8)" size={23} />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={account.detail}>
-        <View style={account.state}>
-          <TouchableWithoutFeedback style={account.avatar}>
-            <Image
-              style={editProfile.avatarImage}
-              source={userProfile.avatar ? { uri: userProfile.avatar } : require('../assets/pph.jpg')}
-            />
-          </TouchableWithoutFeedback>
-
-          <View style={account.detailCount}>
-            <View style={account.detailCountInfo}>
-              <Text style={account.number}>{posts.length}</Text>
-              <Text style={account.numberTitle}>Posts</Text>
-            </View>
-            <View style={account.detailCountInfo}>
-              <Text style={account.number}>0</Text>
-              <Text style={account.numberTitle}>Followers</Text>
-            </View>
-            <View style={account.detailCountInfo}>
-              <Text style={account.number}>0</Text>
-              <Text style={account.numberTitle}>Following</Text>
-            </View>
-          </View>
-        </View>
-        <View style={account.about}>
-          <Text>{userProfile.bio}</Text>
-        </View>
-      </View>
-
-      <View style={account.action}>
-        <TouchableOpacity onPress={() => navigation.navigate("EditProfile")} style={account.actionEditProfile}>
-          <Text>Edit profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-            setExpanded(!expanded)
-          }}
-          style={account.explor}
-        >
-          <MaterialCommunityIcons name="account-plus" color="rgba(0,0,0,0.8)" size={23} />
-        </TouchableOpacity>
-      </View>
-
-      {expanded && (
-        <View
-          style={{
-            flex: 1,
-            maxHeight: 60,
-            minHeight: 60,
-            margin: 10
-          }}
-        >
-          <FlatList
-            horizontal
-            data={profils}
-            scrollEnabled={false}
-            keyExtractor={item => item.id}
-            style={{
-              flex: 1
-            }}
-            renderItem={({ item: profile }) => (
-              <Pressable
-                style={{
-                  marginRight: 5,
-                  borderRadius: 50,
-                  overflow: "hidden"
-                }}
-              >
-                <Image
-                  source={{ uri: profile.avatar }}
-                  style={{
-                    flex: 1,
-                    aspectRatio: 1 / 1
-                  }}
-                />
-              </Pressable>
-            )}
-          />
-        </View>
-      )}
-
-
-      <FlatGrid
-        data={posts}
-        spacing={5}
-        itemDimension={90}
-        scrollEnabled={false}
-        keyExtractor={item => item.id}
-        renderItem={({ item: post }) => (
-          <Pressable>
-            <Image
-              source={{ uri: post.media }}
-              style={{
-                flex: 1,
-                aspectRatio: 1 / 1
-              }}
-            />
-          </Pressable>
-        )}
-      />
-
-
-      <RBSheet
-        ref={refRBSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={true}
-        closeDuration={300}
-        height={140}
-        customStyles={{
-          wrapper: {
-            backgroundColor: "transparent"
-          },
-          draggableIcon: {
-            backgroundColor: "#000"
-          },
-          container: {
-            paddingHorizontal: 10
-          }
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{
+          position: "absolute",
+          left: 10,
+          top: 10,
+          width: 40,
+          height: 40
         }}
       >
-        <TouchableOpacity style={account.sheetsButton}>
-          <SimpleLineIcons name="settings" color="#000" style={{ marginLeft: 10 }} size={23} />
-          <Text style={account.sheetsSheetsButtonText}>Settings</Text>
+        <MaterialCommunityIcons name='chevron-left' color="#000" size={30} />
+      </TouchableOpacity>
+      <View style={account.detail}>
+        <View style={{
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <TouchableWithoutFeedback>
+            <Image
+              style={{
+                width: 150,
+                height: 150,
+                borderRadius: 100
+              }}
+              source={userProfile.avatar ? { uri: userProfile?.avatar[0] } : require('../assets/pph.jpg')}
+            />
+          </TouchableWithoutFeedback>
+          <View>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "900",
+                marginTop: 20
+              }}
+            >
+              {userProfile.name}, {moment().diff(new Date(userProfile.date), "years")}
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      <View
+        style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          marginTop: -40,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.navigate("EditPersonalInformation")}
+          style={{
+            width: 70,
+            height: 70,
+            justifyContent: "center",
+            alignItems: "center",
+            borderWidth: .3,
+            borderRadius: 50,
+            borderColor: "rgba(0,0,0,0.3)"
+          }}
+        >
+          <MaterialCommunityIcons name='cog' color="#000" size={22} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={logout} style={account.sheetsLogout}>
-          <SimpleLineIcons name="logout" color="#FF4757" style={{ marginLeft: 10 }} size={23} />
-          <Text style={account.sheetsLogoutText}>Logout</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("EditProfile")}
+          style={{
+            width: 70,
+            height: 70,
+            justifyContent: "center",
+            alignItems: "center",
+            borderWidth: .3,
+            borderRadius: 50,
+            borderColor: "rgba(0,0,0,0.3)",
+            marginTop: 100
+          }}
+        >
+          <MaterialCommunityIcons name='pencil' color="#000" size={22} />
         </TouchableOpacity>
-      </RBSheet>
+        <TouchableOpacity
+          style={{
+            width: 70,
+            height: 70,
+            justifyContent: "center",
+            alignItems: "center",
+            borderWidth: .3,
+            borderRadius: 50,
+            borderColor: "rgba(0,0,0,0.3)"
+          }}
+        >
+          <MaterialCommunityIcons name='shield' color="#000" size={22} />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   )
 }

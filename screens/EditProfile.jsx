@@ -1,40 +1,169 @@
-import { View, Text, TouchableOpacity, Image, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
-import React, { useState } from 'react'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TouchableWithoutFeedback,
+  SafeAreaView,
+  ScrollView
+} from 'react-native'
+import React from 'react'
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import editProfile from '../style/editProfile'
-import color from '../style/color'
 
 import Bar from "./StatusBar"
 
 import useAuth from "../hooks/useAuth"
+import { FlatGrid } from 'react-native-super-grid'
+
+import firebase from '../hooks/firebase'
 
 const EditProfile = ({ navigation }) => {
-  const { userProfile, user, pickImage } = useAuth()
+  const { userProfile, user, pickImage, getUserProfile } = useAuth()
+
+  const deleteImage = (image) => {
+    const fileRef = firebase.storage().refFromURL(image)
+
+    fileRef.delete()
+      .then(() => {
+        firebase.firestore()
+          .collection("users")
+          .doc(user.uid)
+          .update({
+            avatar: firebase.firestore.FieldValue.arrayRemove(image)
+          })
+          .then(() => {
+            getUserProfile(user)
+          })
+      })
+  }
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "#fff"
+      }}
+    >
       <Bar />
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={editProfile.header}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center"
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              width: 40,
+              height: 40,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+            onPress={() => navigation.goBack()}
+          >
+            <MaterialCommunityIcons name='chevron-left' color="#000" size={30} />
+          </TouchableOpacity>
+          <Text
+            style={{
+              marginLeft: 10,
+              fontSize: 18
+            }}
+          >
+            Edit profile
+          </Text>
+        </View>
+      </View>
+
+      <ScrollView>
         <View>
-          <View style={editProfile.header}>
-            <View style={editProfile.left}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <SimpleLineIcons name="arrow-left" color="rgba(0,0,0,0.8)" size={20} />
-              </TouchableOpacity>
-              <Text style={editProfile.headText}>Edit profile</Text>
-            </View>
-          </View>
-          <View style={editProfile.avatar}>
-            <Image
-              style={editProfile.avatarImage}
-              source={userProfile.avatar ? { uri: userProfile.avatar } : require('../assets/pph.jpg')}
+          <View style={{
+            width: "100%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            alignItems: "center",
+            paddingHorizontal: 10
+          }}>
+            <View></View>
+            <FlatGrid
+              itemDimension={100}
+              data={userProfile.avatar}
+              renderItem={({ item: image }) => (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap"
+                  }}
+                >
+                  <View
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: 150,
+                      backgroundColor: "#F0F2F5",
+                      borderRadius: 12,
+                      overflow: "hidden"
+                    }}
+                  >
+                    <Image
+                      source={{ uri: image }}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        flex: 1,
+                        width: "100%",
+                        height: "100%"
+                      }}
+                    />
+                    <TouchableOpacity
+                      onPress={() => deleteImage(image)}
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        right: 0,
+                        backgroundColor: "#fff",
+                        borderRadius: 50,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
+                        elevation: 5,
+                      }}
+                    >
+                      <MaterialCommunityIcons name='close' color="#FF4757" size={22} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
             />
-            <TouchableOpacity style={editProfile.changeProfilePhoto} onPress={pickImage}>
-              <Text style={editProfile.changeProfilePhotoText}>Change profile photo</Text>
-            </TouchableOpacity>
           </View>
+
+          {
+            userProfile.avatar.length != 9 &&
+            <View style={{ paddingHorizontal: 10 }}>
+              <TouchableOpacity
+                onPress={pickImage}
+                style={{
+                  width: "100%",
+                  height: 50,
+                  backgroundColor: "#FF4757",
+                  borderRadius: 12,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text style={{ color: "#fff", fontSize: 18 }}>Add Photo</Text>
+              </TouchableOpacity>
+            </View>
+          }
 
           <View style={editProfile.form}>
             <View style={editProfile.inputField}>
@@ -47,12 +176,6 @@ const EditProfile = ({ navigation }) => {
               <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Name</Text>
               <TouchableWithoutFeedback style={editProfile.input} onPress={() => navigation.navigate("EditName")}>
                 <Text style={editProfile.inputText}>{userProfile.name}</Text>
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={editProfile.bioInputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Bio</Text>
-              <TouchableWithoutFeedback style={editProfile.input} onPress={() => navigation.navigate("EditBio")}>
-                <Text style={editProfile.inputText}>{userProfile.bio}</Text>
               </TouchableWithoutFeedback>
             </View>
             <View style={editProfile.inputField}>
@@ -79,16 +202,10 @@ const EditProfile = ({ navigation }) => {
                 <Text style={editProfile.inputText}>{userProfile.job}</Text>
               </TouchableWithoutFeedback>
             </View>
-
-            <View>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditPersonalInformation")}>
-                <Text style={{ color: "#4169e1" }}>Edit personal information</Text>
-              </TouchableWithoutFeedback>
-            </View>
           </View>
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

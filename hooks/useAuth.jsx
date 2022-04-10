@@ -1,15 +1,15 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { View, Text, Alert } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker'
-import moment from 'moment';
+import moment from 'moment'
 
 import firebase from "./firebase"
 
 const AuthContext = createContext({})
 
 export const AuthProvider = ({ children }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   const [user, setUser] = React.useState(null)
 
@@ -34,9 +34,6 @@ export const AuthProvider = ({ children }) => {
   // EDIT Name
   const [name, setName] = useState("")
 
-  // EDIT BIO
-  const [bio, setBio] = useState("")
-
   // EDIT PASSWORD CHANGE
   const [accountEmail, setAccountEmail] = useState("")
 
@@ -47,14 +44,14 @@ export const AuthProvider = ({ children }) => {
   const [gender, setGender] = useState("")
 
   // EDIT GENDER
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState("")
 
   // EDIT GENDER
-  const [job, setJob] = useState("");
+  const [job, setJob] = useState("")
 
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState("")
-  const [uploadeding, setupLoadeding] = React.useState(false);
+  const [uploadeding, setupLoadeding] = React.useState(false)
 
   const signupState = {
     username,
@@ -82,11 +79,6 @@ export const AuthProvider = ({ children }) => {
   const nameState = {
     name,
     setName
-  }
-
-  const bioState = {
-    bio,
-    setBio
   }
 
   const updatePasswordState = {
@@ -129,9 +121,7 @@ export const AuthProvider = ({ children }) => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-    });
+    })
 
     if (!result.cancelled) {
       const blob = await new Promise((resolve, reject) => {
@@ -158,29 +148,14 @@ export const AuthProvider = ({ children }) => {
         snapshot.snapshot.ref.getDownloadURL().then(url => {
           setupLoadeding(false)
 
-          if (userProfile.avatar) {
-            const fileRef = firebase.storage().refFromURL(userProfile.avatar)
-
-            fileRef.delete().then(() => {
-              firebase.firestore()
-                .collection("users")
-                .doc(`${user.uid}`)
-                .update({
-                  avatar: url
-                }).then(() => {
-                  getUserProfile(user)
-                })
+          firebase.firestore()
+            .collection("users")
+            .doc(`${user.uid}`)
+            .update({
+              avatar: firebase.firestore.FieldValue.arrayUnion(url)
+            }).then(() => {
+              getUserProfile(user)
             })
-          } else {
-            firebase.firestore()
-              .collection("users")
-              .doc(`${user.uid}`)
-              .update({
-                avatar: url
-              }).then(() => {
-                getUserProfile(user)
-              })
-          }
 
           blob.close()
           return url
@@ -190,13 +165,14 @@ export const AuthProvider = ({ children }) => {
   }
 
   const getUserProfile = async (user) => {
-    await firebase.firestore().collection("users")
+    await firebase.firestore()
+      .collection("users")
       .doc(user.uid)
-      .get().then(doc => {
+      .get()
+      .then(doc => {
         setUserProfile(doc?.data())
         setEditUsername(doc.data()?.username)
         setName(doc.data()?.name)
-        setBio(doc.data()?.bio)
       })
   }
 
@@ -215,15 +191,13 @@ export const AuthProvider = ({ children }) => {
             .set({
               email,
               username,
-              avatar: "",
+              avatar: [],
               id: firebase.auth().currentUser.uid
             })
-          console.log(result)
           setSpiner(false)
           setLoading(false)
         })
         .catch(error => {
-          console.log(error)
           setSpiner(false)
           setLoading(false)
         }).finally(() => {
@@ -248,13 +222,11 @@ export const AuthProvider = ({ children }) => {
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(result => {
           if (result.user) {
-            console.log(result)
             setSpiner(false)
             setLoading(false)
           }
         })
         .catch(error => {
-          console.log(error)
           setSpiner(false)
           setLoading(false)
         }).finally(() => {
@@ -283,7 +255,7 @@ export const AuthProvider = ({ children }) => {
         username
       }).then(() => {
         getUserProfile(user)
-        navigation.goBack();
+        navigation.goBack()
       })
   }
 
@@ -297,21 +269,7 @@ export const AuthProvider = ({ children }) => {
         name
       }).then(() => {
         getUserProfile(user)
-        navigation.goBack();
-      })
-  }
-
-  const updateBio = async () => {
-    const { bio } = bioState
-
-    await firebase.firestore()
-      .collection("users")
-      .doc(`${user.uid}`)
-      .update({
-        bio
-      }).then(() => {
-        getUserProfile(user)
-        navigation.goBack();
+        navigation.goBack()
       })
   }
 
@@ -327,11 +285,11 @@ export const AuthProvider = ({ children }) => {
           logout()
         }, 3000)
       } catch (err) {
-        console.error(err);
-        alert(err.message);
+        console.error(err)
+        alert(err.message)
       }
     } else Alert.alert("Email mismatched", "Entered email does not match you account email")
-  };
+  }
 
   const updatePhone = async () => {
     const { phone } = updatePhoneState
@@ -343,7 +301,7 @@ export const AuthProvider = ({ children }) => {
         phone
       }).then(() => {
         getUserProfile(user)
-        navigation.goBack();
+        navigation.goBack()
       })
   }
 
@@ -357,7 +315,7 @@ export const AuthProvider = ({ children }) => {
         gender
       }).then(() => {
         getUserProfile(user)
-        navigation.goBack();
+        navigation.goBack()
       })
   }
 
@@ -368,10 +326,10 @@ export const AuthProvider = ({ children }) => {
       .collection("users")
       .doc(`${user.uid}`)
       .update({
-        date: moment().diff(new Date(date), "years")
+        date
       }).then(() => {
         getUserProfile(user)
-        navigation.goBack();
+        navigation.goBack()
       })
   }
 
@@ -385,7 +343,7 @@ export const AuthProvider = ({ children }) => {
         job
       }).then(() => {
         getUserProfile(user)
-        navigation.goBack();
+        navigation.goBack()
       })
   }
 
@@ -404,8 +362,6 @@ export const AuthProvider = ({ children }) => {
       updateUsername,
       nameState,
       updateName,
-      bioState,
-      updateBio,
       updatePasswordState,
       sendPasswordReset,
       updatePhoneState,
@@ -415,7 +371,8 @@ export const AuthProvider = ({ children }) => {
       updateDateState,
       updateDateOfBirth,
       updateJobState,
-      updateJob
+      updateJob,
+      getUserProfile
     }}>
       {!loadingInitial && children}
     </AuthContext.Provider>

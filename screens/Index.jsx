@@ -9,7 +9,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 const Tab = createMaterialBottomTabNavigator();
 
 import HomeScreen from "./HomeScreen"
-import Account from "./Account"
+import ChatScreen from "./ChatScreen"
 
 import useAuth from "../hooks/useAuth"
 
@@ -25,25 +25,29 @@ export default function Index () {
         borderColor: "#ffffff",
         shadowOpacity: 0,
       }}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName
+
+          if (route.name === "HomeScreen")
+            iconName = focused ? "magnify" : "magnify"
+          if (route.name === "Chat")
+            iconName = focused ? "chat" : "chat-outline"
+
+          return <MaterialCommunityIcons name={iconName} color={color} size={26} />
+        }
+      })}
     >
       <Tab.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{
           headerShown: true,
-          tabBarIcon: ({ color, size }) => (
-            <SimpleLineIcons name="home" color={color} size={20} />
-          ),
         }} />
-      <Tab.Screen name="Account" component={Account}
+      <Tab.Screen name="Chat" component={ChatScreen}
         options={{
           headerShown: true,
-          tabBarLabel: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            userProfile == null ?
-              <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
-              : (userProfile.avatar ? <Image style={{ width: 30, height: 30, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile.avatar }} /> : <SimpleLineIcons name="user" color={color} size={22} />)
-          ),
+          tabBarLabel: "Chat"
         }} />
     </Tab.Navigator>
   )
