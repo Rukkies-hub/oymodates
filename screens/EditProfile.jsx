@@ -88,7 +88,6 @@ const EditProfile = ({ navigation }) => {
             alignItems: "center",
             paddingHorizontal: 10
           }}>
-            <View></View>
             <FlatGrid
               itemDimension={100}
               data={userProfile.avatar}

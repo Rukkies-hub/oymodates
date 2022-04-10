@@ -25,6 +25,7 @@ import MessageScreen from './screens/MessageScreen'
 import PreviewImage from './screens/PreviewImage'
 import ViewProfile from './screens/ViewProfile'
 import Account from './screens/Account'
+import Setup from './screens/Setup'
 
 import useAuth from "./hooks/useAuth"
 
@@ -59,6 +60,7 @@ const StackNavigator = () => {
 
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen name="ViewProfile" component={ViewProfile} options={{ headerShown: false }} />
+            <Stack.Screen name="Setup" component={Setup} options={{ headerShown: false }} />
           </Stack.Group>
         </>
       ) :

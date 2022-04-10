@@ -33,8 +33,8 @@ const HomeScreen = () => {
       .doc(user.uid)
       .get()
       .then(doc => {
-        if (doc.data()?.avatar.length < 1)
-          navigation.navigate("EditProfile")
+        if (doc.data()?.avatar?.length < 1)
+          navigation.navigate("Setup")
       })
   }, [])
 
@@ -163,7 +163,7 @@ const HomeScreen = () => {
             {
               userProfile == null ?
                 <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
-                : (userProfile.avatar.length ?
+                : (userProfile.avatar?.length ?
                   <Image style={{ width: 30, height: 30, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile.avatar[0] }} />
                   : <SimpleLineIcons name="user" color="#000" size={22} />
                 )
