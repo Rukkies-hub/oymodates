@@ -20,10 +20,18 @@ import auth from "../style/auth"
 
 import useAuth from "../hooks/useAuth"
 
+import { useFonts } from 'expo-font'
+
 const LoginScreen = ({ navigation }) => {
   const { signinState, signinUser } = useAuth()
-
   const [type, setType] = React.useState(true)
+
+  const [loaded] = useFonts({
+    logo: require("../assets/fonts/Pacifico/Pacifico-Regular.ttf")
+  })
+
+  if (!loaded)
+    return null
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -35,7 +43,15 @@ const LoginScreen = ({ navigation }) => {
         />
         <View style={auth.form_view}>
           <View style={auth.head_texts}>
-            <Text style={auth.head_texts_text_1}>Sign In</Text>
+            <Text
+              style={{
+                fontSize: 48,
+                color: "#000",
+                fontFamily: "logo"
+              }}
+            >
+              Sign In
+            </Text>
           </View>
 
           <View style={auth.form_view_inputs}>

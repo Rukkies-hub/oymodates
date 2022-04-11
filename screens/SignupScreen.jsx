@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
-  Image,
   Pressable,
   TextInput,
   View,
@@ -16,16 +15,24 @@ import {
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import colors from "../style/color"
 import auth from "../style/auth"
 
 import { StatusBar } from 'expo-status-bar';
 
 import useAuth from "../hooks/useAuth"
 
+import { useFonts } from 'expo-font'
+
 const SignupScreen = ({ navigation }) => {
   const { signupState, signupUser } = useAuth()
   const [type, setType] = React.useState(true)
+
+  const [loaded] = useFonts({
+    logo: require("../assets/fonts/Pacifico/Pacifico-Regular.ttf")
+  })
+
+  if (!loaded)
+    return null
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -34,7 +41,14 @@ const SignupScreen = ({ navigation }) => {
 
         <View style={auth.form_view}>
           <View style={auth.head_texts}>
-            <Text style={auth.head_texts_text_1}>Sign In</Text>
+            <Text
+              style={{
+                fontSize: 48,
+                color: "#000",
+                fontFamily: "logo"
+              }}
+            >
+              Sign In</Text>
           </View>
 
           <View style={auth.form_view_inputs}>

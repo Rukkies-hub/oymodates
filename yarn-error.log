@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/share/.config/yarn/global/node_modules/node/bin/node /usr/local/bin/yarn add react-native-reanimated-carousel
+  /usr/local/share/.config/yarn/global/node_modules/node/bin/node /usr/local/bin/yarnpkg add expo-fonts
 
 PATH: 
   /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/rukkiecodes/Android/Sdk/emulator:/home/rukkiecodes/Android/Sdk/tools:/home/rukkiecodes/Android/Sdk/tools/bin:/home/rukkiecodes/Android/Sdk/platform-tools
@@ -14,8 +14,17 @@ Platform:
   linux x64
 
 Trace: 
-  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
-      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:69:26)
+  Error: https://registry.yarnpkg.com/expo-fonts: Not found
+      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66988:18)
+      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140662:22)
+      at Request.emit (node:events:394:28)
+      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141634:10)
+      at Request.emit (node:events:394:28)
+      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141556:12)
+      at Object.onceWrapper (node:events:513:28)
+      at IncomingMessage.emit (node:events:406:35)
+      at endReadableNT (node:internal/streams/readable:1329:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
 
 npm manifest: 
   {
@@ -43,9 +52,11 @@ npm manifest:
       "expo": "~44.0.0",
       "expo-blur": "~11.0.0",
       "expo-camera": "~12.1.2",
+      "expo-constants": "^13.0.2",
       "expo-font": "~10.0.4",
       "expo-image-picker": "~12.0.1",
       "expo-linear-gradient": "~11.0.3",
+      "expo-location": "~14.0.1",
       "expo-navigation-bar": "~1.1.1",
       "expo-progress": "^0.0.2",
       "expo-status-bar": "~1.2.0",
@@ -54,6 +65,7 @@ npm manifest:
       "react": "17.0.1",
       "react-dom": "17.0.1",
       "react-native": "0.64.3",
+      "react-native-animated-dots-carousel": "^1.0.1",
       "react-native-auto-height-image": "^3.2.4",
       "react-native-datepicker": "^1.7.2",
       "react-native-deck-swiper": "^2.0.5",
@@ -70,6 +82,7 @@ npm manifest:
       "react-native-screens": "~3.10.1",
       "react-native-select-dropdown": "^1.9.0",
       "react-native-smart-emoji-picker": "^0.1.2",
+      "react-native-snap-carousel": "^3.9.1",
       "react-native-super-grid": "^4.2.0",
       "react-native-svg": "12.1.1",
       "react-native-swipe-cards-deck": "^0.3.0",
@@ -3273,7 +3286,7 @@ Lockfile:
       "@koale/useworker" "^4.0.2"
       invariant "^2.2.4"
   
-  expo-constants@~13.0.2:
+  expo-constants@^13.0.2, expo-constants@~13.0.2:
     version "13.0.2"
     resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-13.0.2.tgz#b489ecd575cc82a9a0b3dfbf2385d45a44300eb1"
     integrity sha512-vGs/kI65vplPFvG8z4W1ariGEtVHHp9Avl28G0zJprt2v/q1E/BnXjwvFSBPc1GB+Zb/7crWSHWRwjaFULBjsg==
@@ -3318,6 +3331,14 @@ Lockfile:
     version "11.0.3"
     resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-11.0.3.tgz#bc559b9a251c9dc8aa37fb6c66c7a497fe92993c"
     integrity sha512-LuzTM5+iEHCQfC2TBHAAI+ZjPvf0TvGiA7GYMsyTnakGA2r4JtsV8Ah/miQPKhfG06jLDOo4grUoSMGqbmSrEw==
+  
+  expo-location@~14.0.1:
+    version "14.0.2"
+    resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-14.0.2.tgz#933276b36558f546964753f107493b37953068b7"
+    integrity sha512-xFlj03NM0g9LZfWyIyL8q6AIXDhXskctX96806QGqZKv9C+JI2osEiTiyFxG8ei1MeTJojHfx+E07ORuByWiMw==
+    dependencies:
+      "@expo/config-plugins" "^4.0.2"
+      unimodules-task-manager-interface "~7.1.0"
   
   expo-modules-autolinking@0.5.5:
     version "0.5.5"
@@ -5398,7 +5419,7 @@ Lockfile:
       fbjs "^0.8.9"
       loose-envify "^1.3.1"
   
-  prop-types@^15.6.0, prop-types@^15.7.2:
+  prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.7.2:
     version "15.8.1"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
     integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -5464,6 +5485,14 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
     integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
   
+  react-addons-shallow-compare@15.6.2:
+    version "15.6.2"
+    resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.6.2.tgz#198a00b91fc37623db64a28fd17b596ba362702f"
+    integrity sha1-GYoAuR/DdiPbZKKP0XtZa6NicC8=
+    dependencies:
+      fbjs "^0.8.4"
+      object-assign "^4.1.0"
+  
   react-devtools-core@^4.6.0:
     version "4.24.3"
     resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.24.3.tgz#371fef3f5c639db0dc59eeef334dd5e10ac61661"
@@ -5495,6 +5524,11 @@ Lockfile:
     version "17.0.2"
     resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
     integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+  
+  react-native-animated-dots-carousel@^1.0.1:
+    version "1.0.1"
+    resolved "https://registry.yarnpkg.com/react-native-animated-dots-carousel/-/react-native-animated-dots-carousel-1.0.1.tgz#73884e063cc51a3b6f03cf584d68f7f2879d36ea"
+    integrity sha512-LEmkY9kmMKREl3CrE9uPQzASpBH3gtz7UTDDRwQLuhICwDSFlWTLFnET2VJ2deRuz4uVbWh85Mnhtq/BM15x8w==
   
   react-native-auto-height-image@^3.2.4:
     version "3.2.4"
@@ -5671,6 +5705,14 @@ Lockfile:
     integrity sha512-A1Tb1gZQ1rsP2Jx8rnqOl+APme1F2MGL0/gr7oqpSxAJrMxWna5H9Lgv+9O8RbUoPS7vrU720YsXeXcH5qIPTQ==
     dependencies:
       react-native-scrollable-tab-view "^0.10.0"
+  
+  react-native-snap-carousel@^3.9.1:
+    version "3.9.1"
+    resolved "https://registry.yarnpkg.com/react-native-snap-carousel/-/react-native-snap-carousel-3.9.1.tgz#6fd9bd8839546c2c6043a41d2035afbc6fe0443e"
+    integrity sha512-xWEGusacIgK1YaDXLi7Gao2+ISLoGPVEBR8fcMf4tOOJQufutlNwkoLu0l6B8Qgsrre0nTxoVZikRgGRDWlLaQ==
+    dependencies:
+      prop-types "^15.6.1"
+      react-addons-shallow-compare "15.6.2"
   
   react-native-super-grid@^4.2.0:
     version "4.2.0"
@@ -6669,6 +6711,11 @@ Lockfile:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/unicode-property-aliases-ecmascript/-/unicode-property-aliases-ecmascript-2.0.0.tgz#0a36cb9a585c4f6abd51ad1deddb285c165297c8"
     integrity sha512-5Zfuy9q/DFr4tfO7ZPeVXb1aPoeQSdeFMLpYuFebehDAhbuevLs5yxSZmIFN1tP5F9Wl4IpJrYojg85/zgyZHQ==
+  
+  unimodules-task-manager-interface@~7.1.0:
+    version "7.1.1"
+    resolved "https://registry.yarnpkg.com/unimodules-task-manager-interface/-/unimodules-task-manager-interface-7.1.1.tgz#1d48585012018971a0f0b62bc5ac53508a7addb4"
+    integrity sha512-vvtxJO3O6fJXvSc9qvgB2FS9xJk2nWG4NOvwCMmTmfblmvzGPFcTheOKzV7Z1dvjlqTZZ+TDqd5XOGa+0+NXVA==
   
   union-value@^1.0.0:
     version "1.0.1"

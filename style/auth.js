@@ -143,7 +143,7 @@ export default StyleSheet.create({
 
     signup_button: {
         width: "100%",
-        backgroundColor: colors.purple,
+        backgroundColor: colors.red,
         height: 50,
         borderRadius: 12,
         justifyContent: "center",
