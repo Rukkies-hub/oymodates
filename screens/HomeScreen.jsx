@@ -33,7 +33,7 @@ const HomeScreen = () => {
       .doc(user.uid)
       .get()
       .then(doc => {
-        if (doc.data()?.name || doc.data()?.avatar?.length < 1 || doc.data()?.location || doc.data()?.occupation)
+        if (doc.data()?.name || doc.data()?.avatar?.length < 1 || doc.data()?.location || doc.data()?.occupation || doc.data()?.intrests)
           navigation.navigate("Setup")
       })
   }, [])

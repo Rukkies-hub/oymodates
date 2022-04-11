@@ -5,13 +5,12 @@ import {
   Text,
   Platform,
   TouchableWithoutFeedback,
-  Button,
   Keyboard,
   TouchableOpacity,
-  LayoutAnimation,
-  UIManager,
   ActivityIndicator,
-  Image
+  Image,
+  ScrollView,
+  Pressable
 } from 'react-native'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 
@@ -29,6 +28,66 @@ import * as ImagePicker from 'expo-image-picker'
 import Constants from 'expo-constants'
 import * as Location from 'expo-location'
 
+const intrestsList = [
+  "karaoke",
+  "cycling",
+  "swimming",
+  "cat lover",
+  "dog lover",
+  "environmentalism",
+  "running",
+  "outdoors",
+  "trivia",
+  "grap a drink",
+  "museum",
+  "gammer",
+  "soccer",
+  "netflix",
+  "sports",
+  "working out",
+  "comedy",
+  "spirituality",
+  "board games",
+  "cooking",
+  "wine",
+  "foodie",
+  "hiking",
+  "politics",
+  "writer",
+  "travel",
+  "golf",
+  "reading",
+  "movies",
+  "athlete",
+  "baking",
+  "plant-based",
+  "vlogging",
+  "gardening",
+  "fishing",
+  "art",
+  "brunch",
+  "climbing",
+  "tea",
+  "walking",
+  "blogging",
+  "volunteering",
+  "astrology",
+  "yoga",
+  "instagram",
+  "language exchange",
+  "surfing",
+  "craft beer",
+  "shopping",
+  "DIY",
+  "dancing",
+  "disney",
+  "fashion",
+  "music",
+  "photography",
+  "picnicking",
+  "coffie"
+]
+
 
 const Setup = () => {
   const { user } = useAuth()
@@ -36,16 +95,16 @@ const Setup = () => {
   const [name, setName] = useState("")
   const [nameLoading, setNameLoading] = useState(false)
   const [showName, setShowName] = useState(true)
-  const [showPhoto, setShowPhoto] = useState(true)
-  const [showLocation, setShowLocation] = useState(true)
+  const [showPhoto, setShowPhoto] = useState(false)
+  const [showLocation, setShowLocation] = useState(false)
   const [location, setLocation] = useState(null)
   const [address, setAddress] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
   const [locationLoading, setLocationLoading] = useState(false)
-  const [showOccupation, setShowOccupation] = useState(true)
+  const [showOccupation, setShowOccupation] = useState(false)
   const [occupation, setOccupation] = useState("")
   const [occupationLoading, setOccupationLoading] = useState(false)
-  const [showIntrests, setShowIntrests] = useState(true)
+  const [showIntrests, setShowIntrests] = useState(false)
   const [intrests, setIntrests] = useState([])
   const [intrestsLoading, setIntrestsLoading] = useState(false)
 
@@ -59,6 +118,7 @@ const Setup = () => {
         setName(doc.data()?.name)
         setAddress(doc.data()?.address)
         setOccupation(doc.data()?.occupation)
+        setIntrests(doc.data()?.intrests)
       })
   }
 
@@ -67,14 +127,22 @@ const Setup = () => {
     , [])
 
   useLayoutEffect(() => {
-    if (userProfile.name)
+    if (userProfile.name) {
       setShowName(false)
-    if (userProfile.name && userProfile.avatar?.length)
+      setShowPhoto(true)
+    }
+    if (userProfile.name && userProfile.avatar?.length) {
       setShowPhoto(false)
-    if (userProfile.name && userProfile.avatar?.length && userProfile.address)
+      setShowLocation(true)
+    }
+    if (userProfile.name && userProfile.avatar?.length && userProfile.address) {
       setShowLocation(false)
-    if (userProfile.name && userProfile.avatar?.length && userProfile.address && userProfile.occupation)
+      setShowOccupation(true)
+    }
+    if (userProfile.name && userProfile.avatar?.length && userProfile.address && userProfile.occupation) {
       setShowOccupation(false)
+      setShowIntrests(true)
+    }
   }, [userProfile.name, userProfile.avatar?.length])
 
   const updateName = async () => {
@@ -206,7 +274,8 @@ const Setup = () => {
         .doc(`${user.uid}`)
         .update({
           occupation
-        }).then(() => {
+        })
+        .then(() => {
           setOccupationLoading(false)
           getUserProfile(user)
           setShowName(false)
@@ -214,6 +283,23 @@ const Setup = () => {
           setShowLocation(false)
           setShowOccupation(false)
           setShowIntrests(true)
+        })
+        .catch(() => setOccupationLoading(false))
+    }
+  }
+
+  const updateIntrests = () => {
+    if (intrests.length) {
+      setIntrestsLoading(true)
+      firebase.firestore()
+        .collection("users")
+        .doc(user.uid)
+        .update({
+          intrests
+        })
+        .then(() => {
+          getUserProfile(user)
+          setIntrestsLoading(false)
         })
         .catch(() => setOccupationLoading(false))
     }
@@ -614,30 +700,58 @@ const Setup = () => {
               }}
             >
               <View style={editProfile.form}>
-                <View
+                <ScrollView
                   style={{
-                    height: 50,
-                    marginBottom: 30,
-                    borderWidth: 1,
-                    borderColor: "rgba(0,0,0,0.2)",
-                    borderRadius: 12,
-                    paddingHorizontal: 10,
-                    justifyContent: "center",
-                    alignItems: "center"
+                    maxHeight: 550,
+                    minHeight: 400,
+                    marginBottom: 20
                   }}
                 >
-                  <TextInput
-                    placeholder="Occupation"
-                    value={occupation}
-                    onChangeText={setOccupation}
+                  <View
                     style={{
-                      width: "100%"
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start"
                     }}
-                  />
-                </View>
+                  >
+                    {
+                      intrestsList.map((pashion, index) => {
+                        return (
+                          <TouchableOpacity
+                            onPress={() => {
+                              if (intrests.includes(pashion))
+                                setIntrests(intrests.filter(item => item !== pashion))
+                              else if (intrests.length <= 4)
+                                setIntrests(oldArray => [...oldArray, pashion])
+                            }}
+                            style={{
+                              paddingHorizontal: 10,
+                              paddingVertical: 5,
+                              borderWidth: 2,
+                              borderRadius: 50,
+                              borderColor: intrests.includes(pashion) ? "#FF4757" : "rgba(0,0,0,0.1)",
+                              marginBottom: 10,
+                              marginRight: 10
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: intrests.includes(pashion) ? "#FF4757" : "rgba(0,0,0,0.6)",
+                                fontSize: 14
+                              }}
+                            >
+                              {pashion}
+                            </Text>
+                          </TouchableOpacity>
+                        )
+                      })
+                    }
+                  </View>
+                </ScrollView>
 
                 <TouchableOpacity
-                  onPress={updateOccupation}
+                  onPress={updateIntrests}
                   style={{
                     backgroundColor: "#FF4757",
                     height: 50,
@@ -656,7 +770,7 @@ const Setup = () => {
                           fontSize: 18
                         }}
                       >
-                        Update intrests
+                        Update pashion
                       </Text>
                   }
                 </TouchableOpacity>
