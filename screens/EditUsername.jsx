@@ -1,7 +1,6 @@
 import { View, Text, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import Bar from "./StatusBar"
@@ -44,7 +43,15 @@ const EditUsername = ({ navigation }) => {
                 alignItems: "center"
               }}
             >
-              <TouchableOpacity onPress={() => navigation.goBack()}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
                 <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
               </TouchableOpacity>
               <Text
@@ -57,14 +64,37 @@ const EditUsername = ({ navigation }) => {
                 Username
               </Text>
             </View>
-            <TouchableOpacity onPress={updateUsername}>
+            <TouchableOpacity
+              onPress={updateUsername}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
               <MaterialCommunityIcons name="check" color={color.dark} size={24} />
             </TouchableOpacity>
           </View>
-          <View style={{ backgroundColor: color.white, flex: 1, justifyContent: "center" }}>
+
+          <View
+            style={{
+              backgroundColor: color.white, 
+              flex: 1, 
+              justifyContent: "center"
+            }}
+          >
             <View style={editProfile.form}>
               <View style={editProfile.inputField}>
-                <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Username</Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: color.labelColor,
+                    fontFamily: "text"
+                  }}
+                >
+                  Username
+                </Text>
                 <TextInput
                   autoFocus
                   placeholder="Username"
