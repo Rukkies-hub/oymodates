@@ -43,13 +43,6 @@ const StackNavigator = () => {
             <Stack.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
             <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
             <Stack.Screen name="EditPersonalInformation" component={EditPersonalInformation} options={{ headerShown: false }} />
-            <Stack.Screen name="EditUsername" component={EditUsername} options={{ headerShown: false }} />
-            <Stack.Screen name="EditName" component={EditName} options={{ headerShown: false }} />
-            <Stack.Screen name="EditPassword" component={EditPassword} options={{ headerShown: false }} />
-            <Stack.Screen name="EditPhone" component={EditPhone} options={{ headerShown: false }} />
-            <Stack.Screen name="EditGender" component={EditGender} options={{ headerShown: false }} />
-            <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} options={{ headerShown: false }} />
-            <Stack.Screen name="EditJob" component={EditJob} options={{ headerShown: false }} />
             <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
           </Stack.Group>
 
@@ -61,6 +54,14 @@ const StackNavigator = () => {
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen name="ViewProfile" component={ViewProfile} options={{ headerShown: false }} />
             <Stack.Screen name="Setup" component={Setup} options={{ headerShown: false }} />
+
+            <Stack.Screen name="EditUsername" component={EditUsername} options={{ headerShown: false }} />
+            <Stack.Screen name="EditName" component={EditName} options={{ headerShown: false }} />
+            <Stack.Screen name="EditPassword" component={EditPassword} options={{ headerShown: false }} />
+            <Stack.Screen name="EditPhone" component={EditPhone} options={{ headerShown: false }} />
+            <Stack.Screen name="EditGender" component={EditGender} options={{ headerShown: false }} />
+            <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} options={{ headerShown: false }} />
+            <Stack.Screen name="EditJob" component={EditJob} options={{ headerShown: false }} />
           </Stack.Group>
         </>
       ) :

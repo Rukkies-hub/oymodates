@@ -20,6 +20,10 @@ import { FlatGrid } from 'react-native-super-grid'
 
 import firebase from '../hooks/firebase'
 
+import _const from "../style/const"
+import color from '../style/color'
+import { useFonts } from 'expo-font'
+
 const EditProfile = ({ navigation }) => {
   const { userProfile, user, pickImage, getUserProfile } = useAuth()
 
@@ -40,42 +44,43 @@ const EditProfile = ({ navigation }) => {
       })
   }
 
+  const [loaded] = useFonts({
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
+
+  if (!loaded)
+    return null
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: "#fff"
+        backgroundColor: color.white
       }}
     >
       <Bar />
-      <View style={editProfile.header}>
-        <View
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "center"
+        }}
+      >
+        <TouchableOpacity
+          style={_const.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+        </TouchableOpacity>
+        <Text
           style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center"
+            marginLeft: 10,
+            fontSize: 18,
+            fontFamily: "text"
           }}
         >
-          <TouchableOpacity
-            style={{
-              width: 40,
-              height: 40,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-            onPress={() => navigation.goBack()}
-          >
-            <MaterialCommunityIcons name='chevron-left' color="#000" size={30} />
-          </TouchableOpacity>
-          <Text
-            style={{
-              marginLeft: 10,
-              fontSize: 18
-            }}
-          >
-            Edit profile
-          </Text>
-        </View>
+          Edit profile
+        </Text>
       </View>
 
       <ScrollView>
@@ -103,7 +108,7 @@ const EditProfile = ({ navigation }) => {
                       position: "relative",
                       width: "100%",
                       height: 150,
-                      backgroundColor: "#F0F2F5",
+                      backgroundColor: color.offWhite,
                       borderRadius: 12,
                       overflow: "hidden"
                     }}
@@ -125,9 +130,9 @@ const EditProfile = ({ navigation }) => {
                         position: "absolute",
                         bottom: 0,
                         right: 0,
-                        backgroundColor: "#fff",
+                        backgroundColor: color.white,
                         borderRadius: 50,
-                        shadowColor: "#000",
+                        shadowColor: color.dark,
                         shadowOffset: {
                           width: 0,
                           height: 2,
@@ -137,7 +142,7 @@ const EditProfile = ({ navigation }) => {
                         elevation: 5,
                       }}
                     >
-                      <MaterialCommunityIcons name='close' color="#FF4757" size={22} />
+                      <MaterialCommunityIcons name='close' color={color.red} size={22} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -153,52 +158,60 @@ const EditProfile = ({ navigation }) => {
                 style={{
                   width: "100%",
                   height: 50,
-                  backgroundColor: "#FF4757",
+                  backgroundColor: color.red,
                   borderRadius: 12,
                   justifyContent: "center",
                   alignItems: "center"
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: 18 }}>Add Photo</Text>
+                <Text
+                  style={{
+                    color: color.white,
+                    fontSize: 18,
+                    fontFamily: "text"
+                  }}
+                >
+                  Add Photo
+                </Text>
               </TouchableOpacity>
             </View>
           }
 
           <View style={editProfile.form}>
             <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Username</Text>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Username</Text>
               <TouchableWithoutFeedback onPress={() => navigation.navigate("EditUsername")} style={editProfile.input} >
-                <Text style={editProfile.inputText}>{userProfile.username}</Text>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>oymo.me/@{userProfile.username}</Text>
               </TouchableWithoutFeedback>
             </View>
             <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Name</Text>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Name</Text>
               <TouchableWithoutFeedback style={editProfile.input} onPress={() => navigation.navigate("EditName")}>
-                <Text style={editProfile.inputText}>{userProfile.name}</Text>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.name}</Text>
               </TouchableWithoutFeedback>
             </View>
             <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Phone number</Text>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Phone number</Text>
               <TouchableWithoutFeedback onPress={() => navigation.navigate("EditPhone")} style={editProfile.input} >
-                <Text style={editProfile.inputText}>{userProfile.phone}</Text>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.phone}</Text>
               </TouchableWithoutFeedback>
             </View>
             <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Gender</Text>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Gender</Text>
               <TouchableWithoutFeedback onPress={() => navigation.navigate("EditGender")} style={editProfile.input} >
-                <Text style={editProfile.inputText}>{userProfile.gender}</Text>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.gender}</Text>
               </TouchableWithoutFeedback>
             </View>
             <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Birthday</Text>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Birthday</Text>
               <TouchableWithoutFeedback onPress={() => navigation.navigate('EditDateOfBirth')} style={editProfile.input} >
-                <Text style={editProfile.inputText}>{userProfile.date}</Text>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.date}</Text>
               </TouchableWithoutFeedback>
             </View>
             <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Occupation</Text>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Occupation</Text>
               <TouchableWithoutFeedback onPress={() => navigation.navigate('EditJob')} style={editProfile.input} >
-                <Text style={editProfile.inputText}>{userProfile.job}</Text>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.occupation}</Text>
               </TouchableWithoutFeedback>
             </View>
           </View>

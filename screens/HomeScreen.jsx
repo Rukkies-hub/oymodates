@@ -248,13 +248,14 @@ const HomeScreen = () => {
                   <View key={card.id}
                     style={{
                       backgroundColor: "#fff",
-                      height: 660,
+                      height: 670,
                       marginTop: -30,
                       width: "100%",
-                      borderRadius: 16,
+                      borderRadius: 10,
                       position: "relative",
                       overflow: "hidden"
-                    }}>
+                    }}
+                  >
                     <Image style={{
                       flex: 1,
                       width: "100%",

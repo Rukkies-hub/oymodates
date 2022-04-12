@@ -9,39 +9,75 @@ import Bar from "./StatusBar"
 import editProfile from '../style/editProfile'
 
 import useAuth from "../hooks/useAuth"
+import { useFonts } from 'expo-font'
+
+import color from '../style/color'
 
 const EditUsername = ({ navigation }) => {
   const { usernameState, updateUsername } = useAuth()
+
+  const [loaded] = useFonts({
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
+
+  if (!loaded)
+    return null
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
       <Bar />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={{ backgroundColor: "#fff", flex: 1 }}>
-          <View style={editProfile.header}>
-            <View style={editProfile.left}>
+        <>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 10,
+              height: 45
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
               <TouchableOpacity onPress={() => navigation.goBack()}>
-                <SimpleLineIcons name="arrow-left" color="rgba(0,0,0,0.8)" size={20} />
+                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
               </TouchableOpacity>
-              <Text style={editProfile.headText}>Username</Text>
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontSize: 18,
+                  fontFamily: "text"
+                }}
+              >
+                Username
+              </Text>
             </View>
             <TouchableOpacity onPress={updateUsername}>
-              <MaterialCommunityIcons name="check" color="#4169e1" size={24} />
+              <MaterialCommunityIcons name="check" color={color.dark} size={24} />
             </TouchableOpacity>
           </View>
-
-          <View style={editProfile.form}>
-            <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Username</Text>
-              <TextInput
-                autoFocus
-                placeholder="Username"
-                value={usernameState.username}
-                onChangeText={usernameState.onchangeUsername}
-              />
+          <View style={{ backgroundColor: color.white, flex: 1, justifyContent: "center" }}>
+            <View style={editProfile.form}>
+              <View style={editProfile.inputField}>
+                <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Username</Text>
+                <TextInput
+                  autoFocus
+                  placeholder="Username"
+                  value={usernameState.username}
+                  onChangeText={usernameState.onchangeUsername}
+                  style={{
+                    fontFamily: "text"
+                  }}
+                />
+              </View>
             </View>
           </View>
-        </View>
+        </>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   )

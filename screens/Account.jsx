@@ -16,68 +16,19 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import account from "../style/account"
 
-import firebase from '../hooks/firebase'
 import useAuth from "../hooks/useAuth"
 import { useNavigation } from '@react-navigation/native'
 import moment from 'moment'
 
+import { useFonts } from 'expo-font'
+
+import color from '../style/color'
+
+import _const from '../style/const'
+
 const Account = () => {
   const navigation = useNavigation()
-  const { user, userProfile, logout } = useAuth()
-  const [profils, setProfiles] = useState([])
-  const [posts, setPosts] = useState([])
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const passes = await firebase.firestore()
-        .collection("users")
-        .doc(user.uid)
-        .collection("passes")
-        .get()
-        .then(snapshot => snapshot?.docs?.map(doc => doc.id))
-
-      const swipes = await firebase.firestore()
-        .collection("users")
-        .doc(user.uid)
-        .collection("swipes")
-        .get()
-        .then(snapshot => snapshot.docs.map(doc => doc.id))
-
-
-      const passedUserIds = passes.length > 0 ? passes : ['test']
-      const swipedUserIds = swipes.length > 0 ? swipes : ['test']
-
-      await firebase.firestore()
-        .collection("users")
-        .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
-        .get()
-        .then((snapshot) => {
-          setProfiles(
-            snapshot.docs
-              .filter(doc => doc.id !== user.uid)
-              .map(doc => ({
-                id: doc.id,
-                ...doc.data()
-              }))
-          )
-        })
-    }
-
-    fetchUsers()
-  }, [])
-
-  useEffect(async () =>
-    firebase.firestore()
-      .collection("posts")
-      .where("user.id", "==", user.uid)
-      .get()
-      .then(snapshot => {
-        setPosts(snapshot?.docs?.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })))
-      })
-    , [])
+  const { userProfile } = useAuth()
 
   useEffect(() =>
     LogBox.ignoreLogs([
@@ -86,27 +37,25 @@ const Account = () => {
       "Uncaught Error in snapshot listener"
     ])
     , [])
+  
+  const [loaded] = useFonts({
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
+
+  if (!loaded)
+    return null
 
   return (
     <SafeAreaView style={account.container}>
       <Bar />
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        style={{
-          position: "absolute",
-          left: 10,
-          top: 10,
-          width: 40,
-          height: 40
-        }}
+        style={_const.absoluteBackButton}
       >
         <MaterialCommunityIcons name='chevron-left' color="#000" size={30} />
       </TouchableOpacity>
       <View style={account.detail}>
-        <View style={{
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
+        <View style={_const.centerItem}>
           <TouchableWithoutFeedback>
             <Image
               style={{
@@ -120,9 +69,10 @@ const Account = () => {
           <View>
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 25,
                 fontWeight: "900",
-                marginTop: 20
+                marginTop: 20,
+                fontFamily: "text"
               }}
             >
               {userProfile.name}, {moment().diff(new Date(userProfile.date), "years")}
@@ -149,10 +99,10 @@ const Account = () => {
             alignItems: "center",
             borderWidth: .3,
             borderRadius: 50,
-            borderColor: "rgba(0,0,0,0.3)"
+            borderColor: color.borderColor
           }}
         >
-          <MaterialCommunityIcons name='cog' color="#000" size={22} />
+          <MaterialCommunityIcons name='cog' color={color.dark} size={22} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("EditProfile")}
@@ -163,11 +113,11 @@ const Account = () => {
             alignItems: "center",
             borderWidth: .3,
             borderRadius: 50,
-            borderColor: "rgba(0,0,0,0.3)",
+            borderColor: color.borderColor,
             marginTop: 100
           }}
         >
-          <MaterialCommunityIcons name='pencil' color="#000" size={22} />
+          <MaterialCommunityIcons name='pencil' color={color.dark} size={22} />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -177,10 +127,10 @@ const Account = () => {
             alignItems: "center",
             borderWidth: .3,
             borderRadius: 50,
-            borderColor: "rgba(0,0,0,0.3)"
+            borderColor: color.borderColor
           }}
         >
-          <MaterialCommunityIcons name='shield' color="#000" size={22} />
+          <MaterialCommunityIcons name='shield' color={color.dark} size={22} />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

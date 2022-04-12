@@ -22,11 +22,6 @@ export default StyleSheet.create({
         marginTop: 10,
     },
 
-    changeProfilePhotoText: {
-        fontSize: 16,
-        color: "#4169e1"
-    },
-
     form: {
         width: "100%",
         paddingHorizontal: 10,
@@ -37,18 +32,18 @@ export default StyleSheet.create({
         height: 45,
         marginBottom: 30,
         borderBottomWidth: 1,
-        borderColor: "rgba(0,0,0,0.2)",
+        borderColor: colors.borderColor,
         position: "relative"
     },
 
     bioInputField: {
         marginBottom: 30,
         borderBottomWidth: 1,
-        borderColor: "rgba(0,0,0,0.2)",
+        borderColor: colors.borderColor,
     },
 
     input: {
-        backgroundColor: "rgba(0,0,0,0.0)",
+        backgroundColor: colors.transparent,
     },
 
     inputText: {
