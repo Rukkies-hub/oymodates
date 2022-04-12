@@ -1,6 +1,7 @@
 import { View, Text, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native'
 import React from 'react'
-import DatePicker from 'react-native-datepicker';
+
+import DatePicker from 'react-native-datepicker'
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
@@ -13,7 +14,7 @@ import useAuth from "../hooks/useAuth"
 import { useFonts } from 'expo-font'
 import color from '../style/color'
 
-const EditDateOfBirth = () => {
+const EditDateOfBirth = ({ navigation }) => {
   const { updateDateState, updateDateOfBirth } = useAuth()
 
   const [loaded] = useFonts({
@@ -77,14 +78,29 @@ const EditDateOfBirth = () => {
               <MaterialCommunityIcons name="check" color={color.dark} size={24} />
             </TouchableOpacity>
           </View>
-          <View style={{ backgroundColor: "#fff", flex: 1 }}>
+
+          <View
+            style={{
+              backgroundColor: color.white,
+              flex: 1,
+              justifyContent: "center"
+            }}
+          >
             <View style={editProfile.form}>
               <View style={{
                 height: 45,
                 marginBottom: 30,
                 position: "relative"
               }}>
-                <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Select Date of birth</Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: color.labelColor,
+                    fontFamily: "text"
+                  }}
+                >
+                  Select Date of birth
+                </Text>
                 <DatePicker
                   style={{
                     width: "100%",
@@ -94,6 +110,7 @@ const EditDateOfBirth = () => {
                   placeholder="select date"
                   format="DD/MM/YYYY"
                   confirmBtnText="Confirm"
+                  maxDate={new Date().toLocaleDateString()}
                   cancelBtnText="Cancel"
                   customStyles={{
                     dateIcon: {
@@ -110,14 +127,15 @@ const EditDateOfBirth = () => {
                     },
                     placeholderText: {
                       fontSize: 16,
-                      color: "gray"
+                      color: color.dark,
+                      fontFamily: "text"
                     },
                     dateText: {
                       fontSize: 16,
                     }
                   }}
                   onDateChange={(date) => {
-                    updateDateState.setDate(date);
+                    updateDateState.setDate(date)
                   }}
                 />
               </View>

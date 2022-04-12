@@ -37,7 +37,7 @@ const Account = () => {
       "Uncaught Error in snapshot listener"
     ])
     , [])
-  
+
   const [loaded] = useFonts({
     text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
   })
@@ -75,7 +75,7 @@ const Account = () => {
                 fontFamily: "text"
               }}
             >
-              {userProfile.name}, {moment().diff(new Date(userProfile.date), "years")}
+              {userProfile.name}, {moment().diff(moment(userProfile.date, "DD-MM-YYYY"), 'years')}
             </Text>
           </View>
         </View>
