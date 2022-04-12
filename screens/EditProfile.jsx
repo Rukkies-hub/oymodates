@@ -7,7 +7,8 @@ import {
   SafeAreaView,
   ScrollView
 } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { RadioButton } from 'react-native-paper'
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
@@ -27,6 +28,8 @@ import { useFonts } from 'expo-font'
 const EditProfile = ({ navigation }) => {
   const { userProfile, user, pickImage, getUserProfile } = useAuth()
 
+  const [checked, setChecked] = useState('male')
+
   const deleteImage = (image) => {
     const fileRef = firebase.storage().refFromURL(image)
 
@@ -41,6 +44,34 @@ const EditProfile = ({ navigation }) => {
           .then(() => {
             getUserProfile(user)
           })
+      })
+  }
+
+  useEffect(() =>
+    setChecked(userProfile.gender ? userProfile.gender : "male")
+    , [userProfile])
+
+  const maleGender = async () => {
+    await firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        gender: "male"
+      }).then(() => {
+        setChecked("male")
+        getUserProfile(user)
+      })
+  }
+
+  const femaleGender = async () => {
+    await firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        gender: "female"
+      }).then(() => {
+        setChecked("female")
+        getUserProfile(user)
       })
   }
 
@@ -198,9 +229,54 @@ const EditProfile = ({ navigation }) => {
             </View>
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Gender</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditGender")} style={editProfile.input} >
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <RadioButton
+                    value="male"
+                    color={color.red}
+                    status={checked === 'male' ? 'checked' : 'unchecked'}
+                    onPress={maleGender}
+                  />
+                  <Text
+                    style={{
+                      fontFamily: "text"
+                    }}
+                  >
+                    Male
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <RadioButton
+                    value="female"
+                    color={color.red}
+                    status={checked === 'female' ? 'checked' : 'unchecked'}
+                    onPress={femaleGender}
+                  />
+                  <Text
+                    style={{
+                      fontFamily: "text"
+                    }}
+                  >
+                    Female
+                  </Text>
+                </View>
+              </View>
+              {/* <TouchableWithoutFeedback onPress={() => navigation.navigate("EditGender")} style={editProfile.input} >
                 <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.gender}</Text>
-              </TouchableWithoutFeedback>
+              </TouchableWithoutFeedback> */}
             </View>
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Birthday</Text>

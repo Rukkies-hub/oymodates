@@ -42,9 +42,6 @@ export const AuthProvider = ({ children }) => {
   const [phone, setPhone] = useState("")
 
   // EDIT GENDER
-  const [gender, setGender] = useState("")
-
-  // EDIT GENDER
   const [date, setDate] = useState("")
 
   // EDIT GENDER
@@ -90,11 +87,6 @@ export const AuthProvider = ({ children }) => {
   const updatePhoneState = {
     phone,
     setPhone
-  }
-
-  const updateGenderState = {
-    gender,
-    setGender
   }
 
   const updateDateState = {
@@ -306,20 +298,6 @@ export const AuthProvider = ({ children }) => {
       })
   }
 
-  const updateGender = async () => {
-    const { gender } = updateGenderState
-
-    await firebase.firestore()
-      .collection("users")
-      .doc(`${user.uid}`)
-      .update({
-        gender
-      }).then(() => {
-        getUserProfile(user)
-        navigation.goBack()
-      })
-  }
-
   const updateDateOfBirth = async () => {
     const { date } = updateDateState
 
@@ -368,8 +346,6 @@ export const AuthProvider = ({ children }) => {
       sendPasswordReset,
       updatePhoneState,
       updatePhone,
-      updateGenderState,
-      updateGender,
       updateDateState,
       updateDateOfBirth,
       updateJobState,

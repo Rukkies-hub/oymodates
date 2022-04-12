@@ -17,7 +17,6 @@ import EditUsername from './screens/EditUsername'
 import EditName from './screens/EditName'
 import EditPassword from './screens/EditPassword'
 import EditPhone from './screens/EditPhone'
-import EditGender from './screens/EditGender'
 import EditDateOfBirth from './screens/EditDateOfBirth'
 import EditJob from './screens/EditJob'
 import Match from './screens/Match'
@@ -59,7 +58,6 @@ const StackNavigator = () => {
             <Stack.Screen name="EditName" component={EditName} options={{ headerShown: false }} />
             <Stack.Screen name="EditPassword" component={EditPassword} options={{ headerShown: false }} />
             <Stack.Screen name="EditPhone" component={EditPhone} options={{ headerShown: false }} />
-            <Stack.Screen name="EditGender" component={EditGender} options={{ headerShown: false }} />
             <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} options={{ headerShown: false }} />
             <Stack.Screen name="EditJob" component={EditJob} options={{ headerShown: false }} />
           </Stack.Group>

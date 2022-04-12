@@ -29,7 +29,7 @@ export default StyleSheet.create({
     },
 
     inputField: {
-        height: 45,
+        minHeight: 45,
         marginBottom: 30,
         borderBottomWidth: 1,
         borderColor: colors.borderColor,
