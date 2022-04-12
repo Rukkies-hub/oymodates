@@ -91,6 +91,7 @@ const HomeScreen = () => {
   }, [])
 
   const swipeLeft = async (cardIndex) => {
+    setStackSize(stackSize + 1)
     if (!profils[cardIndex]) return
 
     const userSwiped = profils[cardIndex]
@@ -103,6 +104,7 @@ const HomeScreen = () => {
   }
 
   const swipeRight = async (cardIndex) => {
+    setStackSize(stackSize + 1)
     if (!profils[cardIndex]) return
 
     const userSwiped = profils[cardIndex]
@@ -221,12 +223,32 @@ const HomeScreen = () => {
                   swipeRight(cardIndex)
                 }}
                 backgroundColor={color.transparent}
-                cardHorizontalMargin={5}
+                cardHorizontalMargin={2}
+                overlayLabels={{
+                  left: {
+                    title: "NOPE",
+                    style: {
+                      label: {
+                        textAlign: "right",
+                        color: color.red
+                      }
+                    }
+                  },
+                  right: {
+                    title: "MATCH",
+                    style: {
+                      label: {
+                        textAlign: "left",
+                        color: color.green
+                      }
+                    }
+                  }
+                }}
                 renderCard={card => card ? (
                   <View key={card.id}
                     style={{
                       backgroundColor: "#fff",
-                      height: 650,
+                      height: 660,
                       marginTop: -30,
                       width: "100%",
                       borderRadius: 16,
@@ -266,7 +288,8 @@ const HomeScreen = () => {
                             fontWeight: "600",
                             color: "#fff",
                             marginBottom: 10,
-                            fontFamily: "text"
+                            fontFamily: "text",
+                            textTransform: "capitalize"
                           }}>
                           {card.username + ", "}
                         </Text>
@@ -281,6 +304,59 @@ const HomeScreen = () => {
                           {card.age}
                         </Text>
                       </View>
+                      <View>
+                        <Text
+                          style={{
+                            color: "#fff",
+                            fontFamily: "text"
+                          }}
+                        >
+                          {card.occupation}
+                        </Text>
+                      </View>
+                      {
+                        card.about ? (
+                          <View>
+                            <Text>About</Text>
+                          </View>
+                        ) :
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              flexWrap: "wrap",
+                              justifyContent: "flex-start",
+                              alignItems: "center"
+                            }}
+                          >
+                            {
+                              card.intrests.map((pation, index) => {
+                                return (
+                                  <View
+                                    style={{
+                                      paddingHorizontal: 10,
+                                      paddingVertical: 5,
+                                      borderRadius: 50,
+                                      marginRight: 10,
+                                      marginBottom: 10,
+                                      backgroundColor: "#FF4081"
+                                    }}
+                                  >
+                                    <Text
+                                      style={{
+                                        color: color.white,
+                                        fontFamily: "text",
+                                        fontWeight: "600",
+                                        textTransform: "capitalize"
+                                      }}
+                                    >
+                                      {pation}
+                                    </Text>
+                                  </View>
+                                )
+                              })
+                            }
+                          </View>
+                      }
 
                       <View style={{ flexDirection: "row", justifyContent: "space-evenly", alignItems: "center" }}>
                         <TouchableOpacity
