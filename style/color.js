@@ -4,5 +4,6 @@ export default {
     dark: "#121212",
     white: "#fff",
     offWhite: "#F4F7F8",
-    transparent: "transparent"
+    transparent: "transparent",
+    borderColor: "rgba(0,0,0,0.2)"
 }

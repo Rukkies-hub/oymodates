@@ -28,6 +28,8 @@ import * as ImagePicker from 'expo-image-picker'
 import Constants from 'expo-constants'
 import * as Location from 'expo-location'
 
+import { useNavigation } from '@react-navigation/native'
+
 const intrestsList = [
   "karaoke",
   "cycling",
@@ -88,9 +90,13 @@ const intrestsList = [
   "coffie"
 ]
 
+import { useFonts } from 'expo-font'
+import color from '../style/color'
 
 const Setup = () => {
   const { user } = useAuth()
+  const navigation = useNavigation()
+
   const [userProfile, setUserProfile] = useState({})
   const [name, setName] = useState("")
   const [nameLoading, setNameLoading] = useState(false)
@@ -118,7 +124,7 @@ const Setup = () => {
         setName(doc.data()?.name)
         setAddress(doc.data()?.address)
         setOccupation(doc.data()?.occupation)
-        setIntrests(doc.data()?.intrests)
+        setIntrests(doc.data()?.intrests?.length ? doc.data()?.intrests : [])
       })
   }
 
@@ -131,7 +137,7 @@ const Setup = () => {
       setShowName(false)
       setShowPhoto(true)
     }
-    if (userProfile.name && userProfile.avatar?.length) {
+    if (userProfile.name && userProfile.avatar?.length >= 3) {
       setShowPhoto(false)
       setShowLocation(true)
     }
@@ -219,10 +225,7 @@ const Setup = () => {
           .doc(user.uid)
           .update({
             avatar: firebase.firestore.FieldValue.arrayRemove(image)
-          })
-          .then(() => {
-            getUserProfile(user)
-          })
+          }).then(() => getUserProfile(user))
       })
   }
 
@@ -262,6 +265,9 @@ const Setup = () => {
         address
       }).then(() => {
         setLocationLoading(false)
+        setShowLocation(false)
+        setShowOccupation(true)
+        getUserProfile(user)
       })
       .catch(error => setLocationLoading(false))
   }
@@ -300,10 +306,18 @@ const Setup = () => {
         .then(() => {
           getUserProfile(user)
           setIntrestsLoading(false)
+          navigation.goBack()
         })
         .catch(() => setOccupationLoading(false))
     }
   }
+
+  const [loaded] = useFonts({
+    header: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
+
+  if (!loaded)
+    return null
 
 
   return (
@@ -342,16 +356,32 @@ const Setup = () => {
                     right: 10
                   }}
                 >
-                  <MaterialCommunityIcons name='chevron-right' color="#000" size={30} />
+                  <MaterialCommunityIcons name='chevron-right' color={color.dark} size={30} />
                 </TouchableOpacity>
               }
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 25,
+                    color: color.dark,
+                    fontFamily: "header"
+                  }}
+                >
+                  Update you name
+                </Text>
+              </View>
               <View style={editProfile.form}>
                 <View
                   style={{
                     height: 50,
                     marginBottom: 30,
                     borderWidth: 1,
-                    borderColor: "rgba(0,0,0,0.2)",
+                    borderColor: color.borderColor,
                     borderRadius: 12,
                     paddingHorizontal: 10,
                     justifyContent: "center",
@@ -363,7 +393,9 @@ const Setup = () => {
                     value={name}
                     onChangeText={setName}
                     style={{
-                      width: "100%"
+                      width: "100%",
+                      color: color.dark,
+                      fontFamily: "header"
                     }}
                   />
                 </View>
@@ -371,21 +403,22 @@ const Setup = () => {
                 <TouchableOpacity
                   onPress={updateName}
                   style={{
-                    backgroundColor: "#FF4757",
+                    backgroundColor: color.red,
                     height: 50,
                     borderRadius: 12,
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
                   }}
                 >
                   {
                     nameLoading ?
-                      <ActivityIndicator size="small" color="#fff" />
+                      <ActivityIndicator size="small" color={color.white} />
                       :
                       <Text
                         style={{
-                          color: "#fff",
-                          fontSize: 18
+                          color: color.white,
+                          fontSize: 18,
+                          fontFamily: "header"
                         }}
                       >
                         Update name
@@ -396,7 +429,7 @@ const Setup = () => {
             </View>
           }
           {
-            (showName == false && showPhoto == true) &&
+            showPhoto == true &&
             <View
               style={{
                 flex: 1,
@@ -419,8 +452,34 @@ const Setup = () => {
                   left: 10
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color="#000" size={30} />
+                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
               </TouchableOpacity>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: userProfile.avatar?.length ? 20 : 0
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 25,
+                    color: color.dark,
+                    fontFamily: "header"
+                  }}
+                >
+                  Add your picture
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: color.dark,
+                    textAlign: "center"
+                  }}
+                >
+                  NOTE. the first image will be used as your account avatar
+                </Text>
+              </View>
               {
                 userProfile.avatar?.length != 9 &&
                 <View style={{ paddingHorizontal: 10 }}>
@@ -441,7 +500,7 @@ const Setup = () => {
                               position: "relative",
                               width: "100%",
                               height: 150,
-                              backgroundColor: "#F0F2F5",
+                              backgroundColor: color.offWhite,
                               borderRadius: 12,
                               overflow: "hidden"
                             }}
@@ -463,9 +522,9 @@ const Setup = () => {
                                 position: "absolute",
                                 bottom: 0,
                                 right: 0,
-                                backgroundColor: "#fff",
+                                backgroundColor: color.white,
                                 borderRadius: 50,
-                                shadowColor: "#000",
+                                shadowColor: color.dark,
                                 shadowOffset: {
                                   width: 0,
                                   height: 2,
@@ -475,7 +534,7 @@ const Setup = () => {
                                 elevation: 5,
                               }}
                             >
-                              <MaterialCommunityIcons name='close' color="#FF4757" size={22} />
+                              <MaterialCommunityIcons name='close' color={color.red} size={22} />
                             </TouchableOpacity>
                           </View>
                         </View>
@@ -489,13 +548,14 @@ const Setup = () => {
                         style={{
                           width: "100%",
                           height: 50,
-                          backgroundColor: "#FF4757",
+                          backgroundColor: color.red,
                           borderRadius: 12,
                           justifyContent: "center",
-                          alignItems: "center"
+                          alignItems: "center",
+                          fontFamily: "header"
                         }}
                       >
-                        <Text style={{ color: "#fff", fontSize: 18 }}>Add Photo</Text>
+                        <Text style={{ color: color.white, fontSize: 18 }}>Add Photo</Text>
                       </TouchableOpacity>
                       : null
                   }
@@ -510,14 +570,15 @@ const Setup = () => {
                       style={{
                         width: "100%",
                         height: 50,
-                        backgroundColor: "#F0F2F5",
+                        backgroundColor: color.offWhite,
                         borderRadius: 12,
                         justifyContent: "center",
                         alignItems: "center",
-                        marginTop: 20
+                        marginTop: 20,
+                        fontFamily: "header"
                       }}
                     >
-                      <Text style={{ color: "#000", fontSize: 18 }}>Done</Text>
+                      <Text style={{ color: color.dark, fontSize: 18 }}>Done</Text>
                     </TouchableOpacity>
                   }
                 </View>
@@ -525,11 +586,11 @@ const Setup = () => {
             </View>
           }
           {
-            (showName == false && showPhoto == false && showLocation == true) &&
+            showLocation == true &&
             <View
               style={{
                 flex: 1,
-                backgroundColor: "#fff",
+                backgroundColor: color.white,
                 justifyContent: "center",
                 alignItems: "center",
                 position: "relative",
@@ -552,7 +613,7 @@ const Setup = () => {
                   left: 10
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color="#000" size={30} />
+                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
               </TouchableOpacity>
               <Image
                 style={{
@@ -568,20 +629,32 @@ const Setup = () => {
                   alignItems: "flex-start",
                   minHeight: 50,
                   borderWidth: 1,
-                  borderColor: "rgba(0,0,0,0.2)",
+                  borderColor: color.borderColor,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                 }}
               >
                 {
-                  address == null ? <Text>Waiting...</Text>
-                    : <Text>
+                  address == null ?
+                    <Text
+                      style={{
+                        fontFamily: "header"
+                      }}
+                    >
+                      Waiting...
+                    </Text>
+                    : <Text
+                      style={{
+                        fontFamily: "header"
+                      }}
+                    >
                       {address?.subregion}, {address?.country}
                     </Text>
                 }
               </View>
               <View
                 style={{
+                  width: "100%",
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center"
@@ -592,14 +665,15 @@ const Setup = () => {
                   style={{
                     width: "48%",
                     height: 50,
-                    backgroundColor: "#F0F2F5",
+                    backgroundColor: color.offWhite,
                     borderRadius: 12,
                     justifyContent: "center",
                     alignItems: "center",
-                    marginTop: 20
+                    marginTop: 20,
+                    fontFamily: "header"
                   }}
                 >
-                  <Text style={{ color: "#000", fontSize: 18 }}>Get location</Text>
+                  <Text style={{ color: color.dark, fontSize: 18 }}>Get location</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={saveLocation}
@@ -607,18 +681,19 @@ const Setup = () => {
                     width: "48%",
                     height: 50,
                     borderRadius: 12,
-                    backgroundColor: "#FF4757",
+                    backgroundColor: color.red,
                     flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "center",
-                    marginTop: 20
+                    marginTop: 20,
+                    fontFamily: "header"
                   }}
                 >
                   {
-                    locationLoading ? <ActivityIndicator size="small" color="#fff" />
+                    locationLoading ? <ActivityIndicator size="small" color={color.white} />
                       : <>
-                        <MaterialCommunityIcons name='google-maps' size={20} color="#fff" />
-                        <Text style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>Update</Text>
+                        <MaterialCommunityIcons name='google-maps' size={20} color={color.white} />
+                        <Text style={{ color: color.white, fontSize: 18, marginLeft: 10 }}>Update</Text>
                       </>
                   }
                 </TouchableOpacity>
@@ -630,20 +705,57 @@ const Setup = () => {
             <View
               style={{
                 flex: 1,
-                backgroundColor: "#fff",
+                backgroundColor: color.white,
                 justifyContent: "center",
                 alignItems: "center",
                 position: "relative",
                 paddingHorizontal: 10
               }}
             >
+              <TouchableOpacity
+                onPress={() => {
+                  setShowName(false)
+                  setShowPhoto(false)
+                  setShowOccupation(false)
+                  setShowLocation(true)
+                }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "absolute",
+                  top: 10,
+                  left: 10
+                }}
+              >
+                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+              </TouchableOpacity>
+
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 25,
+                    color: color.dark,
+                    fontFamily: "header"
+                  }}
+                >
+                  What do you do
+                </Text>
+              </View>
+
               <View style={editProfile.form}>
                 <View
                   style={{
                     height: 50,
                     marginBottom: 30,
                     borderWidth: 1,
-                    borderColor: "rgba(0,0,0,0.2)",
+                    borderColor: color.borderColor,
                     borderRadius: 12,
                     paddingHorizontal: 10,
                     justifyContent: "center",
@@ -651,11 +763,12 @@ const Setup = () => {
                   }}
                 >
                   <TextInput
-                    placeholder="Occupation"
+                    placeholder="I am a (occupation)"
                     value={occupation}
                     onChangeText={setOccupation}
                     style={{
-                      width: "100%"
+                      width: "100%",
+                      fontFamily: "header"
                     }}
                   />
                 </View>
@@ -663,20 +776,21 @@ const Setup = () => {
                 <TouchableOpacity
                   onPress={updateOccupation}
                   style={{
-                    backgroundColor: "#FF4757",
+                    backgroundColor: color.red,
                     height: 50,
                     borderRadius: 12,
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
+                    fontFamily: "header"
                   }}
                 >
                   {
                     occupationLoading ?
-                      <ActivityIndicator size="small" color="#fff" />
+                      <ActivityIndicator size="small" color={color.white} />
                       :
                       <Text
                         style={{
-                          color: "#fff",
+                          color: color.white,
                           fontSize: 18
                         }}
                       >
@@ -692,17 +806,56 @@ const Setup = () => {
             <View
               style={{
                 flex: 1,
-                backgroundColor: "#fff",
+                backgroundColor: color.white,
                 justifyContent: "center",
                 alignItems: "center",
                 position: "relative",
                 paddingHorizontal: 10
               }}
             >
+              <TouchableOpacity
+                onPress={() => {
+                  setShowName(false)
+                  setShowPhoto(false)
+                  setShowLocation(false)
+                  setShowIntrests(false)
+                  setShowOccupation(true)
+                }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "absolute",
+                  top: 10,
+                  left: 10
+                }}
+              >
+                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+              </TouchableOpacity>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 25,
+                    color: color.dark,
+                    fontFamily: "header"
+                  }}
+                >
+                    What are your pashions
+                    {
+                      intrests.length ? <Text>[{intrests.length}/5]</Text> : <Text style={{display: "none"}}></Text>
+                    }
+                </Text>
+              </View>
               <View style={editProfile.form}>
                 <ScrollView
                   style={{
-                    maxHeight: 550,
+                    maxHeight: 500,
                     minHeight: 400,
                     marginBottom: 20
                   }}
@@ -730,15 +883,17 @@ const Setup = () => {
                               paddingVertical: 5,
                               borderWidth: 2,
                               borderRadius: 50,
-                              borderColor: intrests.includes(pashion) ? "#FF4757" : "rgba(0,0,0,0.1)",
+                              borderColor: intrests?.includes(pashion) ? color.red : "rgba(0,0,0,0.1)",
                               marginBottom: 10,
                               marginRight: 10
                             }}
                           >
                             <Text
                               style={{
-                                color: intrests.includes(pashion) ? "#FF4757" : "rgba(0,0,0,0.6)",
-                                fontSize: 14
+                                color: intrests?.includes(pashion) ? color.red : "rgba(0,0,0,0.6)",
+                                fontSize: 12,
+                                fontFamily: "header",
+                                textTransform: "capitalize"
                               }}
                             >
                               {pashion}
@@ -753,7 +908,7 @@ const Setup = () => {
                 <TouchableOpacity
                   onPress={updateIntrests}
                   style={{
-                    backgroundColor: "#FF4757",
+                    backgroundColor: color.red,
                     height: 50,
                     borderRadius: 12,
                     justifyContent: "center",
@@ -762,12 +917,13 @@ const Setup = () => {
                 >
                   {
                     intrestsLoading ?
-                      <ActivityIndicator size="small" color="#fff" />
+                      <ActivityIndicator size="small" color={color.white} />
                       :
                       <Text
                         style={{
-                          color: "#fff",
-                          fontSize: 18
+                          color: color.white,
+                          fontSize: 18,
+                          fontFamily: "header"
                         }}
                       >
                         Update pashion
