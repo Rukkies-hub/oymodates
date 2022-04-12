@@ -94,7 +94,7 @@ import { useFonts } from 'expo-font'
 import color from '../style/color'
 
 const Setup = () => {
-  const { user } = useAuth()
+  const { user, renderHome, setRenderHome } = useAuth()
   const navigation = useNavigation()
 
   const [userProfile, setUserProfile] = useState({})
@@ -306,6 +306,7 @@ const Setup = () => {
         .then(() => {
           getUserProfile(user)
           setIntrestsLoading(false)
+          setRenderHome(true)
           navigation.goBack()
         })
         .catch(() => setOccupationLoading(false))
@@ -458,7 +459,7 @@ const Setup = () => {
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
-                  marginBottom: userProfile.avatar?.length ? 20 : 0
+                  marginBottom: userProfile.avatar?.length ? 20 : 30
                 }}
               >
                 <Text
@@ -618,7 +619,8 @@ const Setup = () => {
               <Image
                 style={{
                   width: 200,
-                  height: 200
+                    height: 200,
+                    marginBottom: 30
                 }}
                 source={require("../assets/location.png")}
               />

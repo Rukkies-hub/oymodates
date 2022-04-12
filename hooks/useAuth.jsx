@@ -6,11 +6,13 @@ import * as ImagePicker from 'expo-image-picker'
 import firebase from "./firebase"
 
 const AuthContext = createContext({})
+import moment from 'moment'
 
 export const AuthProvider = ({ children }) => {
   const navigation = useNavigation()
 
   const [user, setUser] = React.useState(null)
+  const [renderHome, setRenderHome] = useState(false)
 
   // SIGN UP USER
   const [username, setUsername] = useState("")
@@ -325,6 +327,7 @@ export const AuthProvider = ({ children }) => {
       .collection("users")
       .doc(`${user.uid}`)
       .update({
+        age: moment().diff(moment(date, "DD-MM-YYYY"), 'years'),
         date
       }).then(() => {
         getUserProfile(user)
@@ -371,7 +374,9 @@ export const AuthProvider = ({ children }) => {
       updateDateOfBirth,
       updateJobState,
       updateJob,
-      getUserProfile
+      getUserProfile,
+      renderHome,
+      setRenderHome
     }}>
       {!loadingInitial && children}
     </AuthContext.Provider>

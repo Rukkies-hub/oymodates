@@ -1,4 +1,11 @@
-import { SafeAreaView, Text, View, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import {
+  SafeAreaView,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator
+} from 'react-native'
 import React, { useRef, useState, useEffect, useLayoutEffect } from 'react'
 
 import firebase from "../hooks/firebase"
@@ -20,12 +27,14 @@ import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import color from '../style/color'
 
+import { useFonts } from 'expo-font'
+
 const HomeScreen = () => {
   const navigation = useNavigation()
 
   const swipeRef = useRef(null)
 
-  const { user, userProfile, logout } = useAuth()
+  const { user, userProfile, renderHome, setRenderHome } = useAuth()
 
   useLayoutEffect(() => {
     firebase.firestore()
@@ -33,12 +42,14 @@ const HomeScreen = () => {
       .doc(user.uid)
       .get()
       .then(doc => {
-        if (doc.data()?.name || doc.data()?.avatar?.length < 1 || doc.data()?.location || doc.data()?.occupation || doc.data()?.intrests?.length)
+        if (!doc.data()?.name || !doc.data()?.avatar?.length || !doc.data()?.location || !doc.data()?.occupation || !doc.data()?.intrests?.length)
           navigation.navigate("Setup")
+        else setRenderHome(true)
       })
-  }, [])
+  }, [userProfile])
 
   const [profils, setProfiles] = useState([])
+  const [stackSize, setStackSize] = useState(2)
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -145,185 +156,228 @@ const HomeScreen = () => {
       })
   }
 
+  const [loaded] = useFonts({
+    logo: require("../assets/fonts/Pacifico/Pacifico-Regular.ttf"),
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
+
+  if (!loaded)
+    return null
+
   return (
     <SafeAreaView style={home.container}>
       <Bar />
-      <View style={home.header}>
-        <Image style={{ height: 40, width: 100 }} source={require('../assets/logo.png')} />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center"
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Account")}
-          >
-            {
-              userProfile == null ?
-                <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
-                : (userProfile.avatar?.length ?
-                  <Image style={{ width: 30, height: 30, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile.avatar[0] }} />
-                  : <SimpleLineIcons name="user" color="#000" size={22} />
-                )
-            }
-          </TouchableOpacity>
-        </View>
-      </View>
+      {
+        renderHome &&
+        <>
+          <View style={home.header}>
+            <Text
+              style={{
+                fontSize: 30,
+                color: "#000",
+                fontFamily: "logo"
+              }}
+            >
+              Oymo
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                alignItems: "center"
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Account")}
+              >
+                {
+                  userProfile == null ?
+                    <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
+                    : (userProfile.avatar?.length ?
+                      <Image style={{ width: 30, height: 30, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile.avatar[0] }} />
+                      : <SimpleLineIcons name="user" color="#000" size={22} />
+                    )
+                }
+              </TouchableOpacity>
+            </View>
+          </View>
 
-      <View style={{ flex: 1, marginTop: -6 }}>
-        {profils.length >= 1 ? (
-          <Swiper
-            ref={swipeRef}
-            containerStyle={{ backgroundColor: "transparent" }}
-            cards={profils}
-            cardIndex={0}
-            verticalSwipe={true}
-            animateCardOpacity
-            onSwipedLeft={(cardIndex) => {
-              swipeLeft(cardIndex)
-            }}
-            onSwipedRight={(cardIndex) => {
-              swipeRight(cardIndex)
-            }}
-            backgroundColor={"transparent"}
-            renderCard={card => card ? (
-              <View key={card.id}
-                style={{
-                  backgroundColor: "#fff",
-                  height: 650,
-                  marginTop: -30,
-                  width: "100%",
-                  borderRadius: 16,
-                  position: "relative",
-                  overflow: "hidden"
-                }}>
-                {/* <Image style={{
-                  flex: 1,
-                  width: "100%",
-                  height: "100%",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                }} source={{ uri: card.avatar[0] }} /> */}
-
-                <LinearGradient
-                  colors={['transparent', '#000']}
-                  style={{
-                    width: "100%",
-                    minHeight: 60,
-                    position: "absolute",
-                    bottom: 0,
-                    paddingHorizontal: 20,
-                    paddingVertical: 10
-                  }}>
-                  <Text
+          <View style={{ flex: 1, marginTop: -6 }}>
+            {profils.length >= 1 ? (
+              <Swiper
+                ref={swipeRef}
+                cards={profils}
+                containerStyle={{
+                  backgroundColor: color.transparent,
+                }}
+                cardIndex={0}
+                stackSize={stackSize}
+                verticalSwipe={true}
+                animateCardOpacity
+                onSwipedLeft={(cardIndex) => {
+                  swipeLeft(cardIndex)
+                }}
+                onSwipedRight={(cardIndex) => {
+                  swipeRight(cardIndex)
+                }}
+                backgroundColor={color.transparent}
+                cardHorizontalMargin={5}
+                renderCard={card => card ? (
+                  <View key={card.id}
                     style={{
-                      fontSize: 20,
-                      fontWeight: "600",
-                      color: "#fff",
-                      marginBottom: 10
+                      backgroundColor: "#fff",
+                      height: 650,
+                      marginTop: -30,
+                      width: "100%",
+                      borderRadius: 16,
+                      position: "relative",
+                      overflow: "hidden"
                     }}>
-                    {card.username}
-                  </Text>
+                    <Image style={{
+                      flex: 1,
+                      width: "100%",
+                      height: "100%",
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                    }} source={{ uri: card.avatar[0] }} />
 
-                  <View style={{ flexDirection: "row", justifyContent: "space-evenly", alignItems: "center" }}>
-                    <TouchableOpacity
+                    <LinearGradient
+                      colors={['transparent', '#000']}
                       style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: 50,
-                        width: 40,
-                        height: 40,
-                        borderWidth: 1,
-                        borderColor: "#fff"
+                        width: "100%",
+                        minHeight: 60,
+                        position: "absolute",
+                        bottom: 0,
+                        paddingHorizontal: 20,
+                        paddingVertical: 10
                       }}>
-                      <MaterialCommunityIcons name="refresh" color="#fff" size={30} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => swipeRef.current.swipeLeft()}
-                      style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: 50,
-                        width: 55,
-                        height: 55,
-                        borderWidth: 1,
-                        borderColor: "#FF4757"
-                      }}>
-                      <MaterialCommunityIcons name="close" color="#FF4757" size={30} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: 50,
-                        width: 40,
-                        height: 40,
-                        borderWidth: 1,
-                        borderColor: "#4169e1"
-                      }}>
-                      <MaterialCommunityIcons name="star" color="#4169e1" size={30} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => swipeRef.current.swipeRight()}
-                      style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: 50,
-                        width: 55,
-                        height: 55,
-                        borderWidth: 1,
-                        borderColor: "#46C93A"
-                      }}>
-                      <MaterialCommunityIcons name="heart" color="#46C93A" size={30} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => console.log(card)}
-                      style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: 50,
-                        width: 40,
-                        height: 40,
-                        borderWidth: 1,
-                        borderColor: "#fff"
-                      }}>
-                      <MaterialCommunityIcons name="lightning-bolt" color="#fff" size={30} />
-                    </TouchableOpacity>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center"
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            fontWeight: "600",
+                            color: "#fff",
+                            marginBottom: 10,
+                            fontFamily: "text"
+                          }}>
+                          {card.username + ", "}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            fontWeight: "600",
+                            color: "#fff",
+                            marginBottom: 10,
+                            fontFamily: "text"
+                          }}>
+                          {card.age}
+                        </Text>
+                      </View>
+
+                      <View style={{ flexDirection: "row", justifyContent: "space-evenly", alignItems: "center" }}>
+                        <TouchableOpacity
+                          style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 50,
+                            width: 40,
+                            height: 40,
+                            borderWidth: 1,
+                            borderColor: "#fff"
+                          }}>
+                          <MaterialCommunityIcons name="refresh" color="#fff" size={30} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => swipeRef.current.swipeLeft()}
+                          style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 50,
+                            width: 55,
+                            height: 55,
+                            borderWidth: 1,
+                            borderColor: "#FF4757"
+                          }}>
+                          <MaterialCommunityIcons name="close" color="#FF4757" size={30} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 50,
+                            width: 40,
+                            height: 40,
+                            borderWidth: 1,
+                            borderColor: "#4169e1"
+                          }}>
+                          <MaterialCommunityIcons name="star" color="#4169e1" size={30} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => swipeRef.current.swipeRight()}
+                          style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 50,
+                            width: 55,
+                            height: 55,
+                            borderWidth: 1,
+                            borderColor: "#46C93A"
+                          }}>
+                          <MaterialCommunityIcons name="heart" color="#46C93A" size={30} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => console.log(card)}
+                          style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: 50,
+                            width: 40,
+                            height: 40,
+                            borderWidth: 1,
+                            borderColor: "#fff"
+                          }}>
+                          <MaterialCommunityIcons name="lightning-bolt" color="#fff" size={30} />
+                        </TouchableOpacity>
+                      </View>
+                    </LinearGradient>
                   </View>
-                </LinearGradient>
-              </View>
+                ) : (
+                  <View style={{
+                    flex: 1,
+                    backgroundColor: "#fff",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}>
+                    <Image
+                      style={{ width: 105, height: 105 }}
+                      width={105}
+                      height={105}
+                      source={require("../assets/sad.png")} />
+                    <Text style={{ fontSize: 20, fontWeight: "600" }}>No more profiles</Text>
+                  </View>
+                )}
+              />
             ) : (
               <View style={{
                 flex: 1,
-                backgroundColor: "#fff",
+                flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center"
               }}>
-                <Image
-                  style={{ width: 105, height: 105 }}
-                  width={105}
-                  height={105}
-                  source={require("../assets/sad.png")} />
-                <Text style={{ fontSize: 20, fontWeight: "600" }}>No more profiles</Text>
+                <ActivityIndicator size="large" color="rgba(0,0,0,0.6)" />
               </View>
             )}
-          />
-        ) : (
-          <View style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center"
-          }}>
-            <ActivityIndicator size="large" color="rgba(0,0,0,0.6)" />
           </View>
-        )}
-      </View>
-
+        </>
+      }
     </SafeAreaView>
   )
 }

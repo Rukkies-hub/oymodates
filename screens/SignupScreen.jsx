@@ -48,7 +48,8 @@ const SignupScreen = ({ navigation }) => {
                 fontFamily: "logo"
               }}
             >
-              Sign In</Text>
+              Sign In
+            </Text>
           </View>
 
           <View style={auth.form_view_inputs}>
