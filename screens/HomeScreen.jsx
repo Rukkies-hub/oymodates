@@ -204,13 +204,14 @@ const HomeScreen = () => {
             </View>
           </View>
 
-          <View style={{ flex: 1, marginTop: -6 }}>
+          <View style={{ flex: 1, marginTop: -8 }}>
             {profils.length >= 1 ? (
               <Swiper
                 ref={swipeRef}
                 cards={profils}
                 containerStyle={{
                   backgroundColor: color.transparent,
+                  marginTop: -20
                 }}
                 cardIndex={0}
                 stackSize={stackSize}
@@ -248,7 +249,7 @@ const HomeScreen = () => {
                   <View key={card.id}
                     style={{
                       backgroundColor: "#fff",
-                      height: 670,
+                      height: 698,
                       marginTop: -30,
                       width: "100%",
                       borderRadius: 10,

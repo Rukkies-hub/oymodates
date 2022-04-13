@@ -4,8 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "stripe": "^8.216.0"
   },
+  "type": "module",
   "devDependencies": {
     "nodemon": "^2.0.15"
   }
