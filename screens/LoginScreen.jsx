@@ -59,6 +59,7 @@ const LoginScreen = ({ navigation }) => {
               <SimpleLineIcons name="envelope" color="rgba(0,0,0,0.6)" size={20} style={auth.email_icon} />
               <TextInput
                 placeholder="Email"
+                keyboardType="email-address"
                 value={signinState.signinEmail}
                 onChangeText={signinState.setSigninEmail}
                 style={auth.form_view_inputs_input_1}
