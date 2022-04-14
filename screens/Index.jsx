@@ -10,7 +10,6 @@ const Tab = createMaterialBottomTabNavigator();
 
 import HomeScreen from "./HomeScreen"
 import ChatScreen from "./ChatScreen"
-import AccountUpgrade from "./AccountUpgrade"
 
 import useAuth from "../hooks/useAuth"
 
@@ -34,8 +33,6 @@ export default function Index () {
             iconName = focused ? "magnify" : "magnify"
           if (route.name === "Chat")
             iconName = focused ? "chat" : "chat-outline"
-          if (route.name === "AccountUpgrade")
-            iconName = focused ? "account-star" : "account-star-outline"
 
           return <MaterialCommunityIcons name={iconName} color={color} size={26} />
         }
@@ -44,12 +41,6 @@ export default function Index () {
       <Tab.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={{
-          headerShown: true,
-        }} />
-      <Tab.Screen
-        name="AccountUpgrade"
-        component={AccountUpgrade}
         options={{
           headerShown: true,
         }} />

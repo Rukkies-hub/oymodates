@@ -25,6 +25,7 @@ import PreviewImage from './screens/PreviewImage'
 import ViewProfile from './screens/ViewProfile'
 import Account from './screens/Account'
 import Setup from './screens/Setup'
+import OymoPlus from './screens/OymoPlus'
 
 import useAuth from "./hooks/useAuth"
 
@@ -48,6 +49,7 @@ const StackNavigator = () => {
           <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
             <Stack.Screen name="Match" component={Match} options={{ headerShown: false }} />
             <Stack.Screen name="PreviewImage" component={PreviewImage} options={{ headerShown: false }} />
+            <Stack.Screen name="OymoPlus" component={OymoPlus} options={{ headerShown: false }} />
           </Stack.Group>
 
           <Stack.Group screenOptions={{ presentation: "modal" }}>

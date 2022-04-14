@@ -8,5 +8,8 @@ export default {
     offWhite: "#F4F7F8",
     transparent: "transparent",
     borderColor: "rgba(0,0,0,0.2)",
-    labelColor: "rgba(0,0,0,0.4)"
+    labelColor: "rgba(0,0,0,0.4)",
+    transparentBackground: "rgba(0,0,0,0.4)",
+    gold: "#FFD700",
+    black: "#000"
 }

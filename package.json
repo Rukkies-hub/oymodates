@@ -37,6 +37,7 @@
     "react-native-emoji-selector": "^0.2.0",
     "react-native-gesture-handler": "^2.3.2",
     "react-native-ios-modal": "^0.1.8",
+    "react-native-linear-gradient": "^2.5.6",
     "react-native-paper": "^4.12.0",
     "react-native-progress": "^5.0.0",
     "react-native-raw-bottom-sheet": "^2.2.0",
@@ -50,8 +51,10 @@
     "react-native-super-grid": "^4.2.0",
     "react-native-svg": "^12.3.0",
     "react-native-swipe-cards-deck": "^0.3.0",
+    "react-native-swiper-flatlist": "^3.0.16",
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
+    "react-native-webview": "11.15.0",
     "rn-emoji-keyboard": "^0.7.1",
     "tailwind-rn": "^4.2.0"
   },

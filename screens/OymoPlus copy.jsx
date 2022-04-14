@@ -55,64 +55,72 @@ const AccountUpgrade = () => {
   }
 
   return (
-    <SafeAreaView
+    <View
       style={{
         flex: 1,
-        backgroundColor: color.white,
+        backgroundColor: color.transparentBackground,
         justifyContent: "center",
         paddingHorizontal: 10
       }}
     >
-      <TextInput
-        autoCapitalize='none'
-        keyboardType="email-address"
-        placeholder='Email'
-        value={email}
-        onChangeText={setEmail}
+      <View
         style={{
-          height: 50,
-          borderWidth: 1,
-          borderColor: color.borderColor,
-          borderRadius: 12,
-          paddingHorizontal: 10
-        }}
-      />
-      <CardField
-        postalCodeEnabled={true}
-        placeholder="4242 4242 4242 4242"
-        style={{
-          height: 50,
-          marginTop: 20,
-          borderWidth: 1,
-          borderColor: color.borderColor,
-          borderRadius: 12,
-          paddingHorizontal: 10,
-        }}
-        onCardChange={cardDetails => {
-          setCardDetails(cardDetails)
-        }}
-      />
-      <TouchableOpacity
-        onPress={handlePay}
-        disabled={loading}
-        style={{
-          height: 50,
-          marginTop: 20,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: color.dark,
-          borderRadius: 12
+          backgroundColor: color.white,
+          padding: 20,
+          borderRadius: 20
         }}
       >
-        <Text
+        <TextInput
+          autoCapitalize='none'
+          keyboardType="email-address"
+          placeholder='Email'
+          value={email}
+          onChangeText={setEmail}
           style={{
-            color: color.white,
+            height: 50,
+            borderWidth: 1,
+            borderColor: color.borderColor,
+            borderRadius: 12,
+            paddingHorizontal: 10
+          }}
+        />
+        <CardField
+          postalCodeEnabled={true}
+          placeholder="4242 4242 4242 4242"
+          style={{
+            height: 50,
+            marginTop: 20,
+            borderWidth: 1,
+            borderColor: color.borderColor,
+            borderRadius: 12,
+            paddingHorizontal: 10,
+          }}
+          onCardChange={cardDetails => {
+            setCardDetails(cardDetails)
+          }}
+        />
+        <TouchableOpacity
+          onPress={handlePay}
+          disabled={loading}
+          style={{
+            height: 50,
+            marginTop: 20,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: color.dark,
+            borderRadius: 12
           }}
         >
-          Pay
-        </Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+          <Text
+            style={{
+              color: color.white,
+            }}
+          >
+            Pay
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   )
 }
 

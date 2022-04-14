@@ -1,32 +1,206 @@
-import { View, Text, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity
+} from 'react-native'
 import React from 'react'
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import editProfile from '../style/editProfile'
 import color from '../style/color'
 
 import useAuth from "../hooks/useAuth"
 
+import { useFonts } from 'expo-font'
+
+import _const from "../style/const"
+
+import { LinearGradient } from 'expo-linear-gradient'
+
 const EditPersonalInformation = ({ navigation }) => {
   const { userProfile, logout } = useAuth()
+
+  const [loaded] = useFonts({
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf"),
+    logo: require("../assets/fonts/Pacifico/Pacifico-Regular.ttf")
+  })
+
+  if (!loaded)
+    return null
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
-          <View style={editProfile.header}>
-            <View style={editProfile.left}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <SimpleLineIcons name="arrow-left" color="rgba(0,0,0,0.8)" size={20} />
-              </TouchableOpacity>
-              <Text style={editProfile.headText}>Personal information</Text>
-            </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center"
+            }}
+          >
+            <TouchableOpacity
+              style={_const.backButton}
+              onPress={() => navigation.goBack()}
+            >
+              <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+            </TouchableOpacity>
+            <Text
+              style={{
+                marginLeft: 10,
+                fontSize: 18,
+                fontFamily: "text"
+              }}
+            >
+              Personal information
+            </Text>
           </View>
 
-          <View style={{ flexDirection: "row", paddingHorizontal: 50, marginTop: 10 }}>
-            <Text style={{ textAlign: "center" }}>Provide your personal information. This won't be part of your public profile</Text>
-          </View>
+          <TouchableOpacity
+            style={{
+              height: 90,
+              width: "100%",
+              flexDirection: "row",
+              marginTop: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 30,
+              shadowColor: color.labelColor,
+              shadowOffset: {
+                width: 0,
+                height: 6,
+              },
+              shadowOpacity: 0.39,
+              shadowRadius: 8.30,
+              elevation: 13,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 25,
+                color: color.dark,
+                fontFamily: "logo",
+                marginRight: 10,
+                marginTop: -10
+              }}
+            >
+              Oymo
+            </Text>
+            <View
+              style={{
+                paddingVertical: 4,
+                paddingHorizontal: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 8,
+                backgroundColor: color.black,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "text",
+                  color: color.white
+                }}
+              >
+                platinum
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              height: 90,
+              width: "100%",
+              flexDirection: "row",
+              marginTop: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 12,
+              marginTop: -20,
+              borderRadius: 30,
+              shadowColor: color.labelColor,
+              shadowOffset: {
+                width: 0,
+                height: 6,
+              },
+              shadowOpacity: 0.39,
+              shadowRadius: 8.30,
+              elevation: 13,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 25,
+                color: color.dark,
+                fontFamily: "logo",
+                marginRight: 10,
+                marginTop: -10
+              }}
+            >
+              Oymo
+            </Text>
+            <LinearGradient
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              colors={[color.gold, color.white, color.gold]}
+              style={{
+                paddingVertical: 4,
+                paddingHorizontal: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 8
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "text"
+                }}
+              >
+                Gold
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("OymoPlus")}
+            style={{
+              height: 90,
+              width: "100%",
+              flexDirection: "row",
+              marginTop: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 12,
+              marginTop: -20,
+              borderRadius: 30,
+              shadowColor: color.labelColor,
+              shadowOffset: {
+                width: 0,
+                height: 6,
+              },
+              shadowOpacity: 0.39,
+              shadowRadius: 8.30,
+              elevation: 13,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 25,
+                color: color.dark,
+                fontFamily: "logo",
+                marginRight: 10,
+                marginTop: -10
+              }}
+            >
+              Oymo
+            </Text>
+            <MaterialCommunityIcons name='plus' size={30} color={color.red} />
+          </TouchableOpacity>
 
           <View style={editProfile.form}>
             <View style={editProfile.inputField}>
