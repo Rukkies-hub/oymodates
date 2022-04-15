@@ -62,6 +62,7 @@ const EditPersonalInformation = ({ navigation }) => {
           </View>
 
           <TouchableOpacity
+            onPress={() => navigation.navigate("OymoPlatinum")}
             style={{
               height: 90,
               width: "100%",
@@ -113,6 +114,7 @@ const EditPersonalInformation = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity
+            onPress={() => navigation.navigate("OymoGold")}
             style={{
               height: 90,
               width: "100%",
@@ -147,7 +149,7 @@ const EditPersonalInformation = ({ navigation }) => {
             <LinearGradient
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
-              colors={[color.gold, color.white, color.gold]}
+              colors={[color.goldDark, color.gold, color.goldDark]}
               style={{
                 paddingVertical: 4,
                 paddingHorizontal: 10,

@@ -15,6 +15,8 @@ import { useFonts } from 'expo-font'
 
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
 
+import { LinearGradient } from 'expo-linear-gradient'
+
 const DATA = [
   {
     title: 'Unlimited likes',
@@ -45,7 +47,7 @@ import firebase from '../hooks/firebase'
 
 import useAuth from '../hooks/useAuth'
 
-const OymoPlus = () => {
+const OymoGold = () => {
   const { user, userProfile } = useAuth()
   const [showModal, setShowModal] = useState(false)
   const [status, setStatus] = useState("")
@@ -64,7 +66,7 @@ const OymoPlus = () => {
           .collection("users")
           .doc(user.uid)
           .update({
-            subscriptionPlans: "plus",
+            subscriptionPlans: "gold",
             duration: 12,
             payed: true,
             currentDate,
@@ -88,7 +90,7 @@ const OymoPlus = () => {
           .collection("users")
           .doc(user.uid)
           .update({
-            subscriptionPlans: "plus",
+            subscriptionPlans: "gold",
             duration: 6,
             payed: true,
             currentDate,
@@ -112,7 +114,7 @@ const OymoPlus = () => {
           .collection("users")
           .doc(user.uid)
           .update({
-            subscriptionPlans: "plus",
+            subscriptionPlans: "gold",
             duration: 1,
             payed: true,
             currentDate,
@@ -160,10 +162,10 @@ const OymoPlus = () => {
               fontFamily: "text",
               fontSize: 20,
               marginBottom: 30,
-              color: color.red
+              color: color.goldDark
             }}
           >
-            Get Oymo Plus
+            Get Oymo Gold
           </Text>
 
           <SwiperFlatList
@@ -226,7 +228,7 @@ const OymoPlus = () => {
             style={{
               width: "33.3333333333%",
               borderWidth: 1,
-              borderColor: activeButton == "12" ? color.red : color.borderColor,
+              borderColor: activeButton == "12" ? color.goldDark : color.borderColor,
               minHeight: 100,
               justifyContent: "center",
               alignItems: "center"
@@ -236,7 +238,7 @@ const OymoPlus = () => {
               style={{
                 fontFamily: "text",
                 fontSize: 20,
-                color: activeButton == "12" ? color.red : color.dark
+                color: activeButton == "12" ? color.goldDark : color.dark
               }}
             >
               12
@@ -245,7 +247,7 @@ const OymoPlus = () => {
             <Text
               style={{
                 fontFamily: "text",
-                color: activeButton == "12" ? color.red : color.dark
+                color: activeButton == "12" ? color.goldDark : color.dark
               }}
             >
               Months
@@ -255,7 +257,7 @@ const OymoPlus = () => {
               style={{
                 fontFamily: "text",
                 marginTop: 15,
-                color: activeButton == "12" ? color.red : color.dark
+                color: activeButton == "12" ? color.goldDark : color.dark
               }}
             >
               NGN648.33/mo
@@ -268,7 +270,7 @@ const OymoPlus = () => {
               width: "33.3333333333%",
               borderTopWidth: 1,
               borderBottomWidth: 1,
-              borderColor: activeButton == "6" ? color.red : color.borderColor,
+              borderColor: activeButton == "6" ? color.goldDark : color.borderColor,
               minHeight: 100,
               justifyContent: "center",
               alignItems: "center"
@@ -278,7 +280,7 @@ const OymoPlus = () => {
               style={{
                 fontFamily: "text",
                 fontSize: 20,
-                color: activeButton == "6" ? color.red : color.dark
+                color: activeButton == "6" ? color.goldDark : color.dark
               }}
             >
               6
@@ -286,7 +288,7 @@ const OymoPlus = () => {
             <Text
               style={{
                 fontFamily: "text",
-                color: activeButton == "6" ? color.red : color.dark
+                color: activeButton == "6" ? color.goldDark : color.dark
               }}
             >
               Months
@@ -295,7 +297,7 @@ const OymoPlus = () => {
               style={{
                 fontFamily: "text",
                 marginTop: 15,
-                color: activeButton == "6" ? color.red : color.dark
+                color: activeButton == "6" ? color.goldDark : color.dark
               }}
             >
               NGN971.66/mo
@@ -307,7 +309,7 @@ const OymoPlus = () => {
             style={{
               width: "33.3333333333%",
               borderWidth: 1,
-              borderColor: activeButton == "1" ? color.red : color.borderColor,
+              borderColor: activeButton == "1" ? color.goldDark : color.borderColor,
               minHeight: 100,
               justifyContent: "center",
               alignItems: "center"
@@ -317,7 +319,7 @@ const OymoPlus = () => {
               style={{
                 fontFamily: "text",
                 fontSize: 20,
-                color: activeButton == "1" ? color.red : color.dark
+                color: activeButton == "1" ? color.goldDark : color.dark
               }}
             >
               1
@@ -325,7 +327,7 @@ const OymoPlus = () => {
             <Text
               style={{
                 fontFamily: "text",
-                color: activeButton == "1" ? color.red : color.dark
+                color: activeButton == "1" ? color.goldDark : color.dark
               }}
             >
               Month
@@ -334,36 +336,44 @@ const OymoPlus = () => {
               style={{
                 fontFamily: "text",
                 marginTop: 15,
-                color: activeButton == "1" ? color.red : color.dark
+                color: activeButton == "1" ? color.goldDark : color.dark
               }}
             >
-              NGN1,940.00/mo
+              NGN3,100.00/mo
             </Text>
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
-          onPress={() => setShowModal(true)}
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          colors={[color.goldDark, color.gold, color.goldDark]}
           style={{
-            backgroundColor: color.red,
-            height: 50,
             marginTop: 20,
+            marginBottom: 20,
             borderRadius: 12,
-            justifyContent: "center",
-            alignItems: "center",
-            marginBottom: 20
           }}
         >
-          <Text
+          <TouchableOpacity
+            onPress={() => setShowModal(true)}
             style={{
-              fontFamily: "text",
-              fontSize: 17,
-              color: color.white
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            Continue
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                fontFamily: "text",
+                fontSize: 17,
+                color: color.white
+              }}
+            >
+              Continue
+            </Text>
+          </TouchableOpacity>
+        </LinearGradient>
+
       </View>
 
       {
@@ -373,9 +383,9 @@ const OymoPlus = () => {
           onRequestClose={() => setShowModal(false)}
         >
           <WebView
-            source={{ uri: 'http://192.168.43.97:3000/plus' }}
+            source={{ uri: 'http://192.168.43.97:3000/gold' }}
             onNavigationStateChange={data => handleResponse(data)}
-            injectedJavaScript={`document.querySelector("#paypalPlusOneMonth #price").value="4"; document.f1.submit()`}
+            injectedJavaScript={`document.querySelector("#paypalGoldOneMonth #price").value="7.40"; document.f1.submit()`}
           />
         </Modal>
       }
@@ -386,9 +396,9 @@ const OymoPlus = () => {
           onRequestClose={() => setShowModal(false)}
         >
           <WebView
-            source={{ uri: 'http://192.168.43.97:3000/plus' }}
+            source={{ uri: 'http://192.168.43.97:3000/gold' }}
             onNavigationStateChange={data => handleResponse(data)}
-            injectedJavaScript={`document.querySelector("#paypalPlusSixMonths #price").value="2"; document.f6.submit()`}
+            injectedJavaScript={`document.querySelector("#paypalGoldSixMonths #price").value="3.58"; document.f6.submit()`}
           />
         </Modal>
       }
@@ -399,9 +409,9 @@ const OymoPlus = () => {
           onRequestClose={() => setShowModal(false)}
         >
           <WebView
-            source={{ uri: 'http://192.168.43.97:3000/plus' }}
+            source={{ uri: 'http://192.168.43.97:3000/gold' }}
             onNavigationStateChange={data => handleResponse(data)}
-            injectedJavaScript={`document.querySelector("#paypalPlusTwelveMonths #price").value="1.5"; document.f12.submit()`}
+            injectedJavaScript={`document.querySelector("#paypalGoldTwelveMonths #price").value="2.39"; document.f12.submit()`}
           />
         </Modal>
       }
@@ -409,4 +419,4 @@ const OymoPlus = () => {
   )
 }
 
-export default OymoPlus
+export default OymoGold

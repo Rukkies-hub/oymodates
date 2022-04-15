@@ -45,7 +45,7 @@ import firebase from '../hooks/firebase'
 
 import useAuth from '../hooks/useAuth'
 
-const OymoPlus = () => {
+const OymoPlatinum = () => {
   const { user, userProfile } = useAuth()
   const [showModal, setShowModal] = useState(false)
   const [status, setStatus] = useState("")
@@ -409,4 +409,4 @@ const OymoPlus = () => {
   )
 }
 
-export default OymoPlus
+export default OymoPlatinum

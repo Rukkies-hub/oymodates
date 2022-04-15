@@ -11,5 +11,6 @@ export default {
     labelColor: "rgba(0,0,0,0.4)",
     transparentBackground: "rgba(0,0,0,0.4)",
     gold: "#FFD700",
+    goldDark: "#F7B900",
     black: "#000"
 }
