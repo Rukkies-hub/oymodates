@@ -64,7 +64,7 @@ const OymoPlatinum = () => {
           .collection("users")
           .doc(user.uid)
           .update({
-            subscriptionPlans: "plus",
+            subscriptionPlans: "platinum",
             duration: 12,
             payed: true,
             currentDate,
@@ -88,7 +88,7 @@ const OymoPlatinum = () => {
           .collection("users")
           .doc(user.uid)
           .update({
-            subscriptionPlans: "plus",
+            subscriptionPlans: "platinum",
             duration: 6,
             payed: true,
             currentDate,
@@ -112,7 +112,7 @@ const OymoPlatinum = () => {
           .collection("users")
           .doc(user.uid)
           .update({
-            subscriptionPlans: "plus",
+            subscriptionPlans: "platinum",
             duration: 1,
             payed: true,
             currentDate,
@@ -160,10 +160,10 @@ const OymoPlatinum = () => {
               fontFamily: "text",
               fontSize: 20,
               marginBottom: 30,
-              color: color.red
+              color: color.black
             }}
           >
-            Get Oymo Plus
+            Get Oymo Platinum
           </Text>
 
           <SwiperFlatList
@@ -226,7 +226,7 @@ const OymoPlatinum = () => {
             style={{
               width: "33.3333333333%",
               borderWidth: 1,
-              borderColor: activeButton == "12" ? color.red : color.borderColor,
+              borderColor: activeButton == "12" ? color.black : color.labelColor,
               minHeight: 100,
               justifyContent: "center",
               alignItems: "center"
@@ -236,7 +236,7 @@ const OymoPlatinum = () => {
               style={{
                 fontFamily: "text",
                 fontSize: 20,
-                color: activeButton == "12" ? color.red : color.dark
+                color: activeButton == "12" ? color.black : color.labelColor
               }}
             >
               12
@@ -245,7 +245,7 @@ const OymoPlatinum = () => {
             <Text
               style={{
                 fontFamily: "text",
-                color: activeButton == "12" ? color.red : color.dark
+                color: activeButton == "12" ? color.black : color.labelColor
               }}
             >
               Months
@@ -255,10 +255,10 @@ const OymoPlatinum = () => {
               style={{
                 fontFamily: "text",
                 marginTop: 15,
-                color: activeButton == "12" ? color.red : color.dark
+                color: activeButton == "12" ? color.black : color.labelColor
               }}
             >
-              NGN648.33/mo
+              NGN1,498.79/mo
             </Text>
           </TouchableOpacity>
 
@@ -268,7 +268,7 @@ const OymoPlatinum = () => {
               width: "33.3333333333%",
               borderTopWidth: 1,
               borderBottomWidth: 1,
-              borderColor: activeButton == "6" ? color.red : color.borderColor,
+              borderColor: activeButton == "6" ? color.black : color.labelColor,
               minHeight: 100,
               justifyContent: "center",
               alignItems: "center"
@@ -278,7 +278,7 @@ const OymoPlatinum = () => {
               style={{
                 fontFamily: "text",
                 fontSize: 20,
-                color: activeButton == "6" ? color.red : color.dark
+                color: activeButton == "6" ? color.black : color.labelColor
               }}
             >
               6
@@ -286,7 +286,7 @@ const OymoPlatinum = () => {
             <Text
               style={{
                 fontFamily: "text",
-                color: activeButton == "6" ? color.red : color.dark
+                color: activeButton == "6" ? color.black : color.labelColor
               }}
             >
               Months
@@ -295,10 +295,10 @@ const OymoPlatinum = () => {
               style={{
                 fontFamily: "text",
                 marginTop: 15,
-                color: activeButton == "6" ? color.red : color.dark
+                color: activeButton == "6" ? color.black : color.labelColor
               }}
             >
-              NGN971.66/mo
+              NGN2,197.94/mo
             </Text>
           </TouchableOpacity>
 
@@ -307,7 +307,7 @@ const OymoPlatinum = () => {
             style={{
               width: "33.3333333333%",
               borderWidth: 1,
-              borderColor: activeButton == "1" ? color.red : color.borderColor,
+              borderColor: activeButton == "1" ? color.black : color.labelColor,
               minHeight: 100,
               justifyContent: "center",
               alignItems: "center"
@@ -317,7 +317,7 @@ const OymoPlatinum = () => {
               style={{
                 fontFamily: "text",
                 fontSize: 20,
-                color: activeButton == "1" ? color.red : color.dark
+                color: activeButton == "1" ? color.black : color.labelColor
               }}
             >
               1
@@ -325,7 +325,7 @@ const OymoPlatinum = () => {
             <Text
               style={{
                 fontFamily: "text",
-                color: activeButton == "1" ? color.red : color.dark
+                color: activeButton == "1" ? color.black : color.labelColor
               }}
             >
               Month
@@ -334,10 +334,10 @@ const OymoPlatinum = () => {
               style={{
                 fontFamily: "text",
                 marginTop: 15,
-                color: activeButton == "1" ? color.red : color.dark
+                color: activeButton == "1" ? color.black : color.labelColor
               }}
             >
-              NGN1,940.00/mo
+              NGN4,500.54/mo
             </Text>
           </TouchableOpacity>
         </View>
@@ -345,7 +345,7 @@ const OymoPlatinum = () => {
         <TouchableOpacity
           onPress={() => setShowModal(true)}
           style={{
-            backgroundColor: color.red,
+            backgroundColor: color.black,
             height: 50,
             marginTop: 20,
             borderRadius: 12,
@@ -373,9 +373,9 @@ const OymoPlatinum = () => {
           onRequestClose={() => setShowModal(false)}
         >
           <WebView
-            source={{ uri: 'http://192.168.43.97:3000/plus' }}
+            source={{ uri: 'http://192.168.43.97:3000/platinum' }}
             onNavigationStateChange={data => handleResponse(data)}
-            injectedJavaScript={`document.querySelector("#paypalPlusOneMonth #price").value="4"; document.f1.submit()`}
+            injectedJavaScript={`document.querySelector("#paypalPlatinumOneMonth #price").value="10.75"; document.f1.submit()`}
           />
         </Modal>
       }
@@ -386,9 +386,9 @@ const OymoPlatinum = () => {
           onRequestClose={() => setShowModal(false)}
         >
           <WebView
-            source={{ uri: 'http://192.168.43.97:3000/plus' }}
+            source={{ uri: 'http://192.168.43.97:3000/platinum' }}
             onNavigationStateChange={data => handleResponse(data)}
-            injectedJavaScript={`document.querySelector("#paypalPlusSixMonths #price").value="2"; document.f6.submit()`}
+            injectedJavaScript={`document.querySelector("#paypalPlatinumSixMonths #price").value="5.25"; document.f6.submit()`}
           />
         </Modal>
       }
@@ -399,9 +399,9 @@ const OymoPlatinum = () => {
           onRequestClose={() => setShowModal(false)}
         >
           <WebView
-            source={{ uri: 'http://192.168.43.97:3000/plus' }}
+            source={{ uri: 'http://192.168.43.97:3000/platinum' }}
             onNavigationStateChange={data => handleResponse(data)}
-            injectedJavaScript={`document.querySelector("#paypalPlusTwelveMonths #price").value="1.5"; document.f12.submit()`}
+            injectedJavaScript={`document.querySelector("#paypalPlatinumTwelveMonths #price").value="3.58"; document.f12.submit()`}
           />
         </Modal>
       }

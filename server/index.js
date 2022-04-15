@@ -19,14 +19,13 @@ paypal.configure({
 })
 
 app.get("/plus", (req, res) => res.render("plus"))
-
 app.get("/gold", (req, res) => res.render("gold"))
+app.get("/platinum", (req, res) => res.render("platinum"))
 
 let price
 
 app.get("/paypalPlusOneMonth", (req, res) => {
   price = req.query.price
-  console.log("price: ", price)
   let create_payment_json = {
     "intent": "sale",
     "payer": {
@@ -41,14 +40,14 @@ app.get("/paypalPlusOneMonth", (req, res) => {
         "items": [{
           "name": "item",
           "sku": "item",
-          "price": "4.00",
+          "price": price,
           "currency": "USD",
           "quantity": 1
         }]
       },
       "amount": {
         "currency": "USD",
-        "total": "4.00"
+        "total": price
       },
       "description": "This is the payment description."
     }]
@@ -83,7 +82,7 @@ app.get("/paypalPlusSixMonths", (req, res) => {
         "items": [{
           "name": "item",
           "sku": "item",
-          "price": "2.00",
+          "price": price,
           "currency": "USD",
           "quantity": 1
         }]
@@ -125,7 +124,7 @@ app.get("/paypalPlusTwelveMonths", (req, res) => {
         "items": [{
           "name": "item",
           "sku": "item",
-          "price": "1.5",
+          "price": price,
           "currency": "USD",
           "quantity": 1
         }]
@@ -235,6 +234,132 @@ app.get("/paypalGoldSixMonths", (req, res) => {
 })
 
 app.get("/paypalGoldTwelveMonths", (req, res) => {
+  price = req.query.price
+  console.log("price: ", price)
+  let create_payment_json = {
+    "intent": "sale",
+    "payer": {
+      "payment_method": "paypal"
+    },
+    "redirect_urls": {
+      "return_url": "http://192.168.43.97:3000/success",
+      "cancel_url": "http://192.168.43.97:3000/cancel"
+    },
+    "transactions": [{
+      "item_list": {
+        "items": [{
+          "name": "item",
+          "sku": "item",
+          "price": price,
+          "currency": "USD",
+          "quantity": 1
+        }]
+      },
+      "amount": {
+        "currency": "USD",
+        "total": price
+      },
+      "description": "This is the payment description."
+    }]
+  }
+
+
+  paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+      throw error
+    } else {
+      console.log("Create Payment Response")
+      console.log(payment)
+      res.redirect(payment.links[1].href)
+    }
+  })
+})
+
+app.get("/paypalPlatinumOneMonth", (req, res) => {
+  price = req.query.price
+  console.log("price: ", price)
+  let create_payment_json = {
+    "intent": "sale",
+    "payer": {
+      "payment_method": "paypal"
+    },
+    "redirect_urls": {
+      "return_url": "http://192.168.43.97:3000/success",
+      "cancel_url": "http://192.168.43.97:3000/cancel"
+    },
+    "transactions": [{
+      "item_list": {
+        "items": [{
+          "name": "item",
+          "sku": "item",
+          "price": price,
+          "currency": "USD",
+          "quantity": 1
+        }]
+      },
+      "amount": {
+        "currency": "USD",
+        "total": price
+      },
+      "description": "This is the payment description."
+    }]
+  }
+
+
+  paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+      throw error
+    } else {
+      console.log("Create Payment Response")
+      console.log(payment)
+      res.redirect(payment.links[1].href)
+    }
+  })
+})
+
+app.get("/paypalPlatinumSixMonths", (req, res) => {
+  price = req.query.price
+  console.log("price: ", price)
+  let create_payment_json = {
+    "intent": "sale",
+    "payer": {
+      "payment_method": "paypal"
+    },
+    "redirect_urls": {
+      "return_url": "http://192.168.43.97:3000/success",
+      "cancel_url": "http://192.168.43.97:3000/cancel"
+    },
+    "transactions": [{
+      "item_list": {
+        "items": [{
+          "name": "item",
+          "sku": "item",
+          "price": price,
+          "currency": "USD",
+          "quantity": 1
+        }]
+      },
+      "amount": {
+        "currency": "USD",
+        "total": price
+      },
+      "description": "This is the payment description."
+    }]
+  }
+
+
+  paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+      throw error
+    } else {
+      console.log("Create Payment Response")
+      console.log(payment)
+      res.redirect(payment.links[1].href)
+    }
+  })
+})
+
+app.get("/paypalPlatinumTwelveMonths", (req, res) => {
   price = req.query.price
   console.log("price: ", price)
   let create_payment_json = {
