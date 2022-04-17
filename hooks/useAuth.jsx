@@ -38,14 +38,14 @@ export const AuthProvider = ({ children }) => {
   // EDIT PASSWORD CHANGE
   const [accountEmail, setAccountEmail] = useState("")
 
-  // EDIT PHONE
-  const [phone, setPhone] = useState("")
-
   // EDIT GENDER
   const [date, setDate] = useState("")
 
   // EDIT GENDER
   const [job, setJob] = useState("")
+
+  // EDIT GENDER
+  const [about, setAbout] = useState("")
 
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState("")
@@ -84,11 +84,6 @@ export const AuthProvider = ({ children }) => {
     setAccountEmail
   }
 
-  const updatePhoneState = {
-    phone,
-    setPhone
-  }
-
   const updateDateState = {
     date,
     setDate
@@ -97,6 +92,11 @@ export const AuthProvider = ({ children }) => {
   const updateJobState = {
     job,
     setJob
+  }
+
+  const updateAboutState = {
+    about,
+    setAbout
   }
 
   useEffect(() =>
@@ -238,6 +238,20 @@ export const AuthProvider = ({ children }) => {
       .finally(() => setLoading(false))
   }
 
+  const updateAbout = async () => {
+    const { about } = updateAboutState
+
+    await firebase.firestore()
+      .collection("users")
+      .doc(`${user.uid}`)
+      .update({
+        about
+      }).then(() => {
+        getUserProfile(user)
+        navigation.goBack()
+      })
+  }
+
   const updateUsername = async () => {
     const { username } = usernameState
 
@@ -282,20 +296,6 @@ export const AuthProvider = ({ children }) => {
         alert(err.message)
       }
     } else Alert.alert("Email mismatched", "Entered email does not match you account email")
-  }
-
-  const updatePhone = async () => {
-    const { phone } = updatePhoneState
-
-    await firebase.firestore()
-      .collection("users")
-      .doc(`${user.uid}`)
-      .update({
-        phone
-      }).then(() => {
-        getUserProfile(user)
-        navigation.goBack()
-      })
   }
 
   const updateDateOfBirth = async () => {
@@ -344,15 +344,15 @@ export const AuthProvider = ({ children }) => {
       updateName,
       updatePasswordState,
       sendPasswordReset,
-      updatePhoneState,
-      updatePhone,
       updateDateState,
       updateDateOfBirth,
       updateJobState,
       updateJob,
       getUserProfile,
       renderHome,
-      setRenderHome
+      setRenderHome,
+      updateAboutState,
+      updateAbout
     }}>
       {!loadingInitial && children}
     </AuthContext.Provider>

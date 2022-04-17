@@ -1,15 +1,5 @@
-import {
-  View,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  TouchableOpacity
-} from 'react-native'
+import { View, Text, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
-
-import DatePicker from 'react-native-datepicker'
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
@@ -20,10 +10,11 @@ import editProfile from '../style/editProfile'
 import useAuth from "../hooks/useAuth"
 
 import { useFonts } from 'expo-font'
+
 import color from '../style/color'
 
-const EditDateOfBirth = ({ navigation }) => {
-  const { updateDateState, updateDateOfBirth } = useAuth()
+const EditAbout = ({ navigation }) => {
+  const { updateAboutState, updateAbout } = useAuth()
 
   const [loaded] = useFonts({
     text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
@@ -66,16 +57,16 @@ const EditDateOfBirth = ({ navigation }) => {
               </TouchableOpacity>
               <Text
                 style={{
-                  marginLeft: 10,
                   fontSize: 18,
+                  marginLeft: 20,
                   fontFamily: "text"
                 }}
               >
-                Date of birth
+                About Me
               </Text>
             </View>
             <TouchableOpacity
-              onPress={updateDateOfBirth}
+              onPress={updateAbout}
               style={{
                 width: 40,
                 height: 40,
@@ -95,11 +86,7 @@ const EditDateOfBirth = ({ navigation }) => {
             }}
           >
             <View style={editProfile.form}>
-              <View style={{
-                height: 45,
-                marginBottom: 30,
-                position: "relative"
-              }}>
+              <View style={editProfile.inputField}>
                 <Text
                   style={{
                     fontSize: 12,
@@ -107,43 +94,15 @@ const EditDateOfBirth = ({ navigation }) => {
                     fontFamily: "text"
                   }}
                 >
-                  Select Date of birth
+                  Name
                 </Text>
-
-                <DatePicker
+                <TextInput
+                  autoFocus
+                  placeholder="About me"
+                  value={updateAboutState.about}
+                  onChangeText={updateAboutState.setAbout}
                   style={{
-                    width: "100%",
-                  }}
-                  date={updateDateState.date}
-                  mode="date"
-                  placeholder="select date"
-                  format="DD/MM/YYYY"
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  customStyles={{
-                    dateIcon: {
-                      position: 'absolute',
-                      right: -5,
-                      top: 4,
-                      marginLeft: 0,
-                    },
-                    dateInput: {
-                      borderColor: "gray",
-                      alignItems: "flex-start",
-                      borderWidth: 0,
-                      borderBottomWidth: 1,
-                    },
-                    placeholderText: {
-                      fontSize: 16,
-                      color: color.dark,
-                      fontFamily: "text"
-                    },
-                    dateText: {
-                      fontSize: 16,
-                    }
-                  }}
-                  onDateChange={(date) => {
-                    updateDateState.setDate(date)
+                    fontFamily: "text"
                   }}
                 />
               </View>
@@ -155,4 +114,4 @@ const EditDateOfBirth = ({ navigation }) => {
   )
 }
 
-export default EditDateOfBirth
+export default EditAbout

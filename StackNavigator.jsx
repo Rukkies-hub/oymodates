@@ -13,12 +13,13 @@ import HomeScreen from "./screens/HomeScreen"
 import ChatScreen from "./screens/ChatScreen"
 import EditProfile from './screens/EditProfile'
 import EditPersonalInformation from './screens/EditPersonalInformation'
+import EditAbout from './screens/EditAbout'
 import EditUsername from './screens/EditUsername'
 import EditName from './screens/EditName'
 import EditPassword from './screens/EditPassword'
-import EditPhone from './screens/EditPhone'
 import EditDateOfBirth from './screens/EditDateOfBirth'
 import EditJob from './screens/EditJob'
+import EditPassion from './screens/EditPassion'
 import Match from './screens/Match'
 import MessageScreen from './screens/MessageScreen'
 import PreviewImage from './screens/PreviewImage'
@@ -60,10 +61,11 @@ const StackNavigator = () => {
             <Stack.Screen name="ViewProfile" component={ViewProfile} options={{ headerShown: false }} />
             <Stack.Screen name="Setup" component={Setup} options={{ headerShown: false }} />
 
+            <Stack.Screen name="EditAbout" component={EditAbout} options={{ headerShown: false }} />
             <Stack.Screen name="EditUsername" component={EditUsername} options={{ headerShown: false }} />
             <Stack.Screen name="EditName" component={EditName} options={{ headerShown: false }} />
+            <Stack.Screen name="EditPassion" component={EditPassion} options={{ headerShown: false }} />
             <Stack.Screen name="EditPassword" component={EditPassword} options={{ headerShown: false }} />
-            <Stack.Screen name="EditPhone" component={EditPhone} options={{ headerShown: false }} />
             <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} options={{ headerShown: false }} />
             <Stack.Screen name="EditJob" component={EditJob} options={{ headerShown: false }} />
           </Stack.Group>

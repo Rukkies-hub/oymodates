@@ -29,6 +29,12 @@ const EditProfile = ({ navigation }) => {
   const { userProfile, user, pickImage, getUserProfile } = useAuth()
 
   const [checked, setChecked] = useState('male')
+  const [intrests, setIntrests] = useState([])
+
+  useEffect(() => {
+    if (userProfile.intrests.length)
+      setIntrests(userProfile.intrests)
+  }, [user, userProfile])
 
   const deleteImage = (image) => {
     const fileRef = firebase.storage().refFromURL(image)
@@ -210,6 +216,12 @@ const EditProfile = ({ navigation }) => {
 
           <View style={editProfile.form}>
             <View style={editProfile.inputField}>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>About Me</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditAbout")} style={editProfile.input} >
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.about}</Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Username</Text>
               <TouchableWithoutFeedback onPress={() => navigation.navigate("EditUsername")} style={editProfile.input} >
                 <Text style={{ paddingTop: 6, fontFamily: "text" }}>oymo.me/@{userProfile.username}</Text>
@@ -222,9 +234,42 @@ const EditProfile = ({ navigation }) => {
               </TouchableWithoutFeedback>
             </View>
             <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Phone number</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditPhone")} style={editProfile.input} >
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.phone}</Text>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Passion</Text>
+              <TouchableWithoutFeedback style={editProfile.input} onPress={() => navigation.navigate("EditPassion")}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-start"
+                  }}
+                >
+                  {
+                    intrests.map(passion => {
+                      return (
+                        <View
+                          style={{
+                            backgroundColor: color.white,
+                            borderWidth: 1,
+                            borderColor: color.red,
+                            borderRadius: 50,
+                            paddingHorizontal: 10,
+                            paddingVertical: 5,
+                            marginRight: 5
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontFamily: "text",
+                              color: color.red,
+                              fontSize: 10
+                            }}
+                          >
+                            {passion}
+                          </Text>
+                        </View>
+                      )
+                    })
+                  }
+                </View>
               </TouchableWithoutFeedback>
             </View>
             <View style={editProfile.inputField}>

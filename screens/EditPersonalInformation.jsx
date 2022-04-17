@@ -205,41 +205,23 @@ const EditPersonalInformation = ({ navigation }) => {
           </TouchableOpacity>
 
           <View style={editProfile.form}>
-            <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Phone number</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditPhone")} style={editProfile.input} >
-                <Text style={editProfile.inputText}>{userProfile.phone}</Text>
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Gender</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditGender")} style={editProfile.input} >
-                <Text style={editProfile.inputText}>{userProfile.gender}</Text>
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Birthday</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditDateOfBirth')} style={editProfile.input} >
-                <Text style={editProfile.inputText}>{userProfile.date}</Text>
-              </TouchableWithoutFeedback>
-            </View>
             <View>
               <TouchableOpacity
                 onPress={() => navigation.navigate("EditPassword")}
                 style={{
-                  backgroundColor: color.purple,
+                  backgroundColor: color.white,
                   width: '100%',
                   height: 50,
                   borderRadius: 12,
                   justifyContent: 'center',
                   alignItems: 'center'
                 }} >
-                <Text style={{ color: '#fff', fontSize: 18 }}>Reset password</Text>
+                <Text style={{ color: color.purple, fontSize: 18 }}>Reset password</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={logout}
                 style={{
-                  backgroundColor: "#FF4757",
+                  backgroundColor: color.white,
                   width: '100%',
                   height: 50,
                   borderRadius: 12,
@@ -247,7 +229,7 @@ const EditPersonalInformation = ({ navigation }) => {
                   alignItems: 'center',
                   marginTop: 10
                 }} >
-                <Text style={{ color: '#fff', fontSize: 18 }}>Logout</Text>
+                <Text style={{ color: color.red, fontSize: 18 }}>Logout</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -848,7 +848,7 @@ const Setup = () => {
                     fontFamily: "header"
                   }}
                 >
-                    What are your pashions
+                    What are your passions
                     {
                       intrests.length ? <Text>[{intrests.length}/5]</Text> : <Text style={{display: "none"}}></Text>
                     }

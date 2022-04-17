@@ -191,6 +191,12 @@ const HomeScreen = () => {
             >
               <TouchableOpacity
                 onPress={() => navigation.navigate("Account")}
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
               >
                 {
                   userProfile == null ?

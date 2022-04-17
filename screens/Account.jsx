@@ -75,7 +75,7 @@ const Account = () => {
                 fontFamily: "text"
               }}
             >
-              {userProfile.name}, {moment().diff(moment(userProfile.date, "DD-MM-YYYY"), 'years')}
+              {userProfile.name} {userProfile.date&& moment().diff(moment(userProfile.date, "DD-MM-YYYY"), 'years')}
             </Text>
           </View>
         </View>
