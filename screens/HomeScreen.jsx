@@ -254,7 +254,7 @@ const HomeScreen = () => {
                 renderCard={card => card ? (
                   <View key={card.id}
                     style={{
-                      backgroundColor: "#fff",
+                      backgroundColor: color.white,
                       height: 698,
                       marginTop: -30,
                       width: "100%",
@@ -274,7 +274,7 @@ const HomeScreen = () => {
                     }} source={{ uri: card.avatar[0] }} />
 
                     <LinearGradient
-                      colors={['transparent', '#000']}
+                      colors={['transparent', color.dark]}
                       style={{
                         width: "100%",
                         minHeight: 60,
@@ -294,7 +294,7 @@ const HomeScreen = () => {
                           style={{
                             fontSize: 20,
                             fontWeight: "600",
-                            color: "#fff",
+                            color: color.white,
                             marginBottom: 10,
                             fontFamily: "text",
                             textTransform: "capitalize"
@@ -305,7 +305,7 @@ const HomeScreen = () => {
                           style={{
                             fontSize: 20,
                             fontWeight: "600",
-                            color: "#fff",
+                            color: color.white,
                             marginBottom: 10,
                             fontFamily: "text"
                           }}>
@@ -315,7 +315,7 @@ const HomeScreen = () => {
                       <View>
                         <Text
                           style={{
-                            color: "#fff",
+                            color: color.white,
                             fontFamily: "text"
                           }}
                         >
@@ -388,9 +388,9 @@ const HomeScreen = () => {
                             width: 55,
                             height: 55,
                             borderWidth: 1,
-                            borderColor: "#FF4757"
+                            borderColor: color.red
                           }}>
-                          <MaterialCommunityIcons name="close" color="#FF4757" size={30} />
+                          <MaterialCommunityIcons name="close" color={color.red} size={30} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={{
@@ -400,9 +400,9 @@ const HomeScreen = () => {
                             width: 40,
                             height: 40,
                             borderWidth: 1,
-                            borderColor: "#4169e1"
+                            borderColor: color.blue
                           }}>
-                          <MaterialCommunityIcons name="star" color="#4169e1" size={30} />
+                          <MaterialCommunityIcons name="star" color={color.blue} size={30} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           onPress={() => swipeRef.current.swipeRight()}
@@ -413,9 +413,9 @@ const HomeScreen = () => {
                             width: 55,
                             height: 55,
                             borderWidth: 1,
-                            borderColor: "#46C93A"
+                            borderColor: color.green
                           }}>
-                          <MaterialCommunityIcons name="heart" color="#46C93A" size={30} />
+                          <MaterialCommunityIcons name="heart" color={color.gold} size={30} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           onPress={() => console.log(card)}
@@ -426,9 +426,9 @@ const HomeScreen = () => {
                             width: 40,
                             height: 40,
                             borderWidth: 1,
-                            borderColor: "#fff"
+                            borderColor: color.white
                           }}>
-                          <MaterialCommunityIcons name="lightning-bolt" color="#fff" size={30} />
+                          <MaterialCommunityIcons name="lightning-bolt" color={color.white} size={30} />
                         </TouchableOpacity>
                       </View>
                     </LinearGradient>
@@ -436,7 +436,7 @@ const HomeScreen = () => {
                 ) : (
                   <View style={{
                     flex: 1,
-                    backgroundColor: "#fff",
+                    backgroundColor: color.white,
                     justifyContent: "center",
                     alignItems: "center"
                   }}>
@@ -456,7 +456,7 @@ const HomeScreen = () => {
                 justifyContent: "center",
                 alignItems: "center"
               }}>
-                <ActivityIndicator size="large" color="rgba(0,0,0,0.6)" />
+                <ActivityIndicator size="large" color={color.dark} />
               </View>
             )}
           </View>

@@ -22,7 +22,7 @@ import _const from "../style/const"
 
 import { LinearGradient } from 'expo-linear-gradient'
 
-const EditPersonalInformation = ({ navigation }) => {
+const AccountSettings = ({ navigation }) => {
   const { userProfile, logout } = useAuth()
 
   const [loaded] = useFonts({
@@ -239,4 +239,4 @@ const EditPersonalInformation = ({ navigation }) => {
   )
 }
 
-export default EditPersonalInformation
+export default AccountSettings

@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   LogBox,
+  ImageBackground,
+  ScrollView
 } from 'react-native'
 
 import React, { useState, useEffect } from 'react'
@@ -46,94 +48,219 @@ const Account = () => {
     return null
 
   return (
-    <SafeAreaView style={account.container}>
+    <View style={account.container}>
       <Bar />
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        style={_const.absoluteBackButton}
+        style={{
+          position: "absolute",
+          top: 10,
+          left: 10,
+          width: 40,
+          height: 40,
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 2,
+          backgroundColor: color.white,
+          borderRadius: 50
+        }}
       >
-        <MaterialCommunityIcons name='chevron-left' color="#000" size={30} />
+        <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
       </TouchableOpacity>
-      <View style={account.detail}>
-        <View style={_const.centerItem}>
-          <TouchableWithoutFeedback>
-            <Image
+
+      <ScrollView
+        bounces={false}
+        style={{
+          flex: 1,
+          paddingBottom: 10
+        }}
+      >
+        <ImageBackground
+          resizeMode="cover"
+          style={{
+            width: "100%",
+            minHeight: 500,
+            position: "relative"
+          }}
+          source={userProfile.avatar ? { uri: userProfile?.avatar[0] } : require('../assets/pph.jpg')}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              position: "absolute",
+              bottom: -20,
+              right: 10
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => navigation.navigate("AccountSettings")}
               style={{
-                width: 150,
-                height: 150,
-                borderRadius: 100
-              }}
-              source={userProfile.avatar ? { uri: userProfile?.avatar[0] } : require('../assets/pph.jpg')}
-            />
-          </TouchableWithoutFeedback>
-          <View>
-            <Text
-              style={{
-                fontSize: 25,
-                fontWeight: "900",
-                marginTop: 20,
-                fontFamily: "text"
+                width: 50,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: color.red,
+                borderRadius: 50
               }}
             >
-              {userProfile.name} {userProfile.date&& moment().diff(moment(userProfile.date, "DD-MM-YYYY"), 'years')}
+              <MaterialCommunityIcons name='cog' color={color.white} size={22} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate("EditProfile")}
+              style={{
+                width: 50,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: color.red,
+                borderRadius: 50,
+                marginHorizontal: 10
+              }}
+            >
+              <MaterialCommunityIcons name='pencil' color={color.white} size={22} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: 50,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: color.red,
+                borderRadius: 50
+              }}
+            >
+              <MaterialCommunityIcons name='shield' color={color.white} size={22} />
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
+
+        <View
+          style={{
+            paddingHorizontal: 10,
+            marginTop: 10,
+            paddingBottom: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 25,
+              fontWeight: "900",
+              marginTop: 20,
+              fontFamily: "text",
+              color: color.dark
+            }}
+          >
+            {userProfile.name}
+            {userProfile.date ? ", " : " "}
+            {userProfile.date && moment().diff(moment(userProfile.date, "DD-MM-YYYY"), 'years')}
+          </Text>
+        </View>
+
+        <View
+          style={{
+            paddingHorizontal: 10,
+            paddingBottom: 10
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center"
+            }}
+          >
+            <MaterialCommunityIcons name="map-marker" color={color.labelColor} size={16} />
+            <Text
+              style={{
+                fontFamily: "text",
+                color: color.labelColor
+              }}
+            >
+              {userProfile.address?.city}, {userProfile.address?.country}
             </Text>
           </View>
         </View>
-      </View>
 
-      <View
-        style={{
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          marginTop: -40,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => navigation.navigate("EditPersonalInformation")}
+        <View
           style={{
-            width: 70,
-            height: 70,
-            justifyContent: "center",
-            alignItems: "center",
-            borderWidth: .3,
-            borderRadius: 50,
-            borderColor: color.borderColor
+            marginTop: 10,
+            paddingHorizontal: 10,
+            paddingBottom: 10,
+            borderBottomWidth: 1,
+            borderBottomColor: color.borderColor
           }}
         >
-          <MaterialCommunityIcons name='cog' color={color.dark} size={22} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("EditProfile")}
+          <Text
+            style={{
+              fontFamily: "text"
+            }}
+          >
+            About Me
+          </Text>
+
+          <Text
+            style={{
+              marginTop: 10,
+              color: color.dark,
+              fontFamily: "text"
+            }}
+          >
+            {userProfile.about}
+          </Text>
+        </View>
+
+        <View
           style={{
-            width: 70,
-            height: 70,
-            justifyContent: "center",
-            alignItems: "center",
-            borderWidth: .3,
-            borderRadius: 50,
-            borderColor: color.borderColor,
-            marginTop: 100
+            marginTop: 20,
+            paddingHorizontal: 10
           }}
         >
-          <MaterialCommunityIcons name='pencil' color={color.dark} size={22} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            width: 70,
-            height: 70,
-            justifyContent: "center",
-            alignItems: "center",
-            borderWidth: .3,
-            borderRadius: 50,
-            borderColor: color.borderColor
-          }}
-        >
-          <MaterialCommunityIcons name='shield' color={color.dark} size={22} />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+          <Text
+            style={{
+              fontFamily: "text",
+              color: color.dark
+            }}
+          >
+            Passion
+          </Text>
+
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 10
+            }}
+          >
+            {
+              userProfile.intrests.map(passion => {
+                return (
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderColor: color.red,
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      borderRadius: 50,
+                      marginRight: 10
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: color.red
+                      }}
+                    >
+                      {passion}
+                    </Text>
+                  </View>
+                )
+              })
+            }
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   )
 }
 

@@ -12,7 +12,7 @@ import Index from "./screens/Index"
 import HomeScreen from "./screens/HomeScreen"
 import ChatScreen from "./screens/ChatScreen"
 import EditProfile from './screens/EditProfile'
-import EditPersonalInformation from './screens/EditPersonalInformation'
+import AccountSettings from './screens/AccountSettings'
 import EditAbout from './screens/EditAbout'
 import EditUsername from './screens/EditUsername'
 import EditName from './screens/EditName'
@@ -48,7 +48,7 @@ const StackNavigator = () => {
             <Stack.Screen name="Account" component={Account} options={{ headerShown: false }} />
             <Stack.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
             <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
-            <Stack.Screen name="EditPersonalInformation" component={EditPersonalInformation} options={{ headerShown: false }} />
+            <Stack.Screen name="AccountSettings" component={AccountSettings} options={{ headerShown: false }} />
             <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
           </Stack.Group>
 

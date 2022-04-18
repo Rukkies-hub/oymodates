@@ -4,16 +4,13 @@ import colors from "./color"
 export default StyleSheet.create({
     container: {
         flex: 1,
-        width: "100%",
         backgroundColor: "#fff",
-        justifyContent: "center",
         position: "relative"
     },
 
     header: {
         height: 45,
         width: "100%",
-        // backgroundColor: "red",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
