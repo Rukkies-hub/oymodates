@@ -285,6 +285,18 @@ const EditProfile = ({ navigation }) => {
               </TouchableWithoutFeedback>
             </View>
             <View style={editProfile.inputField}>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>School</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditSchool')} style={editProfile.input} >
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.school}</Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={editProfile.inputField}>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Location</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditAddress')} style={editProfile.input} >
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.address?.city}, {userProfile.address?.country}</Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Gender</Text>
               <View>
                 <View

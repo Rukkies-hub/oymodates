@@ -22,6 +22,7 @@ import EditJob from './screens/EditJob'
 import EditCompany from './screens/EditCompany'
 import EditPassion from './screens/EditPassion'
 import EditSchool from './screens/EditSchool'
+import EditAddress from './screens/EditAddress'
 import Match from './screens/Match'
 import MessageScreen from './screens/MessageScreen'
 import PreviewImage from './screens/PreviewImage'
@@ -72,6 +73,7 @@ const StackNavigator = () => {
             <Stack.Screen name="EditJob" component={EditJob} options={{ headerShown: false }} />
             <Stack.Screen name="EditCompany" component={EditCompany} options={{ headerShown: false }} />
             <Stack.Screen name="EditSchool" component={EditSchool} options={{ headerShown: false }} />
+            <Stack.Screen name="EditAddress" component={EditAddress} options={{ headerShown: false }} />
           </Stack.Group>
         </>
       ) :
