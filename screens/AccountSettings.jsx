@@ -36,10 +36,10 @@ const AccountSettings = ({ navigation }) => {
     isGlobal,
     setIsGlobal,
     distance,
-    setDistance
+    setDistance,
+    onlyRange,
+    setOnlyRange
   } = useAuth()
-
-  // const [distance, setDistance] = useState(30)
 
   const seeGlobal = () => {
     setIsGlobal((previousState) => !previousState)
@@ -62,6 +62,21 @@ const AccountSettings = ({ navigation }) => {
       .doc(user.uid)
       .update({
         maximumDistance: distance
+      })
+      .then(() => {
+        getUserProfile(user)
+      })
+  }
+
+  const restrictDistance = () => {
+    setOnlyRange((previousState) => !previousState)
+    let restrict = !onlyRange
+
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        range: restrict == true ? true : false
       })
       .then(() => {
         getUserProfile(user)
@@ -272,7 +287,9 @@ const AccountSettings = ({ navigation }) => {
           >
             <Text
               style={{
-                fontFamily: "text"
+                fontFamily: "text",
+                color: color.red,
+                fontSize: 16
               }}
             >
               Discovery Settings
@@ -309,7 +326,9 @@ const AccountSettings = ({ navigation }) => {
           <View
             style={{
               marginTop: 20,
-              paddingHorizontal: 10
+              paddingHorizontal: 10,
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor
             }}
           >
             <View
@@ -350,6 +369,29 @@ const AccountSettings = ({ navigation }) => {
               maximumTrackTintColor={color.offWhite}
               thumbTintColor={color.red}
             />
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "text"
+                }}
+              >
+                Only show people in this range
+              </Text>
+
+              <Switch
+                trackColor={{ false: color.borderColor, true: color.offWhite }}
+                thumbColor={onlyRange ? color.red : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={restrictDistance}
+                value={onlyRange}
+              />
+            </View>
           </View>
 
           <View style={editProfile.form}>

@@ -67,6 +67,8 @@ export const AuthProvider = ({ children }) => {
 
   const [distance, setDistance] = useState(30)
 
+  const [onlyRange, setOnlyRange] = useState(false)
+
   const signupState = {
     username,
     setUsername,
@@ -213,6 +215,8 @@ export const AuthProvider = ({ children }) => {
           setIsGlobal(doc.data()?.global)
         if (doc.data()?.maximumDistance)
           setDistance(doc.data()?.maximumDistance)
+        if (doc.data()?.range)
+          setOnlyRange(doc.data()?.range)
       })
   }
 
@@ -455,7 +459,9 @@ export const AuthProvider = ({ children }) => {
       isGlobal,
       setIsGlobal,
       distance,
-      setDistance
+      setDistance,
+      onlyRange,
+      setOnlyRange
     }}>
       {!loadingInitial && children}
     </AuthContext.Provider>
