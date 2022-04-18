@@ -1,6 +1,7 @@
 import { View, Text, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
 
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import Bar from "./StatusBar"
@@ -8,20 +9,10 @@ import Bar from "./StatusBar"
 import editProfile from '../style/editProfile'
 
 import useAuth from "../hooks/useAuth"
-
-import { useFonts } from 'expo-font'
-
 import color from '../style/color'
 
-const EditName = ({ navigation }) => {
-  const { nameState, updateName } = useAuth()
-
-  const [loaded] = useFonts({
-    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
-  })
-
-  if (!loaded)
-    return null
+const EditCompany = ({ navigation }) => {
+  const { updateCompanyState, updateCompany } = useAuth()
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
@@ -53,7 +44,7 @@ const EditName = ({ navigation }) => {
                   alignItems: "center"
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+                <SimpleLineIcons name="arrow-left" color={color.dark} size={20} />
               </TouchableOpacity>
               <Text
                 style={{
@@ -62,29 +53,14 @@ const EditName = ({ navigation }) => {
                   fontFamily: "text"
                 }}
               >
-                Name
+                Company
               </Text>
             </View>
-            <TouchableOpacity
-              onPress={updateName}
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
+            <TouchableOpacity onPress={updateCompany}>
               <MaterialCommunityIcons name="check" color={color.dark} size={24} />
             </TouchableOpacity>
           </View>
-
-          <View
-            style={{
-              backgroundColor: color.white,
-              flex: 1,
-              justifyContent: "center"
-            }}
-          >
+          <View style={{ backgroundColor: color.white, flex: 1, justifyContent: "center" }}>
             <View style={editProfile.form}>
               <View style={editProfile.inputField}>
                 <Text
@@ -94,13 +70,13 @@ const EditName = ({ navigation }) => {
                     fontFamily: "text"
                   }}
                 >
-                  Name
+                  Company
                 </Text>
                 <TextInput
                   autoFocus
-                  placeholder="Name"
-                  value={nameState.name}
-                  onChangeText={nameState.setName}
+                  placeholder="Company name"
+                  value={updateCompanyState.company}
+                  onChangeText={updateCompanyState.setCompany}
                   style={{
                     fontFamily: "text"
                   }}
@@ -114,4 +90,4 @@ const EditName = ({ navigation }) => {
   )
 }
 
-export default EditName
+export default EditCompany

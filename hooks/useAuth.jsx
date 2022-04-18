@@ -41,11 +41,20 @@ export const AuthProvider = ({ children }) => {
   // EDIT GENDER
   const [date, setDate] = useState("")
 
-  // EDIT GENDER
+  // EDIT JOB
   const [job, setJob] = useState("")
 
-  // EDIT GENDER
+  // EDIT COMPANY
+  const [company, setCompany] = useState("")
+
+  // EDIT ABOUT ME
   const [about, setAbout] = useState("")
+
+  // EDIT SCHOOL
+  const [school, setSchool] = useState("")
+
+  // EDIT SCHOOL
+  const [location, setLocation] = useState("")
 
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState("")
@@ -94,9 +103,19 @@ export const AuthProvider = ({ children }) => {
     setJob
   }
 
+  const updateCompanyState = {
+    company,
+    setCompany
+  }
+
   const updateAboutState = {
     about,
     setAbout
+  }
+
+  const updateSchoolState = {
+    school,
+    setSchool
   }
 
   useEffect(() =>
@@ -166,6 +185,8 @@ export const AuthProvider = ({ children }) => {
         setUserProfile(doc?.data())
         setEditUsername(doc.data()?.username)
         setName(doc.data()?.name)
+        setCompany(doc.data()?.company)
+        setSchool(doc.data()?.school)
       })
   }
 
@@ -327,6 +348,34 @@ export const AuthProvider = ({ children }) => {
       })
   }
 
+  const updateCompany = async () => {
+    const { company } = updateCompanyState
+
+    await firebase.firestore()
+      .collection("users")
+      .doc(`${user.uid}`)
+      .update({
+        company
+      }).then(() => {
+        getUserProfile(user)
+        navigation.goBack()
+      })
+  }
+
+  const updateSchool = async () => {
+    const { school } = updateSchool
+
+    await firebase.firestore()
+      .collection("users")
+      .doc(`${user.uid}`)
+      .update({
+        school
+      }).then(() => {
+        getUserProfile(user)
+        navigation.goBack()
+      })
+  }
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -352,7 +401,11 @@ export const AuthProvider = ({ children }) => {
       renderHome,
       setRenderHome,
       updateAboutState,
-      updateAbout
+      updateAbout,
+      updateCompanyState,
+      updateCompany,
+      updateSchoolState,
+      updateSchool
     }}>
       {!loadingInitial && children}
     </AuthContext.Provider>

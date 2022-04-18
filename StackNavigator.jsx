@@ -19,6 +19,7 @@ import EditName from './screens/EditName'
 import EditPassword from './screens/EditPassword'
 import EditDateOfBirth from './screens/EditDateOfBirth'
 import EditJob from './screens/EditJob'
+import EditCompany from './screens/EditCompany'
 import EditPassion from './screens/EditPassion'
 import Match from './screens/Match'
 import MessageScreen from './screens/MessageScreen'
@@ -68,6 +69,7 @@ const StackNavigator = () => {
             <Stack.Screen name="EditPassword" component={EditPassword} options={{ headerShown: false }} />
             <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} options={{ headerShown: false }} />
             <Stack.Screen name="EditJob" component={EditJob} options={{ headerShown: false }} />
+            <Stack.Screen name="EditCompany" component={EditCompany} options={{ headerShown: false }} />
           </Stack.Group>
         </>
       ) :

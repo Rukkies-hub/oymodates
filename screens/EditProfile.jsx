@@ -273,6 +273,18 @@ const EditProfile = ({ navigation }) => {
               </TouchableWithoutFeedback>
             </View>
             <View style={editProfile.inputField}>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Job Title</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditJob')} style={editProfile.input} >
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.occupation}</Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={editProfile.inputField}>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Company</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditCompany')} style={editProfile.input} >
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.company}</Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Gender</Text>
               <View>
                 <View
@@ -319,20 +331,11 @@ const EditProfile = ({ navigation }) => {
                   </Text>
                 </View>
               </View>
-              {/* <TouchableWithoutFeedback onPress={() => navigation.navigate("EditGender")} style={editProfile.input} >
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.gender}</Text>
-              </TouchableWithoutFeedback> */}
             </View>
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Birthday</Text>
               <TouchableWithoutFeedback onPress={() => navigation.navigate('EditDateOfBirth')} style={editProfile.input} >
                 <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.date}</Text>
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Occupation</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditJob')} style={editProfile.input} >
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.occupation}</Text>
               </TouchableWithoutFeedback>
             </View>
           </View>
