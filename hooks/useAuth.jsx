@@ -56,9 +56,12 @@ export const AuthProvider = ({ children }) => {
   // EDIT ADDRESS
   const [address, setAddress] = useState(null)
 
-  const [loading, setLoading] = React.useState(false)
-  const [error, setError] = React.useState("")
-  const [uploadeding, setupLoadeding] = React.useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [uploadeding, setupLoadeding] = useState(false)
+
+  const [isShowAgeEnabled, setIsShowAgeEnabled] = useState(false)
+  const [isShowLocationEnabled, setIsShowLocationEnabled] = useState(false)
 
   const signupState = {
     username,
@@ -193,6 +196,8 @@ export const AuthProvider = ({ children }) => {
         setCompany(doc.data()?.company)
         setSchool(doc.data()?.school)
         setAddress(doc.data()?.address)
+        setIsShowAgeEnabled(doc.data()?.hideAge)
+        setIsShowLocationEnabled(doc.data()?.hideLocation)
       })
   }
 
@@ -427,7 +432,11 @@ export const AuthProvider = ({ children }) => {
       updateSchoolState,
       updateSchool,
       updateAddressState,
-      updateAddress
+      updateAddress,
+      isShowAgeEnabled,
+      setIsShowAgeEnabled,
+      isShowLocationEnabled,
+      setIsShowLocationEnabled
     }}>
       {!loadingInitial && children}
     </AuthContext.Provider>

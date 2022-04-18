@@ -5,7 +5,9 @@ import {
   Image,
   TouchableWithoutFeedback,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  Switch,
+  Pressable
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { RadioButton } from 'react-native-paper'
@@ -26,7 +28,16 @@ import color from '../style/color'
 import { useFonts } from 'expo-font'
 
 const EditProfile = ({ navigation }) => {
-  const { userProfile, user, pickImage, getUserProfile } = useAuth()
+  const {
+    userProfile,
+    user,
+    pickImage,
+    getUserProfile,
+    isShowAgeEnabled,
+    setIsShowAgeEnabled,
+    isShowLocationEnabled,
+    setIsShowLocationEnabled
+  } = useAuth()
 
   const [checked, setChecked] = useState('male')
   const [intrests, setIntrests] = useState([])
@@ -77,6 +88,34 @@ const EditProfile = ({ navigation }) => {
         gender: "female"
       }).then(() => {
         setChecked("female")
+        getUserProfile(user)
+      })
+  }
+
+  const toggleShowAgeSwitch = () => {
+    setIsShowAgeEnabled((previousState) => !previousState)
+    let showAge = !isShowAgeEnabled
+
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        hideAge: showAge == true ? true : false
+      }).then(() => {
+        getUserProfile(user)
+      })
+  }
+
+  const toggleShowLocationSwitch = () => {
+    setIsShowLocationEnabled((previousState) => !previousState)
+    let showLocation = !isShowLocationEnabled
+
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        hideLocation: showLocation == true ? true : false
+      }).then(() => {
         getUserProfile(user)
       })
   }
@@ -344,11 +383,94 @@ const EditProfile = ({ navigation }) => {
                 </View>
               </View>
             </View>
+
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Birthday</Text>
               <TouchableWithoutFeedback onPress={() => navigation.navigate('EditDateOfBirth')} style={editProfile.input} >
                 <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.date}</Text>
               </TouchableWithoutFeedback>
+            </View>
+
+            <View style={editProfile.inputField}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center"
+                }}
+              >
+                <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Account control</Text>
+                <Pressable
+                  onPress={() => navigation.navigate("OymoPlus")}
+                  style={{
+                    paddingHorizontal: 10,
+                    paddingVertical: 5,
+                    borderRadius: 50,
+                    backgroundColor: color.red,
+                    marginLeft: 10
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontFamily: "text",
+                      color: color.white
+                    }}
+                  >
+                    Oymo Plus
+                  </Text>
+                </Pressable>
+              </View>
+              <View
+                style={{
+                  width: '100%',
+                  height: 50,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}>
+                <Text
+                  style={{
+                    color: color.dark,
+                    fontFamily: "text"
+                  }}
+                >
+                  Dont show my age
+                </Text>
+                <Switch
+                  trackColor={{ false: color.borderColor, true: color.offWhite }}
+                  thumbColor={isShowAgeEnabled ? color.red : '#f4f3f4'}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleShowAgeSwitch}
+                  value={isShowAgeEnabled}
+                  disabled={userProfile.payed == true ? false : true}
+                />
+              </View>
+              <View
+                style={{
+                  width: '100%',
+                  height: 50,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}>
+                <Text
+                  style={{
+                    color: color.dark,
+                    fontFamily: "text"
+                  }}
+                >
+                  Dont show my location
+                </Text>
+                <Switch
+                  trackColor={{ false: color.borderColor, true: color.offWhite }}
+                  thumbColor={isShowLocationEnabled ? color.red : '#f4f3f4'}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleShowLocationSwitch}
+                  value={isShowLocationEnabled}
+                  disabled={userProfile.payed == true ? false : true}
+                />
+              </View>
             </View>
           </View>
         </View>
