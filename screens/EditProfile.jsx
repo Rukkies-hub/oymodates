@@ -101,7 +101,8 @@ const EditProfile = ({ navigation }) => {
       .doc(user.uid)
       .update({
         hideAge: showAge == true ? true : false
-      }).then(() => {
+      })
+      .then(() => {
         getUserProfile(user)
       })
   }

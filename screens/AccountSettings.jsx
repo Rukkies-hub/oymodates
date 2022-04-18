@@ -5,9 +5,10 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
-  TouchableOpacity
+  TouchableOpacity,
+  Switch
 } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
@@ -22,8 +23,50 @@ import _const from "../style/const"
 
 import { LinearGradient } from 'expo-linear-gradient'
 
+import Slider from '@react-native-community/slider'
+
+import firebase from "../hooks/firebase"
+
 const AccountSettings = ({ navigation }) => {
-  const { userProfile, logout } = useAuth()
+  const {
+    userProfile,
+    logout,
+    user,
+    getUserProfile,
+    isGlobal,
+    setIsGlobal,
+    distance,
+    setDistance
+  } = useAuth()
+
+  // const [distance, setDistance] = useState(30)
+
+  const seeGlobal = () => {
+    setIsGlobal((previousState) => !previousState)
+    let global = !isGlobal
+
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        global: global == true ? true : false
+      })
+      .then(() => {
+        getUserProfile(user)
+      })
+  }
+
+  const updateMaximumDistance = () => {
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        maximumDistance: distance
+      })
+      .then(() => {
+        getUserProfile(user)
+      })
+  }
 
   const [loaded] = useFonts({
     text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf"),
@@ -86,8 +129,7 @@ const AccountSettings = ({ navigation }) => {
                 fontSize: 25,
                 color: color.dark,
                 fontFamily: "logo",
-                marginRight: 10,
-                marginTop: -10
+                marginRight: 10
               }}
             >
               Oymo
@@ -100,6 +142,7 @@ const AccountSettings = ({ navigation }) => {
                 alignItems: "center",
                 borderRadius: 8,
                 backgroundColor: color.black,
+                marginTop: 8
               }}
             >
               <Text
@@ -140,8 +183,7 @@ const AccountSettings = ({ navigation }) => {
                 fontSize: 25,
                 color: color.dark,
                 fontFamily: "logo",
-                marginRight: 10,
-                marginTop: -10
+                marginRight: 10
               }}
             >
               Oymo
@@ -155,7 +197,8 @@ const AccountSettings = ({ navigation }) => {
                 paddingHorizontal: 10,
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius: 8
+                borderRadius: 8,
+                marginTop: 8
               }}
             >
               <Text
@@ -173,8 +216,8 @@ const AccountSettings = ({ navigation }) => {
             style={{
               height: 90,
               width: "100%",
-              flexDirection: "row",
               marginTop: 10,
+              flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 12,
@@ -195,14 +238,119 @@ const AccountSettings = ({ navigation }) => {
                 fontSize: 25,
                 color: color.dark,
                 fontFamily: "logo",
-                marginRight: 10,
-                marginTop: -10
+                marginRight: 10
               }}
             >
               Oymo
             </Text>
-            <MaterialCommunityIcons name='plus' size={30} color={color.red} />
+            <View
+              style={{
+                backgroundColor: color.red,
+                paddingVertical: 4,
+                paddingHorizontal: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 8,
+                marginTop: 8
+              }}
+            >
+              <Text
+                style={{
+                  color: color.white
+                }}
+              >
+                Plus
+              </Text>
+            </View>
           </TouchableOpacity>
+
+          <View
+            style={{
+              paddingHorizontal: 10,
+              marginTop: 10
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "text"
+              }}
+            >
+              Discovery Settings
+            </Text>
+
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 20,
+                borderBottomWidth: 1,
+                borderColor: color.borderColor
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "text",
+                  color: color.lightText
+                }}
+              >
+                Global
+              </Text>
+              <Switch
+                trackColor={{ false: color.borderColor, true: color.offWhite }}
+                thumbColor={isGlobal ? color.red : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={seeGlobal}
+                value={isGlobal}
+              />
+            </View>
+          </View>
+
+          <View
+            style={{
+              marginTop: 20,
+              paddingHorizontal: 10
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "text"
+                }}
+              >
+                Maximum Distance
+              </Text>
+
+              <Text
+                style={{
+                  fontFamily: "text"
+                }}
+              >
+                {distance}<Text style={{ fontSize: 12 }}>mi</Text>
+              </Text>
+            </View>
+            <Slider
+              style={{
+                width: "100%",
+                height: 40
+              }}
+              step={1}
+              value={distance}
+              onValueChange={value => setDistance(value)}
+              onSlidingComplete={updateMaximumDistance}
+              minimumValue={0}
+              maximumValue={100}
+              minimumTrackTintColor={color.red}
+              maximumTrackTintColor={color.offWhite}
+              thumbTintColor={color.red}
+            />
+          </View>
 
           <View style={editProfile.form}>
             <View>

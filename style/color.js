@@ -8,6 +8,7 @@ export default {
     white: "#fff",
     offWhite: "#F4F7F8",
     transparent: "transparent",
+    lightText: "rgba(0,0,0,0.6)",
     borderColor: "rgba(0,0,0,0.2)",
     labelColor: "rgba(0,0,0,0.4)",
     transparentBackground: "rgba(0,0,0,0.4)",

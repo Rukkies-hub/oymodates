@@ -195,14 +195,15 @@ const HomeScreen = () => {
                   width: 40,
                   height: 40,
                   justifyContent: "center",
-                  alignItems: "center"
+                  alignItems: "center",
+                  backgroundColor: color.transparent
                 }}
               >
                 {
                   userProfile == null ?
                     <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
                     : (userProfile.avatar?.length ?
-                      <Image style={{ width: 30, height: 30, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile.avatar[0] }} />
+                      <Image style={{ width: 35, height: 35, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile.avatar[0] }} />
                       : <SimpleLineIcons name="user" color="#000" size={22} />
                     )
                 }

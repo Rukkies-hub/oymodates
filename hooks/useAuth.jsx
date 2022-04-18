@@ -63,6 +63,10 @@ export const AuthProvider = ({ children }) => {
   const [isShowAgeEnabled, setIsShowAgeEnabled] = useState(false)
   const [isShowLocationEnabled, setIsShowLocationEnabled] = useState(false)
 
+  const [isGlobal, setIsGlobal] = useState(false)
+
+  const [distance, setDistance] = useState(30)
+
   const signupState = {
     username,
     setUsername,
@@ -191,13 +195,24 @@ export const AuthProvider = ({ children }) => {
       .get()
       .then(doc => {
         setUserProfile(doc?.data())
-        setEditUsername(doc.data()?.username)
-        setName(doc.data()?.name)
-        setCompany(doc.data()?.company)
-        setSchool(doc.data()?.school)
-        setAddress(doc.data()?.address)
-        setIsShowAgeEnabled(doc.data()?.hideAge)
-        setIsShowLocationEnabled(doc.data()?.hideLocation)
+        if (doc.data()?.username)
+          setEditUsername(doc.data()?.username)
+        if (doc.data()?.name)
+          setName(doc.data()?.name)
+        if (doc.data()?.company)
+          setCompany(doc.data()?.company)
+        if (doc.data()?.school)
+          setSchool(doc.data()?.school)
+        if (doc.data()?.address)
+          setAddress(doc.data()?.address)
+        if (doc.data()?.hideAge)
+          setIsShowAgeEnabled(doc.data()?.hideAge)
+        if (doc.data()?.hideLocation)
+          setIsShowLocationEnabled(doc.data()?.hideLocation)
+        if (doc.data()?.global)
+          setIsGlobal(doc.data()?.global)
+        if (doc.data()?.maximumDistance)
+          setDistance(doc.data()?.maximumDistance)
       })
   }
 
@@ -436,7 +451,11 @@ export const AuthProvider = ({ children }) => {
       isShowAgeEnabled,
       setIsShowAgeEnabled,
       isShowLocationEnabled,
-      setIsShowLocationEnabled
+      setIsShowLocationEnabled,
+      isGlobal,
+      setIsGlobal,
+      distance,
+      setDistance
     }}>
       {!loadingInitial && children}
     </AuthContext.Provider>
