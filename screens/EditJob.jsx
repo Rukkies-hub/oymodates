@@ -1,47 +1,113 @@
 import { View, Text, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import Bar from "./StatusBar"
 
 import editProfile from '../style/editProfile'
 
-import useAuth from "../hooks/useAuth"
+import { useFonts } from 'expo-font'
 
-const EditJob = ({ navigation}) => {
+import useAuth from "../hooks/useAuth"
+import color from '../style/color'
+
+const EditJob = ({ navigation }) => {
   const { updateJobState, updateJob } = useAuth()
+
+  const [loaded] = useFonts({
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
+
+  if (!loaded)
+    return null
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
       <Bar />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={{ backgroundColor: "#fff", flex: 1 }}>
-          <View style={editProfile.header}>
-            <View style={editProfile.left}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <SimpleLineIcons name="arrow-left" color="rgba(0,0,0,0.8)" size={20} />
+        <>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 10,
+              height: 45
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
               </TouchableOpacity>
-              <Text style={editProfile.headText}>Occupation</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  marginLeft: 10,
+                  fontFamily: "text"
+                }}
+              >
+                Occupation
+              </Text>
             </View>
-            <TouchableOpacity onPress={updateJob}>
-              <MaterialCommunityIcons name="check" color="#4169e1" size={24} />
+            <TouchableOpacity
+              onPress={updateJob}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <MaterialCommunityIcons name="check" color={color.dark} size={24} />
             </TouchableOpacity>
           </View>
 
-          <View style={editProfile.form}>
-            <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.4)" }}>Occupation</Text>
-              <TextInput
-                autoFocus
-                placeholder="Occupation"
-                value={updateJobState.job}
-                onChangeText={updateJobState.setJob}
-              />
+          <View
+            style={{
+              backgroundColor: color.white,
+              flex: 1,
+              justifyContent: "center"
+            }}
+          >
+            <View style={editProfile.form}>
+              <View style={editProfile.inputField}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: color.labelColor,
+                    fontFamily: "text"
+                  }}
+                >
+                  Occupation
+                </Text>
+                <TextInput
+                  autoFocus
+                  placeholder="Occupation"
+                  value={updateJobState.job}
+                  onChangeText={updateJobState.setJob}
+                  style={{
+                    fontFamily: "text"
+                  }}
+                />
+              </View>
             </View>
           </View>
-        </View>
+        </>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   )

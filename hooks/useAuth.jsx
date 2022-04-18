@@ -53,8 +53,8 @@ export const AuthProvider = ({ children }) => {
   // EDIT SCHOOL
   const [school, setSchool] = useState("")
 
-  // EDIT SCHOOL
-  const [location, setLocation] = useState("")
+  // EDIT ADDRESS
+  const [address, setAddress] = useState(null)
 
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState("")
@@ -116,6 +116,11 @@ export const AuthProvider = ({ children }) => {
   const updateSchoolState = {
     school,
     setSchool
+  }
+
+  const updateAddressState = {
+    address,
+    setAddress
   }
 
   useEffect(() =>
@@ -187,6 +192,7 @@ export const AuthProvider = ({ children }) => {
         setName(doc.data()?.name)
         setCompany(doc.data()?.company)
         setSchool(doc.data()?.school)
+        setAddress(doc.data()?.address)
       })
   }
 
@@ -363,13 +369,27 @@ export const AuthProvider = ({ children }) => {
   }
 
   const updateSchool = async () => {
-    const { school } = updateSchool
+    const { school } = updateSchoolState
 
     await firebase.firestore()
       .collection("users")
       .doc(`${user.uid}`)
       .update({
         school
+      }).then(() => {
+        getUserProfile(user)
+        navigation.goBack()
+      })
+  }
+
+  const updateAddress = async () => {
+    const { address } = updateAddressState
+
+    await firebase.firestore()
+      .collection("users")
+      .doc(`${user.uid}`)
+      .update({
+        address
       }).then(() => {
         getUserProfile(user)
         navigation.goBack()
@@ -405,7 +425,9 @@ export const AuthProvider = ({ children }) => {
       updateCompanyState,
       updateCompany,
       updateSchoolState,
-      updateSchool
+      updateSchool,
+      updateAddressState,
+      updateAddress
     }}>
       {!loadingInitial && children}
     </AuthContext.Provider>
