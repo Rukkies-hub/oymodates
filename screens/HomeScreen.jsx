@@ -287,15 +287,18 @@ const HomeScreen = () => {
                       overflow: "hidden"
                     }}
                   >
-                    <Image style={{
-                      flex: 1,
-                      width: "100%",
-                      height: "100%",
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                    }} source={{ uri: card.avatar[0] }} />
+                    <Image
+                      style={{
+                        flex: 1,
+                        width: "100%",
+                        height: "100%",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                      }}
+                      source={{ uri: card.avatar[0] }}
+                    />
 
                     <LinearGradient
                       colors={['transparent', color.dark]}
