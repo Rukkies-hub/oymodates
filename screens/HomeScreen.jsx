@@ -4,7 +4,8 @@ import {
   View,
   TouchableOpacity,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  Pressable
 } from 'react-native'
 import React, { useRef, useState, useEffect, useLayoutEffect } from 'react'
 
@@ -196,42 +197,65 @@ const HomeScreen = () => {
         renderHome &&
         <>
           <View style={home.header}>
-            <Text
+            <Pressable
+              onPress={() => navigation.navigate("Account")}
               style={{
-                fontSize: 30,
-                color: "#000",
-                fontFamily: "logo"
+                width: 40,
+                height: 40,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: color.transparent
               }}
             >
-              Oymo
-            </Text>
+              {
+                userProfile == null ?
+                  <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
+                  : (userProfile.avatar?.length ?
+                    <Image style={{ width: 35, height: 35, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile.avatar[0] }} />
+                    : <SimpleLineIcons name="user" color="#000" size={22} />
+                  )
+              }
+            </Pressable>
+
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "flex-end",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                marginTop: -10
+              }}
+            >
+              <Image
+                resizeMode="cover"
+                style={{
+                  width: 30,
+                  height: 30,
+                  marginTop: 10,
+                  marginRight: 10
+                }}
+                source={require("../assets/logo.png")}
+              />
+              <Text
+                style={{
+                  fontSize: 30,
+                  color: color.red,
+                  fontFamily: "logo"
+                }}
+              >
+                Oymo
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: "center",
                 alignItems: "center"
               }}
             >
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Account")}
-                style={{
-                  width: 40,
-                  height: 40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: color.transparent
-                }}
-              >
-                {
-                  userProfile == null ?
-                    <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
-                    : (userProfile.avatar?.length ?
-                      <Image style={{ width: 35, height: 35, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile.avatar[0] }} />
-                      : <SimpleLineIcons name="user" color="#000" size={22} />
-                    )
-                }
-              </TouchableOpacity>
-            </View>
+              <MaterialCommunityIcons name="bell" size={26} color={color.lightText} />
+            </TouchableOpacity>
           </View>
 
           <View style={{ flex: 1, marginTop: -8 }}>
@@ -411,9 +435,9 @@ const HomeScreen = () => {
                             width: 40,
                             height: 40,
                             borderWidth: 1,
-                            borderColor: "#fff"
+                            borderColor: color.lightGold
                           }}>
-                          <MaterialCommunityIcons name="refresh" color="#fff" size={30} />
+                          <MaterialCommunityIcons name="refresh" color={color.lightGold} size={30} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           onPress={() => swipeRef.current.swipeLeft()}
@@ -424,9 +448,9 @@ const HomeScreen = () => {
                             width: 55,
                             height: 55,
                             borderWidth: 1,
-                            borderColor: color.darkRed
+                            borderColor: color.lightRed
                           }}>
-                          <MaterialCommunityIcons name="close" color={color.darkRed} size={30} />
+                          <MaterialCommunityIcons name="close" color={color.lightRed} size={30} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={{
@@ -436,9 +460,9 @@ const HomeScreen = () => {
                             width: 40,
                             height: 40,
                             borderWidth: 1,
-                            borderColor: color.blue
+                            borderColor: color.lightBlue
                           }}>
-                          <MaterialCommunityIcons name="star" color={color.blue} size={30} />
+                          <MaterialCommunityIcons name="star" color={color.lightBlue} size={30} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           onPress={() => swipeRef.current.swipeRight()}
@@ -449,9 +473,9 @@ const HomeScreen = () => {
                             width: 55,
                             height: 55,
                             borderWidth: 1,
-                            borderColor: color.pink
+                            borderColor: color.lightGreen
                           }}>
-                          <MaterialCommunityIcons name="heart" color={color.pink} size={30} />
+                          <MaterialCommunityIcons name="heart" color={color.lightGreen} size={30} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           onPress={() => console.log(card)}
@@ -462,9 +486,9 @@ const HomeScreen = () => {
                             width: 40,
                             height: 40,
                             borderWidth: 1,
-                            borderColor: color.purple
+                            borderColor: color.lightPurple
                           }}>
-                          <MaterialCommunityIcons name="lightning-bolt" color={color.purple} size={30} />
+                          <MaterialCommunityIcons name="lightning-bolt" color={color.lightPurple} size={30} />
                         </TouchableOpacity>
                       </View>
                     </LinearGradient>

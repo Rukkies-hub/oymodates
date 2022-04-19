@@ -16,5 +16,11 @@ export default {
     transparentBackground: "rgba(0,0,0,0.4)",
     gold: "#FFD700",
     goldDark: "#F7B900",
-    black: "#000"
+    black: "#000",
+    lightPurple: "#B342F1",
+    lightGreen: "#22EBBF",
+    lightBlue: "#36CAF7",
+    lightRed: "#FE4E67",
+    lightGold: "#F9D261",
+    // 07038182888
 }
