@@ -12,6 +12,9 @@ import HomeScreen from "./HomeScreen"
 import ChatScreen from "./ChatScreen"
 
 import useAuth from "../hooks/useAuth"
+import Likes from './Likes'
+
+import colors from '../style/color';
 
 export default function Index () {
   const { userProfile, loadingInitial } = useAuth()
@@ -30,11 +33,27 @@ export default function Index () {
           let iconName
 
           if (route.name === "HomeScreen")
-            iconName = focused ? "magnify" : "magnify"
+            iconName = focused ? "home" : "home-outline"
+          if (route.name === "Likes")
+            iconName = focused ? "account-heart" : "account-heart-outline"
           if (route.name === "Chat")
             iconName = focused ? "chat" : "chat-outline"
 
-          return <MaterialCommunityIcons name={iconName} color={color} size={26} />
+          if (route.name === "HomeScreen")
+            color = focused ? colors.red : colors.lightText
+          if (route.name === "Likes")
+            color = focused ? colors.red : colors.lightText
+          if (route.name === "Chat")
+            color = focused ? colors.red : colors.lightText
+          
+          if (route.name === "HomeScreen")
+            size = focused ? 26 : 24
+          if (route.name === "Likes")
+            size = focused ? 26 : 24
+          if (route.name === "Chat")
+            size = focused ? 26 : 24
+
+          return <MaterialCommunityIcons name={iconName} color={color} size={size} />
         }
       })}
     >
@@ -42,11 +61,17 @@ export default function Index () {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
+        }} />
+      <Tab.Screen
+        name="Likes"
+        component={Likes}
+        options={{
+          headerShown: false,
         }} />
       <Tab.Screen name="Chat" component={ChatScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
           tabBarLabel: "Chat"
         }} />
     </Tab.Navigator>

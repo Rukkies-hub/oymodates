@@ -317,7 +317,6 @@ const HomeScreen = () => {
                         <Text
                           style={{
                             fontSize: 20,
-                            fontWeight: "600",
                             color: color.white,
                             marginBottom: 10,
                             fontFamily: "text",
@@ -330,7 +329,6 @@ const HomeScreen = () => {
                             <Text
                               style={{
                                 fontSize: 20,
-                                fontWeight: "600",
                                 color: color.white,
                                 marginBottom: 10,
                                 fontFamily: "text"
@@ -356,7 +354,8 @@ const HomeScreen = () => {
                             style={{
                               fontFamily: "text",
                               color: color.white,
-                              marginTop: 10
+                              marginTop: 10,
+                              marginBottom: 10
                             }}
                           >
                             {userProfile.about}
