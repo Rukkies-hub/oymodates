@@ -230,6 +230,7 @@ const Account = () => {
           <View
             style={{
               flexDirection: "row",
+              flexWrap: "wrap",
               marginTop: 10
             }}
           >
@@ -243,7 +244,8 @@ const Account = () => {
                       paddingHorizontal: 10,
                       paddingVertical: 5,
                       borderRadius: 50,
-                      marginRight: 10
+                      marginRight: 10,
+                      marginBottom: 10
                     }}
                   >
                     <Text

@@ -38,10 +38,7 @@ const HomeScreen = () => {
     user,
     userProfile,
     renderHome,
-    setRenderHome,
-    showMeMen,
-    showMeWomen,
-    showMeAll
+    setRenderHome
   } = useAuth()
 
   useLayoutEffect(() => {
@@ -84,15 +81,25 @@ const HomeScreen = () => {
         .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
         .get()
         .then((snapshot) => {
-          setProfiles(
-            snapshot.docs
-              .filter(doc => doc.id !== user.uid)
-              .filter(doc => doc.data().gender == userProfile.showMe)
-              .map(doc => ({
-                id: doc.id,
-                ...doc.data()
-              }))
-          )
+          if (userProfile.showMe)
+            setProfiles(
+              snapshot.docs
+                .filter(doc => doc.id !== user.uid)
+                .filter(doc => doc.data().gender == userProfile.showMe)
+                .map(doc => ({
+                  id: doc.id,
+                  ...doc.data()
+                }))
+            )
+          else
+            setProfiles(
+              snapshot.docs
+                .filter(doc => doc.id !== user.uid)
+                .map(doc => ({
+                  id: doc.id,
+                  ...doc.data()
+                }))
+            )
         })
     }
 
@@ -398,9 +405,9 @@ const HomeScreen = () => {
                             width: 55,
                             height: 55,
                             borderWidth: 1,
-                            borderColor: color.red
+                            borderColor: color.darkRed
                           }}>
-                          <MaterialCommunityIcons name="close" color={color.red} size={30} />
+                          <MaterialCommunityIcons name="close" color={color.darkRed} size={30} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={{
@@ -423,9 +430,9 @@ const HomeScreen = () => {
                             width: 55,
                             height: 55,
                             borderWidth: 1,
-                            borderColor: color.green
+                            borderColor: color.pink
                           }}>
-                          <MaterialCommunityIcons name="heart" color={color.gold} size={30} />
+                          <MaterialCommunityIcons name="heart" color={color.pink} size={30} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           onPress={() => console.log(card)}
@@ -436,9 +443,9 @@ const HomeScreen = () => {
                             width: 40,
                             height: 40,
                             borderWidth: 1,
-                            borderColor: color.white
+                            borderColor: color.purple
                           }}>
-                          <MaterialCommunityIcons name="lightning-bolt" color={color.white} size={30} />
+                          <MaterialCommunityIcons name="lightning-bolt" color={color.purple} size={30} />
                         </TouchableOpacity>
                       </View>
                     </LinearGradient>
