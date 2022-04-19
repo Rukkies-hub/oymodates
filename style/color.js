@@ -21,6 +21,5 @@ export default {
     lightGreen: "#22EBBF",
     lightBlue: "#36CAF7",
     lightRed: "#FE4E67",
-    lightGold: "#F9D261",
-    // 07038182888
+    lightGold: "#F9D261"
 }

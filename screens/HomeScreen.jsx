@@ -277,6 +277,9 @@ const HomeScreen = () => {
                 onSwipedRight={(cardIndex) => {
                   swipeRight(cardIndex)
                 }}
+                onSwipedBottom={(cardIndex) => {
+                  swipeLeft(cardIndex)
+                }}
                 backgroundColor={color.transparent}
                 cardHorizontalMargin={2}
                 overlayLabels={{
@@ -285,7 +288,18 @@ const HomeScreen = () => {
                     style: {
                       label: {
                         textAlign: "right",
-                        color: color.red
+                        color: color.red,
+                        fontFamily: "text"
+                      }
+                    }
+                  },
+                  bottom: {
+                    title: "NOPE",
+                    style: {
+                      label: {
+                        textAlign: "right",
+                        color: color.red,
+                        fontFamily: "text"
                       }
                     }
                   },
@@ -294,7 +308,8 @@ const HomeScreen = () => {
                     style: {
                       label: {
                         textAlign: "left",
-                        color: color.green
+                        color: color.green,
+                        fontFamily: "text"
                       }
                     }
                   }
