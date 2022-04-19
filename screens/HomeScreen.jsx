@@ -170,6 +170,13 @@ const HomeScreen = () => {
             .collection("swipes")
             .doc(userSwiped.id)
             .set(userSwiped)
+
+          firebase.firestore()
+            .collection("users")
+            .doc(userSwiped.id)
+            .collection("pendingSwipes")
+            .doc(user.uid)
+            .set(userProfile)
         }
       })
   }
@@ -316,18 +323,22 @@ const HomeScreen = () => {
                             fontFamily: "text",
                             textTransform: "capitalize"
                           }}>
-                          {card.username + ", "}
+                          {card.username}
                         </Text>
-                        <Text
-                          style={{
-                            fontSize: 20,
-                            fontWeight: "600",
-                            color: color.white,
-                            marginBottom: 10,
-                            fontFamily: "text"
-                          }}>
-                          {card.age}
-                        </Text>
+                        {
+                          card.hideAge == true ? (null) : (
+                            <Text
+                              style={{
+                                fontSize: 20,
+                                fontWeight: "600",
+                                color: color.white,
+                                marginBottom: 10,
+                                fontFamily: "text"
+                              }}>
+                              {", " + card.age}
+                            </Text>
+                          )
+                        }
                       </View>
                       <View>
                         <Text
@@ -341,9 +352,15 @@ const HomeScreen = () => {
                       </View>
                       {
                         card.about ? (
-                          <View>
-                            <Text>About</Text>
-                          </View>
+                          <Text
+                            style={{
+                              fontFamily: "text",
+                              color: color.white,
+                              marginTop: 10
+                            }}
+                          >
+                            {userProfile.about}
+                          </Text>
                         ) :
                           <View
                             style={{
@@ -363,7 +380,7 @@ const HomeScreen = () => {
                                       borderRadius: 50,
                                       marginRight: 10,
                                       marginBottom: 10,
-                                      backgroundColor: "#FF4081"
+                                      backgroundColor: color.pink
                                     }}
                                   >
                                     <Text
@@ -451,29 +468,64 @@ const HomeScreen = () => {
                     </LinearGradient>
                   </View>
                 ) : (
-                  <View style={{
-                    flex: 1,
-                    backgroundColor: color.white,
-                    justifyContent: "center",
-                    alignItems: "center"
-                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: color.white,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
                     <Image
-                      style={{ width: 105, height: 105 }}
+                      style={{
+                        width: 105,
+                        height: 105,
+                        borderRadius: 50
+                      }}
                       width={105}
                       height={105}
-                      source={require("../assets/sad.png")} />
-                    <Text style={{ fontSize: 20, fontWeight: "600" }}>No more profiles</Text>
+                      source={{ uri: userProfile.avatar[0] }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontFamily: "text",
+                        marginTop: 20
+                      }}
+                    >
+                      Checking for more
+                    </Text>
                   </View>
                 )}
               />
             ) : (
-              <View style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center"
-              }}>
-                <ActivityIndicator size="large" color={color.dark} />
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: color.white,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Image
+                  style={{
+                    width: 105,
+                    height: 105,
+                    borderRadius: 50
+                  }}
+                  width={105}
+                  height={105}
+                  source={{ uri: userProfile.avatar[0] }}
+                />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontFamily: "text",
+                    marginTop: 20
+                  }}
+                >
+                  Checking for more
+                </Text>
               </View>
             )}
           </View>
