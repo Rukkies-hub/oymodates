@@ -82,11 +82,11 @@ const HomeScreen = () => {
         .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
         .get()
         .then((snapshot) => {
-          if (userProfile.showMe)
+          if (userProfile?.showMe)
             setProfiles(
               snapshot.docs
                 .filter(doc => doc.id !== user.uid)
-                .filter(doc => doc.data().gender == userProfile.showMe)
+                .filter(doc => doc.data().gender == userProfile?.showMe)
                 .map(doc => ({
                   id: doc.id,
                   ...doc.data()
@@ -210,8 +210,11 @@ const HomeScreen = () => {
               {
                 userProfile == null ?
                   <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
-                  : (userProfile.avatar?.length ?
-                    <Image style={{ width: 35, height: 35, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile.avatar[0] }} />
+                  : (userProfile?.avatar?.length ?
+                    (
+                      userProfile?.avatar &&
+                      <Image style={{ width: 35, height: 35, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile?.avatar[0] }} />
+                    )
                     : <SimpleLineIcons name="user" color="#000" size={22} />
                   )
               }
@@ -336,7 +339,7 @@ const HomeScreen = () => {
                         left: 0,
                         right: 0,
                       }}
-                      source={{ uri: card.avatar[0] }}
+                      source={{ uri: card?.avatar[0] }}
                     />
 
                     <LinearGradient
@@ -400,7 +403,7 @@ const HomeScreen = () => {
                               marginBottom: 10
                             }}
                           >
-                            {userProfile.about}
+                            {userProfile?.about}
                           </Text>
                         ) :
                           <View
@@ -517,16 +520,19 @@ const HomeScreen = () => {
                       alignItems: "center"
                     }}
                   >
-                    <Image
-                      style={{
-                        width: 105,
-                        height: 105,
-                        borderRadius: 50
-                      }}
-                      width={105}
-                      height={105}
-                      source={{ uri: userProfile.avatar[0] }}
-                    />
+                    {
+                      userProfile?.avatar &&
+                      <Image
+                        style={{
+                          width: 105,
+                          height: 105,
+                          borderRadius: 50
+                        }}
+                        width={105}
+                        height={105}
+                        source={{ uri: userProfile?.avatar[0] }}
+                      />
+                    }
                     <Text
                       style={{
                         fontSize: 20,
@@ -548,16 +554,19 @@ const HomeScreen = () => {
                   alignItems: "center"
                 }}
               >
-                <Image
-                  style={{
-                    width: 105,
-                    height: 105,
-                    borderRadius: 50
-                  }}
-                  width={105}
-                  height={105}
-                  source={{ uri: userProfile.avatar[0] }}
-                />
+                {
+                  userProfile?.avatar &&
+                  <Image
+                    style={{
+                      width: 105,
+                      height: 105,
+                      borderRadius: 50
+                    }}
+                    width={105}
+                    height={105}
+                    source={{ uri: userProfile?.avatar[0] }}
+                  />
+                }
                 <Text
                   style={{
                     fontSize: 20,
