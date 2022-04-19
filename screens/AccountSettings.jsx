@@ -6,7 +6,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
-  Switch
+  Switch,
+  Pressable
 } from 'react-native'
 import React, { useState } from 'react'
 
@@ -77,6 +78,42 @@ const AccountSettings = ({ navigation }) => {
       .doc(user.uid)
       .update({
         range: restrict == true ? true : false
+      })
+      .then(() => {
+        getUserProfile(user)
+      })
+  }
+
+  const showOnlyMen = () => {
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        showMe: "male",
+      })
+      .then(() => {
+        getUserProfile(user)
+      })
+  }
+
+  const showOnlyWomen = () => {
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        showMe: "female"
+      })
+      .then(() => {
+        getUserProfile(user)
+      })
+  }
+
+  const showBoth = () => {
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .update({
+        showMe: "both"
       })
       .then(() => {
         getUserProfile(user)
@@ -392,6 +429,170 @@ const AccountSettings = ({ navigation }) => {
                 value={onlyRange}
               />
             </View>
+          </View>
+
+          <View
+            style={{
+              paddingHorizontal: 10,
+              marginTop: 20
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "text"
+              }}
+            >
+              Show Me
+            </Text>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <TouchableOpacity
+                onPress={showOnlyMen}
+                style={{
+                  width: "30%",
+                  height: 40,
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: userProfile.showMe == "male" ? color.red : color.borderColor,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "text",
+                    color: userProfile.showMe == "male" ? color.red : color.borderColor
+                  }}
+                >
+                  Men
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={showOnlyWomen}
+                style={{
+                  width: "30%",
+                  height: 40,
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: userProfile.showMe == "female" ? color.red : color.borderColor,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "text",
+                    color: userProfile.showMe == "female" ? color.red : color.borderColor
+                  }}
+                >
+                  Women
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={showBoth}
+                style={{
+                  width: "30%",
+                  height: 40,
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: userProfile.showMe == "both" ? color.red : color.borderColor,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "text",
+                    color: userProfile.showMe == "both" ? color.red : color.borderColor
+                  }}
+                >
+                  Everyone
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "text",
+                  color: color.lightText
+                }}
+              >
+                Show me men
+              </Text>
+
+              <Switch
+                trackColor={{ false: color.borderColor, true: color.offWhite }}
+                thumbColor={showMeMen ? color.red : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={showOnlyMen}
+                value={showMeMen}
+              />
+            </View> */}
+
+            {/* <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "text",
+                  color: color.lightText
+                }}
+              >
+                Show me women
+              </Text>
+
+              <Switch
+                trackColor={{ false: color.borderColor, true: color.offWhite }}
+                thumbColor={showMeWomen ? color.red : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={showOnlyWomen}
+                value={showMeWomen}
+              />
+            </View> */}
+
+            {/* <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "text",
+                  color: color.lightText
+                }}
+              >
+                Show everyone
+              </Text>
+
+              <Switch
+                trackColor={{ false: color.borderColor, true: color.offWhite }}
+                thumbColor={showMeAll ? color.red : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={showBoth}
+                value={showMeAll}
+              />
+            </View> */}
           </View>
 
           <View style={editProfile.form}>

@@ -34,7 +34,15 @@ const HomeScreen = () => {
 
   const swipeRef = useRef(null)
 
-  const { user, userProfile, renderHome, setRenderHome } = useAuth()
+  const {
+    user,
+    userProfile,
+    renderHome,
+    setRenderHome,
+    showMeMen,
+    showMeWomen,
+    showMeAll
+  } = useAuth()
 
   useLayoutEffect(() => {
     firebase.firestore()
@@ -79,6 +87,7 @@ const HomeScreen = () => {
           setProfiles(
             snapshot.docs
               .filter(doc => doc.id !== user.uid)
+              .filter(doc => doc.data().gender == userProfile.showMe)
               .map(doc => ({
                 id: doc.id,
                 ...doc.data()
@@ -88,7 +97,7 @@ const HomeScreen = () => {
     }
 
     fetchUsers()
-  }, [])
+  }, [userProfile])
 
   const swipeLeft = async (cardIndex) => {
     setStackSize(stackSize + 1)

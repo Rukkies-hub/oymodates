@@ -69,6 +69,10 @@ export const AuthProvider = ({ children }) => {
 
   const [onlyRange, setOnlyRange] = useState(false)
 
+  const [showMeMen, setShowMeMen] = useState(userProfile.gender == 'male' ? true : false)
+  const [showMeWomen, setShowMeWomen] = useState(userProfile.gender == 'female' ? true : false)
+  const [showMeAll, setShowMeAll] = useState(false)
+
   const signupState = {
     username,
     setUsername,
@@ -217,6 +221,11 @@ export const AuthProvider = ({ children }) => {
           setDistance(doc.data()?.maximumDistance)
         if (doc.data()?.range)
           setOnlyRange(doc.data()?.range)
+        if (doc.data()?.showMe) {
+          setShowMeMen(doc.data()?.showMe)
+          setShowMeWomen(doc.data()?.showMe)
+          setShowMeAll(doc.data()?.showMe)
+        }
       })
   }
 
@@ -461,7 +470,13 @@ export const AuthProvider = ({ children }) => {
       distance,
       setDistance,
       onlyRange,
-      setOnlyRange
+      setOnlyRange,
+      showMeMen,
+      setShowMeMen,
+      showMeWomen,
+      setShowMeWomen,
+      showMeAll,
+      setShowMeAll
     }}>
       {!loadingInitial && children}
     </AuthContext.Provider>
