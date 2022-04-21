@@ -19,7 +19,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
     <View style={{ flexDirection: "row", marginBottom: 10 }}>
       <Image
         style={{ width: 30, height: 30, borderRadius: 50 }}
-        source={{ uri: messages.avatar }}
+        source={{ uri: messages?.avatar[0] }}
       />
       <View
         style={{

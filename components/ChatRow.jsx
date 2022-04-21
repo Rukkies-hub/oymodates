@@ -8,6 +8,9 @@ import useAuth from '../hooks/useAuth'
 
 import firebase from '../hooks/firebase'
 
+import { useFonts } from 'expo-font'
+import color from '../style/color'
+
 const ChatRow = ({ matchDetails }) => {
   const navigation = useNavigation()
   const { user } = useAuth()
@@ -17,7 +20,7 @@ const ChatRow = ({ matchDetails }) => {
   const [unseenMessage, setUnseenMessage] = useState([])
 
   useEffect(() => {
-    setMatchedUserInfo(getMatchedUserInfo(matchDetails.users, user.uid))
+    setMatchedUserInfo(getMatchedUserInfo(matchDetails?.users, user.uid))
   }, [matchDetails, user])
 
   useEffect(() =>
@@ -32,6 +35,13 @@ const ChatRow = ({ matchDetails }) => {
       )
     , [matchDetails, firebase.collection])
 
+  const [loaded] = useFonts({
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
+
+  if (!loaded)
+    return null
+
   return (
     <Pressable
       onPress={() => navigation.navigate("MessageScreen", {
@@ -40,19 +50,38 @@ const ChatRow = ({ matchDetails }) => {
       style={{
         height: 65,
         borderBottomWidth: .3,
-        borderBottomColor: "rgba(0,0,0,0.5)",
+        borderBottomColor: color.borderColor,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center"
       }}>
       <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-        <Image
-          style={{ width: 45, height: 45, borderRadius: 50 }}
-          source={{ uri: matchedUserInfo.avatar }}
-        />
+        {
+          matchedUserInfo &&
+          <Image
+            style={{ width: 45, height: 45, borderRadius: 50 }}
+            source={{ uri: matchedUserInfo?.avatar[0] }}
+          />
+        }
         <View style={{ marginLeft: 10 }}>
-          <Text style={{ fontSize: 18, fontWeight: "600" }}>{matchedUserInfo.username}</Text>
-          <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.6)" }}>{lastMessage || "Say Hi!"}</Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: "text",
+              textTransform: "capitalize"
+            }}
+          >
+            {matchedUserInfo?.username}
+          </Text>
+          <Text
+            style={{
+              fontSize: 12,
+              color: color.lightText,
+              fontFamily: "text"
+            }}
+          >
+            {lastMessage || "Say Hi!"}
+          </Text>
         </View>
       </View>
     </Pressable>

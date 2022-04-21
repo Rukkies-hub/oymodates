@@ -235,9 +235,10 @@ const Account = () => {
             }}
           >
             {
-              userProfile.intrests.map(passion => {
+              userProfile.intrests.map((passion, index) => {
                 return (
                   <View
+                    key={index}
                     style={{
                       borderWidth: 1,
                       borderColor: color.red,
