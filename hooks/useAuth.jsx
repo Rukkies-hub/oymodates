@@ -73,6 +73,10 @@ export const AuthProvider = ({ children }) => {
   const [showMeWomen, setShowMeWomen] = useState(userProfile.gender == 'female' ? true : false)
   const [showMeAll, setShowMeAll] = useState(false)
 
+  const [likes, setLikes] = useState([])
+
+  const [profils, setProfiles] = useState([])
+
   const signupState = {
     username,
     setUsername,
@@ -239,7 +243,8 @@ export const AuthProvider = ({ children }) => {
       setLoading(true)
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(result => {
-          firebase.firestore().collection("users")
+          firebase.firestore()
+            .collection("users")
             .doc(firebase.auth().currentUser.uid)
             .set({
               email,
@@ -476,7 +481,11 @@ export const AuthProvider = ({ children }) => {
       showMeWomen,
       setShowMeWomen,
       showMeAll,
-      setShowMeAll
+      setShowMeAll,
+      likes,
+      setLikes,
+      profils,
+      setProfiles
     }}>
       {!loadingInitial && children}
     </AuthContext.Provider>

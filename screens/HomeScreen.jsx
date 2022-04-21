@@ -3,9 +3,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image,
-  ActivityIndicator,
-  Pressable
+  Image
 } from 'react-native'
 import React, { useRef, useState, useEffect, useLayoutEffect } from 'react'
 
@@ -14,7 +12,6 @@ import firebase from "../hooks/firebase"
 import useAuth from "../hooks/useAuth"
 import Bar from "./StatusBar"
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import Swiper from "react-native-deck-swiper"
@@ -39,7 +36,11 @@ const HomeScreen = () => {
     user,
     userProfile,
     renderHome,
-    setRenderHome
+    setRenderHome,
+    likes,
+    setLikes,
+    profils,
+    setProfiles
   } = useAuth()
 
   useLayoutEffect(() => {
@@ -54,58 +55,62 @@ const HomeScreen = () => {
       })
   }, [userProfile])
 
-  const [profils, setProfiles] = useState([])
+  // const [profils, setProfiles] = useState([])
   const [stackSize, setStackSize] = useState(2)
 
+  const fetchUsers = async () => {
+    const passes = await firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .collection("passes")
+      .get()
+      .then(snapshot => snapshot?.docs?.map(doc => doc.id))
+
+    const swipes = await firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .collection("swipes")
+      .get()
+      .then(snapshot => snapshot.docs.map(doc => doc.id))
+
+
+    const passedUserIds = passes.length > 0 ? passes : ['test']
+    const swipedUserIds = swipes.length > 0 ? swipes : ['test']
+
+    await firebase.firestore()
+      .collection("users")
+      .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
+      .get()
+      .then((snapshot) => {
+        if (userProfile?.showMe)
+          setProfiles(
+            snapshot.docs
+              .filter(doc => doc.id !== user.uid)
+              .filter(doc => doc.data().gender == userProfile?.showMe)
+              .map(doc => ({
+                id: doc.id,
+                ...doc.data()
+              }))
+          )
+        else
+          setProfiles(
+            snapshot.docs
+              .filter(doc => doc.id !== user.uid)
+              .map(doc => ({
+                id: doc.id,
+                ...doc.data()
+              }))
+          )
+      })
+  }
+
   useEffect(() => {
-    const fetchUsers = async () => {
-      const passes = await firebase.firestore()
-        .collection("users")
-        .doc(user.uid)
-        .collection("passes")
-        .get()
-        .then(snapshot => snapshot?.docs?.map(doc => doc.id))
-
-      const swipes = await firebase.firestore()
-        .collection("users")
-        .doc(user.uid)
-        .collection("swipes")
-        .get()
-        .then(snapshot => snapshot.docs.map(doc => doc.id))
-
-
-      const passedUserIds = passes.length > 0 ? passes : ['test']
-      const swipedUserIds = swipes.length > 0 ? swipes : ['test']
-
-      await firebase.firestore()
-        .collection("users")
-        .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
-        .get()
-        .then((snapshot) => {
-          if (userProfile?.showMe)
-            setProfiles(
-              snapshot.docs
-                .filter(doc => doc.id !== user.uid)
-                .filter(doc => doc.data().gender == userProfile?.showMe)
-                .map(doc => ({
-                  id: doc.id,
-                  ...doc.data()
-                }))
-            )
-          else
-            setProfiles(
-              snapshot.docs
-                .filter(doc => doc.id !== user.uid)
-                .map(doc => ({
-                  id: doc.id,
-                  ...doc.data()
-                }))
-            )
-        })
-    }
-
     fetchUsers()
   }, [userProfile])
+
+  useEffect(() => {
+    navigation.addListener("focus", () => fetchUsers())
+  }, [])
 
   const swipeLeft = async (cardIndex) => {
     setStackSize(stackSize + 1)
@@ -182,6 +187,41 @@ const HomeScreen = () => {
       })
   }
 
+  const rewindPasses = () => {
+    if (userProfile.subscriptionPlans == "gold" || userProfile.subscriptionPlans == "platinum") {
+      firebase.firestore()
+        .collection("users")
+        .doc(user.uid)
+        .collection("passes")
+        .get()
+        .then(res => {
+          res.forEach(element => {
+            element.ref.delete()
+          })
+          navigation.navigate("Modal", {
+            title: "Pass reset",
+            body: "Passes has been reset",
+            dismis: true
+          })
+        })
+    } else navigation.navigate("AccountSettings")
+  }
+
+  useEffect(() =>
+    firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .collection("pendingSwipes")
+      .onSnapshot(snapshot => {
+        setLikes(
+          snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+        )
+      })
+    , [user])
+
   const [loaded] = useFonts({
     logo: require("../assets/fonts/Pacifico/Pacifico-Regular.ttf"),
     text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
@@ -197,29 +237,6 @@ const HomeScreen = () => {
         renderHome &&
         <>
           <View style={home.header}>
-            <Pressable
-              onPress={() => navigation.navigate("Account")}
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: color.transparent
-              }}
-            >
-              {
-                userProfile == null ?
-                  <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
-                  : (userProfile?.avatar?.length ?
-                    (
-                      userProfile?.avatar &&
-                      <Image style={{ width: 35, height: 35, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile?.avatar[0] }} />
-                    )
-                    : <SimpleLineIcons name="user" color="#000" size={22} />
-                  )
-              }
-            </Pressable>
-
             <View
               style={{
                 flexDirection: "row",
@@ -273,7 +290,7 @@ const HomeScreen = () => {
                 cardIndex={0}
                 stackSize={stackSize}
                 verticalSwipe={true}
-                animateCardOpacity
+                animateCardOpacity={true}
                 onSwipedLeft={(cardIndex) => {
                   swipeLeft(cardIndex)
                 }}
@@ -311,7 +328,7 @@ const HomeScreen = () => {
                     style: {
                       label: {
                         textAlign: "left",
-                        color: color.green,
+                        color: color.lightGreen,
                         fontFamily: "text"
                       }
                     }
@@ -418,6 +435,7 @@ const HomeScreen = () => {
                               card.intrests.map((pation, index) => {
                                 return (
                                   <View
+                                    key={index}
                                     style={{
                                       paddingHorizontal: 10,
                                       paddingVertical: 5,
@@ -444,8 +462,14 @@ const HomeScreen = () => {
                           </View>
                       }
 
-                      <View style={{ flexDirection: "row", justifyContent: "space-evenly", alignItems: "center" }}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-evenly",
+                          alignItems: "center"
+                        }}>
                         <TouchableOpacity
+                          onPress={rewindPasses}
                           style={{
                             justifyContent: "center",
                             alignItems: "center",
@@ -469,18 +493,6 @@ const HomeScreen = () => {
                             borderColor: color.lightRed
                           }}>
                           <MaterialCommunityIcons name="close" color={color.lightRed} size={30} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{
-                            justifyContent: "center",
-                            alignItems: "center",
-                            borderRadius: 50,
-                            width: 40,
-                            height: 40,
-                            borderWidth: 1,
-                            borderColor: color.lightBlue
-                          }}>
-                          <MaterialCommunityIcons name="star" color={color.lightBlue} size={30} />
                         </TouchableOpacity>
                         <TouchableOpacity
                           onPress={() => swipeRef.current.swipeRight()}

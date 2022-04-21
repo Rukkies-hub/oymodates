@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation } from '@react-navigation/native'
 import useAuth from '../hooks/useAuth'
 
 import firebase from '../hooks/firebase'

@@ -7,27 +7,34 @@ import {
   Image,
   ImageBackground
 } from 'react-native'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import color from "../style/color"
 import home from "../style/home"
 
 import { useFonts } from 'expo-font'
 
-import firebase from "../hooks/firebase"
 import useAuth from '../hooks/useAuth'
 
 import { useNavigation } from '@react-navigation/native'
 
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+
+import firebase from '../hooks/firebase'
+
+import generateId from '../lib/generateId'
 
 const Likes = () => {
-  const { user, userProfile } = useAuth()
+  const {
+    user,
+    userProfile,
+    likes,
+    setLikes,
+    profils,
+    setProfiles
+  } = useAuth()
   const navigation = useNavigation()
-
-  const swipeRef = useRef(null)
-
-  const [likes, setLikes] = useState([])
 
   useEffect(() =>
     firebase.firestore()
@@ -42,7 +49,69 @@ const Likes = () => {
           }))
         )
       })
-    , [userProfile])
+    , [user])
+
+  const swipeRight = async (like) => {
+    const needle = like.id
+    const cardIndex = profils.findIndex(item => item.id === needle)
+
+    if (!profils[cardIndex]) return
+
+    const userSwiped = profils[cardIndex]
+
+    await firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .collection("pendingSwipes")
+      .doc(userSwiped.id)
+      .get()
+      .then(documentSnapShot => {
+        if (documentSnapShot.exists) {
+          // user ha matched with you before
+          // create match
+
+          firebase.firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("pendingSwipes")
+            .doc(userSwiped.id)
+            .set(userSwiped)
+
+          // CREATE A MATCH
+          firebase.firestore()
+            .collection("matches")
+            .doc(generateId(user.uid, userSwiped.id))
+            .set({
+              users: {
+                [user.uid]: userProfile,
+                [userSwiped.id]: userSwiped
+              },
+              usersMatched: [user.uid, userSwiped.id],
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+
+          firebase.firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("pendingSwipes")
+            .doc(userSwiped.id)
+            .delete()
+            .then(() => {
+              navigation.navigate("Match", {
+                userProfile,
+                userSwiped
+              })
+            })
+
+        } else
+          firebase.firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("pendingSwipes")
+            .doc(userSwiped.id)
+            .set(userSwiped)
+      })
+  }
 
   const [loaded] = useFonts({
     logo: require("../assets/fonts/Pacifico/Pacifico-Regular.ttf"),
@@ -111,6 +180,7 @@ const Likes = () => {
           likes.map((like, index) => {
             return (
               <View
+                key={index}
                 style={{
                   backgroundColor: color.white,
                   height: 200,
@@ -125,10 +195,54 @@ const Likes = () => {
                   style={{
                     flex: 1,
                     width: "100%",
-                    height: "100%"
+                    height: "100%",
+                    position: "relative"
                   }}
                   source={{ uri: like.avatar[0] }}
-                ></ImageBackground>
+                >
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                      alignItems: "center",
+                      position: "absolute",
+                      zIndex: 1,
+                      bottom: 0,
+                      left: 0,
+                      width: "100%",
+                      minHeight: 40,
+                      paddingVertical: 10
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => console.log(like)}
+                      style={{
+                        width: 35,
+                        height: 35,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: color.white,
+                        borderRadius: 50
+                      }}
+                    >
+                      <MaterialCommunityIcons name='close' size={20} color={color.red} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => swipeRight(like)}
+                      style={{
+                        width: 35,
+                        height: 35,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: color.white,
+                        borderRadius: 50
+                      }}
+                    >
+                      <MaterialCommunityIcons name='heart' size={20} color={color.lightGreen} />
+                    </TouchableOpacity>
+                  </View>
+                </ImageBackground>
               </View>
             )
           })

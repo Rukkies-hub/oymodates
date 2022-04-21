@@ -1,11 +1,22 @@
 import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation } from '@react-navigation/native'
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+
+import { useFonts } from 'expo-font'
+
+import color from "../style/color"
 
 const Header = ({ title, callEnabled }) => {
   const navigation = useNavigation()
+
+  const [loaded] = useFonts({
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
+
+  if (!loaded)
+    return null
 
   return (
     <View style={{
@@ -24,9 +35,19 @@ const Header = ({ title, callEnabled }) => {
           alignItems: "center"
         }}
           onPress={() => navigation.goBack()}>
-          <SimpleLineIcons name="arrow-left" color="#000" size={20} />
+          <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
         </TouchableOpacity>
-        <Text style={{ fontSize: 18, fontWeight: "600", marginLeft: 10, color: "#000" }}>{title}</Text>
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: "600",
+            marginLeft: 10,
+            color: color.dark,
+            fontFamily: "text"
+          }}
+        >
+          {title}
+        </Text>
       </View>
       {callEnabled && (
         <TouchableOpacity style={{
@@ -36,7 +57,7 @@ const Header = ({ title, callEnabled }) => {
           justifyContent: "center",
           alignItems: "center"
         }}>
-          <SimpleLineIcons name="phone" color="#000" size={20} />
+          <MaterialCommunityIcons name="phone-outline" color={color.dark} size={30} />
         </TouchableOpacity>
       )}
     </View>

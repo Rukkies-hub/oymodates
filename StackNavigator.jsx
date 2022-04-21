@@ -32,6 +32,7 @@ import Setup from './screens/Setup'
 import OymoPlus from './screens/OymoPlus'
 import OymoGold from './screens/OymoGold'
 import OymoPlatinum from './screens/OymoPlatinum'
+import Modal from "./components/Modal"
 
 import useAuth from "./hooks/useAuth"
 
@@ -50,14 +51,16 @@ const StackNavigator = () => {
             <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
             <Stack.Screen name="AccountSettings" component={AccountSettings} options={{ headerShown: false }} />
             <Stack.Screen name="MessageScreen" component={MessageScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Match" component={Match} options={{ headerShown: false }} />
           </Stack.Group>
 
           <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
-            <Stack.Screen name="Match" component={Match} options={{ headerShown: false }} />
             <Stack.Screen name="PreviewImage" component={PreviewImage} options={{ headerShown: false }} />
             <Stack.Screen name="OymoPlus" component={OymoPlus} options={{ headerShown: false }} />
             <Stack.Screen name="OymoGold" component={OymoGold} options={{ headerShown: false }} />
             <Stack.Screen name="OymoPlatinum" component={OymoPlatinum} options={{ headerShown: false }} />
+            
+            <Stack.Screen name="Modal" component={Modal} options={{ headerShown: false }} />
           </Stack.Group>
 
           <Stack.Group screenOptions={{ presentation: "modal" }}>
@@ -74,6 +77,7 @@ const StackNavigator = () => {
             <Stack.Screen name="EditCompany" component={EditCompany} options={{ headerShown: false }} />
             <Stack.Screen name="EditSchool" component={EditSchool} options={{ headerShown: false }} />
             <Stack.Screen name="EditAddress" component={EditAddress} options={{ headerShown: false }} />
+
           </Stack.Group>
         </>
       ) :

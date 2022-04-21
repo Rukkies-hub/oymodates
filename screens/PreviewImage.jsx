@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, ImageBackground, TouchableOpacity, TextInput } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 
-import { useNavigation, useRoute } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 

@@ -1,7 +1,7 @@
 import { View, SafeAreaView, TextInput, TouchableOpacity, FlatList, TouchableWithoutFeedback, Keyboard, LayoutAnimation, UIManager, Text } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 
-import { useRoute, useNavigation } from '@react-navigation/core'
+import { useRoute, useNavigation } from '@react-navigation/native'
 
 import Header from '../components/Header'
 
