@@ -18,12 +18,15 @@ import useAuth from '../hooks/useAuth'
 
 import { useNavigation } from '@react-navigation/native'
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import firebase from '../hooks/firebase'
 
 import generateId from '../lib/generateId'
+
+import AutoHeightImage from 'react-native-auto-height-image'
+
+import Header from '../components/Header'
 
 const Likes = () => {
   const {
@@ -145,47 +148,24 @@ const Likes = () => {
         backgroundColor: color.white
       }}
     >
-      <View style={home.header}>
+      <Header title="Likes" />
+
+      {
+        !likes.length &&
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            marginTop: -10
+            flex: 1,
+            justifyContent: "center"
           }}
         >
-          <Image
-            resizeMode="cover"
-            style={{
-              width: 30,
-              height: 30,
-              marginTop: 10,
-              marginRight: 10
-            }}
-            source={require("../assets/logo.png")}
+          <AutoHeightImage
+            width={400}
+            source={
+              require("../assets/like.png")
+            }
           />
-          <Text
-            style={{
-              fontSize: 30,
-              color: color.red,
-              fontFamily: "logo"
-            }}
-          >
-            Oymo
-          </Text>
         </View>
-
-        <TouchableOpacity
-          style={{
-            width: 40,
-            height: 40,
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <MaterialCommunityIcons name="bell" size={26} color={color.lightText} />
-        </TouchableOpacity>
-      </View>
+      }
 
       <View
         style={{

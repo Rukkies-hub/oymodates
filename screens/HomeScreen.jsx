@@ -3,7 +3,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image
+  Image,
+  ActivityIndicator
 } from 'react-native'
 import React, { useRef, useState, useEffect, useLayoutEffect } from 'react'
 
@@ -72,7 +73,7 @@ const HomeScreen = () => {
       .collection("swipes")
       .get()
       .then(snapshot => snapshot.docs.map(doc => doc.id))
-    
+
     const pendingSwipes = await firebase.firestore()
       .collection("users")
       .doc(user.uid)
@@ -83,11 +84,10 @@ const HomeScreen = () => {
 
     const passedUserIds = passes.length > 0 ? passes : ['test']
     const swipedUserIds = swipes.length > 0 ? swipes : ['test']
-    const pendingSwipesUserIds = pendingSwipes.length > 0 ? pendingSwipes : ['test']
 
     await firebase.firestore()
       .collection("users")
-      .where("id", "not-in", [...passedUserIds, ...swipedUserIds, ...pendingSwipesUserIds])
+      .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
       .get()
       .then((snapshot) => {
         if (userProfile?.showMe)
@@ -574,28 +574,7 @@ const HomeScreen = () => {
                   alignItems: "center"
                 }}
               >
-                {
-                  userProfile?.avatar &&
-                  <Image
-                    style={{
-                      width: 105,
-                      height: 105,
-                      borderRadius: 50
-                    }}
-                    width={105}
-                    height={105}
-                    source={{ uri: userProfile?.avatar[0] }}
-                  />
-                }
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontFamily: "text",
-                    marginTop: 20
-                  }}
-                >
-                  Checking for more
-                </Text>
+                <ActivityIndicator size="large" color={color.dark} />
               </View>
             )}
           </View>

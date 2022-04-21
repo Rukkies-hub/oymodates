@@ -162,107 +162,118 @@ const ChatList = () => {
         />
       </View>
     ) : (
-      <View style={{ flex: 1, padding: 20, alignItems: "center" }}>
-        <FlatList
-          data={likes}
-          horizontal
-          style={{
-            width: "100%",
-            maxHeight: 60,
-            borderBottomWidth: 1,
-            borderBottomColor: color.borderColor
-          }}
-          keyExtractor={item => item.id}
-          renderItem={({ item: like }) => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Likes")}
-            >
-              <Image
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50
-                }}
-                source={{ uri: like.avatar[0] }}
-              />
-            </TouchableOpacity>
-          )}
-        />
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Likes")}
-          style={{
-            width: "100%",
-            minHeight: 80,
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            paddingVertical: 10,
-            marginTop: 30
-          }}
-        >
-          <Image
+      <View style={{
+        flex: 1,
+        padding: 20,
+        justifyContent: likes.length > 0 ? "flex-start" : "center",
+        alignItems: "center"
+      }}>
+        {
+          likes.length > 0 &&
+          <FlatList
+            data={likes}
+            horizontal
             style={{
-              width: 70,
-              height: 70,
-              borderRadius: 50
+              width: "100%",
+              maxHeight: 60,
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor
             }}
-            source={{ uri: likes[0]?.avatar[0] }}
+            keyExtractor={item => item.id}
+            renderItem={({ item: like }) => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Likes")}
+              >
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 50
+                  }}
+                  source={{ uri: like.avatar[0] }}
+                />
+              </TouchableOpacity>
+            )}
           />
-          <View
+        }
+
+        {
+          likes.length > 0 &&
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Likes")}
             style={{
-              marginLeft: 20
+              width: "100%",
+              minHeight: 80,
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              paddingVertical: 10,
+              marginTop: 30
             }}
           >
+            <Image
+              style={{
+                width: 70,
+                height: 70,
+                borderRadius: 50
+              }}
+              source={{ uri: likes[0]?.avatar[0] }}
+            />
             <View
               style={{
-                fontFamily: "text",
-                fontSize: 16,
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center"
+                marginLeft: 20
               }}
             >
-              <Text
-                style={{
-                  textTransform: "capitalize",
-                  fontFamily: "text",
-                  fontSize: 16
-                }}
-              >
-                {likes[0]?.username}
-              </Text>
               <View
                 style={{
-                  backgroundColor: color.gold,
-                  borderRadius: 50,
-                  paddingHorizontal: 10,
-                  paddingVertical: 2,
-                  marginLeft: 10
+                  fontFamily: "text",
+                  fontSize: 16,
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center"
                 }}
               >
                 <Text
                   style={{
+                    textTransform: "capitalize",
                     fontFamily: "text",
-                    fontSize: 14
+                    fontSize: 16
                   }}
                 >
-                  Likes you
+                  {likes[0]?.username}
                 </Text>
+                <View
+                  style={{
+                    backgroundColor: color.gold,
+                    borderRadius: 50,
+                    paddingHorizontal: 10,
+                    paddingVertical: 2,
+                    marginLeft: 10
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "text",
+                      fontSize: 14
+                    }}
+                  >
+                    Likes you
+                  </Text>
+                </View>
               </View>
+              <Text
+                style={{
+                  fontFamily: "text",
+                  color: color.labelColor,
+                  fontSize: 12,
+                  marginTop: 5
+                }}
+              >
+                Recently active, Match now!
+              </Text>
             </View>
-            <Text
-              style={{
-                fontFamily: "text",
-                color: color.labelColor,
-                fontSize: 12,
-                marginTop: 5
-              }}
-            >
-              Recently active, Match now!
-            </Text>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        }
 
         <AutoHeightImage
           width={400}
@@ -270,15 +281,6 @@ const ChatList = () => {
             require("../assets/message.png")
           }
         />
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 24,
-            fontFamily: "text",
-            color: color.dark
-          }}>
-          No matches at the moment
-        </Text>
       </View>
     )
   )
