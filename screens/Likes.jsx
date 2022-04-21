@@ -103,29 +103,31 @@ const Likes = () => {
               })
             })
 
-        } else
+        } else {
           firebase.firestore()
             .collection("users")
             .doc(user.uid)
             .collection("pendingSwipes")
             .doc(userSwiped.id)
             .set(userSwiped)
+        }
       })
   }
 
   const swipeLeft = async (like) => {
-    const needle = like.id
-    const cardIndex = profils.findIndex(item => item.id === needle)
-
-    if (!profils[cardIndex]) return
-
-    const userSwiped = profils[cardIndex]
     firebase.firestore()
       .collection("users")
-      .doc(userSwiped.id)
-      .collection("passes")
       .doc(user.uid)
-      .set(userSwiped)
+      .collection("pendingSwipes")
+      .doc(like.id)
+      .delete()
+
+    firebase.firestore()
+      .collection("users")
+      .doc(like.id)
+      .collection("swipes")
+      .doc(user.uid)
+      .delete()
   }
 
   const [loaded] = useFonts({
@@ -184,44 +186,6 @@ const Likes = () => {
           <MaterialCommunityIcons name="bell" size={26} color={color.lightText} />
         </TouchableOpacity>
       </View>
-      {/* <View style={home.header}>
-        <Text
-          style={{
-            fontSize: 30,
-            color: "#000",
-            fontFamily: "logo"
-          }}
-        >
-          Oymo
-        </Text>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center"
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Account")}
-            style={{
-              width: 40,
-              height: 40,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: color.transparent
-            }}
-          >
-            {
-              userProfile == null ?
-                <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
-                : (userProfile.avatar?.length ?
-                  <Image style={{ width: 35, height: 35, borderRadius: 50, marginTop: -3 }} source={{ uri: userProfile.avatar[0] }} />
-                  : <SimpleLineIcons name="user" color="#000" size={22} />
-                )
-            }
-          </TouchableOpacity>
-        </View>
-      </View> */}
 
       <View
         style={{
@@ -271,7 +235,7 @@ const Likes = () => {
                     }}
                   >
                     <TouchableOpacity
-                      onPress={() => console.log(like)}
+                      onPress={() => swipeLeft(like)}
                       style={{
                         width: 35,
                         height: 35,

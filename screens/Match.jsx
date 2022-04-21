@@ -63,7 +63,7 @@ const Match = () => {
             mainColor={color.lightGreen}
             shadowColor={color.red}
             glitchDuration={2000}
-            glitchHeight={400}
+            glitchAmplitude={10}
             repeatDelay={10}
             textStyle={{
               color: color.lightGreen,

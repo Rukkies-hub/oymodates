@@ -40,12 +40,127 @@ const ChatList = () => {
 
   return (
     matches.length > 0 ? (
-      <FlatList
-        style={{ flex: 1, height: 70, paddingHorizontal: 10 }}
-        data={matches}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => <ChatRow matchDetails={item} />}
-      />
+      <View
+        style={{
+          flex: 1
+        }}
+      >
+        {
+          likes.length > 0 &&
+          <>
+            <FlatList
+              data={likes}
+              horizontal
+              style={{
+                width: "100%",
+                maxHeight: 60,
+                borderBottomWidth: 1,
+                borderBottomColor: color.borderColor
+              }}
+              keyExtractor={item => item.id}
+              renderItem={({ item: like }) => (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Likes")}
+                >
+                  <Image
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 50
+                    }}
+                    source={{ uri: like.avatar[0] }}
+                  />
+                </TouchableOpacity>
+              )}
+            />
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Likes")}
+              style={{
+                width: "100%",
+                minHeight: 80,
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                paddingVertical: 10,
+                marginTop: 30
+              }}
+            >
+              <Image
+                style={{
+                  width: 70,
+                  height: 70,
+                  borderRadius: 50
+                }}
+                source={{ uri: likes[0]?.avatar[0] }}
+              />
+              <View
+                style={{
+                  marginLeft: 20
+                }}
+              >
+                <View
+                  style={{
+                    fontFamily: "text",
+                    fontSize: 16,
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center"
+                  }}
+                >
+                  <Text
+                    style={{
+                      textTransform: "capitalize",
+                      fontFamily: "text",
+                      fontSize: 16
+                    }}
+                  >
+                    {likes[0]?.username}
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: color.gold,
+                      borderRadius: 50,
+                      paddingHorizontal: 10,
+                      paddingVertical: 2,
+                      marginLeft: 10
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontFamily: "text",
+                        fontSize: 14
+                      }}
+                    >
+                      Likes you
+                    </Text>
+                  </View>
+                </View>
+                <Text
+                  style={{
+                    fontFamily: "text",
+                    color: color.labelColor,
+                    fontSize: 12,
+                    marginTop: 5
+                  }}
+                >
+                  Recently active, Match now!
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </>
+        }
+        <FlatList
+          style={{
+            flex: 1,
+            width: "100%",
+            height: 70,
+            paddingHorizontal: 10
+          }}
+          data={matches}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <ChatRow matchDetails={item} />}
+        />
+      </View>
     ) : (
       <View style={{ flex: 1, padding: 20, alignItems: "center" }}>
         <FlatList

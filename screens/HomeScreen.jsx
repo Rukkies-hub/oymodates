@@ -72,14 +72,22 @@ const HomeScreen = () => {
       .collection("swipes")
       .get()
       .then(snapshot => snapshot.docs.map(doc => doc.id))
+    
+    const pendingSwipes = await firebase.firestore()
+      .collection("users")
+      .doc(user.uid)
+      .collection("pendingSwipes")
+      .get()
+      .then(snapshot => snapshot.docs.map(doc => doc.id))
 
 
     const passedUserIds = passes.length > 0 ? passes : ['test']
     const swipedUserIds = swipes.length > 0 ? swipes : ['test']
+    const pendingSwipesUserIds = pendingSwipes.length > 0 ? pendingSwipes : ['test']
 
     await firebase.firestore()
       .collection("users")
-      .where("id", "not-in", [...passedUserIds, ...swipedUserIds])
+      .where("id", "not-in", [...passedUserIds, ...swipedUserIds, ...pendingSwipesUserIds])
       .get()
       .then((snapshot) => {
         if (userProfile?.showMe)
