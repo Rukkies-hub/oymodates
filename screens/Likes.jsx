@@ -113,6 +113,21 @@ const Likes = () => {
       })
   }
 
+  const swipeLeft = async (like) => {
+    const needle = like.id
+    const cardIndex = profils.findIndex(item => item.id === needle)
+
+    if (!profils[cardIndex]) return
+
+    const userSwiped = profils[cardIndex]
+    firebase.firestore()
+      .collection("users")
+      .doc(userSwiped.id)
+      .collection("passes")
+      .doc(user.uid)
+      .set(userSwiped)
+  }
+
   const [loaded] = useFonts({
     logo: require("../assets/fonts/Pacifico/Pacifico-Regular.ttf"),
     text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
@@ -129,6 +144,47 @@ const Likes = () => {
       }}
     >
       <View style={home.header}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            marginTop: -10
+          }}
+        >
+          <Image
+            resizeMode="cover"
+            style={{
+              width: 30,
+              height: 30,
+              marginTop: 10,
+              marginRight: 10
+            }}
+            source={require("../assets/logo.png")}
+          />
+          <Text
+            style={{
+              fontSize: 30,
+              color: color.red,
+              fontFamily: "logo"
+            }}
+          >
+            Oymo
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={{
+            width: 40,
+            height: 40,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <MaterialCommunityIcons name="bell" size={26} color={color.lightText} />
+        </TouchableOpacity>
+      </View>
+      {/* <View style={home.header}>
         <Text
           style={{
             fontSize: 30,
@@ -165,7 +221,7 @@ const Likes = () => {
             }
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
 
       <View
         style={{
