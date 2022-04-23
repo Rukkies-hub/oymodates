@@ -64,7 +64,6 @@ export default () => {
       })
   }, [userProfile])
 
-  // const [profils, setProfiles] = useState([])
   const [stackSize, setStackSize] = useState(2)
 
   const fetchUsers = async () => {

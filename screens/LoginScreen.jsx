@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useState } from "react"
+
 import {
   SafeAreaView,
   StatusBar,
@@ -10,21 +11,28 @@ import {
   Text,
   TouchableWithoutFeedback,
   Keyboard
-} from 'react-native'
+} from "react-native"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import colors from "../style/color"
+
 import auth from "../style/auth"
 
 import useAuth from "../hooks/useAuth"
 
-import { useFonts } from 'expo-font'
+import { useFonts } from "expo-font"
+
 import color from "../style/color"
 
-const LoginScreen = ({ navigation }) => {
+import { useNavigation } from "@react-navigation/native"
+
+export default () => {
+  const navigation = useNavigation()
+
   const { signinState, signinUser } = useAuth()
-  const [type, setType] = React.useState(true)
+
+  const [type, setType] = useState(true)
 
   const [loaded] = useFonts({
     logo: require("../assets/fonts/Pacifico/Pacifico-Regular.ttf"),
@@ -95,7 +103,7 @@ const LoginScreen = ({ navigation }) => {
                 if (type == true) setType(false)
                 else if (type == false) setType(true)
               }} style={auth.peek_password}>
-                <MaterialCommunityIcons name={type == true ? 'eye-outline' : 'eye-off-outline'} color={color.lightText} size={20} style={auth.eye_icon} />
+                <MaterialCommunityIcons name={type == true ? "eye-outline" : "eye-off-outline"} color={color.lightText} size={20} style={auth.eye_icon} />
               </TouchableOpacity>
             </View>
           </View>
@@ -132,7 +140,7 @@ const LoginScreen = ({ navigation }) => {
                   ]
                 }
               >
-                Don't have an account? Sign Up
+                Don"t have an account? Sign Up
               </Text>
             </Pressable>
           </View>
@@ -141,5 +149,3 @@ const LoginScreen = ({ navigation }) => {
     </TouchableWithoutFeedback>
   )
 }
-
-export default LoginScreen

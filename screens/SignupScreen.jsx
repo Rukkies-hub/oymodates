@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from "react"
 
 import {
   SafeAreaView,
@@ -10,23 +10,24 @@ import {
   Text,
   TouchableWithoutFeedback,
   Keyboard
-} from 'react-native'
+} from "react-native"
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import auth from "../style/auth"
 
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from "expo-status-bar";
 
 import useAuth from "../hooks/useAuth"
 
-import { useFonts } from 'expo-font'
-import color from '../style/color'
+import { useFonts } from "expo-font"
+import color from "../style/color"
+import { useNavigation } from "@react-navigation/native";
 
-const SignupScreen = ({ navigation }) => {
+export default () => {
+  const navigation = useNavigation()
   const { signupState, signupUser } = useAuth()
-  const [type, setType] = React.useState(true)
+  const [type, setType] = useState(true)
 
   const [loaded] = useFonts({
     logo: require("../assets/fonts/Pacifico/Pacifico-Regular.ttf"),
@@ -50,7 +51,7 @@ const SignupScreen = ({ navigation }) => {
                 fontFamily: "logo"
               }}
             >
-              Sign In
+              Sign Up
             </Text>
           </View>
 
@@ -113,7 +114,7 @@ const SignupScreen = ({ navigation }) => {
                 if (type == true) setType(false)
                 else if (type == false) setType(true)
               }} style={auth.peek_password}>
-                <MaterialCommunityIcons name={type == true ? 'eye-outline' : 'eye-off-outline'} color={color.lightText} size={20} style={auth.eye_icon} />
+                <MaterialCommunityIcons name={type == true ? "eye-outline" : "eye-off-outline"} color={color.lightText} size={20} style={auth.eye_icon} />
               </TouchableOpacity>
             </View>
           </View>
@@ -159,5 +160,3 @@ const SignupScreen = ({ navigation }) => {
     </TouchableWithoutFeedback>
   )
 }
-
-export default SignupScreen

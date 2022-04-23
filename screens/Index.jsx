@@ -1,23 +1,27 @@
-import React from 'react'
+import React from "react"
 import { Image } from "react-native"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"
 
 const Tab = createMaterialBottomTabNavigator()
 
 import HomeScreen from "./HomeScreen"
+
 import ChatScreen from "./ChatScreen"
 
 import useAuth from "../hooks/useAuth"
-import Likes from './Likes'
+
+import Likes from "./Likes"
+
 import Account from "./Account"
 
-import colors from '../style/color'
+import colors from "../style/color"
 
-export default function Index () {
+export default () => {
   const { userProfile, loadingInitial, likes } = useAuth()
 
   return (
@@ -33,26 +37,13 @@ export default function Index () {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName
 
-          if (route.name === "HomeScreen")
-            iconName = focused ? "home" : "home-outline"
-          if (route.name === "Likes")
-            iconName = focused ? "heart" : "heart-outline"
-          if (route.name === "Chat")
-            iconName = focused ? "chat" : "chat-outline"
+          if (route.name === "HomeScreen") iconName = focused ? "home" : "home-outline"
+          if (route.name === "Likes") iconName = focused ? "heart" : "heart-outline"
+          if (route.name === "Chat") iconName = focused ? "chat" : "chat-outline"
 
-          if (route.name === "HomeScreen")
-            color = focused ? colors.red : colors.lightText
-          if (route.name === "Likes")
-            color = focused ? colors.red : colors.lightText
-          if (route.name === "Chat")
-            color = focused ? colors.red : colors.lightText
+          if (route.name === "HomeScreen" || route.name === "Likes" || route.name === "Chat") color = focused ? colors.red : colors.lightText
 
-          if (route.name === "HomeScreen")
-            size = focused ? 26 : 24
-          if (route.name === "Likes")
-            size = focused ? 26 : 24
-          if (route.name === "Chat")
-            size = focused ? 26 : 24
+          if (route.name === "HomeScreen" || route.name === "Likes" || route.name === "Chat") size = focused ? 26 : 24
 
           return <MaterialCommunityIcons name={iconName} color={color} size={size} />
         }
@@ -66,14 +57,14 @@ export default function Index () {
         }}
       />
       {
-        likes.length ?
+        likes?.length ?
           (
             <Tab.Screen
               name="Likes"
               component={Likes}
               options={{
                 headerShown: false,
-                tabBarBadge: likes.length
+                tabBarBadge: likes?.length
               }}
             />
           ) :
@@ -105,7 +96,7 @@ export default function Index () {
             <>
               {
                 userProfile == null ?
-                  <ActivityIndicator size="small" color="rgba(0,0,0,0)" />
+                  <ActivityIndicator size="small" color={colors.transparent} />
                   : (userProfile?.avatar?.length ?
                     (
                       userProfile?.avatar &&

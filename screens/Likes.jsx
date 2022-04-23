@@ -1,48 +1,44 @@
 import {
   View,
-  Text,
   SafeAreaView,
   TouchableOpacity,
-  ActivityIndicator,
-  Image,
   ImageBackground
-} from 'react-native'
-import React, { useEffect, useState } from 'react'
+} from "react-native"
+import React, { useEffect } from "react"
 
 import color from "../style/color"
-import home from "../style/home"
 
-import { useFonts } from 'expo-font'
+import { useFonts } from "expo-font"
 
-import useAuth from '../hooks/useAuth'
+import useAuth from "../hooks/useAuth"
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import firebase from '../hooks/firebase'
+import firebase from "../hooks/firebase"
 
-import generateId from '../lib/generateId'
+import generateId from "../lib/generateId"
 
-import AutoHeightImage from 'react-native-auto-height-image'
+import AutoHeightImage from "react-native-auto-height-image"
 
-import Header from '../components/Header'
+import Header from "../components/Header"
 
-const Likes = () => {
+export default () => {
+  const navigation = useNavigation()
+
   const {
     user,
     userProfile,
     likes,
     setLikes,
-    profils,
-    setProfiles
+    profils
   } = useAuth()
-  const navigation = useNavigation()
 
   useEffect(() =>
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .collection("pendingSwipes")
       .onSnapshot(snapshot => {
         setLikes(
@@ -54,7 +50,7 @@ const Likes = () => {
       })
     , [user])
 
-  const swipeRight = async (like) => {
+  const swipeRight = async like => {
     const needle = like.id
     const cardIndex = profils.findIndex(item => item.id === needle)
 
@@ -83,19 +79,19 @@ const Likes = () => {
           // CREATE A MATCH
           firebase.firestore()
             .collection("matches")
-            .doc(generateId(user.uid, userSwiped.id))
+            .doc(generateId(user?.uid, userSwiped.id))
             .set({
               users: {
                 [user.uid]: userProfile,
                 [userSwiped.id]: userSwiped
               },
-              usersMatched: [user.uid, userSwiped.id],
+              usersMatched: [user?.uid, userSwiped.id],
               timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
 
           firebase.firestore()
             .collection("users")
-            .doc(user.uid)
+            .doc(user?.uid)
             .collection("pendingSwipes")
             .doc(userSwiped.id)
             .delete()
@@ -109,7 +105,7 @@ const Likes = () => {
         } else {
           firebase.firestore()
             .collection("users")
-            .doc(user.uid)
+            .doc(user?.uid)
             .collection("pendingSwipes")
             .doc(userSwiped.id)
             .set(userSwiped)
@@ -117,10 +113,10 @@ const Likes = () => {
       })
   }
 
-  const swipeLeft = async (like) => {
+  const swipeLeft = async like => {
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .collection("pendingSwipes")
       .doc(like.id)
       .delete()
@@ -129,7 +125,7 @@ const Likes = () => {
       .collection("users")
       .doc(like.id)
       .collection("swipes")
-      .doc(user.uid)
+      .doc(user?.uid)
       .delete()
   }
 
@@ -151,7 +147,7 @@ const Likes = () => {
       <Header title="Likes" />
 
       {
-        !likes.length &&
+        !likes?.length &&
         <View
           style={{
             flex: 1,
@@ -160,9 +156,7 @@ const Likes = () => {
         >
           <AutoHeightImage
             width={400}
-            source={
-              require("../assets/like.png")
-            }
+            source={ require("../assets/like.png") }
           />
         </View>
       }
@@ -177,7 +171,7 @@ const Likes = () => {
         }}
       >
         {
-          likes.map((like, index) => {
+          likes?.map((like, index) => {
             return (
               <View
                 key={index}
@@ -190,7 +184,7 @@ const Likes = () => {
                 }}
               >
                 <ImageBackground
-                  blurRadius={userProfile.subscriptionPlans == "gold" ? 0 : userProfile.subscriptionPlans == "platinum" ? 0 : 50}
+                  blurRadius={userProfile?.subscriptionPlans == "gold" ? 0 : userProfile?.subscriptionPlans == "platinum" ? 0 : 50}
                   resizeMode="cover"
                   style={{
                     flex: 1,
@@ -198,7 +192,7 @@ const Likes = () => {
                     height: "100%",
                     position: "relative"
                   }}
-                  source={{ uri: like.avatar[0] }}
+                  source={{ uri: like?.avatar[0] }}
                 >
                   <View
                     style={{
@@ -225,7 +219,7 @@ const Likes = () => {
                         borderRadius: 50
                       }}
                     >
-                      <MaterialCommunityIcons name='close' size={20} color={color.red} />
+                      <MaterialCommunityIcons name="close" size={20} color={color.red} />
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -239,7 +233,7 @@ const Likes = () => {
                         borderRadius: 50
                       }}
                     >
-                      <MaterialCommunityIcons name='heart' size={20} color={color.lightGreen} />
+                      <MaterialCommunityIcons name="heart" size={20} color={color.lightGreen} />
                     </TouchableOpacity>
                   </View>
                 </ImageBackground>
@@ -251,5 +245,3 @@ const Likes = () => {
     </SafeAreaView>
   )
 }
-
-export default Likes
