@@ -10,7 +10,7 @@ if (
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
-const RecieverMessage = ({ messages, matchDetails }) => {
+export default ({ messages, matchDetails }) => {
   const { userProfile } = useAuth()
 
   const [expanded, setExpanded] = useState(false)
@@ -34,7 +34,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             setExpanded(!expanded)
           }}
           style={{
-            backgroundColor: messages.message ? "#FF4757" : "transparent",
+            backgroundColor: messages?.message ? color.red : color.transparent,
             paddingVertical: 6,
             paddingHorizontal: 15,
             alignSelf: "flex-end",
@@ -45,14 +45,14 @@ const RecieverMessage = ({ messages, matchDetails }) => {
           }}
         >
           {
-            messages.message && <Text
-              style={{ color: "#fff", fontSize: 18, textAlign: "right" }}
+            messages?.message && <Text
+              style={{ color: color.white, fontSize: 18, textAlign: "right" }}
             >
-              {messages.message}
+              {messages?.message}
             </Text>
           }
           {
-            messages.image &&
+            messages?.image &&
             <View
               style={{
                 position: "relative",
@@ -61,7 +61,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 borderWidth: 2,
                 borderRadius: 20,
                 overflow: "hidden",
-                borderColor: "#FF4757",
+                borderColor: color.red,
                 left: 16
               }}
             >
@@ -70,24 +70,27 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 width: "100%",
                 height: "100%"
               }}
-                source={{ uri: messages.image }}
+                source={{ uri: messages?.image }}
               />
-              <View
-                style={{
-                  width: "100%",
-                  height: 30,
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  backgroundColor: "#fff",
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  paddingHorizontal: 10
-                }}
-              >
-                <Text>{messages.caption}</Text>
-              </View>
+              {
+                messages?.caption &&
+                <View
+                  style={{
+                    width: "100%",
+                    height: 30,
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    backgroundColor: color.white,
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    paddingHorizontal: 10
+                  }}
+                >
+                  <Text>{messages?.caption}</Text>
+                </View>
+              }
             </View>
           }
         </Pressable>
@@ -95,5 +98,3 @@ const RecieverMessage = ({ messages, matchDetails }) => {
     </View>
   )
 }
-
-export default RecieverMessage

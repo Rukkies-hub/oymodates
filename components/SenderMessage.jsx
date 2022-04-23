@@ -12,11 +12,11 @@ if (
 
 import RBSheet from "react-native-raw-bottom-sheet"
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import firebase from '../hooks/firebase'
 
-const SenderMessage = ({ messages, matchDetails }) => {
+export default ({ messages, matchDetails }) => {
   const { userProfile } = useAuth()
 
   const refRBSheet = useRef()
@@ -77,7 +77,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
             setExpanded(!expanded)
           }}
           style={{
-            backgroundColor: messages.message ? color.purple : "transparent",
+            backgroundColor: messages.message ? color.purple : color.transparent,
             paddingVertical: 8,
             paddingHorizontal: 15,
             borderTopLeftRadius: 12,
@@ -86,14 +86,14 @@ const SenderMessage = ({ messages, matchDetails }) => {
           }}
         >
           {
-            messages.message && <Text
-              style={{ color: "#fff", fontSize: 18, textAlign: "right" }}
+            messages?.message && <Text
+              style={{ color: color.white, fontSize: 18, textAlign: "right" }}
             >
-              {messages.message}
+              {messages?.message}
             </Text>
           }
           {
-            messages.image &&
+            messages?.image &&
             <View
               style={{
                 position: "relative",
@@ -111,24 +111,27 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 width: "100%",
                 height: "100%"
               }}
-                source={{ uri: messages.image }}
+                source={{ uri: messages?.image }}
               />
-              <View
-                style={{
-                  width: "100%",
-                  height: 30,
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  backgroundColor: "#fff",
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  paddingHorizontal: 10
-                }}
-              >
-                <Text>{messages.caption}</Text>
-              </View>
+              {
+                messages?.caption &&
+                <View
+                  style={{
+                    width: "100%",
+                    height: 30,
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    backgroundColor: color.white,
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    paddingHorizontal: 10
+                  }}
+                >
+                  <Text>{messages?.caption}</Text>
+                </View>
+              }
             </View>
           }
         </Pressable>
@@ -145,7 +148,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
             backgroundColor: "transparent"
           },
           draggableIcon: {
-            backgroundColor: "#000"
+            backgroundColor: color.black
           }
         }}
       >
@@ -165,7 +168,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
               alignItems: "center"
             }}
           >
-            <SimpleLineIcons name="action-undo" color="rgba(0,0,0,0.8)" size={25} style={{ marginTop: -20 }} />
+            <MaterialCommunityIcons name="undo" color={color.dark} size={25} style={{ marginTop: -20 }} />
             <Text>Reply</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -176,7 +179,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
               alignItems: "center"
             }}
           >
-            <SimpleLineIcons name="docs" color="rgba(0,0,0,0.8)" size={25} style={{ marginTop: -20 }} />
+            <MaterialCommunityIcons name="content-copy" color={color.dark} size={25} style={{ marginTop: -20 }} />
             <Text>Copy</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -187,7 +190,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
               alignItems: "center"
             }}
           >
-            <SimpleLineIcons name="arrow-right-circle" color="rgba(0,0,0,0.8)" size={25} style={{ marginTop: -20 }} />
+            <MaterialCommunityIcons name="mdi-share" color={color.dark} size={25} style={{ marginTop: -20 }} />
             <Text>Forward</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -199,7 +202,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
               alignItems: "center"
             }}
           >
-            <SimpleLineIcons name="trash" color="rgba(0,0,0,0.8)" size={25} style={{ marginTop: -20 }} />
+            <MaterialCommunityIcons name="trash-can" color={color.dark} size={25} style={{ marginTop: -20 }} />
             <Text>Delete</Text>
           </TouchableOpacity>
         </View>
@@ -207,5 +210,3 @@ const SenderMessage = ({ messages, matchDetails }) => {
     </View>
   )
 }
-
-export default SenderMessage

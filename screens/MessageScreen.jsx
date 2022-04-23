@@ -1,21 +1,34 @@
-import { View, SafeAreaView, TextInput, TouchableOpacity, FlatList, TouchableWithoutFeedback, Keyboard, LayoutAnimation, UIManager, Text } from 'react-native'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from "react"
 
-import { useRoute, useNavigation } from '@react-navigation/native'
+import {
+  View,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  TouchableWithoutFeedback,
+  Keyboard,
+  LayoutAnimation,
+  UIManager
+} from "react-native"
 
-import Header from '../components/Header'
+import { useRoute, useNavigation } from "@react-navigation/native"
 
-import getMatchedUserInfo from '../lib/getMatchedUserInfo'
-import useAuth from '../hooks/useAuth'
+import Header from "../components/Header"
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import getMatchedUserInfo from "../lib/getMatchedUserInfo"
+
+import useAuth from "../hooks/useAuth"
+
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import SenderMessage from "../components/SenderMessage"
+
 import RecieverMessage from "../components/RecieverMessage"
 
 import firebase from "../hooks/firebase"
 
-import EmojiSelector, { Categories } from 'react-native-emoji-selector'
+import EmojiSelector, { Categories } from "react-native-emoji-selector"
 
 if (
   Platform.OS === "android" &&
@@ -23,9 +36,10 @@ if (
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
-import * as ImagePicker from 'expo-image-picker'
+import * as ImagePicker from "expo-image-picker"
+import color from "../style/color"
 
-const MessageScreen = () => {
+export default () => {
   const navigation = useNavigation()
   const { user, userProfile } = useAuth()
   const { params } = useRoute()
@@ -40,7 +54,7 @@ const MessageScreen = () => {
   useEffect(() =>
     firebase.firestore()
       .collection("matches")
-      .doc(matchDetails.id)
+      .doc(matchDetails?.id)
       .collection("messages")
       .orderBy("timestamp", "desc")
       .onSnapshot(snapshot => {
@@ -62,7 +76,7 @@ const MessageScreen = () => {
   useEffect(() =>
     firebase.firestore()
       .collection("matches")
-      .doc(matchDetails.id)
+      .doc(matchDetails?.id)
       .collection("messages")
       .get()
       .then(querySnapshot => {
@@ -79,7 +93,7 @@ const MessageScreen = () => {
     if (input != "")
       firebase.firestore()
         .collection("matches")
-        .doc(matchDetails.id)
+        .doc(matchDetails?.id)
         .collection("messages")
         .doc()
         .set({
@@ -129,7 +143,7 @@ const MessageScreen = () => {
 
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: color.white }}>
       <Header title={getMatchedUserInfo(matchDetails.users, user.uid).username} callEnabled />
 
       <TouchableWithoutFeedback
@@ -160,7 +174,7 @@ const MessageScreen = () => {
           alignItems: "baseline",
           paddingHorizontal: 10,
           borderTopWidth: .3,
-          backgroundColor: "#fff",
+          backgroundColor: color.white,
           minHeight: 50,
           overflow: "hidden"
         }}
@@ -175,7 +189,7 @@ const MessageScreen = () => {
                 justifyContent: "center",
                 alignItems: "center"
               }}>
-              <SimpleLineIcons name="camera" color="rgba(0,0,0,0.6)" size={20} />
+              <MaterialCommunityIcons name="camera-outline" color={color.lightText} size={20} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -186,7 +200,7 @@ const MessageScreen = () => {
                 justifyContent: "center",
                 alignItems: "center"
               }}>
-              <SimpleLineIcons name="picture" color="rgba(0,0,0,0.6)" size={20} />
+              <MaterialCommunityIcons name="image-outline" color={color.lightText} size={20} />
             </TouchableOpacity>
           </>
         }
@@ -203,7 +217,7 @@ const MessageScreen = () => {
               justifyContent: "center",
               alignItems: "center"
             }}>
-            <SimpleLineIcons name="arrow-right" color="rgba(0,0,0,0.6)" size={20} />
+            <MaterialCommunityIcons name="mdi-chevron-right" color={color.lightText} size={20} />
           </TouchableOpacity>
         }
         <TouchableOpacity
@@ -218,7 +232,7 @@ const MessageScreen = () => {
             justifyContent: "center",
             alignItems: "center"
           }}>
-          <SimpleLineIcons name="emotsmile" color="rgba(0,0,0,0.6)" size={20} />
+          <MaterialCommunityIcons name="emoticon-happy-outline" color={color.lightText} size={20} />
         </TouchableOpacity>
         <TextInput
           multiline
@@ -238,7 +252,7 @@ const MessageScreen = () => {
             justifyContent: "center",
             alignItems: "center"
           }}>
-          <SimpleLineIcons name="paper-plane" color="rgba(0,0,0,0.6)" size={20} />
+          <MaterialCommunityIcons name="mdi-telegram" color={color.lightText} size={20} />
         </TouchableOpacity>
       </View>
       {expanded && (
@@ -255,5 +269,3 @@ const MessageScreen = () => {
     </SafeAreaView>
   )
 }
-
-export default MessageScreen
