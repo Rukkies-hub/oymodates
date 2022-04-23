@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react"
+
 import {
   View,
   Text,
@@ -8,26 +10,31 @@ import {
   ScrollView,
   Switch,
   Pressable
-} from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { RadioButton } from 'react-native-paper'
+} from "react-native"
+
+import { RadioButton } from "react-native-paper"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import editProfile from '../style/editProfile'
+import editProfile from "../style/editProfile"
 
 import Bar from "./StatusBar"
 
 import useAuth from "../hooks/useAuth"
-import { FlatGrid } from 'react-native-super-grid'
 
-import firebase from '../hooks/firebase'
+import { FlatGrid } from "react-native-super-grid"
 
-import _const from "../style/const"
-import color from '../style/color'
-import { useFonts } from 'expo-font'
+import firebase from "../hooks/firebase"
 
-const EditProfile = ({ navigation }) => {
+import color from "../style/color"
+
+import { useFonts } from "expo-font"
+
+import { useNavigation } from "@react-navigation/native"
+
+export default () => {
+  const navigation = useNavigation()
+
   const {
     userProfile,
     user,
@@ -39,39 +46,37 @@ const EditProfile = ({ navigation }) => {
     setIsShowLocationEnabled
   } = useAuth()
 
-  const [checked, setChecked] = useState('male')
+  const [checked, setChecked] = useState("male")
   const [intrests, setIntrests] = useState([])
 
   useEffect(() => {
-    if (userProfile.intrests.length)
-      setIntrests(userProfile.intrests)
+    if (userProfile?.intrests?.length)
+      setIntrests(userProfile?.intrests)
   }, [user, userProfile])
 
-  const deleteImage = (image) => {
+  const deleteImage = image => {
     const fileRef = firebase.storage().refFromURL(image)
 
     fileRef.delete()
       .then(() => {
         firebase.firestore()
           .collection("users")
-          .doc(user.uid)
+          .doc(user?.uid)
           .update({
             avatar: firebase.firestore.FieldValue.arrayRemove(image)
           })
-          .then(() => {
-            getUserProfile(user)
-          })
+          .then(() => getUserProfile(user))
       })
   }
 
   useEffect(() =>
-    setChecked(userProfile.gender ? userProfile.gender : "male")
+    setChecked(userProfile?.gender ? userProfile?.gender : "male")
     , [userProfile])
 
   const maleGender = async () => {
     await firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         gender: "male"
       }).then(() => {
@@ -83,7 +88,7 @@ const EditProfile = ({ navigation }) => {
   const femaleGender = async () => {
     await firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         gender: "female"
       }).then(() => {
@@ -98,13 +103,11 @@ const EditProfile = ({ navigation }) => {
 
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         hideAge: showAge == true ? true : false
       })
-      .then(() => {
-        getUserProfile(user)
-      })
+      .then(() => getUserProfile(user))
   }
 
   const toggleShowLocationSwitch = () => {
@@ -113,12 +116,10 @@ const EditProfile = ({ navigation }) => {
 
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         hideLocation: showLocation == true ? true : false
-      }).then(() => {
-        getUserProfile(user)
-      })
+      }).then(() => getUserProfile(user))
   }
 
   const [loaded] = useFonts({
@@ -144,10 +145,15 @@ const EditProfile = ({ navigation }) => {
         }}
       >
         <TouchableOpacity
-          style={_const.backButton}
           onPress={() => navigation.goBack()}
+          style={{
+            width: 40,
+            height: 40,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
         >
-          <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+          <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
         </TouchableOpacity>
         <Text
           style={{
@@ -172,7 +178,7 @@ const EditProfile = ({ navigation }) => {
           }}>
             <FlatGrid
               itemDimension={100}
-              data={userProfile.avatar}
+              data={userProfile?.avatar}
               renderItem={({ item: image }) => (
                 <View
                   style={{
@@ -219,7 +225,7 @@ const EditProfile = ({ navigation }) => {
                         elevation: 5,
                       }}
                     >
-                      <MaterialCommunityIcons name='close' color={color.red} size={22} />
+                      <MaterialCommunityIcons name="close" color={color.red} size={22} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -228,7 +234,7 @@ const EditProfile = ({ navigation }) => {
           </View>
 
           {
-            userProfile.avatar.length != 9 &&
+            userProfile?.avatar?.length != 9 &&
             <View style={{ paddingHorizontal: 10 }}>
               <TouchableOpacity
                 onPress={pickImage}
@@ -248,7 +254,7 @@ const EditProfile = ({ navigation }) => {
                     fontFamily: "text"
                   }}
                 >
-                  Add Photo
+                  Add media
                 </Text>
               </TouchableOpacity>
             </View>
@@ -256,23 +262,26 @@ const EditProfile = ({ navigation }) => {
 
           <View style={editProfile.form}>
             <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>About Me</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditAbout")} style={editProfile.input} >
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.about}</Text>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>About me</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditAbout")} style={editProfile.input}>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile?.about}</Text>
               </TouchableWithoutFeedback>
             </View>
+
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Username</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditUsername")} style={editProfile.input} >
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>oymo.me/@{userProfile.username}</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditUsername")} style={editProfile.input}>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>oymo.me/@{userProfile?.username}</Text>
               </TouchableWithoutFeedback>
             </View>
+
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Name</Text>
               <TouchableWithoutFeedback style={editProfile.input} onPress={() => navigation.navigate("EditName")}>
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.name}</Text>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile?.name}</Text>
               </TouchableWithoutFeedback>
             </View>
+
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Passion</Text>
               <TouchableWithoutFeedback style={editProfile.input} onPress={() => navigation.navigate("EditPassion")}>
@@ -283,9 +292,10 @@ const EditProfile = ({ navigation }) => {
                   }}
                 >
                   {
-                    intrests.map(passion => {
+                    intrests?.map((passion, index) => {
                       return (
                         <View
+                          key={index}
                           style={{
                             backgroundColor: color.white,
                             borderWidth: 1,
@@ -312,30 +322,35 @@ const EditProfile = ({ navigation }) => {
                 </View>
               </TouchableWithoutFeedback>
             </View>
+
             <View style={editProfile.inputField}>
-              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Job Title</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditJob')} style={editProfile.input} >
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.occupation}</Text>
+              <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Job title</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditJob")} style={editProfile.input}>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile?.occupation}</Text>
               </TouchableWithoutFeedback>
             </View>
+
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Company</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditCompany')} style={editProfile.input} >
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.company}</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditCompany")} style={editProfile.input}>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile?.company}</Text>
               </TouchableWithoutFeedback>
             </View>
+
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>School</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditSchool')} style={editProfile.input} >
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.school}</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditSchool")} style={editProfile.input}>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile?.school}</Text>
               </TouchableWithoutFeedback>
             </View>
+
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Location</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditAddress')} style={editProfile.input} >
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.address?.city}, {userProfile.address?.country}</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditAddress")} style={editProfile.input}>
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile?.address?.city}, {userProfile?.address?.country}</Text>
               </TouchableWithoutFeedback>
             </View>
+
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Gender</Text>
               <View>
@@ -349,7 +364,7 @@ const EditProfile = ({ navigation }) => {
                   <RadioButton
                     value="male"
                     color={color.red}
-                    status={checked === 'male' ? 'checked' : 'unchecked'}
+                    status={checked === "male" ? "checked" : "unchecked"}
                     onPress={maleGender}
                   />
                   <Text
@@ -371,7 +386,7 @@ const EditProfile = ({ navigation }) => {
                   <RadioButton
                     value="female"
                     color={color.red}
-                    status={checked === 'female' ? 'checked' : 'unchecked'}
+                    status={checked === "female" ? "checked" : "unchecked"}
                     onPress={femaleGender}
                   />
                   <Text
@@ -387,8 +402,8 @@ const EditProfile = ({ navigation }) => {
 
             <View style={editProfile.inputField}>
               <Text style={{ fontSize: 12, color: color.labelColor, fontFamily: "text" }}>Birthday</Text>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('EditDateOfBirth')} style={editProfile.input} >
-                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile.date}</Text>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("EditDateOfBirth")} style={editProfile.input} >
+                <Text style={{ paddingTop: 6, fontFamily: "text" }}>{userProfile?.date}</Text>
               </TouchableWithoutFeedback>
             </View>
 
@@ -424,7 +439,7 @@ const EditProfile = ({ navigation }) => {
               </View>
               <View
                 style={{
-                  width: '100%',
+                  width: "100%",
                   height: 50,
                   flexDirection: "row",
                   justifyContent: "space-between",
@@ -440,7 +455,7 @@ const EditProfile = ({ navigation }) => {
                 </Text>
                 <Switch
                   trackColor={{ false: color.borderColor, true: color.offWhite }}
-                  thumbColor={isShowAgeEnabled ? color.red : '#f4f3f4'}
+                  thumbColor={isShowAgeEnabled ? color.red : "#f4f3f4"}
                   ios_backgroundColor="#3e3e3e"
                   onValueChange={toggleShowAgeSwitch}
                   value={isShowAgeEnabled}
@@ -449,7 +464,7 @@ const EditProfile = ({ navigation }) => {
               </View>
               <View
                 style={{
-                  width: '100%',
+                  width: "100%",
                   height: 50,
                   flexDirection: "row",
                   justifyContent: "space-between",
@@ -461,15 +476,15 @@ const EditProfile = ({ navigation }) => {
                     fontFamily: "text"
                   }}
                 >
-                  Dont show my location
+                  Don't show my location
                 </Text>
                 <Switch
                   trackColor={{ false: color.borderColor, true: color.offWhite }}
-                  thumbColor={isShowLocationEnabled ? color.red : '#f4f3f4'}
+                  thumbColor={isShowLocationEnabled ? color.red : "#f4f3f4"}
                   ios_backgroundColor="#3e3e3e"
                   onValueChange={toggleShowLocationSwitch}
                   value={isShowLocationEnabled}
-                  disabled={userProfile.payed == true ? false : true}
+                  disabled={userProfile?.payed == true ? false : true}
                 />
               </View>
             </View>
@@ -479,5 +494,3 @@ const EditProfile = ({ navigation }) => {
     </SafeAreaView>
   )
 }
-
-export default EditProfile

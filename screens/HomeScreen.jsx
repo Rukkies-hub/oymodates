@@ -1,3 +1,10 @@
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useLayoutEffect
+} from "react"
+
 import {
   SafeAreaView,
   Text,
@@ -5,12 +12,12 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator
-} from 'react-native'
-import React, { useRef, useState, useEffect, useLayoutEffect } from 'react'
+} from "react-native"
 
 import firebase from "../hooks/firebase"
 
 import useAuth from "../hooks/useAuth"
+
 import Bar from "./StatusBar"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
@@ -19,16 +26,17 @@ import Swiper from "react-native-deck-swiper"
 
 import home from "../style/home"
 
-import generateId from '../lib/generateId'
+import generateId from "../lib/generateId"
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native"
 
-import { LinearGradient } from 'expo-linear-gradient'
-import color from '../style/color'
+import { LinearGradient } from "expo-linear-gradient"
 
-import { useFonts } from 'expo-font'
+import color from "../style/color"
 
-const HomeScreen = () => {
+import { useFonts } from "expo-font"
+
+export default () => {
   const navigation = useNavigation()
 
   const swipeRef = useRef(null)
@@ -47,10 +55,10 @@ const HomeScreen = () => {
   useLayoutEffect(() => {
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .get()
       .then(doc => {
-        if (!doc.data()?.name || !doc.data()?.avatar?.length || !doc.data()?.location || !doc.data()?.occupation || !doc.data()?.intrests?.length)
+        if (!doc?.data()?.name || !doc?.data()?.avatar?.length || !doc?.data()?.location || !doc?.data()?.occupation || !doc?.data()?.intrests?.length)
           navigation.navigate("Setup")
         else setRenderHome(true)
       })
@@ -62,28 +70,20 @@ const HomeScreen = () => {
   const fetchUsers = async () => {
     const passes = await firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .collection("passes")
       .get()
       .then(snapshot => snapshot?.docs?.map(doc => doc.id))
 
     const swipes = await firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .collection("swipes")
       .get()
-      .then(snapshot => snapshot.docs.map(doc => doc.id))
+      .then(snapshot => snapshot?.docs?.map(doc => doc.id))
 
-    const pendingSwipes = await firebase.firestore()
-      .collection("users")
-      .doc(user.uid)
-      .collection("pendingSwipes")
-      .get()
-      .then(snapshot => snapshot.docs.map(doc => doc.id))
-
-
-    const passedUserIds = passes.length > 0 ? passes : ['test']
-    const swipedUserIds = swipes.length > 0 ? swipes : ['test']
+    const passedUserIds = passes?.length > 0 ? passes : ["test"]
+    const swipedUserIds = swipes?.length > 0 ? swipes : ["test"]
 
     await firebase.firestore()
       .collection("users")
@@ -92,7 +92,7 @@ const HomeScreen = () => {
       .then((snapshot) => {
         if (userProfile?.showMe)
           setProfiles(
-            snapshot.docs
+            snapshot?.docs
               .filter(doc => doc.id !== user.uid)
               .filter(doc => doc.data().gender == userProfile?.showMe)
               .map(doc => ({
@@ -102,7 +102,7 @@ const HomeScreen = () => {
           )
         else
           setProfiles(
-            snapshot.docs
+            snapshot?.docs
               .filter(doc => doc.id !== user.uid)
               .map(doc => ({
                 id: doc.id,
@@ -112,13 +112,9 @@ const HomeScreen = () => {
       })
   }
 
-  useEffect(() => {
-    fetchUsers()
-  }, [userProfile])
+  useEffect(() => fetchUsers(), [user])
 
-  useEffect(() => {
-    navigation.addListener("focus", () => fetchUsers())
-  }, [])
+  useEffect(() => navigation.addListener("focus", () => fetchUsers()), [])
 
   const swipeLeft = async (cardIndex) => {
     setStackSize(stackSize + 1)
@@ -127,9 +123,9 @@ const HomeScreen = () => {
     const userSwiped = profils[cardIndex]
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .collection("passes")
-      .doc(userSwiped.id)
+      .doc(userSwiped?.id)
       .set(userSwiped)
   }
 
@@ -142,32 +138,32 @@ const HomeScreen = () => {
     // // check if the user swiped on you...
     await firebase.firestore()
       .collection("users")
-      .doc(userSwiped.id)
+      .doc(userSwiped?.id)
       .collection("swipes")
-      .doc(user.uid)
+      .doc(user?.uid)
       .get()
       .then(documentSnapShot => {
-        if (documentSnapShot.exists) {
+        if (documentSnapShot?.exists) {
           // user ha matched with you before
           // create match
 
           firebase.firestore()
             .collection("users")
-            .doc(user.uid)
+            .doc(user?.uid)
             .collection("swipes")
-            .doc(userSwiped.id)
+            .doc(userSwiped?.id)
             .set(userSwiped)
 
           // CREATE A MATCH
           firebase.firestore()
             .collection("matches")
-            .doc(generateId(user.uid, userSwiped.id))
+            .doc(generateId(user.uid, userSwiped?.id))
             .set({
               users: {
                 [user.uid]: userProfile,
                 [userSwiped.id]: userSwiped
               },
-              usersMatched: [user.uid, userSwiped.id],
+              usersMatched: [user?.uid, userSwiped?.id],
               timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
 
@@ -180,26 +176,26 @@ const HomeScreen = () => {
 
           firebase.firestore()
             .collection("users")
-            .doc(user.uid)
+            .doc(user?.uid)
             .collection("swipes")
-            .doc(userSwiped.id)
+            .doc(userSwiped?.id)
             .set(userSwiped)
 
           firebase.firestore()
             .collection("users")
-            .doc(userSwiped.id)
+            .doc(userSwiped?.id)
             .collection("pendingSwipes")
-            .doc(user.uid)
+            .doc(user?.uid)
             .set(userProfile)
         }
       })
   }
 
   const rewindPasses = () => {
-    if (userProfile.subscriptionPlans == "gold" || userProfile.subscriptionPlans == "platinum") {
+    if (userProfile.subscriptionPlans == "gold" || userProfile.subscriptionPlans == "platinum")
       firebase.firestore()
         .collection("users")
-        .doc(user.uid)
+        .doc(user?.uid)
         .collection("passes")
         .get()
         .then(res => {
@@ -212,13 +208,13 @@ const HomeScreen = () => {
             dismis: true
           })
         })
-    } else navigation.navigate("AccountSettings")
+    else navigation.navigate("AccountSettings")
   }
 
   useEffect(() =>
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .collection("pendingSwipes")
       .onSnapshot(snapshot => {
         setLikes(
@@ -249,20 +245,9 @@ const HomeScreen = () => {
               style={{
                 flexDirection: "row",
                 justifyContent: "flex-start",
-                alignItems: "center",
-                marginTop: -10
+                alignItems: "center"
               }}
             >
-              <Image
-                resizeMode="cover"
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginTop: 10,
-                  marginRight: 10
-                }}
-                source={require("../assets/logo.png")}
-              />
               <Text
                 style={{
                   fontSize: 30,
@@ -287,7 +272,7 @@ const HomeScreen = () => {
           </View>
 
           <View style={{ flex: 1, marginTop: -8 }}>
-            {profils.length >= 1 ? (
+            {profils?.length >= 1 ? (
               <Swiper
                 ref={swipeRef}
                 cards={profils}
@@ -299,15 +284,9 @@ const HomeScreen = () => {
                 stackSize={stackSize}
                 verticalSwipe={true}
                 animateCardOpacity={true}
-                onSwipedLeft={(cardIndex) => {
-                  swipeLeft(cardIndex)
-                }}
-                onSwipedRight={(cardIndex) => {
-                  swipeRight(cardIndex)
-                }}
-                onSwipedBottom={(cardIndex) => {
-                  swipeLeft(cardIndex)
-                }}
+                onSwipedLeft={cardIndex => swipeLeft(cardIndex)}
+                onSwipedRight={cardIndex => swipeRight(cardIndex)}
+                onSwipedBottom={cardIndex => swipeLeft(cardIndex)}
                 backgroundColor={color.transparent}
                 cardHorizontalMargin={2}
                 overlayLabels={{
@@ -321,6 +300,7 @@ const HomeScreen = () => {
                       }
                     }
                   },
+
                   bottom: {
                     title: "NOPE",
                     style: {
@@ -331,6 +311,7 @@ const HomeScreen = () => {
                       }
                     }
                   },
+
                   right: {
                     title: "MATCH",
                     style: {
@@ -342,8 +323,10 @@ const HomeScreen = () => {
                     }
                   }
                 }}
+
                 renderCard={card => card ? (
-                  <View key={card.id}
+                  <View
+                    key={card.id}
                     style={{
                       backgroundColor: color.white,
                       height: 698,
@@ -368,7 +351,7 @@ const HomeScreen = () => {
                     />
 
                     <LinearGradient
-                      colors={['transparent', color.dark]}
+                      colors={["transparent", color.dark]}
                       style={{
                         width: "100%",
                         minHeight: 60,
@@ -392,10 +375,10 @@ const HomeScreen = () => {
                             fontFamily: "text",
                             textTransform: "capitalize"
                           }}>
-                          {card.username}
+                          {card?.username}
                         </Text>
                         {
-                          card.hideAge == true ? (null) : (
+                          card?.hideAge == true ? null : (
                             <Text
                               style={{
                                 fontSize: 20,
@@ -403,7 +386,7 @@ const HomeScreen = () => {
                                 marginBottom: 10,
                                 fontFamily: "text"
                               }}>
-                              {", " + card.age}
+                              {", " + card?.age}
                             </Text>
                           )
                         }
@@ -415,11 +398,11 @@ const HomeScreen = () => {
                             fontFamily: "text"
                           }}
                         >
-                          {card.occupation}
+                          {card?.occupation}
                         </Text>
                       </View>
                       {
-                        card.about ? (
+                        card?.about ? (
                           <Text
                             style={{
                               fontFamily: "text",
@@ -440,7 +423,7 @@ const HomeScreen = () => {
                             }}
                           >
                             {
-                              card.intrests.map((pation, index) => {
+                              card?.intrests?.map((pation, index) => {
                                 return (
                                   <View
                                     key={index}
@@ -583,5 +566,3 @@ const HomeScreen = () => {
     </SafeAreaView>
   )
 }
-
-export default HomeScreen

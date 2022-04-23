@@ -1,20 +1,26 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from "@react-navigation/native"
 
-import StackNavigator from './StackNavigator';
+import { LogBox } from "react-native"
+
+import StackNavigator from "./StackNavigator"
 
 import { AuthProvider } from "./hooks/useAuth"
-import { StripeProvider } from '@stripe/stripe-react-native';
 
-export default function App () {
+export default () => {
+
+  useEffect(() =>
+    LogBox.ignoreLogs([
+      "VirtualizedLists should never be nested",
+      "Setting a timer for a long period of time",
+      "Uncaught Error in snapshot listener"
+    ])
+    , [])
+  
   return (
     <NavigationContainer>
       <AuthProvider>
-        <StripeProvider
-          publishableKey='pk_test_51I0Dk8AX4NIcpyf3y2FxrILBCYiToGjzGatZPUOuidiOgmbFpbz4uePYb0MKtD3BbsOBkWOIn7vUGW59MiVodiva00htd0xyYX'
-        >
-          <StackNavigator />
-        </StripeProvider>
+        <StackNavigator />
       </AuthProvider>
     </NavigationContainer>
-  );
+  )
 }

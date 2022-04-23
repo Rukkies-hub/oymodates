@@ -1,19 +1,30 @@
-import { View, Text, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, TextInput } from 'react-native'
-import React from 'react'
+import React from "react"
+
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+  TextInput
+} from "react-native"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import Bar from "./StatusBar"
 
-import editProfile from '../style/editProfile'
-
 import useAuth from "../hooks/useAuth"
 
-import { useFonts } from 'expo-font'
+import { useFonts } from "expo-font"
 
-import color from '../style/color'
+import color from "../style/color"
 
-const EditName = ({ navigation }) => {
+import { useNavigation } from "@react-navigation/native"
+
+export default () => {
+  const navigation = useNavigation()
   const { nameState, updateName } = useAuth()
 
   const [loaded] = useFonts({
@@ -24,7 +35,13 @@ const EditName = ({ navigation }) => {
     return null
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{
+        flex: 1,
+        backgroundColor: color.white
+      }}
+    >
       <Bar />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <>
@@ -53,7 +70,7 @@ const EditName = ({ navigation }) => {
                   alignItems: "center"
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+                <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
               </TouchableOpacity>
               <Text
                 style={{
@@ -62,7 +79,7 @@ const EditName = ({ navigation }) => {
                   fontFamily: "text"
                 }}
               >
-                Name
+                Edit name
               </Text>
             </View>
             <TouchableOpacity
@@ -85,8 +102,22 @@ const EditName = ({ navigation }) => {
               justifyContent: "center"
             }}
           >
-            <View style={editProfile.form}>
-              <View style={editProfile.inputField}>
+            <View
+              style={{
+                width: "100%",
+                paddingHorizontal: 10,
+                marginTop: 30
+              }}
+            >
+              <View
+                style={{
+                  minHeight: 45,
+                  marginBottom: 30,
+                  borderBottomWidth: 1,
+                  borderColor: color.borderColor,
+                  position: "relative"
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 12,
@@ -98,9 +129,9 @@ const EditName = ({ navigation }) => {
                 </Text>
                 <TextInput
                   autoFocus
-                  placeholder="Name"
-                  value={nameState.name}
-                  onChangeText={nameState.setName}
+                  placeholder="Enter name"
+                  value={nameState?.name}
+                  onChangeText={nameState?.setName}
                   style={{
                     fontFamily: "text"
                   }}
@@ -113,5 +144,3 @@ const EditName = ({ navigation }) => {
     </KeyboardAvoidingView>
   )
 }
-
-export default EditName

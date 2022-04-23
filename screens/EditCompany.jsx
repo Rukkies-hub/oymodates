@@ -1,21 +1,47 @@
-import { View, Text, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, TextInput } from 'react-native'
-import React from 'react'
+import React from "react"
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+  TextInput
+} from "react-native"
+
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import Bar from "./StatusBar"
 
-import editProfile from '../style/editProfile'
-
 import useAuth from "../hooks/useAuth"
-import color from '../style/color'
 
-const EditCompany = ({ navigation }) => {
+import color from "../style/color"
+
+import { useNavigation } from "@react-navigation/native"
+
+import { useFonts } from "expo-font"
+
+export default () => {
+  const navigation = useNavigation()
   const { updateCompanyState, updateCompany } = useAuth()
 
+  const [loaded] = useFonts({
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
+
+  if (!loaded)
+    return null
+
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{
+        flex: 1,
+        backgroundColor: color.white
+      }}
+    >
       <Bar />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <>
@@ -44,7 +70,7 @@ const EditCompany = ({ navigation }) => {
                   alignItems: "center"
                 }}
               >
-                <SimpleLineIcons name="arrow-left" color={color.dark} size={20} />
+                <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
               </TouchableOpacity>
               <Text
                 style={{
@@ -61,8 +87,22 @@ const EditCompany = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={{ backgroundColor: color.white, flex: 1, justifyContent: "center" }}>
-            <View style={editProfile.form}>
-              <View style={editProfile.inputField}>
+            <View
+              style={{
+                width: "100%",
+                paddingHorizontal: 10,
+                marginTop: 30
+              }}
+            >
+              <View
+                style={{
+                  minHeight: 45,
+                  marginBottom: 30,
+                  borderBottomWidth: 1,
+                  borderColor: color.borderColor,
+                  position: "relative"
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 12,
@@ -75,8 +115,8 @@ const EditCompany = ({ navigation }) => {
                 <TextInput
                   autoFocus
                   placeholder="Company name"
-                  value={updateCompanyState.company}
-                  onChangeText={updateCompanyState.setCompany}
+                  value={updateCompanyState?.company}
+                  onChangeText={updateCompanyState?.setCompany}
                   style={{
                     fontFamily: "text"
                   }}
@@ -89,5 +129,3 @@ const EditCompany = ({ navigation }) => {
     </KeyboardAvoidingView>
   )
 }
-
-export default EditCompany

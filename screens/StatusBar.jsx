@@ -1,14 +1,14 @@
-import { StatusBar } from 'react-native'
 import React from 'react'
+import { StatusBar } from 'react-native'
 
-import colors from "../style/color"
+import color from "../style/color"
 
-export default function Bar() {
+export default () => {
   return (
     <StatusBar
         animated={true}
         barStyle="dark-content"
-        backgroundColor={colors.white}
+        backgroundColor={color.white}
       />
   )
 }

@@ -1,24 +1,21 @@
-import { View, SafeAreaView, Text } from 'react-native'
-import React from 'react'
+import React from "react"
 
-import Header from '../components/Header'
-import ChatList from '../components/ChatList'
+import { SafeAreaView } from "react-native"
 
-import useAuth from '../hooks/useAuth'
+import Header from "../components/Header"
 
-const ChatScreen = () => {
-  const {
-    user,
-    userProfile,
-    likes,
-    setLikes
-  } = useAuth()
-  
+import ChatList from "../components/ChatList"
+
+import color from "../style/color"
+
+import Bar from "./StatusBar"
+
+export default () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: color.white }}>
+      <Bar />
       <Header title="Chat" />
       <ChatList />
     </SafeAreaView>
   )
 }
-export default ChatScreen

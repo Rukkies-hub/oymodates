@@ -1,3 +1,5 @@
+import React, { useState } from "react"
+
 import {
   View,
   Text,
@@ -5,42 +7,43 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
-  TouchableOpacity,
-  TextInput
-} from 'react-native'
-import React, { useState } from 'react'
+  TouchableOpacity
+} from "react-native"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import Bar from "./StatusBar"
 
-import editProfile from '../style/editProfile'
-
 import useAuth from "../hooks/useAuth"
 
-import { useFonts } from 'expo-font'
+import { useFonts } from "expo-font"
 
-import color from '../style/color'
+import color from "../style/color"
 
-import Constants from 'expo-constants'
-import * as Location from 'expo-location'
+import Constants from "expo-constants"
 
-const EditAddress = ({ navigation }) => {
+import * as Location from "expo-location"
+
+import { useNavigation } from "@react-navigation/native"
+
+export default () => {
+  const navigation = useNavigation()
+
   const { updateAddressState, updateAddress } = useAuth()
 
   const [location, setLocation] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
 
   const getLocation = async () => {
-    if (Platform.OS === 'android' && !Constants.isDevice) {
+    if (Platform.OS === "android" && !Constants.isDevice) {
       setErrorMsg(
-        'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
+        "Oops, this will not work on Snack in an Android emulator. Try it on your device!"
       )
       return
     }
     let { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      setErrorMsg('Permission to access location was denied')
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied")
       return
     }
 
@@ -48,15 +51,7 @@ const EditAddress = ({ navigation }) => {
     const address = await Location.reverseGeocodeAsync(location.coords)
     setLocation(location)
     updateAddressState.setAddress(...address)
-
-    console.log(location)
   }
-
-  let text = 'Waiting..'
-  if (errorMsg)
-    text = errorMsg
-  else if (location)
-    text = JSON.stringify(location)
 
   const [loaded] = useFonts({
     text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
@@ -66,7 +61,13 @@ const EditAddress = ({ navigation }) => {
     return null
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{
+        flex: 1,
+        backgroundColor: color.white
+      }}
+    >
       <Bar />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <>
@@ -95,7 +96,7 @@ const EditAddress = ({ navigation }) => {
                   alignItems: "center"
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+                <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
               </TouchableOpacity>
               <Text
                 style={{
@@ -107,7 +108,7 @@ const EditAddress = ({ navigation }) => {
                 Location
               </Text>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={updateAddress}
               style={{
                 width: 40,
@@ -117,7 +118,7 @@ const EditAddress = ({ navigation }) => {
               }}
             >
               <MaterialCommunityIcons name="check" color={color.dark} size={24} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
           <View
@@ -127,7 +128,13 @@ const EditAddress = ({ navigation }) => {
               justifyContent: "center"
             }}
           >
-            <View style={editProfile.form}>
+            <View
+              style={{
+                width: "100%",
+                paddingHorizontal: 10,
+                marginTop: 30
+              }}
+            >
               <View
                 style={{
                   width: "100%",
@@ -141,7 +148,7 @@ const EditAddress = ({ navigation }) => {
                 }}
               >
                 {
-                  updateAddressState.address == null ?
+                  updateAddressState?.address == null ?
                     <Text
                       style={{
                         fontFamily: "text"
@@ -154,7 +161,7 @@ const EditAddress = ({ navigation }) => {
                         fontFamily: "text"
                       }}
                     >
-                      {updateAddressState.address?.subregion}, {updateAddressState.address?.country}
+                      {updateAddressState?.address?.subregion}, {updateAddressState?.address?.country}
                     </Text>
                 }
               </View>
@@ -179,7 +186,14 @@ const EditAddress = ({ navigation }) => {
                     fontFamily: "text"
                   }}
                 >
-                  <Text style={{ color: color.dark, fontSize: 18 }}>Get location</Text>
+                  <Text
+                    style={{
+                      color: color.dark,
+                      fontSize: 18
+                    }}
+                  >
+                    Get location
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={updateAddress}
@@ -195,7 +209,15 @@ const EditAddress = ({ navigation }) => {
                     fontFamily: "text"
                   }}
                 >
-                  <Text style={{ color: color.white, fontSize: 18, marginLeft: 10 }}>Update</Text>
+                  <Text
+                    style={{
+                      color: color.white,
+                      fontSize: 18,
+                      marginLeft: 10
+                    }}
+                  >
+                    Update
+                  </Text>
                 </TouchableOpacity>
               </View>
               {/* <View style={editProfile.inputField}>
@@ -225,5 +247,3 @@ const EditAddress = ({ navigation }) => {
     </KeyboardAvoidingView>
   )
 }
-
-export default EditAddress

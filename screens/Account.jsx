@@ -1,16 +1,14 @@
+import React, { useEffect } from "react"
+
 import {
   View,
   Text,
   SafeAreaView,
-  Image,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  LogBox,
   ImageBackground,
   ScrollView
-} from 'react-native'
+} from "react-native"
 
-import React, { useState, useEffect } from 'react'
 
 import Bar from "./StatusBar"
 
@@ -19,26 +17,18 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import account from "../style/account"
 
 import useAuth from "../hooks/useAuth"
-import { useNavigation } from '@react-navigation/native'
-import moment from 'moment'
 
-import { useFonts } from 'expo-font'
+import { useNavigation } from "@react-navigation/native"
 
-import color from '../style/color'
+import moment from "moment"
 
-import _const from '../style/const'
+import { useFonts } from "expo-font"
 
-const Account = () => {
+import color from "../style/color"
+
+export default () => {
   const navigation = useNavigation()
   const { userProfile } = useAuth()
-
-  useEffect(() =>
-    LogBox.ignoreLogs([
-      "VirtualizedLists should never be nested",
-      "Setting a timer for a long period of time",
-      "Uncaught Error in snapshot listener"
-    ])
-    , [])
 
   const [loaded] = useFonts({
     text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
@@ -48,7 +38,7 @@ const Account = () => {
     return null
 
   return (
-    <View style={account.container}>
+    <SafeAreaView style={account.container}>
       <Bar />
       <TouchableOpacity
         onPress={() => navigation.goBack()}
@@ -65,7 +55,7 @@ const Account = () => {
           borderRadius: 50
         }}
       >
-        <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+        <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
       </TouchableOpacity>
 
       <ScrollView
@@ -82,7 +72,7 @@ const Account = () => {
             minHeight: 500,
             position: "relative"
           }}
-          source={userProfile.avatar ? { uri: userProfile?.avatar[0] } : require('../assets/pph.jpg')}
+          source={userProfile?.avatar ? { uri: userProfile?.avatar[0] } : require("../assets/pph.jpg")}
         >
           <View
             style={{
@@ -105,7 +95,7 @@ const Account = () => {
                 borderRadius: 50
               }}
             >
-              <MaterialCommunityIcons name='cog' color={color.white} size={22} />
+              <MaterialCommunityIcons name="cog" color={color.white} size={22} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -120,7 +110,7 @@ const Account = () => {
                 marginHorizontal: 10
               }}
             >
-              <MaterialCommunityIcons name='pencil' color={color.white} size={22} />
+              <MaterialCommunityIcons name="pencil" color={color.white} size={22} />
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -132,7 +122,7 @@ const Account = () => {
                 borderRadius: 50
               }}
             >
-              <MaterialCommunityIcons name='shield' color={color.white} size={22} />
+              <MaterialCommunityIcons name="shield" color={color.white} size={22} />
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -153,9 +143,9 @@ const Account = () => {
               color: color.dark
             }}
           >
-            {userProfile.name}
-            {userProfile.date ? ", " : " "}
-            {userProfile.date && moment().diff(moment(userProfile.date, "DD-MM-YYYY"), 'years')}
+            {userProfile?.name}
+            {userProfile?.date ? ", " : " "}
+            {userProfile?.date && moment().diff(moment(userProfile?.date, "DD-MM-YYYY"), "years")}
           </Text>
         </View>
 
@@ -179,7 +169,7 @@ const Account = () => {
                 color: color.labelColor
               }}
             >
-              {userProfile.address?.city}, {userProfile.address?.country}
+              {userProfile?.address?.city}, {userProfile?.address?.country}
             </Text>
           </View>
         </View>
@@ -208,7 +198,7 @@ const Account = () => {
               fontFamily: "text"
             }}
           >
-            {userProfile.about}
+            {userProfile?.about}
           </Text>
         </View>
 
@@ -235,7 +225,7 @@ const Account = () => {
             }}
           >
             {
-              userProfile.intrests.map((passion, index) => {
+              userProfile?.intrests?.map((passion, index) => {
                 return (
                   <View
                     key={index}
@@ -263,8 +253,6 @@ const Account = () => {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
-
-export default Account

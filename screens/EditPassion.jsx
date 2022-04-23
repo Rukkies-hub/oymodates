@@ -1,19 +1,28 @@
-import { View, Text, SafeAreaView, Platform, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from "react"
+
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Platform,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView
+} from "react-native"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import Bar from "./StatusBar"
 
-import editProfile from '../style/editProfile'
-
 import useAuth from "../hooks/useAuth"
 
-import { useFonts } from 'expo-font'
+import { useFonts } from "expo-font"
 
-import color from '../style/color'
+import color from "../style/color"
 
 import firebase from "../hooks/firebase"
+
+import { useNavigation } from "@react-navigation/native"
 
 const intrestsList = [
   "karaoke",
@@ -75,22 +84,23 @@ const intrestsList = [
   "coffie"
 ]
 
-const EditPassion = ({ navigation }) => {
+export default () => {
+  const navigation = useNavigation()
   const { user, getUserProfile, userProfile } = useAuth()
   const [intrests, setIntrests] = useState([])
   const [intrestsLoading, setIntrestsLoading] = useState(false)
 
   useEffect(() => {
-    if (userProfile.intrests.length)
-      setIntrests(userProfile.intrests)
+    if (userProfile?.intrests?.length)
+      setIntrests(userProfile?.intrests)
   }, [user, userProfile])
 
   const updateIntrests = () => {
-    if (intrests.length) {
+    if (intrests?.length) {
       setIntrestsLoading(true)
       firebase.firestore()
         .collection("users")
-        .doc(user.uid)
+        .doc(user?.uid)
         .update({
           intrests
         })
@@ -112,7 +122,13 @@ const EditPassion = ({ navigation }) => {
     return null
 
   return (
-    <SafeAreaView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
+    <SafeAreaView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{
+        flex: 1,
+        backgroundColor: color.white
+      }}
+    >
       <Bar />
       <View
         style={{
@@ -139,7 +155,7 @@ const EditPassion = ({ navigation }) => {
               alignItems: "center"
             }}
           >
-            <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+            <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
           </TouchableOpacity>
           <Text
             style={{
@@ -148,7 +164,7 @@ const EditPassion = ({ navigation }) => {
               fontFamily: "text"
             }}
           >
-            Passion
+            Your passion
           </Text>
         </View>
       </View>
@@ -168,12 +184,18 @@ const EditPassion = ({ navigation }) => {
         >
           What are your passions
           {
-            intrests.length ? <Text>[{intrests.length}/5]</Text> : <Text style={{ display: "none" }}></Text>
+            intrests?.length && <Text>[{intrests?.length}/5]</Text>
           }
         </Text>
       </View>
 
-      <View style={editProfile.form}>
+      <View
+        style={{
+          width: "100%",
+          paddingHorizontal: 10,
+          marginTop: 30
+        }}
+      >
         <ScrollView
           style={{
             maxHeight: 600,
@@ -190,13 +212,14 @@ const EditPassion = ({ navigation }) => {
             }}
           >
             {
-              intrestsList.map((pashion, index) => {
+              intrestsList?.map((pashion, index) => {
                 return (
                   <TouchableOpacity
+                    key={index}
                     onPress={() => {
-                      if (intrests.includes(pashion))
-                        setIntrests(intrests.filter(item => item !== pashion))
-                      else if (intrests.length <= 4)
+                      if (intrests?.includes(pashion))
+                        setIntrests(intrests?.filter(item => item !== pashion))
+                      else if (intrests?.length <= 4)
                         setIntrests(oldArray => [...oldArray, pashion])
                     }}
                     style={{
@@ -204,14 +227,14 @@ const EditPassion = ({ navigation }) => {
                       paddingVertical: 5,
                       borderWidth: 2,
                       borderRadius: 50,
-                      borderColor: intrests?.includes(pashion) ? color.red : "rgba(0,0,0,0.1)",
+                      borderColor: intrests?.includes(pashion) ? color.red : color.borderColor,
                       marginBottom: 10,
                       marginRight: 10
                     }}
                   >
                     <Text
                       style={{
-                        color: intrests?.includes(pashion) ? color.red : "rgba(0,0,0,0.6)",
+                        color: intrests?.includes(pashion) ? color.red : color.lightText,
                         fontSize: 12,
                         fontFamily: "header",
                         textTransform: "capitalize"
@@ -255,5 +278,3 @@ const EditPassion = ({ navigation }) => {
     </SafeAreaView>
   )
 }
-
-export default EditPassion

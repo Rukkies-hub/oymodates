@@ -1,19 +1,33 @@
-import { View, Text, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, TextInput } from 'react-native'
-import React from 'react'
+import React from "react"
+
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+  TextInput
+} from "react-native"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import Bar from "./StatusBar"
 
-import editProfile from '../style/editProfile'
+import editProfile from "../style/editProfile"
 
 import useAuth from "../hooks/useAuth"
-import { useFonts } from 'expo-font'
 
-import color from '../style/color'
+import { useFonts } from "expo-font"
 
-const EditUsername = ({ navigation }) => {
-  const { usernameState, updateUsername } = useAuth()
+import color from "../style/color"
+
+import { useNavigation } from "@react-navigation/native"
+
+export default () => {
+  const navigation = useNavigation()
+  const { usernameState, updateUsername, userProfile } = useAuth()
 
   const [loaded] = useFonts({
     text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
@@ -23,7 +37,10 @@ const EditUsername = ({ navigation }) => {
     return null
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={editProfile.container}
+    >
       <Bar />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <>
@@ -52,7 +69,7 @@ const EditUsername = ({ navigation }) => {
                   alignItems: "center"
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+                <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
               </TouchableOpacity>
               <Text
                 style={{
@@ -79,8 +96,8 @@ const EditUsername = ({ navigation }) => {
 
           <View
             style={{
-              backgroundColor: color.white, 
-              flex: 1, 
+              backgroundColor: color.white,
+              flex: 1,
               justifyContent: "center"
             }}
           >
@@ -93,11 +110,11 @@ const EditUsername = ({ navigation }) => {
                     fontFamily: "text"
                   }}
                 >
-                  Username
+                  Edit username
                 </Text>
                 <TextInput
                   autoFocus
-                  placeholder="Username"
+                  placeholder={"oymo.me/@"+userProfile.username}
                   value={usernameState.username}
                   onChangeText={usernameState.onchangeUsername}
                   style={{
@@ -112,5 +129,3 @@ const EditUsername = ({ navigation }) => {
     </KeyboardAvoidingView>
   )
 }
-
-export default EditUsername

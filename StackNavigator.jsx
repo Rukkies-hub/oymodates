@@ -1,42 +1,41 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from "react"
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
-import SignupScreen from './screens/SignupScreen';
-import LoginScreen from './screens/LoginScreen';
+import SignupScreen from "./screens/SignupScreen"
+import LoginScreen from "./screens/LoginScreen"
 
 import Index from "./screens/Index"
 import HomeScreen from "./screens/HomeScreen"
 import ChatScreen from "./screens/ChatScreen"
-import EditProfile from './screens/EditProfile'
-import AccountSettings from './screens/AccountSettings'
-import EditAbout from './screens/EditAbout'
-import EditUsername from './screens/EditUsername'
-import EditName from './screens/EditName'
-import EditPassword from './screens/EditPassword'
-import EditDateOfBirth from './screens/EditDateOfBirth'
-import EditJob from './screens/EditJob'
-import EditCompany from './screens/EditCompany'
-import EditPassion from './screens/EditPassion'
-import EditSchool from './screens/EditSchool'
-import EditAddress from './screens/EditAddress'
-import Match from './screens/Match'
-import MessageScreen from './screens/MessageScreen'
-import PreviewImage from './screens/PreviewImage'
-import ViewProfile from './screens/ViewProfile'
-import Account from './screens/Account'
-import Setup from './screens/Setup'
-import OymoPlus from './screens/OymoPlus'
-import OymoGold from './screens/OymoGold'
-import OymoPlatinum from './screens/OymoPlatinum'
+import EditProfile from "./screens/EditProfile"
+import AccountSettings from "./screens/AccountSettings"
+import EditAbout from "./screens/EditAbout"
+import EditUsername from "./screens/EditUsername"
+import EditName from "./screens/EditName"
+import EditPassword from "./screens/EditPassword"
+import EditDateOfBirth from "./screens/EditDateOfBirth"
+import EditJob from "./screens/EditJob"
+import EditCompany from "./screens/EditCompany"
+import EditPassion from "./screens/EditPassion"
+import EditSchool from "./screens/EditSchool"
+import EditAddress from "./screens/EditAddress"
+import Match from "./screens/Match"
+import MessageScreen from "./screens/MessageScreen"
+import PreviewImage from "./screens/PreviewImage"
+import ViewProfile from "./screens/ViewProfile"
+import Account from "./screens/Account"
+import Setup from "./screens/Setup"
+import OymoPlus from "./screens/OymoPlus"
+import OymoGold from "./screens/OymoGold"
+import OymoPlatinum from "./screens/OymoPlatinum"
 import Modal from "./components/Modal"
 
 import useAuth from "./hooks/useAuth"
 
-const StackNavigator = () => {
+export default () => {
   const { user } = useAuth()
 
   return (
@@ -59,7 +58,7 @@ const StackNavigator = () => {
             <Stack.Screen name="OymoPlus" component={OymoPlus} options={{ headerShown: false }} />
             <Stack.Screen name="OymoGold" component={OymoGold} options={{ headerShown: false }} />
             <Stack.Screen name="OymoPlatinum" component={OymoPlatinum} options={{ headerShown: false }} />
-            
+
             <Stack.Screen name="Modal" component={Modal} options={{ headerShown: false }} />
           </Stack.Group>
 
@@ -89,5 +88,3 @@ const StackNavigator = () => {
     </Stack.Navigator>
   )
 }
-
-export default StackNavigator

@@ -1,3 +1,5 @@
+import React from "react"
+
 import {
   View,
   Text,
@@ -6,23 +8,24 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity
-} from 'react-native'
-import React from 'react'
+} from "react-native"
 
-import DatePicker from 'react-native-datepicker'
+import DatePicker from "react-native-datepicker"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import Bar from "./StatusBar"
 
-import editProfile from '../style/editProfile'
-
 import useAuth from "../hooks/useAuth"
 
-import { useFonts } from 'expo-font'
-import color from '../style/color'
+import { useFonts } from "expo-font"
 
-const EditDateOfBirth = ({ navigation }) => {
+import color from "../style/color"
+
+import { useNavigation } from "@react-navigation/native"
+
+export default () => {
+  const navigation = useNavigation()
   const { updateDateState, updateDateOfBirth } = useAuth()
 
   const [loaded] = useFonts({
@@ -33,7 +36,13 @@ const EditDateOfBirth = ({ navigation }) => {
     return null
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{
+        flex: 1,
+        backgroundColor: color.white
+      }}
+    >
       <Bar />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <>
@@ -62,7 +71,7 @@ const EditDateOfBirth = ({ navigation }) => {
                   alignItems: "center"
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+                <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
               </TouchableOpacity>
               <Text
                 style={{
@@ -71,7 +80,7 @@ const EditDateOfBirth = ({ navigation }) => {
                   fontFamily: "text"
                 }}
               >
-                Date of birth
+                My birth day
               </Text>
             </View>
             <TouchableOpacity
@@ -94,12 +103,20 @@ const EditDateOfBirth = ({ navigation }) => {
               justifyContent: "center"
             }}
           >
-            <View style={editProfile.form}>
-              <View style={{
-                height: 45,
-                marginBottom: 30,
-                position: "relative"
-              }}>
+            <View
+              style={{
+                width: "100%",
+                paddingHorizontal: 10,
+                marginTop: 30
+              }}
+            >
+              <View
+                style={{
+                  height: 45,
+                  marginBottom: 30,
+                  position: "relative"
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 12,
@@ -107,14 +124,14 @@ const EditDateOfBirth = ({ navigation }) => {
                     fontFamily: "text"
                   }}
                 >
-                  Select Date of birth
+                  Select date of birth
                 </Text>
 
                 <DatePicker
                   style={{
                     width: "100%",
                   }}
-                  date={updateDateState.date}
+                  date={updateDateState?.date}
                   mode="date"
                   placeholder="select date"
                   format="DD/MM/YYYY"
@@ -122,7 +139,7 @@ const EditDateOfBirth = ({ navigation }) => {
                   cancelBtnText="Cancel"
                   customStyles={{
                     dateIcon: {
-                      position: 'absolute',
+                      position: "absolute",
                       right: -5,
                       top: 4,
                       marginLeft: 0,
@@ -142,8 +159,8 @@ const EditDateOfBirth = ({ navigation }) => {
                       fontSize: 16,
                     }
                   }}
-                  onDateChange={(date) => {
-                    updateDateState.setDate(date)
+                  onDateChange={date => {
+                    updateDateState?.setDate(date)
                   }}
                 />
               </View>
@@ -154,5 +171,3 @@ const EditDateOfBirth = ({ navigation }) => {
     </KeyboardAvoidingView>
   )
 }
-
-export default EditDateOfBirth

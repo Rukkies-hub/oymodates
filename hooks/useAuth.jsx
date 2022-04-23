@@ -1,12 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { View, Text, Alert } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import * as ImagePicker from 'expo-image-picker'
+import React, { createContext, useContext, useEffect, useState } from "react"
+import { Alert } from "react-native"
+import { useNavigation } from "@react-navigation/native"
+import * as ImagePicker from "expo-image-picker"
 
 import firebase from "./firebase"
 
 const AuthContext = createContext({})
-import moment from 'moment'
+import moment from "moment"
 
 export const AuthProvider = ({ children }) => {
   const navigation = useNavigation()
@@ -69,8 +69,8 @@ export const AuthProvider = ({ children }) => {
 
   const [onlyRange, setOnlyRange] = useState(false)
 
-  const [showMeMen, setShowMeMen] = useState(userProfile.gender == 'male' ? true : false)
-  const [showMeWomen, setShowMeWomen] = useState(userProfile.gender == 'female' ? true : false)
+  const [showMeMen, setShowMeMen] = useState(userProfile.gender == "male" ? true : false)
+  const [showMeWomen, setShowMeWomen] = useState(userProfile.gender == "female" ? true : false)
   const [showMeAll, setShowMeAll] = useState(false)
 
   const [likes, setLikes] = useState([])
@@ -160,7 +160,7 @@ export const AuthProvider = ({ children }) => {
     if (!result.cancelled) {
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
-        xhr.onload = function () {
+        xhr.onload = () => {
           resolve(xhr.response)
         }
 
@@ -370,7 +370,7 @@ export const AuthProvider = ({ children }) => {
       .collection("users")
       .doc(`${user.uid}`)
       .update({
-        age: moment().diff(moment(date, "DD-MM-YYYY"), 'years'),
+        age: moment().diff(moment(date, "DD-MM-YYYY"), "years"),
         date
       }).then(() => {
         getUserProfile(user)
@@ -492,6 +492,6 @@ export const AuthProvider = ({ children }) => {
   )
 }
 
-export default function useAuth () {
+export default () => {
   return useContext(AuthContext)
 }

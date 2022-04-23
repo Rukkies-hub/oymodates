@@ -1,3 +1,5 @@
+import React from "react"
+
 import {
   View,
   Text,
@@ -7,28 +9,30 @@ import {
   Keyboard,
   TouchableOpacity,
   Switch,
-  Pressable
-} from 'react-native'
-import React, { useState } from 'react'
+  SafeAreaView
+} from "react-native"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import editProfile from '../style/editProfile'
-import color from '../style/color'
+import color from "../style/color"
 
 import useAuth from "../hooks/useAuth"
 
-import { useFonts } from 'expo-font'
+import { useFonts } from "expo-font"
 
-import _const from "../style/const"
+import { LinearGradient } from "expo-linear-gradient"
 
-import { LinearGradient } from 'expo-linear-gradient'
-
-import Slider from '@react-native-community/slider'
+import Slider from "@react-native-community/slider"
 
 import firebase from "../hooks/firebase"
 
-const AccountSettings = ({ navigation }) => {
+import { useNavigation } from "@react-navigation/native"
+
+import Bar from "./StatusBar"
+
+export default () => {
+  const navigation = useNavigation()
+
   const {
     userProfile,
     logout,
@@ -43,81 +47,69 @@ const AccountSettings = ({ navigation }) => {
   } = useAuth()
 
   const seeGlobal = () => {
-    setIsGlobal((previousState) => !previousState)
+    setIsGlobal(previousState => !previousState)
     let global = !isGlobal
 
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         global: global == true ? true : false
       })
-      .then(() => {
-        getUserProfile(user)
-      })
+      .then(() => getUserProfile(user))
   }
 
   const updateMaximumDistance = () => {
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         maximumDistance: distance
       })
-      .then(() => {
-        getUserProfile(user)
-      })
+      .then(() => getUserProfile(user))
   }
 
   const restrictDistance = () => {
-    setOnlyRange((previousState) => !previousState)
+    setOnlyRange(previousState => !previousState)
     let restrict = !onlyRange
 
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         range: restrict == true ? true : false
       })
-      .then(() => {
-        getUserProfile(user)
-      })
+      .then(() => getUserProfile(user))
   }
 
   const showOnlyMen = () => {
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         showMe: "male",
       })
-      .then(() => {
-        getUserProfile(user)
-      })
+      .then(() => getUserProfile(user))
   }
 
   const showOnlyWomen = () => {
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         showMe: "female"
       })
-      .then(() => {
-        getUserProfile(user)
-      })
+      .then(() => getUserProfile(user))
   }
 
   const showBoth = () => {
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         showMe: "both"
       })
-      .then(() => {
-        getUserProfile(user)
-      })
+      .then(() => getUserProfile(user))
   }
 
   const [loaded] = useFonts({
@@ -129,9 +121,16 @@ const AccountSettings = ({ navigation }) => {
     return null
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={editProfile.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{
+        flex: 1,
+        backgroundColor: color.white
+      }}
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View>
+        <SafeAreaView>
+          <Bar />
           <View
             style={{
               flexDirection: "row",
@@ -140,10 +139,15 @@ const AccountSettings = ({ navigation }) => {
             }}
           >
             <TouchableOpacity
-              style={_const.backButton}
               onPress={() => navigation.goBack()}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
             >
-              <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+              <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
             </TouchableOpacity>
             <Text
               style={{
@@ -152,7 +156,7 @@ const AccountSettings = ({ navigation }) => {
                 fontFamily: "text"
               }}
             >
-              Personal information
+              Account settings
             </Text>
           </View>
 
@@ -203,7 +207,7 @@ const AccountSettings = ({ navigation }) => {
                   color: color.white
                 }}
               >
-                platinum
+                Platinum
               </Text>
             </View>
           </TouchableOpacity>
@@ -352,7 +356,7 @@ const AccountSettings = ({ navigation }) => {
               </Text>
               <Switch
                 trackColor={{ false: color.borderColor, true: color.offWhite }}
-                thumbColor={isGlobal ? color.red : '#f4f3f4'}
+                thumbColor={isGlobal ? color.red : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={seeGlobal}
                 value={isGlobal}
@@ -388,7 +392,7 @@ const AccountSettings = ({ navigation }) => {
                   fontFamily: "text"
                 }}
               >
-                {distance}<Text style={{ fontSize: 12 }}>mi</Text>
+                {distance}<Text style={{ fontSize: 12, fontFamily: "text" }}>mi</Text>
               </Text>
             </View>
             <Slider
@@ -423,7 +427,7 @@ const AccountSettings = ({ navigation }) => {
 
               <Switch
                 trackColor={{ false: color.borderColor, true: color.offWhite }}
-                thumbColor={onlyRange ? color.red : '#f4f3f4'}
+                thumbColor={onlyRange ? color.red : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={restrictDistance}
                 value={onlyRange}
@@ -459,7 +463,7 @@ const AccountSettings = ({ navigation }) => {
                   height: 40,
                   borderRadius: 12,
                   borderWidth: 1,
-                  borderColor: userProfile.showMe == "male" ? color.red : color.borderColor,
+                  borderColor: userProfile?.showMe == "male" ? color.red : color.borderColor,
                   justifyContent: "center",
                   alignItems: "center"
                 }}
@@ -467,7 +471,7 @@ const AccountSettings = ({ navigation }) => {
                 <Text
                   style={{
                     fontFamily: "text",
-                    color: userProfile.showMe == "male" ? color.red : color.borderColor
+                    color: userProfile?.showMe == "male" ? color.red : color.borderColor
                   }}
                 >
                   Men
@@ -481,7 +485,7 @@ const AccountSettings = ({ navigation }) => {
                   height: 40,
                   borderRadius: 12,
                   borderWidth: 1,
-                  borderColor: userProfile.showMe == "female" ? color.red : color.borderColor,
+                  borderColor: userProfile?.showMe == "female" ? color.red : color.borderColor,
                   justifyContent: "center",
                   alignItems: "center"
                 }}
@@ -489,7 +493,7 @@ const AccountSettings = ({ navigation }) => {
                 <Text
                   style={{
                     fontFamily: "text",
-                    color: userProfile.showMe == "female" ? color.red : color.borderColor
+                    color: userProfile?.showMe == "female" ? color.red : color.borderColor
                   }}
                 >
                   Women
@@ -503,7 +507,7 @@ const AccountSettings = ({ navigation }) => {
                   height: 40,
                   borderRadius: 12,
                   borderWidth: 1,
-                  borderColor: userProfile.showMe == "both" ? color.red : color.borderColor,
+                  borderColor: userProfile?.showMe == "both" ? color.red : color.borderColor,
                   justifyContent: "center",
                   alignItems: "center"
                 }}
@@ -511,101 +515,32 @@ const AccountSettings = ({ navigation }) => {
                 <Text
                   style={{
                     fontFamily: "text",
-                    color: userProfile.showMe == "both" ? color.red : color.borderColor
+                    color: userProfile?.showMe == "both" ? color.red : color.borderColor
                   }}
                 >
                   Everyone
                 </Text>
               </TouchableOpacity>
             </View>
-
-            {/* <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center"
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "text",
-                  color: color.lightText
-                }}
-              >
-                Show me men
-              </Text>
-
-              <Switch
-                trackColor={{ false: color.borderColor, true: color.offWhite }}
-                thumbColor={showMeMen ? color.red : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={showOnlyMen}
-                value={showMeMen}
-              />
-            </View> */}
-
-            {/* <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center"
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "text",
-                  color: color.lightText
-                }}
-              >
-                Show me women
-              </Text>
-
-              <Switch
-                trackColor={{ false: color.borderColor, true: color.offWhite }}
-                thumbColor={showMeWomen ? color.red : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={showOnlyWomen}
-                value={showMeWomen}
-              />
-            </View> */}
-
-            {/* <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center"
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "text",
-                  color: color.lightText
-                }}
-              >
-                Show everyone
-              </Text>
-
-              <Switch
-                trackColor={{ false: color.borderColor, true: color.offWhite }}
-                thumbColor={showMeAll ? color.red : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={showBoth}
-                value={showMeAll}
-              />
-            </View> */}
           </View>
 
-          <View style={editProfile.form}>
+          <View
+            style={{
+              width: "100%",
+              paddingHorizontal: 10,
+              marginTop: 30
+            }}
+          >
             <View>
               <TouchableOpacity
                 onPress={() => navigation.navigate("EditPassword")}
                 style={{
                   backgroundColor: color.white,
-                  width: '100%',
+                  width: "100%",
                   height: 50,
                   borderRadius: 12,
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  justifyContent: "center",
+                  alignItems: "center"
                 }} >
                 <Text style={{ color: color.purple, fontSize: 18 }}>Reset password</Text>
               </TouchableOpacity>
@@ -613,21 +548,19 @@ const AccountSettings = ({ navigation }) => {
                 onPress={logout}
                 style={{
                   backgroundColor: color.white,
-                  width: '100%',
+                  width: "100%",
                   height: 50,
                   borderRadius: 12,
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  justifyContent: "center",
+                  alignItems: "center",
                   marginTop: 10
                 }} >
                 <Text style={{ color: color.red, fontSize: 18 }}>Logout</Text>
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </SafeAreaView>
       </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingView >
   )
 }
-
-export default AccountSettings
