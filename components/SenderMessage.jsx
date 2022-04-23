@@ -1,8 +1,10 @@
-import { View, Text, Image, Pressable, LayoutAnimation, UIManager, TouchableOpacity } from 'react-native'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef } from "react"
+
+import { View, Text, Image, Pressable, LayoutAnimation, UIManager, TouchableOpacity } from "react-native"
 
 import color from "../style/color"
-import useAuth from '../hooks/useAuth'
+
+import useAuth from "../hooks/useAuth"
 
 if (
   Platform.OS === "android" &&
@@ -14,7 +16,7 @@ import RBSheet from "react-native-raw-bottom-sheet"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import firebase from '../hooks/firebase'
+import firebase from "../hooks/firebase"
 
 export default ({ messages, matchDetails }) => {
   const { userProfile } = useAuth()

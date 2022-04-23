@@ -8,7 +8,7 @@ import { useFonts } from 'expo-font'
 
 import color from "../style/color"
 
-const Header = ({ title, callEnabled }) => {
+export default ({ title, callEnabled }) => {
   const navigation = useNavigation()
 
   const [loaded] = useFonts({
@@ -50,18 +50,18 @@ const Header = ({ title, callEnabled }) => {
         </Text>
       </View>
       {callEnabled && (
-        <TouchableOpacity style={{
-          width: 40,
-          height: 40,
-          borderRadius: 12,
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
+        <TouchableOpacity
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 12,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
           <MaterialCommunityIcons name="phone-outline" color={color.dark} size={30} />
         </TouchableOpacity>
       )}
     </View>
   )
 }
-
-export default Header

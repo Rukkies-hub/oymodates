@@ -1,19 +1,22 @@
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import firebase from '../hooks/firebase'
-import AutoHeightImage from 'react-native-auto-height-image'
+import React, { useState, useEffect } from "react"
+
+import { View, Text, FlatList, Image, TouchableOpacity } from "react-native"
+
+import firebase from "../hooks/firebase"
+
+import AutoHeightImage from "react-native-auto-height-image"
 
 import useAuth from "../hooks/useAuth"
 
-import ChatRow from './ChatRow'
+import ChatRow from "./ChatRow"
 
-import { useFonts } from 'expo-font'
+import { useFonts } from "expo-font"
 
 import color from "../style/color"
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native"
 
-const ChatList = () => {
+export default () => {
   const navigation = useNavigation()
 
   const { user, userProfile, likes } = useAuth()
@@ -39,14 +42,14 @@ const ChatList = () => {
     return null
 
   return (
-    matches.length > 0 ? (
+    matches?.length > 0 ? (
       <View
         style={{
           flex: 1
         }}
       >
         {
-          likes.length > 0 &&
+          likes?.length > 0 &&
           <>
             <FlatList
               data={likes}
@@ -58,7 +61,7 @@ const ChatList = () => {
                 borderBottomColor: color.borderColor
               }}
               keyExtractor={item => item.id}
-              renderItem={({ item: like }) => (
+              renderItem={({ like }) => (
                 <TouchableOpacity
                   onPress={() => navigation.navigate("Likes")}
                 >
@@ -68,7 +71,7 @@ const ChatList = () => {
                       height: 50,
                       borderRadius: 50
                     }}
-                    source={{ uri: like.avatar[0] }}
+                    source={{ uri: like?.avatar[0] }}
                   />
                 </TouchableOpacity>
               )}
@@ -165,11 +168,11 @@ const ChatList = () => {
       <View style={{
         flex: 1,
         padding: 20,
-        justifyContent: likes.length > 0 ? "flex-start" : "center",
+        justifyContent: likes?.length > 0 ? "flex-start" : "center",
         alignItems: "center"
       }}>
         {
-          likes.length > 0 &&
+          likes?.length > 0 &&
           <FlatList
             data={likes}
             horizontal
@@ -180,7 +183,7 @@ const ChatList = () => {
               borderBottomColor: color.borderColor
             }}
             keyExtractor={item => item.id}
-            renderItem={({ item: like }) => (
+            renderItem={({ like }) => (
               <TouchableOpacity
                 onPress={() => navigation.navigate("Likes")}
               >
@@ -190,7 +193,7 @@ const ChatList = () => {
                     height: 50,
                     borderRadius: 50
                   }}
-                  source={{ uri: like.avatar[0] }}
+                  source={{ uri: like?.avatar[0] }}
                 />
               </TouchableOpacity>
             )}
@@ -198,7 +201,7 @@ const ChatList = () => {
         }
 
         {
-          likes.length > 0 &&
+          likes?.length > 0 &&
           <TouchableOpacity
             onPress={() => navigation.navigate("Likes")}
             style={{
@@ -285,5 +288,3 @@ const ChatList = () => {
     )
   )
 }
-
-export default ChatList

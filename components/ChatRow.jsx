@@ -1,23 +1,25 @@
-import { View, Text, TouchableOpacity, Pressable, Image } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react"
 
-import getMatchedUserInfo from '../lib/getMatchedUserInfo'
+import { View, Text, Pressable, Image } from "react-native"
 
-import { useNavigation } from '@react-navigation/native'
-import useAuth from '../hooks/useAuth'
+import getMatchedUserInfo from "../lib/getMatchedUserInfo"
 
-import firebase from '../hooks/firebase'
+import { useNavigation } from "@react-navigation/native"
 
-import { useFonts } from 'expo-font'
-import color from '../style/color'
+import useAuth from "../hooks/useAuth"
 
-const ChatRow = ({ matchDetails }) => {
+import firebase from "../hooks/firebase"
+
+import { useFonts } from "expo-font"
+
+import color from "../style/color"
+
+export default ({ matchDetails }) => {
   const navigation = useNavigation()
   const { user } = useAuth()
 
   const [matchedUserInfo, setMatchedUserInfo] = useState({})
   const [lastMessage, setLastMessage] = useState("")
-  const [unseenMessage, setUnseenMessage] = useState([])
 
   useEffect(() => {
     setMatchedUserInfo(getMatchedUserInfo(matchDetails?.users, user.uid))
@@ -30,9 +32,7 @@ const ChatRow = ({ matchDetails }) => {
       .collection("messages")
       .orderBy("timestamp", "desc")
       .limit(1)
-      .onSnapshot(snapshot =>
-        setLastMessage(snapshot.docs[0]?.data()?.message)
-      )
+      .onSnapshot(snapshot => setLastMessage(snapshot?.docs[0]?.data()?.message))
     , [matchDetails, firebase.collection])
 
   const [loaded] = useFonts({
@@ -87,5 +87,3 @@ const ChatRow = ({ matchDetails }) => {
     </Pressable>
   )
 }
-
-export default ChatRow

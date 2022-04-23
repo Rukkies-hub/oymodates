@@ -1,12 +1,14 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React from "react"
 
-import { useNavigation, useRoute } from '@react-navigation/native'
-import color from '../style/color'
+import { View, Text, TouchableOpacity } from "react-native"
 
-import { useFonts } from 'expo-font'
+import { useNavigation, useRoute } from "@react-navigation/native"
 
-const Modal = () => {
+import color from "../style/color"
+
+import { useFonts } from "expo-font"
+
+export default () => {
   const navigation = useNavigation()
   const { params } = useRoute()
 
@@ -92,5 +94,3 @@ const Modal = () => {
     </View>
   )
 }
-
-export default Modal

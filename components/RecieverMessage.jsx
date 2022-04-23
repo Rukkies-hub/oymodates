@@ -1,8 +1,10 @@
-import { View, Text, Image, Pressable, LayoutAnimation, UIManager } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState } from "react"
+
+import { View, Text, Image, Pressable, LayoutAnimation, UIManager } from "react-native"
 
 import color from "../style/color"
-import useAuth from '../hooks/useAuth'
+
+import useAuth from "../hooks/useAuth"
 
 if (
   Platform.OS === "android" &&
