@@ -1,3 +1,5 @@
+import React, { useState } from "react"
+
 import {
   View,
   Text,
@@ -5,47 +7,47 @@ import {
   Modal,
   Image,
   Dimensions
-} from 'react-native'
-import React, { useState } from 'react'
+} from "react-native"
 
-import { WebView } from 'react-native-webview'
+import { WebView } from "react-native-webview"
 
 import color from "../style/color"
-import { useFonts } from 'expo-font'
+import { useFonts } from "expo-font"
 
-import { SwiperFlatList } from 'react-native-swiper-flatlist'
+import { SwiperFlatList } from "react-native-swiper-flatlist"
 
 const DATA = [
   {
-    title: 'Unlimited likes',
+    title: "Unlimited likes",
     subTitle: "Send as much likes as you want",
     image: require("../assets/hearts.png")
   },
   {
-    title: 'Like profiles around the world',
+    title: "Like profiles around the world",
     subTitle: "Passport to anywhere!",
     image: require("../assets/location2.png")
   },
   {
-    title: 'Control your profile',
+    title: "Control your profile",
     subTitle: "Limit what others can see",
     image: require("../assets/power-off.png")
   },
   {
-    title: 'Unlimited rewinds',
+    title: "Unlimited rewinds",
     subTitle: "Go back and try again",
     image: require("../assets/undo.png")
   },
 ]
 
-const { width, height } = Dimensions.get('window')
+const width = Dimensions.get("window").width
+
 const ITEM_SIZE = width
 
-import firebase from '../hooks/firebase'
+import firebase from "../hooks/firebase"
 
-import useAuth from '../hooks/useAuth'
+import useAuth from "../hooks/useAuth"
 
-const OymoPlus = () => {
+export default () => {
   const { user, userProfile } = useAuth()
   const [showModal, setShowModal] = useState(false)
   const [status, setStatus] = useState("")
@@ -56,6 +58,7 @@ const OymoPlus = () => {
       let currentDate = new Date()
       let expiryDate = new Date()
       expiryDate.setMonth(expiryDate.getMonth() + 12)
+
       if (data.title === "success") {
         setShowModal(false)
         setStatus("complete")
@@ -80,6 +83,7 @@ const OymoPlus = () => {
       let currentDate = new Date()
       let expiryDate = new Date()
       expiryDate.setMonth(expiryDate.getMonth() + 6)
+
       if (data.title === "success") {
         setShowModal(false)
         setStatus("complete")
@@ -104,6 +108,7 @@ const OymoPlus = () => {
       let currentDate = new Date()
       let expiryDate = new Date()
       expiryDate.setMonth(expiryDate.getMonth() + 1)
+      
       if (data.title === "success") {
         setShowModal(false)
         setStatus("complete")
@@ -373,7 +378,7 @@ const OymoPlus = () => {
           onRequestClose={() => setShowModal(false)}
         >
           <WebView
-            source={{ uri: 'http://192.168.43.97:3000/plus' }}
+            source={{ uri: "http://192.168.43.97:3000/plus" }}
             onNavigationStateChange={data => handleResponse(data)}
             injectedJavaScript={`document.querySelector("#paypalPlusOneMonth #price").value="4"; document.f1.submit()`}
           />
@@ -386,7 +391,7 @@ const OymoPlus = () => {
           onRequestClose={() => setShowModal(false)}
         >
           <WebView
-            source={{ uri: 'http://192.168.43.97:3000/plus' }}
+            source={{ uri: "http://192.168.43.97:3000/plus" }}
             onNavigationStateChange={data => handleResponse(data)}
             injectedJavaScript={`document.querySelector("#paypalPlusSixMonths #price").value="2"; document.f6.submit()`}
           />
@@ -399,7 +404,7 @@ const OymoPlus = () => {
           onRequestClose={() => setShowModal(false)}
         >
           <WebView
-            source={{ uri: 'http://192.168.43.97:3000/plus' }}
+            source={{ uri: "http://192.168.43.97:3000/plus" }}
             onNavigationStateChange={data => handleResponse(data)}
             injectedJavaScript={`document.querySelector("#paypalPlusTwelveMonths #price").value="1.5"; document.f12.submit()`}
           />
@@ -408,5 +413,3 @@ const OymoPlus = () => {
     </View>
   )
 }
-
-export default OymoPlus

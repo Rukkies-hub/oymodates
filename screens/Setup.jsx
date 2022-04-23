@@ -11,24 +11,24 @@ import {
   Image,
   ScrollView,
   Pressable
-} from 'react-native'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+} from "react-native"
+import React, { useState, useEffect, useLayoutEffect } from "react"
 
-import editProfile from '../style/editProfile'
+import editProfile from "../style/editProfile"
 
 import firebase from "../hooks/firebase"
 
-import useAuth from '../hooks/useAuth'
+import useAuth from "../hooks/useAuth"
 
-import { FlatGrid } from 'react-native-super-grid'
+import { FlatGrid } from "react-native-super-grid"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
-import * as ImagePicker from 'expo-image-picker'
+import * as ImagePicker from "expo-image-picker"
 
-import Constants from 'expo-constants'
-import * as Location from 'expo-location'
+import Constants from "expo-constants"
+import * as Location from "expo-location"
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native"
 
 const intrestsList = [
   "karaoke",
@@ -90,10 +90,10 @@ const intrestsList = [
   "coffie"
 ]
 
-import { useFonts } from 'expo-font'
-import color from '../style/color'
+import { useFonts } from "expo-font"
+import color from "../style/color"
 
-const Setup = () => {
+export default () => {
   const { user, renderHome, setRenderHome } = useAuth()
   const navigation = useNavigation()
 
@@ -114,23 +114,21 @@ const Setup = () => {
   const [intrests, setIntrests] = useState([])
   const [intrestsLoading, setIntrestsLoading] = useState(false)
 
-  const getUserProfile = async (user) => {
+  const getUserProfile = async user => {
     await firebase.firestore()
       .collection("users")
       .doc(user.uid)
       .get()
       .then(doc => {
         setUserProfile(doc?.data())
-        setName(doc.data()?.name)
-        setAddress(doc.data()?.address)
-        setOccupation(doc.data()?.occupation)
-        setIntrests(doc.data()?.intrests?.length ? doc.data()?.intrests : [])
+        setName(doc?.data()?.name)
+        setAddress(doc?.data()?.address)
+        setOccupation(doc?.data()?.occupation)
+        setIntrests(doc?.data()?.intrests?.length ? doc.data()?.intrests : [])
       })
   }
 
-  useEffect(() =>
-    getUserProfile(user)
-    , [])
+  useEffect(() => getUserProfile(user), [])
 
   useLayoutEffect(() => {
     if (userProfile.name) {
@@ -156,7 +154,7 @@ const Setup = () => {
       setNameLoading(true)
       await firebase.firestore()
         .collection("users")
-        .doc(`${user.uid}`)
+        .doc(user?.uid)
         .update({
           name
         }).then(() => {
@@ -191,7 +189,7 @@ const Setup = () => {
 
       snapshot.on(firebase.storage.TaskEvent.STATE_CHANGED, () => {
         // setupLoadeding(true)
-      }, (error) => {
+      }, error => {
         // setupLoadeding(false)
         blob.close()
         return
@@ -222,7 +220,7 @@ const Setup = () => {
       .then(() => {
         firebase.firestore()
           .collection("users")
-          .doc(user.uid)
+          .doc(user?.uid)
           .update({
             avatar: firebase.firestore.FieldValue.arrayRemove(image)
           }).then(() => getUserProfile(user))
@@ -230,15 +228,15 @@ const Setup = () => {
   }
 
   const getLocation = async () => {
-    if (Platform.OS === 'android' && !Constants.isDevice) {
+    if (Platform.OS === "android" && !Constants.isDevice) {
       setErrorMsg(
-        'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
+        "Oops, this will not work on Snack in an Android emulator. Try it on your device!"
       )
       return
     }
     let { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      setErrorMsg('Permission to access location was denied')
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied")
       return
     }
 
@@ -248,18 +246,12 @@ const Setup = () => {
     setAddress(...address)
   }
 
-  let text = 'Waiting..'
-  if (errorMsg)
-    text = errorMsg;
-  else if (location)
-    text = JSON.stringify(location)
-
   const saveLocation = () => {
     if (address != null && location != null)
       setLocationLoading(true)
     firebase.firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(user?.uid)
       .update({
         location,
         address
@@ -277,7 +269,7 @@ const Setup = () => {
       setOccupationLoading(true)
       await firebase.firestore()
         .collection("users")
-        .doc(`${user.uid}`)
+        .doc(user?.uid)
         .update({
           occupation
         })
@@ -299,7 +291,7 @@ const Setup = () => {
       setIntrestsLoading(true)
       firebase.firestore()
         .collection("users")
-        .doc(user.uid)
+        .doc(user?.uid)
         .update({
           intrests
         })
@@ -326,7 +318,7 @@ const Setup = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{
         flex: 1,
-        backgroundColor: "#fff"
+        backgroundColor: color.white
       }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -341,7 +333,7 @@ const Setup = () => {
               }}
             >
               {
-                userProfile.name &&
+                userProfile?.name &&
                 <TouchableOpacity
                   onPress={() => {
                     setShowName(false)
@@ -357,7 +349,7 @@ const Setup = () => {
                     right: 10
                   }}
                 >
-                  <MaterialCommunityIcons name='chevron-right' color={color.dark} size={30} />
+                  <MaterialCommunityIcons name="chevron-right" color={color.dark} size={30} />
                 </TouchableOpacity>
               }
               <View
@@ -453,13 +445,13 @@ const Setup = () => {
                   left: 10
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+                <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
               </TouchableOpacity>
               <View
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
-                  marginBottom: userProfile.avatar?.length ? 20 : 30
+                  marginBottom: userProfile?.avatar?.length ? 20 : 30
                 }}
               >
                 <Text
@@ -482,14 +474,14 @@ const Setup = () => {
                 </Text>
               </View>
               {
-                userProfile.avatar?.length != 9 &&
+                userProfile?.avatar?.length != 9 &&
                 <View style={{ paddingHorizontal: 10 }}>
                   {
-                    userProfile.avatar?.length >= 1 &&
+                    userProfile?.avatar?.length >= 1 &&
                     <FlatGrid
                       itemDimension={100}
-                      data={userProfile.avatar}
-                      renderItem={({ item: image }) => (
+                      data={userProfile?.avatar}
+                      renderItem={({ image }) => (
                         <View
                           style={{
                             flexDirection: "row",
@@ -535,7 +527,7 @@ const Setup = () => {
                                 elevation: 5,
                               }}
                             >
-                              <MaterialCommunityIcons name='close' color={color.red} size={22} />
+                              <MaterialCommunityIcons name="close" color={color.red} size={22} />
                             </TouchableOpacity>
                           </View>
                         </View>
@@ -543,7 +535,7 @@ const Setup = () => {
                     />
                   }
                   {
-                    userProfile.avatar?.length != 9 ?
+                    userProfile?.avatar?.length != 9 ?
                       <TouchableOpacity
                         onPress={pickImage}
                         style={{
@@ -556,12 +548,12 @@ const Setup = () => {
                           fontFamily: "header"
                         }}
                       >
-                        <Text style={{ color: color.white, fontSize: 18 }}>Add Photo</Text>
+                        <Text style={{ color: color.white, fontSize: 18 }}>Add photo</Text>
                       </TouchableOpacity>
                       : null
                   }
                   {
-                    userProfile.avatar?.length >= 3 &&
+                    userProfile?.avatar?.length >= 3 &&
                     <TouchableOpacity
                       onPress={() => {
                         setShowName(false)
@@ -614,13 +606,13 @@ const Setup = () => {
                   left: 10
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+                <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
               </TouchableOpacity>
               <Image
                 style={{
                   width: 200,
-                    height: 200,
-                    marginBottom: 30
+                  height: 200,
+                  marginBottom: 30
                 }}
                 source={require("../assets/location.png")}
               />
@@ -694,7 +686,7 @@ const Setup = () => {
                   {
                     locationLoading ? <ActivityIndicator size="small" color={color.white} />
                       : <>
-                        <MaterialCommunityIcons name='google-maps' size={20} color={color.white} />
+                        <MaterialCommunityIcons name="google-maps" size={20} color={color.white} />
                         <Text style={{ color: color.white, fontSize: 18, marginLeft: 10 }}>Update</Text>
                       </>
                   }
@@ -731,7 +723,7 @@ const Setup = () => {
                   left: 10
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+                <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
               </TouchableOpacity>
 
               <View
@@ -833,7 +825,7 @@ const Setup = () => {
                   left: 10
                 }}
               >
-                <MaterialCommunityIcons name='chevron-left' color={color.dark} size={30} />
+                <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
               </TouchableOpacity>
               <View
                 style={{
@@ -848,10 +840,10 @@ const Setup = () => {
                     fontFamily: "header"
                   }}
                 >
-                    What are your passions
-                    {
-                      intrests.length ? <Text>[{intrests.length}/5]</Text> : <Text style={{display: "none"}}></Text>
-                    }
+                  What are your passions
+                  {
+                    intrests?.length ? <Text>[{intrests?.length}/5]</Text> : <Text style={{ display: "none" }}></Text>
+                  }
                 </Text>
               </View>
               <View style={editProfile.form}>
@@ -874,6 +866,7 @@ const Setup = () => {
                       intrestsList.map((pashion, index) => {
                         return (
                           <TouchableOpacity
+                            key={index}
                             onPress={() => {
                               if (intrests.includes(pashion))
                                 setIntrests(intrests.filter(item => item !== pashion))
@@ -885,14 +878,14 @@ const Setup = () => {
                               paddingVertical: 5,
                               borderWidth: 2,
                               borderRadius: 50,
-                              borderColor: intrests?.includes(pashion) ? color.red : "rgba(0,0,0,0.1)",
+                              borderColor: intrests?.includes(pashion) ? color.red : color.borderColor,
                               marginBottom: 10,
                               marginRight: 10
                             }}
                           >
                             <Text
                               style={{
-                                color: intrests?.includes(pashion) ? color.red : "rgba(0,0,0,0.6)",
+                                color: intrests?.includes(pashion) ? color.red : color.lightText,
                                 fontSize: 12,
                                 fontFamily: "header",
                                 textTransform: "capitalize"
@@ -940,5 +933,3 @@ const Setup = () => {
     </KeyboardAvoidingView>
   )
 }
-
-export default Setup

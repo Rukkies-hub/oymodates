@@ -262,7 +262,7 @@ export default () => {
             showSearchBar={false}
             showSectionTitles={false}
             category={Categories.emotion}
-            onEmojiSelected={emoji => setInput(input + " " + emoji)}
+            onEmojiSelected={emoji => setInput(`${input} ${emoji}`)}
           />
         </View>
       )}

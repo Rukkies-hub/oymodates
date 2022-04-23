@@ -1,16 +1,26 @@
-import React, { useState } from 'react'
-import { View, Text, ImageBackground, TouchableOpacity, TextInput } from 'react-native'
-import { StatusBar } from 'expo-status-bar'
+import React, { useState } from "react"
 
-import { useNavigation, useRoute } from '@react-navigation/native'
+import {
+  View,
+  ImageBackground,
+  TouchableOpacity,
+  TextInput
+} from "react-native"
+
+import { StatusBar } from "expo-status-bar"
+
+import { useNavigation, useRoute } from "@react-navigation/native"
 
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import firebase from '../hooks/firebase'
+import firebase from "../hooks/firebase"
 
-import useAuth from '../hooks/useAuth'
+import useAuth from "../hooks/useAuth"
 
-const PreviewImage = () => {
+import color from "../style/color"
+
+export default () => {
   const { user, userProfile } = useAuth()
   const navigation = useNavigation()
   const { params } = useRoute()
@@ -21,7 +31,7 @@ const PreviewImage = () => {
   const sendImage = async () => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
-      xhr.onload = function () {
+      xhr.onload = () => {
         resolve(xhr.response)
       }
 
@@ -34,7 +44,7 @@ const PreviewImage = () => {
     const snapshot = ref.put(blob)
 
     snapshot.on(firebase.storage.TaskEvent.STATE_CHANGED, () => {
-    }, (error) => {
+    }, error => {
       blob.close()
       return
     }, () => {
@@ -65,13 +75,13 @@ const PreviewImage = () => {
   }
 
   return (
-    <View style={{ backgroundColor: "#fff", flex: 1 }}>
+    <View style={{ backgroundColor: color.white, flex: 1 }}>
       <StatusBar style="light" />
       <ImageBackground source={{ uri: params.image }} resizeMode="contain" style={{ flex: 1, position: "relative" }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{
-            backgroundColor: "#fff",
+            backgroundColor: color.white,
             width: 50,
             height: 50,
             borderRadius: 50,
@@ -80,7 +90,7 @@ const PreviewImage = () => {
             left: 10,
             justifyContent: "center",
             alignItems: "center",
-            shadowColor: "#000",
+            shadowColor: color.dark,
             shadowOffset: {
               width: 0,
               height: 2,
@@ -90,7 +100,7 @@ const PreviewImage = () => {
             elevation: 5,
           }}
         >
-          <SimpleLineIcons name="arrow-left" color="#000" size={22} />
+          <MaterialCommunityIcons name="chevron-left" color={color.dark} size={30} />
         </TouchableOpacity>
 
         <View
@@ -103,7 +113,7 @@ const PreviewImage = () => {
             alignItems: "baseline",
             paddingHorizontal: 10,
             borderTopWidth: .3,
-            backgroundColor: "#fff",
+            backgroundColor: color.white,
             minHeight: 50,
             overflow: "hidden"
           }}
@@ -132,12 +142,10 @@ const PreviewImage = () => {
               alignItems: "center"
             }}
           >
-            <SimpleLineIcons name="paper-plane" color="#000" size={22} />
+            <MaterialCommunityIcons name="mdi-telegram" color={color.lightText} size={20} />
           </TouchableOpacity>
         </View>
       </ImageBackground>
     </View>
   )
 }
-
-export default PreviewImage
