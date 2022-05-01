@@ -22,7 +22,7 @@ import color from "../style/color"
 
 import { useNavigation } from "@react-navigation/native"
 
-export default () => {
+const EditJob = () => {
   const navigation = useNavigation()
   const { updateJobState, updateJob } = useAuth()
 
@@ -143,3 +143,5 @@ export default () => {
     </KeyboardAvoidingView>
   )
 }
+
+export default EditJob

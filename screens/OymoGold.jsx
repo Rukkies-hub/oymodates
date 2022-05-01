@@ -50,7 +50,7 @@ import firebase from "../hooks/firebase"
 
 import useAuth from "../hooks/useAuth"
 
-export default () => {
+const OymoGold = () => {
   const { user } = useAuth()
   const [showModal, setShowModal] = useState(false)
   const [status, setStatus] = useState("")
@@ -424,3 +424,5 @@ export default () => {
     </View>
   )
 }
+
+export default OymoGold

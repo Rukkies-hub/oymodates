@@ -24,7 +24,7 @@ import color from "../style/color"
 
 import { useNavigation } from "@react-navigation/native"
 
-export default () => {
+const EditDateOfBirth = () => {
   const navigation = useNavigation()
   const { updateDateState, updateDateOfBirth } = useAuth()
 
@@ -171,3 +171,5 @@ export default () => {
     </KeyboardAvoidingView>
   )
 }
+
+export default EditDateOfBirth

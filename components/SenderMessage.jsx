@@ -18,7 +18,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import firebase from "../hooks/firebase"
 
-export default ({ messages, matchDetails }) => {
+const SenderMessage = ({ messages, matchDetails }) => {
   const { userProfile } = useAuth()
 
   const refRBSheet = useRef()
@@ -212,3 +212,5 @@ export default ({ messages, matchDetails }) => {
     </View>
   )
 }
+
+export default SenderMessage

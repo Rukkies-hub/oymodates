@@ -3,7 +3,7 @@ import { StatusBar } from 'react-native'
 
 import color from "../style/color"
 
-export default () => {
+const StatusBar = () => {
   return (
     <StatusBar
         animated={true}
@@ -12,3 +12,5 @@ export default () => {
       />
   )
 }
+
+export default StatusBar

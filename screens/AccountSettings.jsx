@@ -30,7 +30,7 @@ import { useNavigation } from "@react-navigation/native"
 
 import Bar from "./StatusBar"
 
-export default () => {
+const AccountSettings = () => {
   const navigation = useNavigation()
 
   const {
@@ -564,3 +564,5 @@ export default () => {
     </KeyboardAvoidingView >
   )
 }
+
+export default AccountSettings

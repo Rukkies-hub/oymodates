@@ -84,7 +84,7 @@ const intrestsList = [
   "coffie"
 ]
 
-export default () => {
+const EditPassion = () => {
   const navigation = useNavigation()
   const { user, getUserProfile, userProfile } = useAuth()
   const [intrests, setIntrests] = useState([])
@@ -278,3 +278,5 @@ export default () => {
     </SafeAreaView>
   )
 }
+
+export default EditPassion

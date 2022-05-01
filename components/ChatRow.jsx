@@ -14,7 +14,7 @@ import { useFonts } from "expo-font"
 
 import color from "../style/color"
 
-export default ({ matchDetails }) => {
+const ChatRow = ({ matchDetails }) => {
   const navigation = useNavigation()
   const { user } = useAuth()
 
@@ -87,3 +87,5 @@ export default ({ matchDetails }) => {
     </Pressable>
   )
 }
+
+export default ChatRow

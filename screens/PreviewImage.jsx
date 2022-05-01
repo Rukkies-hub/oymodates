@@ -20,7 +20,7 @@ import useAuth from "../hooks/useAuth"
 
 import color from "../style/color"
 
-export default () => {
+const PreviewImage = () => {
   const { user, userProfile } = useAuth()
   const navigation = useNavigation()
   const { params } = useRoute()
@@ -149,3 +149,5 @@ export default () => {
     </View>
   )
 }
+
+export default PreviewImage

@@ -23,7 +23,7 @@ import { useNavigation } from "@react-navigation/native"
 
 import { useFonts } from "expo-font"
 
-export default () => {
+const EditCompany = () => {
   const navigation = useNavigation()
   const { updateCompanyState, updateCompany } = useAuth()
 
@@ -129,3 +129,5 @@ export default () => {
     </KeyboardAvoidingView>
   )
 }
+
+export default EditCompany

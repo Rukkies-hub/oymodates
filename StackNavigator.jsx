@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator()
 import SignupScreen from "./screens/SignupScreen"
 import LoginScreen from "./screens/LoginScreen"
 
-import Index from "./screens/Index"
+import Index from "./Index"
 import HomeScreen from "./screens/HomeScreen"
 import ChatScreen from "./screens/ChatScreen"
 import EditProfile from "./screens/EditProfile"
@@ -32,10 +32,11 @@ import OymoPlus from "./screens/OymoPlus"
 import OymoGold from "./screens/OymoGold"
 import OymoPlatinum from "./screens/OymoPlatinum"
 import Modal from "./components/Modal"
+import Add from "./screens/Add"
 
 import useAuth from "./hooks/useAuth"
 
-export default () => {
+const StackNavigator = () => {
   const { user } = useAuth()
 
   return (
@@ -60,6 +61,8 @@ export default () => {
             <Stack.Screen name="OymoPlatinum" component={OymoPlatinum} options={{ headerShown: false }} />
 
             <Stack.Screen name="Modal" component={Modal} options={{ headerShown: false }} />
+
+            <Stack.Screen name="Add" component={Add} options={{ headerShown: false }} />
           </Stack.Group>
 
           <Stack.Group screenOptions={{ presentation: "modal" }}>
@@ -88,3 +91,5 @@ export default () => {
     </Stack.Navigator>
   )
 }
+
+export default StackNavigator

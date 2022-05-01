@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+
 import { NavigationContainer } from "@react-navigation/native"
 
 import { LogBox } from "react-native"
@@ -6,8 +8,7 @@ import StackNavigator from "./StackNavigator"
 
 import { AuthProvider } from "./hooks/useAuth"
 
-export default () => {
-
+const App = () => {
   useEffect(() =>
     LogBox.ignoreLogs([
       "VirtualizedLists should never be nested",
@@ -15,7 +16,7 @@ export default () => {
       "Uncaught Error in snapshot listener"
     ])
     , [])
-  
+
   return (
     <NavigationContainer>
       <AuthProvider>
@@ -24,3 +25,5 @@ export default () => {
     </NavigationContainer>
   )
 }
+
+export default App

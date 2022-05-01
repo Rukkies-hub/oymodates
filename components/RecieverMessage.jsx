@@ -12,7 +12,7 @@ if (
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
-export default ({ messages, matchDetails }) => {
+const RecieverMessage = ({ messages, matchDetails }) => {
   const { userProfile } = useAuth()
 
   const [expanded, setExpanded] = useState(false)
@@ -100,3 +100,5 @@ export default ({ messages, matchDetails }) => {
     </View>
   )
 }
+
+export default RecieverMessage

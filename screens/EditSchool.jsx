@@ -25,7 +25,7 @@ import color from "../style/color"
 
 import { useNavigation } from "@react-navigation/native"
 
-export default () => {
+const EditSchool = () => {
   const navigation = useNavigation()
   const { updateSchoolState, updateSchool } = useAuth()
 
@@ -129,3 +129,5 @@ export default () => {
     </KeyboardAvoidingView>
   )
 }
+
+export default EditSchool

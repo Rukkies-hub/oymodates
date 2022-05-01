@@ -10,7 +10,7 @@ import color from "../style/color"
 
 import Bar from "./StatusBar"
 
-export default () => {
+const ChatScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: color.white }}>
       <Bar />
@@ -19,3 +19,5 @@ export default () => {
     </SafeAreaView>
   )
 }
+
+export default ChatScreen

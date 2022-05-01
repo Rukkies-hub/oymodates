@@ -27,7 +27,7 @@ import color from "../style/color"
 
 import { useNavigation } from "@react-navigation/native"
 
-export default () => {
+const LoginScreen = () => {
   const navigation = useNavigation()
 
   const { signinState, signinUser } = useAuth()
@@ -149,3 +149,5 @@ export default () => {
     </TouchableWithoutFeedback>
   )
 }
+
+export default LoginScreen

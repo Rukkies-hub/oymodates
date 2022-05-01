@@ -1,59 +1,56 @@
+import React, { useState } from "react"
+
 import {
   View,
-  Text,
   SafeAreaView,
+  Text,
   TextInput,
   TouchableOpacity,
-  Keyboard,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
-  Platform,
+  ActivityIndicator,
+  FlatList,
   Image,
-  ActivityIndicator
-} from 'react-native'
-import React, { useState } from 'react'
+  Dimensions
+} from "react-native"
+import color from "../style/color"
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import { useFonts } from "expo-font"
 
-import { Camera } from 'expo-camera'
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+
+import Header from "../components/Header"
+
 import * as ImagePicker from 'expo-image-picker'
 
-import useAuth from "../hooks/useAuth"
-import firebase from "../hooks/firebase"
+import { useNavigation } from "@react-navigation/native"
 
-import { useNavigation } from '@react-navigation/native'
+import { SwiperFlatList } from "react-native-swiper-flatlist"
 
-import Bar from "./StatusBar"
+import AutoHeightImage from "react-native-auto-height-image"
+
+const width = Dimensions.get("window").width
+
+const ITEM_SIZE = width
 
 const Add = () => {
-  const { user, userProfile } = useAuth()
   const navigation = useNavigation()
-
-  const [height, setHeight] = useState(50)
-  const [image, setImage] = useState("")
   const [caption, setCaption] = useState("")
-  const [uploadLoading, setUploadLoading] = useState(false)
+  const [height, setHeight] = useState(50)
+  const [postloading, setPostloading] = useState(false)
+  const [image, setImage] = useState([])
 
-  const showImagePicker = async () => {
-    // Ask the user for the permission to access the media library 
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
-
-    if (permissionResult.granted === false) {
-      alert("You've refused to allow this appp to access your photos!")
-      return
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      quality: 1
-    })
+      aspect: [1, 1],
+      quality: 1,
+    });
 
-    // Explore the result
-    console.log(result)
 
-    if (!result.cancelled)
-      setImage(result.uri)
-
+    if (!result.cancelled) {
+      // setImage(result.uri)
+      setImage(oldArray => [...oldArray, result.uri])
+    }
   }
 
   const openCamera = async () => {
@@ -68,170 +65,166 @@ const Add = () => {
     const result = await ImagePicker.launchCameraAsync();
 
     // Explore the result
-    console.log(result);
+    console.log(result)
 
-    if (!result.cancelled)
+    if (!result.cancelled) {
       setImage(result.uri)
+    }
   }
 
-  const uploadPost = async () => {
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.onload = function () {
-        resolve(xhr.response)
-      }
+  console.log(image)
 
-      xhr.responseType = "blob"
-      xhr.open("GET", image, true)
-      xhr.send(null)
-    })
+  const [loaded] = useFonts({
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
 
-    const ref = firebase.storage().ref().child(`posts/${new Date().toISOString()}`)
-    const snapshot = ref.put(blob)
-
-    snapshot.on(firebase.storage.TaskEvent.STATE_CHANGED, () => {
-      setUploadLoading(true)
-    }, (error) => {
-      setUploadLoading(false)
-      blob.close()
-      return
-    }, () => {
-      snapshot.snapshot.ref.getDownloadURL().then(url => {
-        setUploadLoading(false)
-
-        firebase.firestore()
-          .collection("posts")
-          .doc()
-          .set({
-            media: url,
-            caption,
-            user: userProfile,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          })
-
-        if (uploadLoading == false)
-          navigation.navigate("Feed")
-
-        blob.close()
-        return url
-      })
-    })
-  }
+  if (!loaded)
+    return null
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: color.white
+      }}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView
+      <Header title="New post" />
+
+      <View
+        style={{
+          paddingHorizontal: 10
+        }}
+      >
+        <View
           style={{
-            flex: 1,
-            backgroundColor: "#fff"
+            width: "100%"
           }}
         >
-          <Bar />
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "baseline",
-              paddingHorizontal: 10,
-              borderBottomWidth: .3,
-              backgroundColor: "#fff",
               minHeight: 50,
-              overflow: "hidden",
-              marginTop: 10
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor
             }}
           >
             <TextInput
               multiline
+              placeholder="Aa..."
               value={caption}
-              onChangeText={setCaption}
-              placeholder="What's or nur mind.."
+              onChangeText={value => setCaption(value)}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-              style={{ fontSize: 18, flex: 1, width: "100%", height: height, maxHeight: 70 }}
-            />
-
-            <TouchableOpacity
-              onPress={uploadPost}
+              maxLength={250}
               style={{
-                width: 40,
-                height: 50,
-                justifyContent: "center",
-                alignItems: "center"
-              }}>
-              {
-                uploadLoading == true ? (<ActivityIndicator size="small" color="rgba(0,0,0,0.8)" />)
-                  : (<Text>Post</Text>)
-              }
-            </TouchableOpacity>
+                height: height,
+                width: "100%",
+                fontFamily: "text",
+                color: color.lightText,
+                fontSize: 18,
+                maxHeight: 100
+              }}
+            />
           </View>
-
           <View
             style={{
-              height: 50,
-              width: "100%",
               marginTop: 10,
               flexDirection: "row",
-              justifyContent: "flex-start",
+              justifyContent: "flex-end",
+              alignItems: "center"
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: "text",
+                color: color.lightText
+              }}
+            >
+              {caption.length}/250
+            </Text>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              paddingVertical: 10,
+              flexDirection: "row",
+              justifyContent: "flex-end",
               alignItems: "center",
-              marginHorizontal: 10
+              marginTop: 10
             }}
           >
             <TouchableOpacity
               onPress={openCamera}
               style={{
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-                padding: 10,
-                marginRight: 10,
+                width: 40,
                 height: 40,
-                borderRadius: 12
+                justifyContent: "center",
+                alignItems: "center",
+                marginRight: 10
               }}
             >
-              <SimpleLineIcons name="camera" color="rgba(0,0,0,0.6)" size={20} />
-              <Text style={{ marginLeft: 10 }}>Capture</Text>
+              <MaterialCommunityIcons name="camera-outline" color={color.lightText} size={25} />
             </TouchableOpacity>
+
             <TouchableOpacity
-              onPress={showImagePicker}
+              onPress={pickImage}
               style={{
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-                padding: 10,
-                marginRight: 10,
+                width: 40,
                 height: 40,
-                borderRadius: 12
+                justifyContent: "center",
+                alignItems: "center"
               }}
             >
-              <SimpleLineIcons name="picture" color="rgba(0,0,0,0.6)" size={20} />
-              <Text style={{ marginLeft: 10 }}>Add photo</Text>
+              <MaterialCommunityIcons name="image-outline" color={color.lightText} size={25} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => setPostloading(!postloading)}
+              style={{
+                width: 60,
+                height: 60,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: color.red,
+                borderRadius: 50,
+                marginLeft: 20
+              }}
+            >
+              {
+                postloading ? <ActivityIndicator size="small" color={color.white} />
+                  : <MaterialCommunityIcons name="feather" color={color.white} size={30} />
+              }
             </TouchableOpacity>
           </View>
 
-          <View
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              marginTop: 10
-            }}
-          >
-            <Image
-              source={{ uri: image }}
-              resizeMode="contain"
-              style={{
-                width: 100,
-                height: 100
-              }}
+          <View>
+            <FlatList
+              horizontal
+              data={image}
+              keyExtractor={(item, key) => key}
+              index={0}
+              renderItem={({ item }) => (
+                <View
+                  style={{
+                    width: ITEM_SIZE,
+                    minHeight: ITEM_SIZE / 2 + 50,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <AutoHeightImage
+                    width={ITEM_SIZE}
+                    source={{uri: item}}
+                  />
+                </View>
+              )}
             />
           </View>
-        </SafeAreaView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        </View>
+      </View>
+    </SafeAreaView>
   )
 }
 

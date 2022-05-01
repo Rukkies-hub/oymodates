@@ -8,7 +8,7 @@ import { useFonts } from 'expo-font'
 
 import color from "../style/color"
 
-export default ({ title, callEnabled }) => {
+const Header = ({ title, callEnabled }) => {
   const navigation = useNavigation()
 
   const [loaded] = useFonts({
@@ -65,3 +65,5 @@ export default ({ title, callEnabled }) => {
     </View>
   )
 }
+
+export default Header

@@ -8,7 +8,7 @@ import color from "../style/color"
 
 import { useFonts } from "expo-font"
 
-export default () => {
+const Modal = () => {
   const navigation = useNavigation()
   const { params } = useRoute()
 
@@ -94,3 +94,5 @@ export default () => {
     </View>
   )
 }
+
+export default Modal

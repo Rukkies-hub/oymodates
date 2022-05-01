@@ -26,7 +26,7 @@ import { useFonts } from "expo-font"
 
 import color from "../style/color"
 
-export default () => {
+const Account = () => {
   const navigation = useNavigation()
   const { userProfile } = useAuth()
 
@@ -256,3 +256,5 @@ export default () => {
     </SafeAreaView>
   )
 }
+
+export default Account

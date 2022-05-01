@@ -32,7 +32,7 @@ import { useFonts } from "expo-font"
 
 import { useNavigation } from "@react-navigation/native"
 
-export default () => {
+const EditProfile = () => {
   const navigation = useNavigation()
 
   const {
@@ -494,3 +494,5 @@ export default () => {
     </SafeAreaView>
   )
 }
+
+export default EditProfile

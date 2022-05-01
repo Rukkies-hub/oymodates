@@ -39,7 +39,9 @@ if (
 import * as ImagePicker from "expo-image-picker"
 import color from "../style/color"
 
-export default () => {
+import { useFonts } from "expo-font"
+
+const MessageScreen = () => {
   const navigation = useNavigation()
   const { user, userProfile } = useAuth()
   const { params } = useRoute()
@@ -141,6 +143,13 @@ export default () => {
     }
   }
 
+  const [loaded] = useFonts({
+    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+  })
+
+  if (!loaded)
+    return null
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: color.white }}>
@@ -189,7 +198,7 @@ export default () => {
                 justifyContent: "center",
                 alignItems: "center"
               }}>
-              <MaterialCommunityIcons name="camera-outline" color={color.lightText} size={20} />
+              <MaterialCommunityIcons name="camera-outline" color={color.lightText} size={26} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -200,7 +209,7 @@ export default () => {
                 justifyContent: "center",
                 alignItems: "center"
               }}>
-              <MaterialCommunityIcons name="image-outline" color={color.lightText} size={20} />
+              <MaterialCommunityIcons name="image-outline" color={color.lightText} size={26} />
             </TouchableOpacity>
           </>
         }
@@ -217,7 +226,7 @@ export default () => {
               justifyContent: "center",
               alignItems: "center"
             }}>
-            <MaterialCommunityIcons name="mdi-chevron-right" color={color.lightText} size={20} />
+            <MaterialCommunityIcons name="mdi-chevron-right" color={color.lightText} size={26} />
           </TouchableOpacity>
         }
         <TouchableOpacity
@@ -232,7 +241,7 @@ export default () => {
             justifyContent: "center",
             alignItems: "center"
           }}>
-          <MaterialCommunityIcons name="emoticon-happy-outline" color={color.lightText} size={20} />
+          <MaterialCommunityIcons name="emoticon-happy-outline" color={color.lightText} size={26} />
         </TouchableOpacity>
         <TextInput
           multiline
@@ -240,8 +249,16 @@ export default () => {
           placeholder="Aa.."
           onChangeText={setInput}
           onSubmitEditing={sendMessage}
-          style={{ fontSize: 18, flex: 1, width: "100%", height: height, maxHeight: 70 }}
           onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+          style={{
+            fontSize: 18,
+            flex: 1,
+            width: "100%",
+            height,
+            maxHeight: 70,
+            fontFamily: "text",
+            color: color.lightText,
+          }}
         />
 
         <TouchableOpacity
@@ -252,7 +269,7 @@ export default () => {
             justifyContent: "center",
             alignItems: "center"
           }}>
-          <MaterialCommunityIcons name="mdi-telegram" color={color.lightText} size={20} />
+          <MaterialCommunityIcons name="telegram" color={color.lightText} size={26} />
         </TouchableOpacity>
       </View>
       {expanded && (
@@ -269,3 +286,5 @@ export default () => {
     </SafeAreaView>
   )
 }
+
+export default MessageScreen

@@ -16,7 +16,7 @@ import color from "../style/color"
 
 import { useNavigation } from "@react-navigation/native"
 
-export default () => {
+const ChatList = () => {
   const navigation = useNavigation()
 
   const { user, userProfile, likes } = useAuth()
@@ -288,3 +288,5 @@ export default () => {
     )
   )
 }
+
+export default ChatList

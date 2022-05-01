@@ -1,10 +1,11 @@
+import React, { useEffect } from "react"
+
 import {
   View,
   SafeAreaView,
   TouchableOpacity,
   ImageBackground
 } from "react-native"
-import React, { useEffect } from "react"
 
 import color from "../style/color"
 
@@ -24,7 +25,7 @@ import AutoHeightImage from "react-native-auto-height-image"
 
 import Header from "../components/Header"
 
-export default () => {
+const Likes = () => {
   const navigation = useNavigation()
 
   const {
@@ -245,3 +246,5 @@ export default () => {
     </SafeAreaView>
   )
 }
+
+export default Likes

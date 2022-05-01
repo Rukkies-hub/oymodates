@@ -36,7 +36,7 @@ import color from "../style/color"
 
 import { useFonts } from "expo-font"
 
-export default () => {
+const HomeScreen = () => {
   const navigation = useNavigation()
 
   const swipeRef = useRef(null)
@@ -565,3 +565,5 @@ export default () => {
     </SafeAreaView>
   )
 }
+
+export default HomeScreen

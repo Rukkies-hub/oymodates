@@ -1,3 +1,5 @@
+import React, { useState, useEffect, useLayoutEffect } from "react"
+
 import {
   View,
   KeyboardAvoidingView,
@@ -12,7 +14,6 @@ import {
   ScrollView,
   Pressable
 } from "react-native"
-import React, { useState, useEffect, useLayoutEffect } from "react"
 
 import editProfile from "../style/editProfile"
 
@@ -93,7 +94,7 @@ const intrestsList = [
 import { useFonts } from "expo-font"
 import color from "../style/color"
 
-export default () => {
+const Setup = () => {
   const { user, renderHome, setRenderHome } = useAuth()
   const navigation = useNavigation()
 
@@ -933,3 +934,5 @@ export default () => {
     </KeyboardAvoidingView>
   )
 }
+
+export default Setup

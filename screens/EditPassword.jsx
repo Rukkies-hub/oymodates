@@ -23,7 +23,7 @@ import color from "../style/color"
 
 import { useFonts } from "expo-font"
 
-export default () => {
+const EditPassword = () => {
   const navigation = useNavigation()
   const { updatePasswordState, sendPasswordReset } = useAuth()
 
@@ -144,3 +144,5 @@ export default () => {
     </KeyboardAvoidingView>
   )
 }
+
+export default EditPassword

@@ -25,7 +25,7 @@ import color from "../style/color"
 
 import { useNavigation } from "@react-navigation/native"
 
-export default () => {
+const EditUsername = () => {
   const navigation = useNavigation()
   const { usernameState, updateUsername, userProfile } = useAuth()
 
@@ -129,3 +129,5 @@ export default () => {
     </KeyboardAvoidingView>
   )
 }
+
+export default EditUsername

@@ -26,7 +26,7 @@ import * as Location from "expo-location"
 
 import { useNavigation } from "@react-navigation/native"
 
-export default () => {
+const EditAddress = () => {
   const navigation = useNavigation()
 
   const { updateAddressState, updateAddress } = useAuth()
@@ -247,3 +247,5 @@ export default () => {
     </KeyboardAvoidingView>
   )
 }
+
+export default EditAddress

@@ -24,7 +24,7 @@ import { useFonts } from "expo-font"
 import color from "../style/color"
 import { useNavigation } from "@react-navigation/native";
 
-export default () => {
+const SignupScreen = () => {
   const navigation = useNavigation()
   const { signupState, signupUser } = useAuth()
   const [type, setType] = useState(true)
@@ -160,3 +160,4 @@ export default () => {
     </TouchableWithoutFeedback>
   )
 }
+export default SignupScreen

@@ -3,25 +3,20 @@ import { Image } from "react-native"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
-
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"
 
 const Tab = createMaterialBottomTabNavigator()
 
-import HomeScreen from "./HomeScreen"
+import HomeScreen from "./screens/HomeScreen"
+import ChatScreen from "./screens/ChatScreen"
+import Likes from "./screens/Likes"
+import Account from "./screens/Account"
+import Feed from "./screens/Feed"
 
-import ChatScreen from "./ChatScreen"
+import colors from "./style/color"
+import useAuth from "./hooks/useAuth"
 
-import useAuth from "../hooks/useAuth"
-
-import Likes from "./Likes"
-
-import Account from "./Account"
-
-import colors from "../style/color"
-
-export default () => {
+const Index = () => {
   const { userProfile, loadingInitial, likes } = useAuth()
 
   return (
@@ -37,13 +32,14 @@ export default () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName
 
-          if (route.name === "HomeScreen") iconName = focused ? "home" : "home-outline"
+          if (route.name === "HomeScreen") iconName = focused ? "view-carousel-outline" : "view-carousel-outline"
+          if (route.name === "Feed") iconName = focused ? "feather" : "feather"
           if (route.name === "Likes") iconName = focused ? "heart" : "heart-outline"
           if (route.name === "Chat") iconName = focused ? "chat" : "chat-outline"
 
-          if (route.name === "HomeScreen" || route.name === "Likes" || route.name === "Chat") color = focused ? colors.red : colors.lightText
+          if (route.name === "HomeScreen" || route.name === "Feed" || route.name === "Likes" || route.name === "Chat") color = focused ? colors.red : colors.lightText
 
-          if (route.name === "HomeScreen" || route.name === "Likes" || route.name === "Chat") size = focused ? 26 : 24
+          if (route.name === "HomeScreen" || route.name === "Feed" || route.name === "Likes" || route.name === "Chat") size = focused ? 26 : 24
 
           return <MaterialCommunityIcons name={iconName} color={color} size={size} />
         }
@@ -52,6 +48,13 @@ export default () => {
       <Tab.Screen
         name="HomeScreen"
         component={HomeScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Feed"
+        component={Feed}
         options={{
           headerShown: false,
         }}
@@ -110,7 +113,7 @@ export default () => {
                         source={{ uri: userProfile?.avatar[0] }}
                       />
                     )
-                    : <SimpleLineIcons name="user" color={colors.dark} size={22} />
+                    : <MaterialCommunityIcons name="account-outline" color={colors.lightText} size={24} />
                   )
               }
             </>
@@ -120,3 +123,5 @@ export default () => {
     </Tab.Navigator>
   )
 }
+
+export default Index
