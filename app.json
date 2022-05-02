@@ -16,14 +16,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "androidStatusBar": {
-      "backgroundColor": "#ffffff",
-      "barStyle": "dark-content"
-    },
-    "androidNavigationBar": {
-      "backgroundColor": "#ffffff",
-      "barStyle": "dark-content"
-    },
     "ios": {
       "supportsTablet": true
     },
@@ -35,19 +27,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/icon.png",
-          "color": "#ffffff",
-          "sounds": [
-            "./assets/newMessage.mp3",
-            "./assets/sent.mp3"
-          ]
-        }
-      ]
-    ]
+    }
   }
 }
