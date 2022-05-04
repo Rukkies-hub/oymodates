@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useLayoutEffect,
+  useMemo
+} from 'react'
 import * as Google from 'expo-google-app-auth'
 import {
   GoogleAuthProvider,
@@ -7,6 +14,7 @@ import {
   signOut
 } from 'firebase/auth'
 import { auth } from './firebase'
+import { async } from '@firebase/util'
 
 const AuthContext = createContext({})
 
@@ -19,7 +27,23 @@ const config = {
 
 export const AuthProvider = ({ children }) => {
 
+  const [error, setError] = useState(null)
+  const [user, setUser] = useState(null)
+  const [loadingInitial, setLoadingInitial] = useState(true)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() =>
+    onAuthStateChanged(auth, (user) => {
+      if (user) setUser(user)
+      else setUser(null)
+
+      setLoadingInitial(false)
+    })
+    , [])
+
   const signInWighGoogle = async () => {
+    setLoading(true)
+
     await Google.logInAsync(config)
       .then(async loginResult => {
         if (loginResult.type === 'success') {
@@ -31,17 +55,31 @@ export const AuthProvider = ({ children }) => {
         }
 
         return Promise.reject()
-      })
+      }).catch(error => setError(error))
+      .finally(() => setLoading(false))
   }
+
+  const logout = () => {
+    setLoading(true)
+
+    signOut(auth)
+      .catch(error => setError(error))
+      .finally(() => setLoading(false))
+  }
+
+  const memodValue = useMemo(() => ({
+    user,
+    error,
+    loading,
+    logout,
+    signInWighGoogle,
+  }), [user, loading, error])
 
   return (
     <AuthContext.Provider
-      value={{
-        user: false,
-        signInWighGoogle
-      }}
+      value={memodValue}
     >
-      {children}
+      {!loadingInitial && children}
     </AuthContext.Provider>
   )
 }

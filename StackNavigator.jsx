@@ -3,9 +3,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const Stack = createNativeStackNavigator()
 
-import Home from './screens/Home'
-import Chat from './screens/Chat'
+import Index from "./Index"
 import Login from './screens/Login'
+import UpdateModal from './screens/modal/UpdateModal'
+
 import useAuth from './hooks/useAuth'
 
 const StackNavigator = () => {
@@ -16,8 +17,13 @@ const StackNavigator = () => {
       {
         user ? (
           <>
-            <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
-            <Stack.Screen name='Chat' component={Chat} options={{ headerShown: false }} />
+            <Stack.Group>
+              <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
+            </Stack.Group>
+
+            <Stack.Group screenOptions={{ presentation: 'modal' }}>
+              <Stack.Screen name="UpdateModal" component={UpdateModal} options={{ headerShown: false }} />
+            </Stack.Group>
           </>
         ) : (
           <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
