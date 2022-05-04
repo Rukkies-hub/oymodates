@@ -15,9 +15,9 @@ import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import color from '../style/color'
 
-const Header = ({ showAratar, showLogo, showTitle, title }) => {
+const Header = ({ showAratar, showLogo, showTitle, title, showBack }) => {
   const navigation = useNavigation()
-  const { user } = useAuth()
+  const { user, userProfile } = useAuth()
 
   // console.log(user)
 
@@ -46,30 +46,53 @@ const Header = ({ showAratar, showLogo, showTitle, title }) => {
           alignItems: 'center'
         }}
       >
-        {
-          showLogo &&
-          <Text
-            style={{
-              fontFamily: 'logo',
-              fontSize: 25,
-              margin: 0,
-              marginTop: -10
-            }}
-          >
-            Oymo
-          </Text>
-        }
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center'
+          }}
+        >
+          {
+            showBack &&
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: 10
+              }}
+            >
+              <MaterialCommunityIcons name='chevron-left' size={28} color={color.dark} />
+            </TouchableOpacity>
+          }
+          {
+            showLogo &&
+            <Text
+              style={{
+                fontFamily: 'logo',
+                fontSize: 25,
+                margin: 0,
+                marginTop: -10
+              }}
+            >
+              Oymo
+            </Text>
+          }
 
-        {
-          showTitle &&
-          <Text
-            style={{
-              fontFamily: 'text'
-            }}
-          >
-            {title}
-          </Text>
-        }
+          {
+            showTitle &&
+            <Text
+              style={{
+                fontFamily: 'text'
+              }}
+            >
+              {title}
+            </Text>
+          }
+        </View>
 
         {
           showAratar &&
@@ -79,7 +102,7 @@ const Header = ({ showAratar, showLogo, showTitle, title }) => {
             {
               user.photoURL ?
                 <Image
-                  source={{ uri: user.photoURL }}
+                  source={{ uri: userProfile?.photoURL || user.photoURL }}
                   style={{
                     width: 40,
                     height: 40,

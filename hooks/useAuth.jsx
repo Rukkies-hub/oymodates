@@ -13,8 +13,9 @@ import {
   signInWithCredential,
   signOut
 } from 'firebase/auth'
-import { auth } from './firebase'
+import { auth, db } from './firebase'
 import { async } from '@firebase/util'
+import { doc, getDoc } from 'firebase/firestore'
 
 const AuthContext = createContext({})
 
@@ -31,6 +32,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loadingInitial, setLoadingInitial] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [userProfile, setUserProfile] = useState(null)
 
   useEffect(() =>
     onAuthStateChanged(auth, (user) => {
@@ -40,6 +42,13 @@ export const AuthProvider = ({ children }) => {
       setLoadingInitial(false)
     })
     , [])
+
+  useEffect(async () => {
+    let profile = await (await getDoc(doc(db, 'users', user.uid))).data()
+    setUserProfile(profile)
+  }, [user])
+
+  console.log(userProfile)
 
   const signInWighGoogle = async () => {
     setLoading(true)
@@ -73,6 +82,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     logout,
     signInWighGoogle,
+    userProfile
   }), [user, loading, error])
 
   return (

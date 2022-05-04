@@ -6,6 +6,7 @@ const Stack = createNativeStackNavigator()
 import Index from "./Index"
 import Login from './screens/Login'
 import UpdateModal from './screens/modal/UpdateModal'
+import Match from './screens/modal/Match'
 
 import useAuth from './hooks/useAuth'
 
@@ -23,6 +24,10 @@ const StackNavigator = () => {
 
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
               <Stack.Screen name="UpdateModal" component={UpdateModal} options={{ headerShown: false }} />
+            </Stack.Group>
+
+            <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
+              <Stack.Screen name="Match" component={Match} options={{ headerShown: false }} />
             </Stack.Group>
           </>
         ) : (

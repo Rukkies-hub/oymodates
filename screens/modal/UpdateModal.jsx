@@ -29,14 +29,13 @@ import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from "firebase/storage"
 
 const UpdateModal = () => {
-  const { user } = useAuth()
+  const { user, logout, userProfile } = useAuth()
   const storage = getStorage()
   const navigation = useNavigation()
 
   const [date, setDate] = useState()
   const [job, setJob] = useState('')
   const [image, setImage] = useState(null)
-  const [downloadURL, setDownloadURL] = useState('')
 
   const incompleteForm = !date || !job
 
@@ -120,7 +119,7 @@ const UpdateModal = () => {
         backgroundColor: color.white
       }}
     >
-      <Header showTitle showAratar title={`Welcom ${user.displayName}`} />
+      <Header showTitle showAratar showBack title={`Welcom ${user.displayName}`} />
 
       <ScrollView>
         <View
@@ -135,17 +134,32 @@ const UpdateModal = () => {
               height: 400,
               borderRadius: 12
             }}
-            source={{ uri: image ? image : user.photoURL }}
+            source={{ uri: image ? image : userProfile?.photoURL || user.photoURL }}
           />
           <View
             style={{
               position: 'absolute',
+              flexDirection: 'row',
               bottom: -10,
               right: 20,
               height: 50,
               zIndex: 1
             }}
           >
+            <TouchableOpacity
+              onPress={logout}
+              style={{
+                width: 50,
+                height: 50,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: color.red,
+                borderRadius: 50,
+                marginRight: 10
+              }}
+            >
+              <MaterialCommunityIcons name='cog' size={28} color={color.white} />
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={pickImage}
               style={{
