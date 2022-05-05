@@ -7,6 +7,7 @@ import Index from "./Index"
 import Login from './screens/Login'
 import UpdateModal from './screens/modal/UpdateModal'
 import Match from './screens/modal/Match'
+import Message from './screens/Message'
 
 import useAuth from './hooks/useAuth'
 
@@ -20,6 +21,7 @@ const StackNavigator = () => {
           <>
             <Stack.Group>
               <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
+              <Stack.Screen name="Message" component={Message} options={{ headerShown: false }} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'modal' }}>

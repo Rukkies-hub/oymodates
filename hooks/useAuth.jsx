@@ -6,7 +6,9 @@ import React, {
   useLayoutEffect,
   useMemo
 } from 'react'
+
 import * as Google from 'expo-google-app-auth'
+
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -14,7 +16,7 @@ import {
   signOut
 } from 'firebase/auth'
 import { auth, db } from './firebase'
-import { async } from '@firebase/util'
+
 import { doc, getDoc } from 'firebase/firestore'
 
 const AuthContext = createContext({})
@@ -36,19 +38,20 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() =>
     onAuthStateChanged(auth, (user) => {
-      if (user) setUser(user)
+      if (user) {
+        setUser(user)
+        getUserProfile(user)
+      }
       else setUser(null)
 
       setLoadingInitial(false)
     })
     , [])
 
-  useEffect(async () => {
+  const getUserProfile = async (user) => {
     let profile = await (await getDoc(doc(db, 'users', user.uid))).data()
     setUserProfile(profile)
-  }, [user])
-
-  console.log(userProfile)
+  }
 
   const signInWighGoogle = async () => {
     setLoading(true)
@@ -82,8 +85,9 @@ export const AuthProvider = ({ children }) => {
     loading,
     logout,
     signInWighGoogle,
-    userProfile
-  }), [user, loading, error])
+    userProfile,
+    getUserProfile
+  }), [user, loading, error, userProfile])
 
   return (
     <AuthContext.Provider

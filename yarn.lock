@@ -2864,6 +2864,11 @@ electron-to-chromium@^1.4.118:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.131.tgz#ca42d22eac0fe545860fbc636a6f4a7190ba70a9"
   integrity sha512-oi3YPmaP87hiHn0c4ePB67tXaF+ldGhxvZnT19tW9zX6/Ej+pLN0Afja5rQ6S+TND7I9EuwQTT8JYn1k7R7rrw==
 
+emoji-datasource@^6.0.0:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-6.1.1.tgz#95a38737a322bedae130385c26ce291d0833ce62"
+  integrity sha512-fbS3QJpzGHhujvBULSKXcvsYmVg+1ldfI3VVXG3jnFuniZtkp7rz/OcTcQjbp3m43BYxmiJgKmaoOUPxXQupRQ==
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
@@ -5210,6 +5215,13 @@ react-native-deck-swiper@^2.0.5:
   dependencies:
     prop-types "15.5.10"
 
+react-native-emoji-selector@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-emoji-selector/-/react-native-emoji-selector-0.2.0.tgz#b1ed980cd585a3fd0fca1da6a29006c1a5979615"
+  integrity sha512-+rPPWG5vl5AexdH8udEwtzdq9QUGD6kp+dQ8C/459d3ScM0S3UnT/qAvhmpsTgCbgjpdwiJIcrKNxKmGEDb15g==
+  dependencies:
+    emoji-datasource "^6.0.0"
+
 react-native-iphone-x-helper@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
@@ -5223,6 +5235,11 @@ react-native-paper@^4.12.1:
     "@callstack/react-theme-provider" "^3.0.7"
     color "^3.1.2"
     react-native-iphone-x-helper "^1.3.1"
+
+react-native-raw-bottom-sheet@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-raw-bottom-sheet/-/react-native-raw-bottom-sheet-2.2.0.tgz#d11dabb86aadb014273767ef7b554924b13633c5"
+  integrity sha512-qL4JKIqvbcVxbkKzeh51hjV7suoJN3ouxzvLmOg0FBUV1yiJAfEbacjQdtRCI6+OU5pyGFBIifLsTXcFDwHggg==
 
 react-native-safe-area-context@3.3.2:
   version "3.3.2"

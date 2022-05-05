@@ -18,7 +18,7 @@ import generateId from "../lib/generateId"
 
 const Home = () => {
   const navigation = useNavigation()
-  const { user, userProfile } = useAuth()
+  const { user, userProfile, getUserProfile } = useAuth()
 
   const swipeRef = useRef(null)
 
@@ -31,6 +31,10 @@ const Home = () => {
       if (!snapshot.exists()) navigation.navigate('UpdateModal')
     })
     , [])
+
+  useEffect(() => {
+    getUserProfile(user)
+  }, [])
 
   useEffect(() => {
     let unsub

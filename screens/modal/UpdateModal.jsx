@@ -119,7 +119,7 @@ const UpdateModal = () => {
         backgroundColor: color.white
       }}
     >
-      <Header showTitle showAratar showBack title={`Welcom ${user.displayName}`} />
+      <Header showTitle showAratar showBack title={`Welcome, ${user.displayName}`} />
 
       <ScrollView>
         <View

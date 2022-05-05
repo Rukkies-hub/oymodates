@@ -15,7 +15,17 @@ import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import color from '../style/color'
 
-const Header = ({ showAratar, showLogo, showTitle, title, showBack }) => {
+const Header = ({
+  showAratar,
+  showLogo,
+  showTitle,
+  title,
+  showBack,
+  showMatchAvatar,
+  matchAvatar,
+  showPhone,
+  showVideo
+}) => {
   const navigation = useNavigation()
   const { user, userProfile } = useAuth()
 
@@ -81,12 +91,26 @@ const Header = ({ showAratar, showLogo, showTitle, title, showBack }) => {
               Oymo
             </Text>
           }
-
+          {
+            showMatchAvatar &&
+            <Image
+              source={{ uri: matchAvatar }}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 50,
+                marginRight: 10
+              }}
+            />
+          }
           {
             showTitle &&
             <Text
               style={{
-                fontFamily: 'text'
+                fontFamily: 'text',
+                fontSize: 18,
+                textTransform: 'capitalize',
+                color: color.dark
               }}
             >
               {title}
@@ -94,26 +118,63 @@ const Header = ({ showAratar, showLogo, showTitle, title, showBack }) => {
           }
         </View>
 
-        {
-          showAratar &&
-          <TouchableOpacity
-            onPress={() => navigation.navigate('UpdateModal')}
-          >
-            {
-              user.photoURL ?
-                <Image
-                  source={{ uri: userProfile?.photoURL || user.photoURL }}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 50
-                  }}
-                />
-                :
-                <MaterialCommunityIcons name='account-circle-outline' size={28} color={color.lightText} />
-            }
-          </TouchableOpacity>
-        }
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center'
+          }}
+        >
+          {
+            showPhone &&
+            <TouchableOpacity
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: 10
+              }}
+            >
+              <MaterialCommunityIcons name='phone' color={color.lightText} size={24} />
+            </TouchableOpacity>
+          }
+
+          {
+            showVideo &&
+            <TouchableOpacity
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <MaterialCommunityIcons name='video-outline' color={color.lightText} size={24} />
+            </TouchableOpacity>
+          }
+
+          {
+            showAratar &&
+            <TouchableOpacity
+              onPress={() => navigation.navigate('UpdateModal')}
+            >
+              {
+                user.photoURL ?
+                  <Image
+                    source={{ uri: userProfile?.photoURL || user.photoURL }}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 50
+                    }}
+                  />
+                  :
+                  <MaterialCommunityIcons name='account-circle-outline' size={28} color={color.lightText} />
+              }
+            </TouchableOpacity>
+          }
+        </View>
       </View>
     </View>
   )
