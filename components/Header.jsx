@@ -6,7 +6,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -75,7 +75,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <MaterialCommunityIcons name='chevron-left' size={28} color={color.dark} />
+              <FontAwesome5 name='chevron-left' size={20} color={color.dark} />
             </TouchableOpacity>
           }
           {
@@ -136,7 +136,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <MaterialCommunityIcons name='phone' color={color.lightText} size={24} />
+              <FontAwesome5 name='phone' color={color.lightText} size={16} />
             </TouchableOpacity>
           }
 
@@ -150,7 +150,7 @@ const Header = ({
                 alignItems: 'center'
               }}
             >
-              <MaterialCommunityIcons name='video-outline' color={color.lightText} size={24} />
+              <FontAwesome5 name='video' color={color.lightText} size={16} />
             </TouchableOpacity>
           }
 
@@ -170,7 +170,7 @@ const Header = ({
                     }}
                   />
                   :
-                  <MaterialCommunityIcons name='account-circle-outline' size={28} color={color.lightText} />
+                  <FontAwesome5 name='user' size={16} color={color.lightText} />
               }
             </TouchableOpacity>
           }

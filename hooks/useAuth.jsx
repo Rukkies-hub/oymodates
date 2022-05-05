@@ -35,6 +35,11 @@ export const AuthProvider = ({ children }) => {
   const [loadingInitial, setLoadingInitial] = useState(true)
   const [loading, setLoading] = useState(false)
   const [userProfile, setUserProfile] = useState(null)
+  const [date, setDate] = useState()
+  const [job, setJob] = useState('')
+  const [image, setImage] = useState(null)
+  const [username, setUsername] = useState('')
+  const [school, setSchool] = useState('')
 
   useEffect(() =>
     onAuthStateChanged(auth, (user) => {
@@ -51,6 +56,11 @@ export const AuthProvider = ({ children }) => {
   const getUserProfile = async (user) => {
     let profile = await (await getDoc(doc(db, 'users', user.uid))).data()
     setUserProfile(profile)
+
+    if (profile?.ageDate) setDate(profile?.ageDate)
+    if (profile?.job) setJob(profile?.job)
+    if (profile?.username) setUsername(profile?.username)
+    if (profile?.school) setSchool(profile?.school)
   }
 
   const signInWighGoogle = async () => {
@@ -86,8 +96,18 @@ export const AuthProvider = ({ children }) => {
     logout,
     signInWighGoogle,
     userProfile,
-    getUserProfile
-  }), [user, loading, error, userProfile])
+    getUserProfile,
+    date,
+    setDate,
+    job,
+    setJob,
+    image,
+    setImage,
+    username,
+    setUsername,
+    school,
+    setSchool
+  }), [user, loading, error, userProfile, image, date, job, username, school])
 
   return (
     <AuthContext.Provider

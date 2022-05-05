@@ -8,15 +8,15 @@ import {
   TextInput
 } from 'react-native'
 
-import Header from '../../components/Header'
-import color from '../../style/color'
-import useAuth from '../../hooks/useAuth'
+import Header from '../components/Header'
+import color from '../style/color'
+import useAuth from '../hooks/useAuth'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useFonts } from 'expo-font'
 
-import DatePicker from "react-native-datepicker"
+import DatePicker from 'react-native-datepicker'
 
 import * as ImagePicker from 'expo-image-picker'
 
@@ -24,18 +24,29 @@ import moment from 'moment'
 
 import { useNavigation } from '@react-navigation/native'
 
-import { db } from '../../hooks/firebase'
+import { db } from '../hooks/firebase'
 import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
-import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from "firebase/storage"
+import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 
 const UpdateModal = () => {
-  const { user, logout, userProfile } = useAuth()
+  const {
+    user,
+    logout,
+    userProfile,
+    date,
+    setDate,
+    job,
+    setJob,
+    image,
+    setImage,
+    username,
+    setUsername,
+    school,
+    setSchool,
+    getUserProfile
+  } = useAuth()
   const storage = getStorage()
   const navigation = useNavigation()
-
-  const [date, setDate] = useState()
-  const [job, setJob] = useState('')
-  const [image, setImage] = useState(null)
 
   const incompleteForm = !date || !job
 
@@ -49,15 +60,12 @@ const UpdateModal = () => {
     })
 
     if (!result.cancelled) {
-      // setImage(result.uri)
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
-        xhr.onload = () => {
-          resolve(xhr.response)
-        }
+        xhr.onload = () => resolve(xhr.response)
 
-        xhr.responseType = "blob"
-        xhr.open("GET", result.uri, true)
+        xhr.responseType = 'blob'
+        xhr.open('GET', result.uri, true)
         xhr.send(null)
       })
 
@@ -79,14 +87,9 @@ const UpdateModal = () => {
               break
           }
         },
-        (error) => {
-          // Handle unsuccessful uploads
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setImage(downloadURL)
-          })
-        })
+        error => console.log('error uploading image: ', error),
+        () => getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => setImage(downloadURL))
+      )
     }
   }
 
@@ -94,19 +97,19 @@ const UpdateModal = () => {
     setDoc(doc(db, 'users', user.uid), {
       id: user.uid,
       displayName: user.displayName,
-      photoURL: image ? image : null,
+      photoURL: image,
       job,
-      age: moment().diff(moment(date, "DD-MM-YYYY"), "years"),
+      age: moment().diff(moment(date, 'DD-MM-YYYY'), 'years'),
       ageDate: date,
       timestamp: serverTimestamp()
     })
-      .then(() => navigation.goBack())
+      .then(() => getUserProfile(user))
       .catch(error => alert(error.message))
   }
 
   const [loaded] = useFonts({
-    logo: require('../../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
-    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded)
@@ -184,32 +187,33 @@ const UpdateModal = () => {
         >
           <DatePicker
             style={{
-              width: "100%",
+              width: '100%',
             }}
             date={date}
-            mode="date"
-            placeholder="Age"
-            format="DD/MM/YYYY"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
+            mode='date'
+            placeholder='Age'
+            format='DD/MM/YYYY'
+            confirmBtnText='Confirm'
+            cancelBtnText='Cancel'
             customStyles={{
               dateIcon: {
-                position: "absolute",
+                position: 'absolute',
                 right: -5,
                 top: 4,
                 marginLeft: 0,
               },
               dateInput: {
-                borderColor: "gray",
-                alignItems: "flex-start",
+                borderColor: 'gray',
+                alignItems: 'flex-start',
                 borderWidth: 0,
                 borderBottomWidth: 1,
                 borderBottomColor: color.borderColor,
                 height: 45
               },
               placeholderText: {
-                fontSize: 16,
-                fontFamily: "text"
+                fontSize: 14,
+                fontFamily: 'text',
+                color: color.dark
               },
               dateText: {
                 fontSize: 16,
@@ -221,13 +225,42 @@ const UpdateModal = () => {
           <TextInput
             placeholder='Enter your occupation'
             value={job}
-            onChangeText={text => setJob(text)}
+            onChangeText={setJob}
             style={{
               borderBottomWidth: 1,
               borderBottomColor: color.borderColor,
               height: 45,
               fontFamily: 'text',
-              marginTop: 20
+              marginTop: 20,
+              color: color.dark
+            }}
+          />
+
+          <TextInput
+            placeholder='Username'
+            value={username}
+            onChangeText={setUsername}
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor,
+              height: 45,
+              fontFamily: 'text',
+              marginTop: 20,
+              color: color.dark
+            }}
+          />
+
+          <TextInput
+            placeholder='School'
+            value={school}
+            onChangeText={setSchool}
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor,
+              height: 45,
+              fontFamily: 'text',
+              marginTop: 20,
+              color: color.dark
             }}
           />
 

@@ -1,15 +1,17 @@
 import React from 'react'
 import { View, Text, Image } from 'react-native'
 
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 
 import Home from './screens/Home'
 import Chat from './screens/Chat'
+import Feeds from './screens/Feeds'
 
-import colors from "./style/color"
-import useAuth from "./hooks/useAuth"
+import colors from './style/color'
+import useAuth from './hooks/useAuth'
 
 const Index = () => {
   const Tab = createMaterialBottomTabNavigator()
@@ -19,7 +21,7 @@ const Index = () => {
   return (
     <Tab.Navigator
       labeled={false}
-      initialRouteName="Home"
+      initialRouteName='Home'
       barStyle={{
         backgroundColor: colors.white,
         borderColor: colors.white,
@@ -30,19 +32,19 @@ const Index = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName
 
-          if (route.name === "Home") iconName = focused ? "view-carousel-outline" : "view-carousel-outline"
-          if (route.name === "Chat") iconName = focused ? "chat" : "chat-outline"
+          if (route.name === 'Feeds') iconName = focused ? 'feather' : 'feather'
+          if (route.name === 'Home') iconName = focused ? 'kiss-wink-heart' : 'kiss-wink-heart'
+          if (route.name === 'Chat') iconName = focused ? 'rocketchat' : 'comment'
 
-          if (route.name === "Home" || route.name === "Feed" || route.name === "Likes" || route.name === "Chat") color = focused ? colors.black : colors.lightText
+          if (route.name === 'Home' || route.name === 'Feeds' || route.name === 'Likes' || route.name === 'Chat') color = focused ? colors.red : colors.lightText
 
-          if (route.name === "Home" || route.name === "Feed" || route.name === "Likes" || route.name === "Chat") size = focused ? 26 : 24
-
-          return <MaterialCommunityIcons name={iconName} color={color} size={size} />
+          return <FontAwesome5 name={iconName} color={color} size={20} />
         }
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Chat" component={Chat} />
+      <Tab.Screen name='Feeds' component={Feeds} />
+      <Tab.Screen name='Home' component={Home} />
+      <Tab.Screen name='Chat' component={Chat} />
     </Tab.Navigator>
   )
 }

@@ -5,7 +5,7 @@ const Stack = createNativeStackNavigator()
 
 import Index from "./Index"
 import Login from './screens/Login'
-import UpdateModal from './screens/modal/UpdateModal'
+import Profile from './screens/Profile'
 import Match from './screens/modal/Match'
 import Message from './screens/Message'
 
@@ -22,10 +22,7 @@ const StackNavigator = () => {
             <Stack.Group>
               <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
               <Stack.Screen name="Message" component={Message} options={{ headerShown: false }} />
-            </Stack.Group>
-
-            <Stack.Group screenOptions={{ presentation: 'modal' }}>
-              <Stack.Screen name="UpdateModal" component={UpdateModal} options={{ headerShown: false }} />
+              <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>

@@ -22,11 +22,11 @@ const ChatRow = ({ matchDetails }) => {
     setMatchedUserInfo(getMatchedUserInfo(matchDetails?.users, user.uid))
   }, [matchDetails, user])
 
-  useEffect(() => 
+  useEffect(() =>
     onSnapshot(query(collection(db, 'matches', matchDetails.id, 'messages'),
       orderBy('timestamp', 'desc')),
       snapshot => setLastMessage(snapshot.docs[0]?.data()?.message))
-  , [matchDetails, db])
+    , [matchDetails, db])
 
   const [loaded] = useFonts({
     text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")

@@ -28,6 +28,7 @@ import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 
 import { db } from '../hooks/firebase'
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 
 const Message = () => {
   const { user } = useAuth()
@@ -104,12 +105,13 @@ const Message = () => {
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          alignItems: "baseline",
           paddingHorizontal: 10,
           borderTopWidth: .3,
+          borderTopColor: color.borderColor,
           backgroundColor: color.white,
           minHeight: 50,
-          overflow: "hidden"
+          overflow: "hidden",
+          position: 'relative'
         }}
       >
         <TextInput
@@ -117,6 +119,7 @@ const Message = () => {
           value={input}
           onChangeText={setInput}
           onSubmitEditing={sendMessage}
+          onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
           placeholder="Aa.."
           style={{
             fontSize: 18,
@@ -126,18 +129,27 @@ const Message = () => {
             maxHeight: 70,
             fontFamily: "text",
             color: color.lightText,
+            paddingRight: 40,
+            paddingVertical: 5
           }}
         />
 
         <TouchableOpacity
           onPress={sendMessage}
           style={{
-            width: 40,
-            height: 55,
+            width: 50,
+            height: 50,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            position: 'absolute',
+            right: 0,
+            bottom: 0
           }}>
-          <MaterialCommunityIcons name="telegram" color={color.lightText} size={26} />
+          <FontAwesome5
+            name="paper-plane"
+            color={color.lightText}
+            size={20}
+          />
         </TouchableOpacity>
       </View>
     </View>
