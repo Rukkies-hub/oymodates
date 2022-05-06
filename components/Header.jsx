@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -14,6 +15,8 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 import color from '../style/color'
+import { setDoc } from 'firebase/firestore'
+import { db } from '../hooks/firebase'
 
 const Header = ({
   showAratar,
@@ -31,7 +34,16 @@ const Header = ({
   const navigation = useNavigation()
   const { user, userProfile } = useAuth()
 
-  // console.log(user)
+  const [loading, setLoading] = useState(false)
+
+  const savePost = () => {
+    setLoading(true)
+    setDoc(doc(db, 'posts', user.uid), {
+      user: user.uid,
+      media: [postDetails.image],
+      caption: postDetails.caption
+    }).finally(() => setLoading(false))
+  }
 
   const [loaded] = useFonts({
     logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
@@ -159,7 +171,7 @@ const Header = ({
           {
             showPost &&
             <TouchableOpacity
-              onPress={() => alert(postDetails.caption)}
+              onPress={savePost}
               style={{
                 backgroundColor: color.blue,
                 borderRadius: 12,
@@ -169,15 +181,20 @@ const Header = ({
                 alignItems: 'center'
               }}
             >
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  color: color.white,
-                  fontSize: 16
-                }}
-              >
-                Post
-              </Text>
+              {
+                loading ? <ActivityIndicator color={color.white} size='small' />
+                  :
+                  <Text
+                    style={{
+                      fontFamily: 'text',
+                      color: color.white,
+                      fontSize: 16
+                    }}
+                  >
+                    Post
+                  </Text>
+              }
+
             </TouchableOpacity>
           }
 

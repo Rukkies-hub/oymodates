@@ -35,7 +35,8 @@ const AddPost = () => {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          minHeight: 50
+          minHeight: 50,
+          width: '85%'
         }}
       >
         <Text
