@@ -15,7 +15,7 @@ import color from '../style/color'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import { collection, doc, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
+import { arrayRemove, collection, doc, FieldValue, Firestore, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
 const Posts = () => {
@@ -36,12 +36,14 @@ const Posts = () => {
     , [])
 
   const likePost = async (post) => {
-    // setDoc(doc(db, 'posts', post.id, 'likes', user.uid), {
-    //   userId: user.uid,
-    //   user: userProfile
-    // })
     await updateDoc(doc(db, 'posts', post.id), {
       likes: [user.uid]
+    })
+  }
+
+  const dislikePost = async (post) => {
+    await updateDoc(doc(db, 'posts', post.id), {
+      likes: arrayRemove(user.uid)
     })
   }
 
@@ -148,26 +150,36 @@ const Posts = () => {
               flexDirection: 'row'
             }}
           >
-            <TouchableOpacity
-              onPress={() => likePost(post)}
-              style={{
-                width: 35,
-                height: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 20
-              }}
-            >
-              <MaterialCommunityIcons
-                name={
-                  post?.likes?.includes(user.uid) ? 'heart' : 'heart-outline'
-                }
-                size={25}
-                color={
-                  post?.likes?.includes(user.uid) ? color.red : color.lightText
-                }
-              />
-            </TouchableOpacity>
+            {
+              post?.likes?.includes(user.uid) &&
+              <TouchableOpacity
+                onPress={() => dislikePost(post)}
+                style={{
+                  width: 35,
+                  height: 35,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: 20
+                }}
+              >
+                <MaterialCommunityIcons name='heart' size={25} color={color.red} />
+              </TouchableOpacity>
+            }
+            {
+              !post?.likes?.includes(user.uid) &&
+              <TouchableOpacity
+                onPress={() => likePost(post)}
+                style={{
+                  width: 35,
+                  height: 35,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: 20
+                }}
+              >
+                <MaterialCommunityIcons name='heart-outline' size={25} color={color.lightText} />
+              </TouchableOpacity>
+            }
 
             <Pressable
               style={{
