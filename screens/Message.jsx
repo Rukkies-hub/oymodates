@@ -19,12 +19,12 @@ import useAuth from '../hooks/useAuth'
 
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 
-import SenderMessage from "../components/SenderMessage"
-import RecieverMessage from "../components/RecieverMessage"
+import SenderMessage from '../components/SenderMessage'
+import RecieverMessage from '../components/RecieverMessage'
 import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 const Message = () => {
   const { user } = useAuth()
@@ -32,7 +32,7 @@ const Message = () => {
   const { params } = useRoute()
   const { matchDetails } = params
 
-  const [input, setInput] = useState("")
+  const [input, setInput] = useState('')
   const [messages, setMessages] = useState([])
   const [expanded, setExpanded] = useState(false)
   const [height, setHeight] = useState(50)
@@ -51,7 +51,7 @@ const Message = () => {
 
   const sendMessage = () => {
     setExpanded(false)
-    if (input != "")
+    if (input != '')
       addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
         timestamp: serverTimestamp(),
         userId: user.uid,
@@ -60,7 +60,7 @@ const Message = () => {
         message: input
       })
 
-    setInput("")
+    setInput('')
   }
 
   return (
@@ -99,14 +99,14 @@ const Message = () => {
 
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           paddingHorizontal: 10,
           borderTopWidth: .3,
           borderTopColor: color.borderColor,
           backgroundColor: color.white,
           minHeight: 50,
-          overflow: "hidden",
+          overflow: 'hidden',
           position: 'relative'
         }}
       >
@@ -116,14 +116,14 @@ const Message = () => {
           onChangeText={setInput}
           onSubmitEditing={sendMessage}
           onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-          placeholder="Aa.."
+          placeholder='Aa..'
           style={{
             fontSize: 18,
             flex: 1,
-            width: "100%",
+            width: '100%',
             height,
             maxHeight: 70,
-            fontFamily: "text",
+            fontFamily: 'text',
             color: color.lightText,
             paddingRight: 40,
             paddingVertical: 5
@@ -135,14 +135,14 @@ const Message = () => {
           style={{
             width: 50,
             height: 50,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             position: 'absolute',
             right: 0,
             bottom: 0
           }}>
           <FontAwesome5
-            name="paper-plane"
+            name='paper-plane'
             color={color.lightText}
             size={20}
           />

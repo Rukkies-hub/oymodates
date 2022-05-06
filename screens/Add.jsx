@@ -49,7 +49,7 @@ const Add = () => {
     })
 
     if (!result.cancelled) {
-      // setImage(result.uri)
+      setImage(result.uri)
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
         xhr.onload = () => resolve(xhr.response)

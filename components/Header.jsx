@@ -204,7 +204,7 @@ const Header = ({
           {
             showAratar &&
             <TouchableOpacity
-              onPress={() => navigation.navigate('UpdateModal')}
+                onPress={() => navigation.navigate('Profile')}
             >
               {
                 user.photoURL ?

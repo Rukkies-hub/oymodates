@@ -15,7 +15,7 @@ import color from '../style/color'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import { collection, getDocs, onSnapshot } from 'firebase/firestore'
+import { collection, doc, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
 const Posts = () => {
@@ -34,6 +34,16 @@ const Posts = () => {
         )
     )
     , [])
+
+  const likePost = async (post) => {
+    // setDoc(doc(db, 'posts', post.id, 'likes', user.uid), {
+    //   userId: user.uid,
+    //   user: userProfile
+    // })
+    await updateDoc(doc(db, 'posts', post.id), {
+      likes: [user.uid]
+    })
+  }
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -54,7 +64,7 @@ const Posts = () => {
           style={{
             flex: 1,
             marginTop: 10,
-            marginBottom: 20
+            marginBottom: 50
           }}
         >
           <View
@@ -104,6 +114,26 @@ const Posts = () => {
             </TouchableOpacity>
           </View>
 
+          <View
+            style={{
+              paddingHorizontal: 10,
+              minHeight: 40,
+              maxHeight: 100,
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center'
+            }}
+          >
+            <Text
+              style={{
+                color: color.dark,
+                fontSize: 16
+              }}
+            >
+              {post?.caption}
+            </Text>
+          </View>
+
           <Image
             source={{ uri: post?.media[0] }}
             style={{
@@ -119,6 +149,7 @@ const Posts = () => {
             }}
           >
             <TouchableOpacity
+              onPress={() => likePost(post)}
               style={{
                 width: 35,
                 height: 35,
@@ -127,10 +158,18 @@ const Posts = () => {
                 marginRight: 20
               }}
             >
-              <FontAwesome5 name='heart' size={25} color={color.lightText} />
+              <MaterialCommunityIcons
+                name={
+                  post?.likes?.includes(user.uid) ? 'heart' : 'heart-outline'
+                }
+                size={25}
+                color={
+                  post?.likes?.includes(user.uid) ? color.red : color.lightText
+                }
+              />
             </TouchableOpacity>
 
-            <TouchableOpacity
+            <Pressable
               style={{
                 width: 35,
                 height: 35,
@@ -140,9 +179,9 @@ const Posts = () => {
               }}
             >
               <FontAwesome5 name='comments' size={25} color={color.lightText} />
-            </TouchableOpacity>
+            </Pressable>
 
-            <TouchableOpacity
+            <Pressable
               style={{
                 width: 35,
                 height: 35,
@@ -151,8 +190,8 @@ const Posts = () => {
                 marginRight: 20
               }}
             >
-              <FontAwesome5 name='share' size={25} color={color.lightText} />
-            </TouchableOpacity>
+              <FontAwesome5 name='paper-plane' size={25} color={color.lightText} />
+            </Pressable>
           </View>
 
           <TouchableOpacity
