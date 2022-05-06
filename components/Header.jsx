@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -29,7 +30,8 @@ const Header = ({
   showPhone,
   showVideo,
   showPost,
-  postDetails
+  postDetails,
+  showAdd
 }) => {
   const navigation = useNavigation()
   const { user, userProfile } = useAuth()
@@ -197,14 +199,29 @@ const Header = ({
                     Post
                   </Text>
               }
+            </TouchableOpacity>
+          }
 
+          {
+            showAdd &&
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Add')}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: 10
+              }}
+            >
+              <MaterialCommunityIcons name='plus-box-outline' color={color.dark} size={26} />
             </TouchableOpacity>
           }
 
           {
             showAratar &&
             <TouchableOpacity
-                onPress={() => navigation.navigate('Profile')}
+              onPress={() => navigation.navigate('Profile')}
             >
               {
                 user.photoURL ?

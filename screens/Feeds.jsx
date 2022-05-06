@@ -4,7 +4,6 @@ import Header from '../components/Header'
 import color from '../style/color'
 
 import { useFonts } from 'expo-font'
-import AddPost from '../components/AddPost'
 import Posts from '../components/Posts'
 
 const Feeds = () => {
@@ -23,12 +22,9 @@ const Feeds = () => {
         backgroundColor: color.white
       }}
     >
-      <Header showLogo showAratar />
+      <Header showLogo showAratar showAdd />
 
-      <ScrollView>
-        <AddPost />
-        <Posts />
-      </ScrollView>
+      <Posts />
     </View>
   )
 }

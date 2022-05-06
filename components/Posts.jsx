@@ -18,6 +18,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { arrayRemove, collection, doc, FieldValue, Firestore, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
+let lastPress = 0
+
 const Posts = () => {
   const { userProfile, user } = useAuth()
 
@@ -47,6 +49,17 @@ const Posts = () => {
     })
   }
 
+  const onDoublePress = (post) => {
+    const time = new Date().getTime()
+    const delta = time - lastPress;
+
+    const DOUBLE_PRESS_DELAY = 300
+    if (delta < DOUBLE_PRESS_DELAY) {
+      likePost(post)
+    }
+    lastPress = time
+  }
+
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
@@ -65,8 +78,7 @@ const Posts = () => {
         <View
           style={{
             flex: 1,
-            marginTop: 10,
-            marginBottom: 50
+            marginBottom: 20
           }}
         >
           <View
@@ -117,32 +129,16 @@ const Posts = () => {
           </View>
 
           <View
-            style={{
-              paddingHorizontal: 10,
-              minHeight: 40,
-              maxHeight: 100,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center'
-            }}
+            onStartShouldSetResponder={(evt) => onDoublePress(post)}
           >
-            <Text
+            <Image
+              source={{ uri: post?.media[0] }}
               style={{
-                color: color.dark,
-                fontSize: 16
+                width: '100%',
+                height: 400
               }}
-            >
-              {post?.caption}
-            </Text>
+            />
           </View>
-
-          <Image
-            source={{ uri: post?.media[0] }}
-            style={{
-              width: '100%',
-              height: 400
-            }}
-          />
 
           <View
             style={{
@@ -204,6 +200,35 @@ const Posts = () => {
             >
               <FontAwesome5 name='paper-plane' size={25} color={color.lightText} />
             </Pressable>
+          </View>
+
+          <View
+            style={{
+              paddingHorizontal: 10,
+              maxHeight: 100,
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start'
+            }}
+          >
+            {
+              post?.likes?.length > 0 &&
+              <Text
+                style={{
+                  color: color.dark,
+                  fontSize: 14
+                }}
+              >
+                {post?.likes?.length} Likes
+              </Text>
+            }
+            <Text
+              style={{
+                color: color.dark,
+                fontSize: 16
+              }}
+            >
+              {post?.caption}
+            </Text>
           </View>
 
           <TouchableOpacity
