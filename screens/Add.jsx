@@ -27,8 +27,13 @@ if (
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
+import { db } from '../hooks/firebase'
+import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
+import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+
 const Add = () => {
   const { user } = useAuth()
+  const storage = getStorage()
   const [input, setInput] = useState("")
   const [height, setHeight] = useState(50)
   const [image, setImage] = useState('')
@@ -44,7 +49,37 @@ const Add = () => {
     })
 
     if (!result.cancelled) {
-      setImage(result.uri)
+      // setImage(result.uri)
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.onload = () => resolve(xhr.response)
+
+        xhr.responseType = 'blob'
+        xhr.open('GET', result.uri, true)
+        xhr.send(null)
+      })
+
+      const photoRef = ref(storage, `posts/${new Date().toISOString()}`)
+
+      const uploadTask = uploadBytesResumable(photoRef, blob)
+
+      uploadTask.on('state_changed',
+        snapshot => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          console.log('Upload is ' + progress + '% done')
+
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused')
+              break
+            case 'running':
+              console.log('Upload is running')
+              break
+          }
+        },
+        error => console.log('error uploading image: ', error),
+        () => getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => setImage(downloadURL))
+      )
     }
   }
 

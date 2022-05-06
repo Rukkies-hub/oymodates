@@ -15,7 +15,7 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 import color from '../style/color'
-import { setDoc } from 'firebase/firestore'
+import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
 const Header = ({
@@ -38,11 +38,14 @@ const Header = ({
 
   const savePost = () => {
     setLoading(true)
-    setDoc(doc(db, 'posts', user.uid), {
-      user: user.uid,
+    setDoc(doc(db, 'posts', user.uid + Math.random()), {
+      user: userProfile,
       media: [postDetails.image],
       caption: postDetails.caption
-    }).finally(() => setLoading(false))
+    }).finally(() => {
+      setLoading(false)
+      navigation.goBack()
+    })
   }
 
   const [loaded] = useFonts({

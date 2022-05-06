@@ -31,7 +31,7 @@ const Index = () => {
           if (route.name === 'Home') iconName = focused ? 'kiss-wink-heart' : 'kiss-wink-heart'
           if (route.name === 'Chat') iconName = focused ? 'rocketchat' : 'comment'
 
-          if (route.name === 'Home' || route.name === 'Feeds' || route.name === 'Likes' || route.name === 'Chat') color = focused ? colors.red : colors.lightText
+          if (route.name === 'Home' || route.name === 'Feeds' || route.name === 'Likes' || route.name === 'Chat') color = focused ? colors.blue : colors.lightText
 
           return <FontAwesome5 name={iconName} color={color} size={20} />
         }
