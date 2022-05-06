@@ -24,7 +24,9 @@ const Header = ({
   showMatchAvatar,
   matchAvatar,
   showPhone,
-  showVideo
+  showVideo,
+  showPost,
+  postDetails
 }) => {
   const navigation = useNavigation()
   const { user, userProfile } = useAuth()
@@ -151,6 +153,31 @@ const Header = ({
               }}
             >
               <FontAwesome5 name='video' color={color.lightText} size={16} />
+            </TouchableOpacity>
+          }
+
+          {
+            showPost &&
+            <TouchableOpacity
+              onPress={() => alert(postDetails.caption)}
+              style={{
+                backgroundColor: color.blue,
+                borderRadius: 12,
+                width: 60,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: 'text',
+                  color: color.white,
+                  fontSize: 16
+                }}
+              >
+                Post
+              </Text>
             </TouchableOpacity>
           }
 

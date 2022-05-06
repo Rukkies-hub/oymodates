@@ -1,9 +1,21 @@
-import { View, Text } from 'react-native'
 import React from 'react'
+import { View, ScrollView } from 'react-native'
 import Header from '../components/Header'
 import color from '../style/color'
 
+import { useFonts } from 'expo-font'
+import AddPost from '../components/AddPost'
+import Posts from '../components/Posts'
+
 const Feeds = () => {
+
+  const [loaded] = useFonts({
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+  })
+
+  if (!loaded)
+    return null
+
   return (
     <View
       style={{
@@ -12,7 +24,11 @@ const Feeds = () => {
       }}
     >
       <Header showLogo showAratar />
-      <Text>Feeds</Text>
+
+      <ScrollView>
+        <AddPost />
+        <Posts />
+      </ScrollView>
     </View>
   )
 }

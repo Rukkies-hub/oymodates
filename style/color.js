@@ -21,5 +21,7 @@ export default {
     lightGreen: "#22EBBF",
     lightBlue: "#36CAF7",
     lightRed: "#FE4E67",
-    lightGold: "#F9D261"
+    lightGold: "#F9D261",
+    faintBlue: '#4068e033',
+    faintRed: '#FF475733'
 }

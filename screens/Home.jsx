@@ -16,6 +16,8 @@ import { LinearGradient } from "expo-linear-gradient"
 
 import generateId from "../lib/generateId"
 
+import { useFonts } from 'expo-font'
+
 const Home = () => {
   const navigation = useNavigation()
   const { user, userProfile, getUserProfile } = useAuth()
@@ -115,6 +117,13 @@ const Home = () => {
 
     setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
   }
+
+  const [loaded] = useFonts({
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+  })
+
+  if (!loaded)
+    return null
 
   return (
     <SafeAreaView
@@ -285,7 +294,7 @@ const Home = () => {
                     }}
                   />
                   <Image
-                    source={{ uri: userProfile?.photoURL }}
+                    source={{ uri: userProfile?.photoURL || user?.photoURL }}
                     style={{
                       width: 100,
                       height: 100,

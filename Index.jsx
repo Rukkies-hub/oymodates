@@ -1,7 +1,5 @@
 import React from 'react'
-import { View, Text, Image } from 'react-native'
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
@@ -11,17 +9,14 @@ import Chat from './screens/Chat'
 import Feeds from './screens/Feeds'
 
 import colors from './style/color'
-import useAuth from './hooks/useAuth'
 
 const Index = () => {
   const Tab = createMaterialBottomTabNavigator()
-
-  const { userProfile, loadingInitial, likes } = useAuth()
   
   return (
     <Tab.Navigator
       labeled={false}
-      initialRouteName='Home'
+      initialRouteName='Feeds'
       barStyle={{
         backgroundColor: colors.white,
         borderColor: colors.white,

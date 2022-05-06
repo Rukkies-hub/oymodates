@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react'
 
 import {
   View,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
   Keyboard,
   TextInput,
@@ -27,7 +24,6 @@ import RecieverMessage from "../components/RecieverMessage"
 import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 
 const Message = () => {
