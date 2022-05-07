@@ -102,7 +102,7 @@ const Header = ({
             <Text
               style={{
                 fontFamily: 'logo',
-                fontSize: 25,
+                fontSize: 30,
                 margin: 0,
                 marginTop: -10
               }}
@@ -211,7 +211,7 @@ const Header = ({
                 height: 40,
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginRight: 10
+                marginRight: 20
               }}
             >
               <MaterialCommunityIcons name='plus-box-outline' color={color.dark} size={26} />

@@ -30,9 +30,11 @@ if (
 import { db } from '../hooks/firebase'
 import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+import { useNavigation } from '@react-navigation/native'
 
 const Add = () => {
   const { user } = useAuth()
+  const navigation = useNavigation()
   const storage = getStorage()
   const [input, setInput] = useState("")
   const [height, setHeight] = useState(50)
@@ -253,10 +255,7 @@ const Add = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => {
-              LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-              setExpanded(!expanded)
-            }}
+            onPress={() => navigation.navigate('PostCamera')}
             style={{
               width: '100%',
               height: 50,
@@ -279,121 +278,6 @@ const Add = () => {
               Camera
             </Text>
           </TouchableOpacity>
-        </View>
-      }
-
-      {
-        expanded &&
-        <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            flex: 1,
-            backgroundColor: color.borderColor,
-            width: '100%',
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <View
-            style={{
-              borderRadius: 20,
-              backgroundColor: color.white,
-              paddingHorizontal: 10,
-              paddingBottom: 10,
-              width: '80%'
-            }}
-          >
-            <View
-              style={{
-                width: '100%',
-                height: 50,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingHorizontal: 10
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'text'
-                }}
-              >
-                Select camera
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-                setExpanded(!expanded)
-              }}
-              style={{
-                width: '100%',
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <Text
-                style={{
-                  color: color.blue,
-                  fontFamily: 'text'
-                }}
-              >
-                App camera
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                openCamera()
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-                setExpanded(!expanded)
-              }}
-              style={{
-                width: '100%',
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <Text
-                style={{
-                  color: color.dark,
-                  fontFamily: 'text'
-                }}
-              >
-                Device camera
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-                setExpanded(!expanded)
-              }}
-              style={{
-                width: '100%',
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 12,
-                backgroundColor: color.faintRed,
-                marginTop: 10
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  color: color.red
-                }}
-              >
-                Close
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
       }
     </View>

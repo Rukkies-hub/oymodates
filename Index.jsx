@@ -12,7 +12,7 @@ import colors from './style/color'
 
 const Index = () => {
   const Tab = createMaterialBottomTabNavigator()
-  
+
   return (
     <Tab.Navigator
       labeled={false}
@@ -29,7 +29,7 @@ const Index = () => {
 
           if (route.name === 'Feeds') iconName = focused ? 'feather' : 'feather'
           if (route.name === 'Home') iconName = focused ? 'kiss-wink-heart' : 'kiss-wink-heart'
-          if (route.name === 'Chat') iconName = focused ? 'rocketchat' : 'comment'
+          if (route.name === 'Chat') iconName = focused ? 'comment' : 'comment'
 
           if (route.name === 'Home' || route.name === 'Feeds' || route.name === 'Likes' || route.name === 'Chat') color = focused ? colors.blue : colors.lightText
 

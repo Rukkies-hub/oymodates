@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native"
 
 import { useFonts } from "expo-font"
 import { db } from '../hooks/firebase'
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 
 const ChatRow = ({ matchDetails }) => {
   const { user } = useAuth()
@@ -25,6 +25,7 @@ const ChatRow = ({ matchDetails }) => {
   useEffect(() =>
     onSnapshot(query(collection(db, 'matches', matchDetails.id, 'messages'),
       orderBy('timestamp', 'desc')),
+      limit(1),
       snapshot => setLastMessage(snapshot.docs[0]?.data()?.message))
     , [matchDetails, db])
 

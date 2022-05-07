@@ -30,8 +30,6 @@ const AddComment = (params) => {
   const [input, setInput] = useState('')
   const [comments, setComments] = useState([])
 
-  console.log(post)
-
   const sendComment = () => {
     if (input != '')
       addDoc(collection(db, 'posts', post.id, 'comments'), {
@@ -52,8 +50,6 @@ const AddComment = (params) => {
         )
     )
     , [])
-
-  console.log('comments: ', comments)
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')

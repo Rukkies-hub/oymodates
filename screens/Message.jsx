@@ -6,14 +6,16 @@ import {
   Keyboard,
   TextInput,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  LayoutAnimation,
+  UIManager
 } from 'react-native'
 
 import color from '../style/color'
 
 import Header from '../components/Header'
 
-import { useRoute } from '@react-navigation/native'
+import { useRoute, useNavigation } from '@react-navigation/native'
 
 import useAuth from '../hooks/useAuth'
 
@@ -25,10 +27,22 @@ import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 
 import { db } from '../hooks/firebase'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useFonts } from 'expo-font'
 
+import EmojiSelector, { Categories } from "react-native-emoji-selector"
+
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+)
+  UIManager.setLayoutAnimationEnabledExperimental(true)
+
+import * as ImagePicker from "expo-image-picker"
+
 const Message = () => {
+  const navigation = useNavigation()
   const { user } = useAuth()
 
   const { params } = useRoute()
@@ -39,6 +53,7 @@ const Message = () => {
   const [expanded, setExpanded] = useState(false)
   const [height, setHeight] = useState(50)
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
+  const [activeInput, setActiveInput] = useState(false)
 
   useEffect(() =>
     onSnapshot(query(collection(db,
@@ -51,6 +66,14 @@ const Message = () => {
     )
     , [matchDetails, db])
 
+  useEffect(() =>
+    Keyboard.addListener("keyboardDidShow", () => {
+      setExpanded(false)
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+      setMediaVidiblity(false)
+    })
+    , [])
+
   const sendMessage = () => {
     setExpanded(false)
     if (input != '')
@@ -59,9 +82,9 @@ const Message = () => {
         userId: user.uid,
         displayName: user.displayName,
         photoURL: matchDetails.users[user.uid].photoURL,
-        message: input
+        message: input,
+        seen: false
       })
-
     setInput('')
   }
 
@@ -93,7 +116,10 @@ const Message = () => {
       >
         <FlatList
           inverted={-1}
-          style={{ flex: 1, paddingHorizontal: 10 }}
+          style={{
+            flex: 1,
+            paddingHorizontal: 10
+          }}
           data={messages}
           keyExtractor={item => item.id}
           renderItem={({ item: message }) => (
@@ -110,6 +136,7 @@ const Message = () => {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
+          alignItems: 'center',
           paddingHorizontal: 10,
           borderTopWidth: .3,
           borderTopColor: color.borderColor,
@@ -119,6 +146,60 @@ const Message = () => {
           position: 'relative'
         }}
       >
+        {
+          mediaVidiblity && <>
+            <TouchableOpacity
+              style={{
+                width: 40,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center"
+              }}>
+              <MaterialCommunityIcons name="camera-outline" color={color.lightText} size={26} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('DeviceGallery')}
+              style={{
+                width: 40,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center"
+              }}>
+              <MaterialCommunityIcons name="image-outline" color={color.lightText} size={26} />
+            </TouchableOpacity>
+          </>
+        }
+        {
+          !mediaVidiblity &&
+          <TouchableOpacity
+            onPress={() => {
+              Keyboard.dismiss()
+              setMediaVidiblity(!mediaVidiblity)
+            }}
+            style={{
+              width: 40,
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center"
+            }}>
+            <MaterialCommunityIcons name="chevron-right" color={color.lightText} size={26} />
+          </TouchableOpacity>
+        }
+        <TouchableOpacity
+          onPress={() => {
+            Keyboard.dismiss()
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+            setExpanded(!expanded)
+          }}
+          style={{
+            width: 40,
+            height: 50,
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+          <MaterialCommunityIcons name="emoticon-happy-outline" color={color.lightText} size={26} />
+        </TouchableOpacity>
         <TextInput
           multiline
           value={input}
@@ -129,13 +210,11 @@ const Message = () => {
           style={{
             fontSize: 18,
             flex: 1,
-            width: '100%',
-            height,
+            width: "100%",
+            height: activeInput ? height : '100%',
             maxHeight: 70,
-            fontFamily: 'text',
-            color: color.lightText,
-            paddingRight: 40,
-            paddingVertical: 5
+            fontFamily: "text",
+            color: color.lightText
           }}
         />
 
@@ -145,10 +224,7 @@ const Message = () => {
             width: 50,
             height: 50,
             justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            right: 0,
-            bottom: 0
+            alignItems: 'center'
           }}>
           <FontAwesome5
             name='paper-plane'
@@ -157,6 +233,17 @@ const Message = () => {
           />
         </TouchableOpacity>
       </View>
+      {expanded && (
+        <View style={{ minWidth: 250, flex: 1 }}>
+          <EmojiSelector
+            columns={9}
+            showSearchBar={false}
+            showSectionTitles={false}
+            category={Categories.emotion}
+            onEmojiSelected={emoji => setInput(`${input} ${emoji}`)}
+          />
+        </View>
+      )}
     </View>
   )
 }

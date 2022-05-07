@@ -1,10 +1,12 @@
 import React from 'react'
-import { View, ScrollView } from 'react-native'
+import { View, SafeAreaView } from 'react-native'
 import Header from '../components/Header'
 import color from '../style/color'
 
 import { useFonts } from 'expo-font'
 import Posts from '../components/Posts'
+
+import Bar from "../components/StatusBar"
 
 const Feeds = () => {
 
@@ -22,6 +24,7 @@ const Feeds = () => {
         backgroundColor: color.white
       }}
     >
+      <Bar />
       <Header showLogo showAratar showAdd />
 
       <Posts />

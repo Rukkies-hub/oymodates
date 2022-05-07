@@ -15,7 +15,7 @@ import color from '../style/color'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import { arrayRemove, collection, doc, FieldValue, Firestore, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, collection, doc, FieldValue, Firestore, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 
@@ -41,7 +41,7 @@ const Posts = () => {
 
   const likePost = async (post) => {
     await updateDoc(doc(db, 'posts', post.id), {
-      likes: [user.uid]
+      likes: arrayUnion(user.uid)
     })
   }
 
@@ -61,6 +61,7 @@ const Posts = () => {
     }
     lastPress = time
   }
+
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -180,6 +181,7 @@ const Posts = () => {
             }
 
             <Pressable
+              onPress={() => navigation.navigate('AddComment', { post })}
               style={{
                 width: 35,
                 height: 35,
@@ -212,6 +214,7 @@ const Posts = () => {
               alignItems: 'flex-start'
             }}
           >
+
             {
               post?.likes?.length > 0 &&
               <Text
