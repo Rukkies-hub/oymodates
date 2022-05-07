@@ -17,10 +17,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { arrayRemove, collection, doc, FieldValue, Firestore, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
+import { useNavigation } from '@react-navigation/native'
 
 let lastPress = 0
 
 const Posts = () => {
+  const navigation = useNavigation()
   const { userProfile, user } = useAuth()
 
   const [posts, setPosts] = useState([])
@@ -232,6 +234,7 @@ const Posts = () => {
           </View>
 
           <TouchableOpacity
+            onPress={() => navigation.navigate('AddComment', { post })}
             style={{
               flexDirection: 'row',
               justifyContent: 'flex-start',

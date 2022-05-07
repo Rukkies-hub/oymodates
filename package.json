@@ -26,6 +26,7 @@
     "firebase": "^9.7.0",
     "moment": "^2.29.3",
     "react": "17.0.1",
+    "react-animated-popup": "^0.1.3",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-datepicker": "^1.7.2",

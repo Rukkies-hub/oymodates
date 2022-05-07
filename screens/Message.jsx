@@ -26,6 +26,8 @@ import { db } from '../hooks/firebase'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
+import { useFonts } from 'expo-font'
+
 const Message = () => {
   const { user } = useAuth()
 
@@ -62,6 +64,13 @@ const Message = () => {
 
     setInput('')
   }
+
+  const [loaded] = useFonts({
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+  })
+
+  if (!loaded)
+    return null
 
   return (
     <View

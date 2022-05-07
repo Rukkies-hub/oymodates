@@ -16,7 +16,7 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 import color from '../style/color'
-import { doc, setDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
 const Header = ({
@@ -40,7 +40,7 @@ const Header = ({
 
   const savePost = () => {
     setLoading(true)
-    setDoc(doc(db, 'posts', user.uid + Math.random()), {
+    addDoc(collection(db, 'posts'), {
       user: userProfile,
       media: [postDetails.image],
       caption: postDetails.caption

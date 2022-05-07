@@ -9,6 +9,7 @@ import Profile from './screens/Profile'
 import Match from './screens/modal/Match'
 import Message from './screens/Message'
 import Add from './screens/Add'
+import AddComment from './screens/modal/AddComment'
 
 import useAuth from './hooks/useAuth'
 
@@ -29,6 +30,10 @@ const StackNavigator = () => {
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
               <Stack.Screen name="Match" component={Match} options={{ headerShown: false }} />
+            </Stack.Group>
+
+            <Stack.Group screenOptions={{ presentation: 'modal' }}>
+              <Stack.Screen name="AddComment" component={AddComment} options={{ headerShown: false }} />
             </Stack.Group>
           </>
         ) : (
