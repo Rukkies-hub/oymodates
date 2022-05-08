@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   View,
   Text,
@@ -39,7 +39,7 @@ import { Video, AVPlaybackStatus } from 'expo-av'
 const Add = () => {
   const { user, media, setMedia, madiaString } = useAuth()
   const navigation = useNavigation()
-  const video = React.useRef(null)
+  const video = useRef(null)
   const storage = getStorage()
   const windowWidth = useWindowDimensions().width
 
@@ -59,41 +59,7 @@ const Add = () => {
       quality: 1,
     })
 
-    if (!result.cancelled) {
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest()
-        xhr.onload = () => resolve(xhr.response)
-
-        xhr.responseType = 'blob'
-        xhr.open('GET', result.uri, true)
-        xhr.send(null)
-      })
-
-      const mediaRef = ref(storage, `posts/${new Date().toISOString()}`)
-
-      const uploadTask = uploadBytesResumable(mediaRef, blob)
-
-      uploadTask.on('state_changed',
-        snapshot => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          console.log('Upload is ' + progress + '% done')
-
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused')
-              break
-            case 'running':
-              console.log('Upload is running')
-              break
-          }
-        },
-        error => console.log('error uploading image: ', error),
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => setMedia(downloadURL))
-          setMedia(result.uri)
-        }
-      )
-    }
+    if (!result.cancelled) setMedia(result.uri)
   }
 
   useEffect(() =>

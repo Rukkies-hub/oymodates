@@ -45,7 +45,7 @@ const PostCamera = () => {
   const recordVideo = async () => {
     if (cameraRef)
       try {
-        const options = { maxDuration: 60, quality: Camera?.Constants?.VideoQuality['480'] }
+        const options = { maxDuration: 30, quality: Camera?.Constants?.VideoQuality['480'] }
         const videoRecordPromise = cameraRef?.recordAsync(options)
 
         if (videoRecordPromise) {

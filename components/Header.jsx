@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -16,8 +16,11 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 import color from '../style/color'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, arrayUnion, collection } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
+
+let file
 
 const Header = ({
   showAratar,
@@ -34,23 +37,70 @@ const Header = ({
   showAdd
 }) => {
   const navigation = useNavigation()
-  const { user, userProfile } = useAuth()
+  const { user, userProfile, madiaString, media } = useAuth()
+  const storage = getStorage()
 
   const [loading, setLoading] = useState(false)
+  const [mediaType, setMediaType] = useState('image')
 
-  const savePost = () => {
+  const savePost = async () => {
     if (postDetails.caption || postDetails.media) {
       setLoading(true)
-      addDoc(collection(db, 'posts'), {
-        user: userProfile,
-        media: [postDetails.media],
-        caption: postDetails.caption
-      }).finally(() => {
-        setLoading(false)
-        navigation.goBack()
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.onload = () => resolve(xhr.response)
+
+        xhr.responseType = 'blob'
+        xhr.open('GET', postDetails.media, true)
+        xhr.send(null)
       })
+
+      const mediaRef = ref(storage, `posts/${new Date().toISOString()}`)
+
+      const uploadTask = uploadBytesResumable(mediaRef, blob)
+
+      uploadTask.on('state_changed',
+        snapshot => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          console.log('Upload is ' + progress + '% done')
+
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused')
+              break
+            case 'running':
+              console.log('Upload is running')
+              break
+          }
+        },
+        error => console.log('error uploading image: ', error),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+            file = downloadURL
+            setLoading(true)
+            addDoc(collection(db, 'posts'), {
+              user: userProfile,
+              media: arrayUnion(file),
+              mediaType,
+              caption: postDetails.caption
+            }).finally(() => {
+              setLoading(false)
+              navigation.goBack()
+            })
+          })
+        }
+      )
     }
   }
+
+  let extention = madiaString.slice(-7)
+
+  useEffect(() => {
+    if (extention.includes('jpg' || 'png' || 'gif' || 'jpeg' || 'JPEG' || 'JPG' || 'PNG' || 'GIF'))
+      setMediaType('image')
+    else if (extention.includes('mp4'))
+      setMediaType('video')
+  }, [media])
 
   const [loaded] = useFonts({
     logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),

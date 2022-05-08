@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   View,
   Text,
   Image,
   Pressable,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  useWindowDimensions
 } from 'react-native'
 
 import useAuth from '../hooks/useAuth'
@@ -18,14 +19,18 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { arrayRemove, arrayUnion, collection, doc, FieldValue, Firestore, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
+import { Video, AVPlaybackStatus } from 'expo-av'
 
 let lastPress = 0
 
 const Posts = () => {
   const navigation = useNavigation()
   const { userProfile, user } = useAuth()
+  const video = useRef(null)
+  const windowWidth = useWindowDimensions().width
 
   const [posts, setPosts] = useState([])
+  const [status, setStatus] = useState({})
 
   useEffect(() =>
     onSnapshot(collection(db, 'posts'),
@@ -134,13 +139,57 @@ const Posts = () => {
           <View
             onStartShouldSetResponder={(evt) => onDoublePress(post)}
           >
-            <Image
-              source={{ uri: post?.media[0] }}
-              style={{
-                width: '100%',
-                height: 400
-              }}
-            />
+            {
+              post?.mediaType == 'image' ?
+                <View>
+                  <Image
+                    source={{ uri: post?.media[0] }}
+                    style={{
+                      width: '100%',
+                      height: 400
+                    }}
+                  />
+                </View> :
+                <View
+                  style={{
+                    flex: 1,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                    width: windowWidth,
+                    position: 'relative'
+                  }}
+                >
+                  <Video
+                    ref={video}
+                    style={{
+                      flex: 1,
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                      width: windowWidth,
+                      height: 522,
+                      minHeight: 300,
+                    }}
+                    source={{
+                      uri: post?.media[0],
+                    }}
+                    useNativeControls={false}
+                    resizeMode="contain"
+                    isLooping
+                    onPlaybackStatusUpdate={status => setStatus(() => status)}
+                  />
+
+                  <TouchableOpacity
+                    onPress={() =>
+                      status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+                    }
+                    style={{
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%'
+                    }}
+                  />
+                </View>
+            }
           </View>
 
           <View
