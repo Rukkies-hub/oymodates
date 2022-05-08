@@ -49,12 +49,16 @@ const Profile = () => {
     company,
     setCompany,
     city,
-    setCity
+    setCity,
+    checked,
+    setChecked,
+    about,
+    setAbout
   } = useAuth()
   const storage = getStorage()
   const navigation = useNavigation()
 
-  const [checked, setChecked] = useState("male")
+  const [height, setHeight] = useState(50)
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -109,6 +113,7 @@ const Profile = () => {
       username,
       school,
       city,
+      about,
       age: moment().diff(moment(date, 'DD-MM-YYYY'), 'years'),
       ageDate: date,
       timestamp: serverTimestamp()
@@ -181,7 +186,7 @@ const Profile = () => {
                 height: 50,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: color.red,
+                backgroundColor: color.blue,
                 borderRadius: 50,
                 marginRight: 10
               }}
@@ -195,7 +200,7 @@ const Profile = () => {
                 height: 50,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: color.red,
+                backgroundColor: color.blue,
                 borderRadius: 50
               }}
             >
@@ -344,7 +349,7 @@ const Profile = () => {
               >
                 <RadioButton
                   value="male"
-                  color={color.red}
+                  color={color.blue}
                   status={checked === "male" ? "checked" : "unchecked"}
                   onPress={maleGender}
                 />
@@ -366,7 +371,7 @@ const Profile = () => {
               >
                 <RadioButton
                   value="female"
-                  color={color.red}
+                  color={color.blue}
                   status={checked === "female" ? "checked" : "unchecked"}
                   onPress={femaleGender}
                 />
@@ -381,6 +386,43 @@ const Profile = () => {
             </View>
           </View>
 
+          <TextInput
+            multiline
+            placeholder='About me'
+            value={about}
+            onChangeText={setAbout}
+            onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor,
+              height,
+              minHeight: 45,
+              maxHeight: 100,
+              fontFamily: 'text',
+              marginTop: 20,
+              color: color.dark
+            }}
+          />
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Passion')}
+            style={{
+              height: 45,
+              marginTop: 20,
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: 'text',
+                color: color.dark
+              }}
+            >
+              Passions
+            </Text>
+          </TouchableOpacity>
+
           <TouchableOpacity
             onPress={updateUserProfile}
             style={{
@@ -390,7 +432,7 @@ const Profile = () => {
               borderRadius: 12,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: color.red
+              backgroundColor: color.blue
             }}
           >
             <Text
