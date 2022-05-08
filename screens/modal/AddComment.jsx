@@ -21,10 +21,11 @@ import { useFonts } from 'expo-font'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { addDoc, collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
+import Comments from '../../components/Comments'
 
 const AddComment = (params) => {
   const { user, userProfile } = useAuth()
-  const post = params.route.params.post
+  const post = params?.route?.params?.post
 
   const [height, setHeight] = useState(50)
   const [input, setInput] = useState('')
@@ -67,11 +68,12 @@ const AddComment = (params) => {
     >
       <Header showBack showTitle title='Comment' />
 
-      <TouchableWithoutFeedback
+      <Comments post={post} />
+
+      {/* <TouchableWithoutFeedback
         onPress={Keyboard.dismiss}
       >
         <FlatList
-          inverted={-1}
           data={comments}
           keyExtractor={item => item.id}
           style={{
@@ -124,7 +126,7 @@ const AddComment = (params) => {
             </View>
           )}
         />
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback> */}
 
       <View
         style={{

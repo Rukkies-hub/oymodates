@@ -12,6 +12,7 @@ import Add from './screens/Add'
 import AddComment from './screens/modal/AddComment'
 import DeviceGallery from './screens/modal/DeviceGallery'
 import PostCamera from './screens/PostCamera'
+import ViewPost from './screens/ViewPost'
 
 import useAuth from './hooks/useAuth'
 
@@ -29,6 +30,7 @@ const StackNavigator = () => {
               <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
               <Stack.Screen name='Add' component={Add} options={{ headerShown: false }} />
               <Stack.Screen name='PostCamera' component={PostCamera} options={{ headerShown: false }} />
+              <Stack.Screen name='ViewPost' component={ViewPost} options={{ headerShown: false }} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>

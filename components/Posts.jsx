@@ -160,6 +160,7 @@ const Posts = () => {
                   }}
                 >
                   <Video
+                    isLooping
                     ref={video}
                     style={{
                       flex: 1,
@@ -173,14 +174,13 @@ const Posts = () => {
                       uri: post?.media[0],
                     }}
                     useNativeControls={false}
-                    resizeMode="contain"
-                    isLooping
+                    resizeMode='cover'
                     onPlaybackStatusUpdate={status => setStatus(() => status)}
                   />
 
                   <TouchableOpacity
                     onPress={() =>
-                      status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+                      navigation.navigate('ViewPost', { post })
                     }
                     style={{
                       position: 'absolute',

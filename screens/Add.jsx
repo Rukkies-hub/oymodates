@@ -105,6 +105,7 @@ const Add = () => {
         showBack
         showTitle
         showPost
+        showCancelPost
         postDetails={{
           media,
           caption: input
@@ -257,23 +258,22 @@ const Add = () => {
         mediaVidiblity &&
         <View
           style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
             width: '100%',
             borderTopWidth: 1,
-            borderTopColor: color.borderColor
+            borderTopColor: color.borderColor,
+            flexDirection: 'row',
+            justifyContent: 'space-between'
           }}
         >
           <TouchableOpacity
             onPress={pickImage}
             style={{
-              width: '100%',
+              width: '50%',
               height: 50,
               flexDirection: 'row',
               justifyContent: 'flex-start',
               alignItems: 'center',
-              backgroundColor: color.white,
+              backgroundColor: `${color.white}33`,
               paddingHorizontal: 10
             }}
           >
@@ -292,14 +292,12 @@ const Add = () => {
           <TouchableOpacity
             onPress={() => navigation.navigate('PostCamera')}
             style={{
-              width: '100%',
+              width: '50%',
               height: 50,
               flexDirection: 'row',
               justifyContent: 'flex-start',
               alignItems: 'center',
-              borderTopWidth: 1,
-              borderTopColor: color.borderColor,
-              backgroundColor: color.white,
+              backgroundColor: `${color.white}33`,
               paddingHorizontal: 10
             }}
           >

@@ -34,14 +34,17 @@ const Header = ({
   showVideo,
   showPost,
   postDetails,
-  showAdd
+  showAdd,
+  showCancelPost
 }) => {
   const navigation = useNavigation()
-  const { user, userProfile, madiaString, media } = useAuth()
+  const { user, userProfile, madiaString, media, setMedia } = useAuth()
   const storage = getStorage()
 
   const [loading, setLoading] = useState(false)
   const [mediaType, setMediaType] = useState('image')
+
+  let uploadTask
 
   const savePost = async () => {
     if (postDetails.caption || postDetails.media) {
@@ -57,7 +60,7 @@ const Header = ({
 
       const mediaRef = ref(storage, `posts/${new Date().toISOString()}`)
 
-      const uploadTask = uploadBytesResumable(mediaRef, blob)
+      uploadTask = uploadBytesResumable(mediaRef, blob)
 
       uploadTask.on('state_changed',
         snapshot => {
@@ -85,12 +88,19 @@ const Header = ({
               caption: postDetails.caption
             }).finally(() => {
               setLoading(false)
-              navigation.goBack()
+              cancelPost()
             })
           })
         }
       )
     }
+  }
+
+  const cancelPost = async () => {
+    postDetails = new Object()
+    setMedia('')
+    setLoading(false)
+    navigation.goBack()
   }
 
   let extention = madiaString.slice(-7)
@@ -222,6 +232,32 @@ const Header = ({
               }}
             >
               <FontAwesome5 name='video' color={color.lightText} size={16} />
+            </TouchableOpacity>
+          }
+
+          {
+            showCancelPost &&
+            <TouchableOpacity
+              onPress={cancelPost}
+              style={{
+                backgroundColor: color.labelColor,
+                borderRadius: 12,
+                width: 70,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: 10
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: 'text',
+                  color: color.dark,
+                  fontSize: 16
+                }}
+              >
+                Cancel
+              </Text>
             </TouchableOpacity>
           }
 
