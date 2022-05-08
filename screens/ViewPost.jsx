@@ -260,6 +260,11 @@ const ViewPost = (params) => {
             {post?.caption}
           </Text>
         </View>
+        <View
+          style={{
+            marginTop: 30
+          }}
+        ></View>
         <Comments post={post} />
       </ScrollView>
       <NewComment post={post} />

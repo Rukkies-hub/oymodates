@@ -266,7 +266,7 @@ const Posts = () => {
                   fontSize: 14
                 }}
               >
-                {post?.likes?.length} Likes
+                {post?.likes?.length} {post?.likes?.length == 1 ? 'Like' : 'Likes'}
               </Text>
             }
             <Text
