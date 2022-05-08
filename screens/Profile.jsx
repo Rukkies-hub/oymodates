@@ -25,10 +25,12 @@ import moment from 'moment'
 import { useNavigation } from '@react-navigation/native'
 
 import { db } from '../hooks/firebase'
-import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
+import { serverTimestamp, setDoc, doc, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 
-const UpdateModal = () => {
+import { RadioButton } from "react-native-paper"
+
+const Profile = () => {
   const {
     user,
     logout,
@@ -43,12 +45,16 @@ const UpdateModal = () => {
     setUsername,
     school,
     setSchool,
-    getUserProfile
+    getUserProfile,
+    company,
+    setCompany,
+    city,
+    setCity
   } = useAuth()
   const storage = getStorage()
   const navigation = useNavigation()
 
-  const incompleteForm = !date || !job
+  const [checked, setChecked] = useState("male")
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -94,21 +100,40 @@ const UpdateModal = () => {
   }
 
   const updateUserProfile = () => {
-    setDoc(doc(db, 'users', user.uid), {
+    updateDoc(doc(db, 'users', user.uid), {
       id: user.uid,
       displayName: user.displayName,
-      photoURL: image,
+      photoURL: image ? image : userProfile.photoURL,
       job,
+      company,
+      username,
+      school,
+      city,
       age: moment().diff(moment(date, 'DD-MM-YYYY'), 'years'),
       ageDate: date,
       timestamp: serverTimestamp()
+    }).finally(() => getUserProfile(user))
+  }
+
+  const maleGender = () => {
+    updateDoc(doc(db, 'users', user?.uid), {
+      gender: 'male'
+    }).finally(() => {
+      setChecked('male')
+      getUserProfile(user)
     })
-      .then(() => getUserProfile(user))
-      .catch(error => alert(error.message))
+  }
+
+  const femaleGender = () => {
+    updateDoc(doc(db, 'users', user?.uid), {
+      gender: 'female'
+    }).finally(() => {
+      setChecked('female')
+      getUserProfile(user)
+    })
   }
 
   const [loaded] = useFonts({
-    logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
@@ -185,6 +210,20 @@ const UpdateModal = () => {
             paddingHorizontal: 10
           }}
         >
+          <TextInput
+            placeholder='Username'
+            value={username}
+            onChangeText={setUsername}
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor,
+              height: 45,
+              fontFamily: 'text',
+              marginBottom: 20,
+              color: color.dark
+            }}
+          />
+
           <DatePicker
             style={{
               width: '100%',
@@ -237,9 +276,9 @@ const UpdateModal = () => {
           />
 
           <TextInput
-            placeholder='Username'
-            value={username}
-            onChangeText={setUsername}
+            placeholder='Where do you work'
+            value={company}
+            onChangeText={setCompany}
             style={{
               borderBottomWidth: 1,
               borderBottomColor: color.borderColor,
@@ -264,9 +303,86 @@ const UpdateModal = () => {
             }}
           />
 
+          <TextInput
+            placeholder='I live in (City)'
+            value={city}
+            onChangeText={setCity}
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor,
+              height: 45,
+              fontFamily: 'text',
+              marginTop: 20,
+              color: color.dark
+            }}
+          />
+
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor,
+              minHeight: 45,
+              marginTop: 20
+            }}
+          >
+            <Text
+              style={{
+                color: color.dark,
+                fontFamily: 'text'
+              }}
+            >
+              Gender
+            </Text>
+
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <RadioButton
+                  value="male"
+                  color={color.red}
+                  status={checked === "male" ? "checked" : "unchecked"}
+                  onPress={maleGender}
+                />
+                <Text
+                  style={{
+                    fontFamily: "text"
+                  }}
+                >
+                  Male
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <RadioButton
+                  value="female"
+                  color={color.red}
+                  status={checked === "female" ? "checked" : "unchecked"}
+                  onPress={femaleGender}
+                />
+                <Text
+                  style={{
+                    fontFamily: "text"
+                  }}
+                >
+                  Female
+                </Text>
+              </View>
+            </View>
+          </View>
+
           <TouchableOpacity
             onPress={updateUserProfile}
-            disabled={incompleteForm}
             style={{
               width: '100%',
               height: 50,
@@ -274,7 +390,7 @@ const UpdateModal = () => {
               borderRadius: 12,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: incompleteForm ? color.labelColor : color.red
+              backgroundColor: color.red
             }}
           >
             <Text
@@ -292,4 +408,4 @@ const UpdateModal = () => {
   )
 }
 
-export default UpdateModal
+export default Profile

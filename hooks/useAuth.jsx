@@ -37,9 +37,12 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null)
   const [date, setDate] = useState()
   const [job, setJob] = useState('')
+  const [company, setCompany] = useState('')
   const [image, setImage] = useState(null)
   const [username, setUsername] = useState('')
   const [school, setSchool] = useState('')
+  const [city, setCity] = useState('')
+  
   const [media, setMedia] = useState('')
   const [likes, setLikes] = useState({})
 
@@ -61,8 +64,10 @@ export const AuthProvider = ({ children }) => {
 
     if (profile?.ageDate) setDate(profile?.ageDate)
     if (profile?.job) setJob(profile?.job)
+    if (profile?.company) setCompany(profile?.company)
     if (profile?.username) setUsername(profile?.username)
     if (profile?.school) setSchool(profile?.school)
+    if (profile?.city) setCity(profile?.city)
   }
 
   const signInWighGoogle = async () => {
@@ -115,8 +120,31 @@ export const AuthProvider = ({ children }) => {
     setMedia,
     madiaString,
     likes,
-    setLikes
-  }), [user, loading, error, userProfile, image, date, job, username, school, media, setMedia, madiaString, likes, setLikes])
+    setLikes,
+    company,
+    setCompany,
+    city,
+    setCity
+  }), [
+    user,
+    loading,
+    error,
+    userProfile,
+    image,
+    date,
+    job,
+    username,
+    school,
+    media,
+    setMedia,
+    madiaString,
+    likes,
+    setLikes,
+    company,
+    setCompany,
+    city,
+    setCity
+  ])
 
   return (
     <AuthContext.Provider

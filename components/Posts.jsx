@@ -100,6 +100,7 @@ const Posts = () => {
             }}
           >
             <Pressable
+              onPress={() => navigation.navigate('UserProfile', { user: post?.user })}
               style={{
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
@@ -249,7 +250,8 @@ const Posts = () => {
             </Pressable>
           </View>
 
-          <View
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ViewPost', { post })}
             style={{
               paddingHorizontal: 10,
               maxHeight: 100,
@@ -277,7 +279,7 @@ const Posts = () => {
             >
               {post?.caption}
             </Text>
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => navigation.navigate('AddComment', { post })}

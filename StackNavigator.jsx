@@ -13,6 +13,7 @@ import AddComment from './screens/modal/AddComment'
 import DeviceGallery from './screens/modal/DeviceGallery'
 import PostCamera from './screens/PostCamera'
 import ViewPost from './screens/ViewPost'
+import UserProfile from './screens/modal/UserProfile'
 
 import useAuth from './hooks/useAuth'
 
@@ -40,6 +41,7 @@ const StackNavigator = () => {
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
               <Stack.Screen name='AddComment' component={AddComment} options={{ headerShown: false }} />
               <Stack.Screen name='DeviceGallery' component={DeviceGallery} options={{ headerShown: false }} />
+              <Stack.Screen name='UserProfile' component={UserProfile} options={{ headerShown: false }} />
             </Stack.Group>
           </>
         ) : (
