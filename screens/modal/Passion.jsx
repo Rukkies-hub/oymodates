@@ -184,14 +184,14 @@ const Passion = () => {
                       paddingVertical: 5,
                       borderWidth: 2,
                       borderRadius: 50,
-                      borderColor: passions?.includes(pashion) ? color.red : color.borderColor,
+                      borderColor: passions?.includes(pashion) ? color.blue : color.borderColor,
                       marginBottom: 10,
                       marginRight: 10
                     }}
                   >
                     <Text
                       style={{
-                        color: passions?.includes(pashion) ? color.red : color.lightText,
+                        color: passions?.includes(pashion) ? color.blue : color.lightText,
                         fontSize: 12,
                         fontFamily: "text",
                         textTransform: "capitalize"
@@ -207,9 +207,10 @@ const Passion = () => {
         </ScrollView>
 
         <TouchableOpacity
+          disabled={passions?.length < 3}
           onPress={updateIntrests}
           style={{
-            backgroundColor: color.red,
+            backgroundColor: passions?.length >= 3 ? color.blue : color.labelColor,
             height: 50,
             borderRadius: 12,
             justifyContent: "center",
