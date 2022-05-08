@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 
 import { Camera } from 'expo-camera'
+
 import { Audio } from 'expo-av'
-import * as ImagePicker from 'expo-image-picker'
-import * as MediaLibrary from 'expo-media-library'
+
 import { useIsFocused } from '@react-navigation/core'
+
 import color from '../style/color'
-import { async } from '@firebase/util'
+
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+
+import { useNavigation } from '@react-navigation/native'
+import useAuth from '../hooks/useAuth'
 
 const PostCamera = () => {
+  const navigation = useNavigation()
+  const { setMedia, madiaString } = useAuth()
+
   const [hasCameraPermission, setHasCameraPermission] = useState(false)
   const [hasAudioPermission, setHasAudioPermission] = useState(false)
-  const [hasGalleryPermission, setHasGalleryPermission] = useState(false)
-  const [galleryItems, setGalleryItems] = useState([])
   const [cameraRef, setCameraRef] = useState(null)
   const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.front)
   const [cameraFlash, setCameraFlash] = useState(Camera?.Constants?.FlashMode?.off)
@@ -28,52 +34,51 @@ const PostCamera = () => {
 
       const audioStatus = await Audio?.requestPermissionsAsync()
       setHasAudioPermission(audioStatus?.status === 'granted')
-
-      const galleryStatus = await ImagePicker?.requestMediaLibraryPermissionsAsync()
-      setHasGalleryPermission(galleryStatus?.status === 'granted')
-
-      if (galleryStatus.status === 'granted') {
-        const userGalleryMadia = await MediaLibrary?.getAssetsAsync({ sortBy: ['creationTime'], mediaType: ['video', 'photo'] })
-        setGalleryItems(userGalleryMadia)
-      }
     })()
   }, [])
 
-  if (!hasCameraPermission || !hasAudioPermission || !hasGalleryPermission)
+  if (!hasCameraPermission || !hasAudioPermission)
     return (
       <View></View>
     )
 
   const recordVideo = async () => {
-    if (cameraRef) {
+    if (cameraRef)
       try {
         const options = { maxDuration: 60, quality: Camera?.Constants?.VideoQuality['480'] }
         const videoRecordPromise = cameraRef?.recordAsync(options)
 
         if (videoRecordPromise) {
           const data = await videoRecordPromise
-          const source = data.uri
+          const source = data?.uri
 
+          setMedia(source)
           console.log(source)
+          navigation.goBack()
         }
       } catch (error) {
         console.warn('Oymo camera error: ', error)
       }
-    }
   }
 
   const stopVideo = async () => {
-    if (cameraRef) {
-      cameraRef.stopRecording()
-    }
+    if (cameraRef) cameraRef.stopRecording()
   }
 
+  const takePictire = async () => {
+    if (cameraRef) {
+      const data = await cameraRef?.takePictureAsync(null)
+      setMedia(data?.uri)
+      console.log(data?.uri)
+      navigation.goBack()
+    }
+  }
 
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: color.red,
+        backgroundColor: color.black,
         position: 'relative'
       }}
     >
@@ -93,11 +98,90 @@ const PostCamera = () => {
           />
           : null
       }
+
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{
+          position: 'absolute',
+          top: 60,
+          left: 0,
+          marginHorizontal: 30,
+          width: 50,
+          height: 50,
+          borderRadius: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: `${color.dark}89`
+        }}
+      >
+        <FontAwesome5 name='chevron-left' size={20} color={color.white} />
+      </TouchableOpacity>
+
+      <View
+        style={{
+          position: 'absolute',
+          top: 60,
+          right: 0,
+          marginHorizontal: 20
+        }}
+      >
+        <TouchableOpacity
+          onPress={
+            () => setCameraType(
+              cameraType === Camera?.Constants?.Type?.back ?
+                Camera?.Constants?.Type?.front : Camera?.Constants?.Type?.back
+            )
+          }
+          style={{
+            alignContent: 'center',
+            justifyContent: 'center',
+            marginBottom: 25
+          }}
+        >
+          <FontAwesome5 name='retweet' color={color.white} size={20} />
+          <Text
+            style={{
+              color: color.white,
+              fontSize: 12,
+              marginTop: 5
+            }}
+          >
+            Flip
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={
+            () => setCameraFlash(
+              cameraFlash === Camera?.Constants?.FlashMode?.torch ?
+                Camera?.Constants?.FlashMode?.off : Camera?.Constants?.FlashMode?.torch
+            )
+          }
+          style={{
+            alignContent: 'center',
+            justifyContent: 'center',
+            marginBottom: 25
+          }}
+        >
+          <FontAwesome5 name='bolt' color={color.white} size={20} />
+          <Text
+            style={{
+              color: color.white,
+              fontSize: 12,
+              marginTop: 5
+            }}
+          >
+            Flash
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       <View
         style={{
           position: 'absolute',
           bottom: 0,
           flexDirection: 'row',
+          alignItems: 'center',
           marginBottom: 30
         }}
       >
@@ -109,6 +193,7 @@ const PostCamera = () => {
         >
           <TouchableOpacity
             disabled={!isCameraReady}
+            onPress={takePictire}
             onLongPress={recordVideo}
             onPressOut={stopVideo}
             style={{
@@ -120,9 +205,7 @@ const PostCamera = () => {
               width: 80,
               alignSelf: 'center'
             }}
-          >
-
-          </TouchableOpacity>
+          />
         </View>
       </View>
     </View>

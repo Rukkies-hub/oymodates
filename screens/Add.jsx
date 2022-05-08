@@ -9,12 +9,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   LayoutAnimation,
-  UIManager
+  UIManager,
+  useWindowDimensions
 } from 'react-native'
 import Header from '../components/Header'
 import color from '../style/color'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useFonts } from 'expo-font'
 
@@ -32,15 +34,22 @@ import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 import { useNavigation } from '@react-navigation/native'
 
+import { Video, AVPlaybackStatus } from 'expo-av'
+
 const Add = () => {
-  const { user } = useAuth()
+  const { user, media, setMedia, madiaString } = useAuth()
   const navigation = useNavigation()
+  const video = React.useRef(null)
   const storage = getStorage()
+  const windowWidth = useWindowDimensions().width
+
   const [input, setInput] = useState("")
   const [height, setHeight] = useState(50)
-  const [image, setImage] = useState('')
   const [expanded, setExpanded] = useState(false)
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
+  const [mediaType, setMediaType] = useState('image')
+  const [status, setStatus] = useState({})
+  const [mute, setMute] = useState(false)
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -51,7 +60,6 @@ const Add = () => {
     })
 
     if (!result.cancelled) {
-      setImage(result.uri)
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
         xhr.onload = () => resolve(xhr.response)
@@ -61,9 +69,9 @@ const Add = () => {
         xhr.send(null)
       })
 
-      const photoRef = ref(storage, `posts/${new Date().toISOString()}`)
+      const mediaRef = ref(storage, `posts/${new Date().toISOString()}`)
 
-      const uploadTask = uploadBytesResumable(photoRef, blob)
+      const uploadTask = uploadBytesResumable(mediaRef, blob)
 
       uploadTask.on('state_changed',
         snapshot => {
@@ -80,23 +88,11 @@ const Add = () => {
           }
         },
         error => console.log('error uploading image: ', error),
-        () => getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => setImage(downloadURL))
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => setMedia(downloadURL))
+          setMedia(result.uri)
+        }
       )
-    }
-  }
-
-  const openCamera = async () => {
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert("You've refused to allow this appp to access your camera!")
-      return
-    }
-
-    const result = await ImagePicker.launchCameraAsync()
-
-    if (!result.cancelled) {
-      setImage(result.uri)
     }
   }
 
@@ -114,6 +110,15 @@ const Add = () => {
       setMediaVidiblity(true)
     })
     , [])
+
+  let extention = madiaString.slice(-7)
+
+  useEffect(() => {
+    if (extention.includes('jpg' || 'png' || 'gif' || 'jpeg' || 'JPEG' || 'JPG' || 'PNG' || 'GIF'))
+      setMediaType('image')
+    else if (extention.includes('mp4'))
+      setMediaType('video')
+  }, [media])
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -135,7 +140,7 @@ const Add = () => {
         showTitle
         showPost
         postDetails={{
-          image,
+          media,
           caption: input
         }}
         title='Create post'
@@ -173,12 +178,13 @@ const Add = () => {
         </TouchableWithoutFeedback>
 
         {
-          image != '' &&
+          media != '' &&
           <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: 10
+              marginTop: 10,
+              marginBottom: 150
             }}
           >
             <View
@@ -186,13 +192,76 @@ const Add = () => {
                 width: '100%'
               }}
             >
-              <Image
-                source={{ uri: image }}
-                style={{
-                  width: '100%',
-                  height: 400
-                }}
-              />
+              {
+                mediaType == 'image' ?
+                  <Image
+                    source={{ uri: media }}
+                    style={{
+                      width: '100%',
+                      height: 400
+                    }}
+                  /> :
+                  <View
+                    style={{
+                      flex: 1,
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                      width: windowWidth,
+                      position: 'relative'
+                    }}
+                  >
+                    <Video
+                      ref={video}
+                      style={{
+                        flex: 1,
+                        alignSelf: 'center',
+                        justifyContent: 'center',
+                        width: windowWidth,
+                        height: 600,
+                        minHeight: 300,
+                      }}
+                      source={{
+                        uri: media,
+                      }}
+                      useNativeControls={false}
+                      resizeMode='cover'
+                      isMuted={mute}
+                      usePoster={true}
+                      isLooping
+                      onPlaybackStatusUpdate={status => setStatus(() => status)}
+                    />
+
+                    <TouchableOpacity
+                      onPress={() =>
+                        status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+                      }
+                      style={{
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%'
+                      }}
+                    />
+
+                    <TouchableOpacity
+                      onPress={() => setMute(!mute)}
+                      style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        right: 0,
+                        margin: 30,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: `${color.dark}89`,
+                        borderRadius: 50,
+                        zIndex: 1,
+                        width: 50,
+                        height: 50
+                      }}
+                    >
+                      <MaterialCommunityIcons name={mute ? 'volume-high' : 'volume-mute'} size={24} color={color.white} />
+                    </TouchableOpacity>
+                  </View>
+              }
             </View>
 
             <TouchableOpacity
@@ -227,8 +296,7 @@ const Add = () => {
             left: 0,
             width: '100%',
             borderTopWidth: 1,
-            borderTopColor: color.borderColor,
-            paddingHorizontal: 10
+            borderTopColor: color.borderColor
           }}
         >
           <TouchableOpacity
@@ -239,7 +307,8 @@ const Add = () => {
               flexDirection: 'row',
               justifyContent: 'flex-start',
               alignItems: 'center',
-              backgroundColor: color.white
+              backgroundColor: color.white,
+              paddingHorizontal: 10
             }}
           >
             <FontAwesome5 name='image' size={20} color={color.green} />
@@ -264,7 +333,8 @@ const Add = () => {
               alignItems: 'center',
               borderTopWidth: 1,
               borderTopColor: color.borderColor,
-              backgroundColor: color.white
+              backgroundColor: color.white,
+              paddingHorizontal: 10
             }}
           >
             <FontAwesome5 name='camera' size={20} color={color.blue} />

@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
   const [image, setImage] = useState(null)
   const [username, setUsername] = useState('')
   const [school, setSchool] = useState('')
+  const [media, setMedia] = useState('')
 
   useEffect(() =>
     onAuthStateChanged(auth, (user) => {
@@ -89,6 +90,8 @@ export const AuthProvider = ({ children }) => {
       .finally(() => setLoading(false))
   }
 
+  let madiaString = JSON.stringify(media)
+
   const memodValue = useMemo(() => ({
     user,
     error,
@@ -106,8 +109,11 @@ export const AuthProvider = ({ children }) => {
     username,
     setUsername,
     school,
-    setSchool
-  }), [user, loading, error, userProfile, image, date, job, username, school])
+    setSchool,
+    media,
+    setMedia,
+    madiaString
+  }), [user, loading, error, userProfile, image, date, job, username, school, media, setMedia, madiaString])
 
   return (
     <AuthContext.Provider
