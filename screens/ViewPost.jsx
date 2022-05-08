@@ -1,54 +1,51 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, useWindowDimensions, Image, Pressable, TouchableOpacity } from 'react-native'
+import React, { useState, useRef } from 'react'
+import { View, Text, useWindowDimensions, Image, Pressable, TouchableOpacity, ScrollView } from 'react-native'
 import Header from '../components/Header'
 import color from '../style/color'
 
-import { Video, AVPlaybackStatus } from 'expo-av'
+import { Video } from 'expo-av'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import useAuth from '../hooks/useAuth'
-import { arrayRemove, arrayUnion, collection, doc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
+import NewComment from '../components/NewComment'
+import Comments from '../components/Comments'
+import Likes from '../components/Likes'
+
 const ViewPost = (params) => {
-  const { user } = useAuth()
+  const { user, likes, setLikes } = useAuth()
   const post = params.route.params.post
 
-  // console.log(post)
 
   const windowWidth = useWindowDimensions().width
 
   const video = useRef(null)
   const [status, setStatus] = useState({})
   const [mute, setMute] = useState(true)
-  const [comments, setComments] = useState([])
 
   const likePost = async () => {
     await updateDoc(doc(db, 'posts', post.id), {
       likes: arrayUnion(user.uid)
     })
+
+    getLikes()
   }
 
   const dislikePost = async () => {
     await updateDoc(doc(db, 'posts', post.id), {
       likes: arrayRemove(user.uid)
     })
+
+    getLikes()
   }
 
-  useEffect(() =>
-    onSnapshot(collection(db, 'posts', post.id, 'comments'),
-      snapshot =>
-        setComments(
-          snapshot.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc.data()
-          }))
-        )
-    )
-    , [])
-  
-  console.log('comment: ', comments)
+  const getLikes = async () => {
+    let docSnap = await (await getDoc(doc(db, 'posts', post.id))).data()
+    setLikes(docSnap)
+  }
 
   return (
     <View
@@ -58,7 +55,7 @@ const ViewPost = (params) => {
       }}
     >
       <Header showBack showTitle title='View Post' />
-      <View
+      <ScrollView
         style={{
           flex: 1
         }}
@@ -101,7 +98,19 @@ const ViewPost = (params) => {
 
         {
           post.mediaType == 'image' ?
-            <View></View> :
+            <View
+              style={{
+                position: 'relative'
+              }}
+            >
+              <Image
+                source={{ uri: post?.media[0] }}
+                style={{
+                  width: '100%',
+                  height: 400
+                }}
+              />
+            </View> :
             <View
               style={{
                 position: 'relative'
@@ -165,8 +174,9 @@ const ViewPost = (params) => {
             flexDirection: 'row'
           }}
         >
+
           {
-            post?.likes?.includes(user.uid) &&
+            likes?.likes?.includes(user.uid) &&
             <TouchableOpacity
               onPress={dislikePost}
               style={{
@@ -181,7 +191,7 @@ const ViewPost = (params) => {
             </TouchableOpacity>
           }
           {
-            !post?.likes?.includes(user.uid) &&
+            !likes?.likes?.includes(user.uid) &&
             <TouchableOpacity
               onPress={likePost}
               style={{
@@ -230,16 +240,15 @@ const ViewPost = (params) => {
             alignItems: 'flex-start'
           }}
         >
-
           {
-            post?.likes?.length > 0 &&
+            likes?.likes?.length > 0 &&
             <Text
               style={{
                 color: color.dark,
                 fontSize: 14
               }}
             >
-              {post?.likes?.length} Likes
+              {likes?.likes?.length} {likes?.likes?.length == 1 ? 'Like' : 'Likes'}
             </Text>
           }
           <Text
@@ -251,7 +260,9 @@ const ViewPost = (params) => {
             {post?.caption}
           </Text>
         </View>
-      </View>
+        <Comments post={post} />
+      </ScrollView>
+      <NewComment post={post} />
     </View>
   )
 }

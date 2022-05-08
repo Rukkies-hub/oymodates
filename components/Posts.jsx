@@ -16,16 +16,18 @@ import color from '../style/color'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import { arrayRemove, arrayUnion, collection, doc, FieldValue, Firestore, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, collection, doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
-import { Video, AVPlaybackStatus } from 'expo-av'
+import { Video } from 'expo-av'
+
+import Likes from './Likes'
 
 let lastPress = 0
 
 const Posts = () => {
   const navigation = useNavigation()
-  const { userProfile, user } = useAuth()
+  const { userProfile, user, likes, setLikes } = useAuth()
   const video = useRef(null)
   const windowWidth = useWindowDimensions().width
 
@@ -141,12 +143,32 @@ const Posts = () => {
           >
             {
               post?.mediaType == 'image' ?
-                <View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                    width: windowWidth,
+                    position: 'relative'
+                  }}
+                >
                   <Image
                     source={{ uri: post?.media[0] }}
                     style={{
                       width: '100%',
                       height: 400
+                    }}
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      setLikes(post)
+                      navigation.navigate('ViewPost', { post })
+                    }}
+                    style={{
+                      position: 'absolute',
+                      width: '100%',
+                      height: '100%'
                     }}
                   />
                 </View> :
@@ -179,9 +201,10 @@ const Posts = () => {
                   />
 
                   <TouchableOpacity
-                    onPress={() =>
+                    onPress={() => {
+                      setLikes(post)
                       navigation.navigate('ViewPost', { post })
-                    }
+                    }}
                     style={{
                       position: 'absolute',
                       width: '100%',
@@ -198,36 +221,7 @@ const Posts = () => {
               flexDirection: 'row'
             }}
           >
-            {
-              post?.likes?.includes(user.uid) &&
-              <TouchableOpacity
-                onPress={() => dislikePost(post)}
-                style={{
-                  width: 35,
-                  height: 35,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginRight: 20
-                }}
-              >
-                <MaterialCommunityIcons name='heart' size={25} color={color.red} />
-              </TouchableOpacity>
-            }
-            {
-              !post?.likes?.includes(user.uid) &&
-              <TouchableOpacity
-                onPress={() => likePost(post)}
-                style={{
-                  width: 35,
-                  height: 35,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginRight: 20
-                }}
-              >
-                <MaterialCommunityIcons name='heart-outline' size={25} color={color.lightText} />
-              </TouchableOpacity>
-            }
+            <Likes post={post} />
 
             <Pressable
               onPress={() => navigation.navigate('AddComment', { post })}

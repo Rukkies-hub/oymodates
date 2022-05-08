@@ -41,6 +41,7 @@ export const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState('')
   const [school, setSchool] = useState('')
   const [media, setMedia] = useState('')
+  const [likes, setLikes] = useState({})
 
   useEffect(() =>
     onAuthStateChanged(auth, (user) => {
@@ -112,8 +113,10 @@ export const AuthProvider = ({ children }) => {
     setSchool,
     media,
     setMedia,
-    madiaString
-  }), [user, loading, error, userProfile, image, date, job, username, school, media, setMedia, madiaString])
+    madiaString,
+    likes,
+    setLikes
+  }), [user, loading, error, userProfile, image, date, job, username, school, media, setMedia, madiaString, likes, setLikes])
 
   return (
     <AuthContext.Provider

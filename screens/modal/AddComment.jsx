@@ -10,7 +10,7 @@ import { useFonts } from 'expo-font'
 import Comments from '../../components/Comments'
 import NewComment from '../../components/NewComment'
 
-const AddComment = (params) => {
+const AddComment = params => {
   const post = params?.route?.params?.post
 
   const [loaded] = useFonts({
