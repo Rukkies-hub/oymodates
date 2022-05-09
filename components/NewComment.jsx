@@ -20,7 +20,11 @@ const NewComment = (params) => {
       addDoc(collection(db, 'posts', post.id, 'comments'), {
         comment: input,
         post,
-        user: userProfile
+        user: {
+          id: userProfile?.id,
+          displayName: userProfile?.displayName,
+          photoURL: userProfile?.photoURL
+        }
       })
     setInput('')
   }

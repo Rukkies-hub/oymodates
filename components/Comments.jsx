@@ -54,8 +54,18 @@ const Comments = (params) => {
   }
 
   const sendCommentReply = async (comment) => {
-    // if (input != '')
-      // addDoc(collection(db, ''))
+    if (input != '')
+      await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
+        reply: arrayUnion({
+          reply: input,
+          user: {
+            id: userProfile?.id,
+            displayName: userProfile?.displayName,
+            photoURL: userProfile?.photoURL
+          }
+        })
+      })
+    setInput('')
   }
 
   return (
