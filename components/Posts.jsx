@@ -100,7 +100,11 @@ const Posts = () => {
             }}
           >
             <Pressable
-              onPress={() => navigation.navigate('UserProfile', { user: post?.user })}
+              onPress={() =>
+                post?.user.id == user.uid ?
+                  navigation.navigate('Profile') :
+                  navigation.navigate('UserProfile', { user: post?.user })
+              }
               style={{
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
