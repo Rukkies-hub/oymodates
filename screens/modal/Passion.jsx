@@ -169,35 +169,35 @@ const Passion = () => {
             }}
           >
             {
-              passionList.map((pashion, index) => {
+              passionList.map((passion, index) => {
                 return (
                   <TouchableOpacity
                     key={index}
                     onPress={() => {
-                      if (passions.includes(pashion))
-                        setPassions(passions.filter(item => item !== pashion))
+                      if (passions.includes(passion))
+                        setPassions(passions.filter(item => item !== passion))
                       else if (passions.length <= 4)
-                        setPassions(oldArray => [...oldArray, pashion])
+                        setPassions(oldArray => [...oldArray, passion])
                     }}
                     style={{
                       paddingHorizontal: 10,
                       paddingVertical: 5,
                       borderWidth: 2,
                       borderRadius: 50,
-                      borderColor: passions?.includes(pashion) ? color.blue : color.borderColor,
+                      borderColor: passions?.includes(passion) ? color.blue : color.borderColor,
                       marginBottom: 10,
                       marginRight: 10
                     }}
                   >
                     <Text
                       style={{
-                        color: passions?.includes(pashion) ? color.blue : color.lightText,
+                        color: passions?.includes(passion) ? color.blue : color.lightText,
                         fontSize: 12,
                         fontFamily: "text",
                         textTransform: "capitalize"
                       }}
                     >
-                      {pashion}
+                      {passion}
                     </Text>
                   </TouchableOpacity>
                 )

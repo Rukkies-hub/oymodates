@@ -53,7 +53,8 @@ const Profile = () => {
     checked,
     setChecked,
     about,
-    setAbout
+    setAbout,
+    passions
   } = useAuth()
   const storage = getStorage()
   const navigation = useNavigation()
@@ -407,7 +408,7 @@ const Profile = () => {
           <TouchableOpacity
             onPress={() => navigation.navigate('Passion')}
             style={{
-              height: 45,
+              minHeight: 45,
               marginTop: 20,
               borderBottomWidth: 1,
               borderBottomColor: color.borderColor,
@@ -421,6 +422,44 @@ const Profile = () => {
             >
               Passions
             </Text>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                flexWrap: 'wrap'
+              }}
+            >
+              {
+                passions.map((passion, index) => {
+                  return (
+                    <View
+                      style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                        borderWidth: 2,
+                        borderRadius: 50,
+                        borderColor: color.borderColor,
+                        marginBottom: 10,
+                        marginRight: 10
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: color.lightText,
+                          fontSize: 12,
+                          fontFamily: "text",
+                          textTransform: "capitalize"
+                        }}
+                      >
+                        {passion}
+                      </Text>
+                    </View>
+                  )
+                })
+              }
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity
