@@ -5,7 +5,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  ActivityIndicator
 } from 'react-native'
 
 import Header from '../components/Header'
@@ -26,9 +27,11 @@ import { useNavigation } from '@react-navigation/native'
 
 import { db } from '../hooks/firebase'
 import { serverTimestamp, setDoc, doc, updateDoc } from 'firebase/firestore'
-import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 
 import { RadioButton } from "react-native-paper"
+
+let link = `avatars/${new Date().toISOString()}`
 
 const Profile = () => {
   const {
@@ -54,12 +57,17 @@ const Profile = () => {
     setChecked,
     about,
     setAbout,
-    passions
+    passions,
+    location,
+    setLocation,
+    address,
+    setAddress
   } = useAuth()
   const storage = getStorage()
   const navigation = useNavigation()
 
   const [height, setHeight] = useState(50)
+  const [uploadLoading, setUploadLoading] = useState(false)
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -80,27 +88,55 @@ const Profile = () => {
         xhr.send(null)
       })
 
-      const photoRef = ref(storage, `avatars/${new Date().toISOString()}`)
+      const photoRef = ref(storage, link)
 
       const uploadTask = uploadBytesResumable(photoRef, blob)
 
-      uploadTask.on('state_changed',
-        snapshot => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          console.log('Upload is ' + progress + '% done')
+      if (result?.uri) {
+        setUploadLoading(true)
+        const desertRef = ref(storage, userProfile.photoLink)
 
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused')
-              break
-            case 'running':
-              console.log('Upload is running')
-              break
-          }
-        },
-        error => console.log('error uploading image: ', error),
-        () => getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => setImage(downloadURL))
-      )
+        deleteObject(desertRef)
+          .then(() => {
+            uploadTask.on('state_changed',
+              snapshot => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                console.log('Upload is ' + progress + '% done')
+
+                switch (snapshot.state) {
+                  case 'paused':
+                    console.log('Upload is paused')
+                    break
+                  case 'running':
+                    console.log('Upload is running')
+                    break
+                }
+
+              },
+              error => {
+                setUploadLoading(false)
+                console.log('error uploading image: ', error)
+              },
+              () => {
+                getDownloadURL(uploadTask.snapshot.ref)
+                  .then((downloadURL) => {
+                    setImage(downloadURL)
+                    updateDoc(doc(db, 'users', user.uid), {
+                      photoURL: downloadURL,
+                      photoLink: link
+                    }).finally(() => {
+                      getUserProfile(user)
+                      setUploadLoading(false)
+                    })
+                  })
+              }
+            )
+          })
+          .catch((error) => {
+            setUploadLoading(false)
+            console.log('error: ', error)
+          })
+      }
     }
   }
 
@@ -108,7 +144,6 @@ const Profile = () => {
     updateDoc(doc(db, 'users', user.uid), {
       id: user.uid,
       displayName: user.displayName,
-      photoURL: image ? image : userProfile.photoURL,
       job,
       company,
       username,
@@ -205,7 +240,11 @@ const Profile = () => {
                 borderRadius: 50
               }}
             >
-              <MaterialCommunityIcons name='pencil' size={28} color={color.white} />
+              {
+                uploadLoading ?
+                  <ActivityIndicator size='large' color={color.white} /> :
+                  <MaterialCommunityIcons name='pencil' size={28} color={color.white} />
+              }
             </TouchableOpacity>
           </View>
         </View>
@@ -387,6 +426,41 @@ const Profile = () => {
             </View>
           </View>
 
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: color.borderColor,
+              minHeight: 45,
+              marginTop: 20,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <View>
+              <Text></Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('UserLocation')}
+              style={{
+                paddingVertical: 15,
+                paddingHorizontal: 10,
+                backgroundColor: color.blue,
+                borderRadius: 12,
+                marginBottom: 10
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: 'text',
+                  color: color.white
+                }}
+              >
+                Get Location
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           <TextInput
             multiline
             placeholder='About me'
@@ -409,9 +483,7 @@ const Profile = () => {
             onPress={() => navigation.navigate('Passion')}
             style={{
               minHeight: 45,
-              marginTop: 20,
-              borderBottomWidth: 1,
-              borderBottomColor: color.borderColor,
+              marginTop: 20
             }}
           >
             <Text
@@ -435,6 +507,7 @@ const Profile = () => {
                 passions.map((passion, index) => {
                   return (
                     <View
+                      key={index}
                       style={{
                         paddingHorizontal: 10,
                         paddingVertical: 5,

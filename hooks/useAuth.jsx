@@ -45,6 +45,8 @@ export const AuthProvider = ({ children }) => {
   const [checked, setChecked] = useState('male')
   const [about, setAbout] = useState('')
   const [passions, setPassions] = useState([])
+  const [location, setLocation] = useState(null)
+  const [address, setAddress] = useState(null)
 
   const [media, setMedia] = useState('')
   const [likes, setLikes] = useState({})
@@ -74,6 +76,8 @@ export const AuthProvider = ({ children }) => {
     if (profile?.gender) setChecked(profile?.gender)
     if (profile?.about) setAbout(profile?.about)
     if (profile?.passions) setPassions([...profile?.passions])
+    if (profile?.location) setLocation(profile?.location)
+    if (profile?.address) setAddress(profile?.address)
   }
 
   const signInWighGoogle = async () => {
@@ -136,7 +140,11 @@ export const AuthProvider = ({ children }) => {
     about,
     setAbout,
     passions,
-    setPassions
+    setPassions,
+    location,
+    setLocation,
+    address,
+    setAddress
   }), [
     user,
     loading,
@@ -161,7 +169,11 @@ export const AuthProvider = ({ children }) => {
     about,
     setAbout,
     passions,
-    setPassions
+    setPassions,
+    location,
+    setLocation,
+    address,
+    setAddress
   ])
 
   return (

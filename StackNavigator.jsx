@@ -15,6 +15,7 @@ import PostCamera from './screens/PostCamera'
 import ViewPost from './screens/ViewPost'
 import UserProfile from './screens/modal/UserProfile'
 import Passion from './screens/modal/Passion'
+import UserLocation from './screens/modal/UserLocation'
 
 import useAuth from './hooks/useAuth'
 
@@ -44,6 +45,7 @@ const StackNavigator = () => {
               <Stack.Screen name='DeviceGallery' component={DeviceGallery} options={{ headerShown: false }} />
               <Stack.Screen name='UserProfile' component={UserProfile} options={{ headerShown: false }} />
               <Stack.Screen name='Passion' component={Passion} options={{ headerShown: false }} />
+              <Stack.Screen name='UserLocation' component={UserLocation} options={{ headerShown: false }} />
             </Stack.Group>
           </>
         ) : (
