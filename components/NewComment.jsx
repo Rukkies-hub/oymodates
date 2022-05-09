@@ -19,6 +19,7 @@ const NewComment = (params) => {
     if (input != '')
       addDoc(collection(db, 'posts', post.id, 'comments'), {
         comment: input,
+        post,
         user: userProfile
       })
     setInput('')
@@ -50,6 +51,7 @@ const NewComment = (params) => {
           flex: 1,
           width: '100%',
           height,
+          minHeight: 50,
           maxHeight: 150,
           fontFamily: 'text',
           color: color.lightText,

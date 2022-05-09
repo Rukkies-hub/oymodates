@@ -1,4 +1,4 @@
-import { arrayRemove, arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 
@@ -8,12 +8,12 @@ import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
 const Likes = (params) => {
-  const { user, setLikes, likes } = useAuth()
+  const { user, setLikes, likes, userProfile } = useAuth()
   const post = params?.post
 
   const likePost = async () => {
     await updateDoc(doc(db, 'posts', post?.id), {
-      likes: arrayUnion(user.uid)
+      likes: arrayUnion(user?.uid)
     })
 
     getLikes(post)
@@ -22,7 +22,7 @@ const Likes = (params) => {
 
   const dislikePost = async () => {
     await updateDoc(doc(db, 'posts', post.id), {
-      likes: arrayRemove(user.uid)
+      likes: arrayRemove(user?.uid)
     })
 
     getLikes(post)

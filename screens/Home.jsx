@@ -30,7 +30,7 @@ const Home = () => {
 
   useLayoutEffect(() =>
     onSnapshot(doc(db, 'users', user.uid), snapshot => {
-      if (!snapshot.exists()) navigation.navigate('UpdateModal')
+      if (!snapshot.exists()) navigation.navigate('Profile')
     })
     , [])
 

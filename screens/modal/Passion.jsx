@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, setDoc, updateDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
 
 import {
@@ -79,19 +79,28 @@ const passionList = [
 const Passion = () => {
   const navigation = useNavigation()
 
-  const { user, passions, setPassions } = useAuth()
+  const { user, passions, setPassions, userProfile } = useAuth()
 
   const [passionsLoading, setPassionLoading] = useState(false)
 
   const updateIntrests = () => {
     if (passions?.length >= 3) {
       setPassionLoading(true)
-      updateDoc(doc(db, 'users', user.uid), {
-        passions
-      }).finally(() => {
-        setPassionLoading(false)
-        navigation.goBack()
-      })
+
+      if (userProfile)
+        updateDoc(doc(db, 'users', user.uid), {
+          passions
+        }).finally(() => {
+          setPassionLoading(false)
+          navigation.goBack()
+        })
+      else
+        setDoc(doc(db, 'users', user.uid), {
+          passions
+        }).finally(() => {
+          setPassionLoading(false)
+          navigation.goBack()
+        })
     }
   }
 

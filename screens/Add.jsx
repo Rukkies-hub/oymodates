@@ -12,7 +12,9 @@ import {
   UIManager,
   useWindowDimensions
 } from 'react-native'
+
 import Header from '../components/Header'
+
 import color from '../style/color'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -138,7 +140,8 @@ const Add = () => {
                 height,
                 backgroundColor: color.white,
                 maxHeight: 300,
-                fontSize: 18
+                fontSize: 18,
+                paddingVertical: 10
               }}
             />
           </View>

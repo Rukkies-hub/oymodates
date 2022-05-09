@@ -10,7 +10,9 @@ import {
 } from 'react-native'
 
 import Header from '../components/Header'
+
 import color from '../style/color'
+
 import useAuth from '../hooks/useAuth'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -26,8 +28,10 @@ import moment from 'moment'
 import { useNavigation } from '@react-navigation/native'
 
 import { db } from '../hooks/firebase'
+
 import { serverTimestamp, setDoc, doc, updateDoc } from 'firebase/firestore'
-import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 
 import { RadioButton } from "react-native-paper"
 
@@ -57,17 +61,14 @@ const Profile = () => {
     setChecked,
     about,
     setAbout,
-    passions,
-    location,
-    setLocation,
-    address,
-    setAddress
+    passions
   } = useAuth()
   const storage = getStorage()
   const navigation = useNavigation()
 
   const [height, setHeight] = useState(50)
   const [uploadLoading, setUploadLoading] = useState(false)
+  const [updateLoading, setUpdateLoading] = useState(false)
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -93,85 +94,161 @@ const Profile = () => {
       const uploadTask = uploadBytesResumable(photoRef, blob)
 
       if (result?.uri) {
-        setUploadLoading(true)
-        const desertRef = ref(storage, userProfile.photoLink)
+        if (userProfile?.photoURL) {
+          setUploadLoading(true)
+          const desertRef = ref(storage, userProfile?.photoLink)
 
-        deleteObject(desertRef)
-          .then(() => {
-            uploadTask.on('state_changed',
-              snapshot => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                console.log('Upload is ' + progress + '% done')
+          deleteObject(desertRef)
+            .then(() => {
+              uploadTask.on('state_changed',
+                snapshot => {
+                  const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                  console.log('Upload is ' + progress + '% done')
 
-                switch (snapshot.state) {
-                  case 'paused':
-                    console.log('Upload is paused')
-                    break
-                  case 'running':
-                    console.log('Upload is running')
-                    break
-                }
+                  switch (snapshot.state) {
+                    case 'paused':
+                      console.log('Upload is paused')
+                      break
+                    case 'running':
+                      console.log('Upload is running')
+                      break
+                  }
 
-              },
-              error => {
-                setUploadLoading(false)
-                console.log('error uploading image: ', error)
-              },
-              () => {
-                getDownloadURL(uploadTask.snapshot.ref)
-                  .then((downloadURL) => {
-                    setImage(downloadURL)
-                    updateDoc(doc(db, 'users', user.uid), {
-                      photoURL: downloadURL,
-                      photoLink: link
-                    }).finally(() => {
-                      getUserProfile(user)
-                      setUploadLoading(false)
+                },
+                error => {
+                  setUploadLoading(false)
+                  console.log('error uploading image: ', error)
+                },
+                () => {
+                  getDownloadURL(uploadTask.snapshot.ref)
+                    .then((downloadURL) => {
+                      setImage(downloadURL)
+                      updateDoc(doc(db, 'users', user?.uid), {
+                        photoURL: downloadURL,
+                        photoLink: link
+                      }).finally(() => {
+                        getUserProfile(user)
+                        setUploadLoading(false)
+                      })
                     })
-                  })
+                }
+              )
+            })
+            .catch((error) => {
+              setUploadLoading(false)
+              console.log('error: ', error)
+            })
+        }
+        else {
+          setUploadLoading(true)
+          uploadTask.on('state_changed',
+            snapshot => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+              console.log('Upload is ' + progress + '% done')
+
+              switch (snapshot.state) {
+                case 'paused':
+                  console.log('Upload is paused')
+                  break
+                case 'running':
+                  console.log('Upload is running')
+                  break
               }
-            )
-          })
-          .catch((error) => {
-            setUploadLoading(false)
-            console.log('error: ', error)
-          })
+
+            },
+            error => {
+              setUploadLoading(false)
+              console.log('error uploading image: ', error)
+            },
+            () => {
+              getDownloadURL(uploadTask.snapshot.ref)
+                .then((downloadURL) => {
+                  setImage(downloadURL)
+                  updateDoc(doc(db, 'users', user?.uid), {
+                    photoURL: downloadURL,
+                    photoLink: link
+                  }).finally(() => {
+                    getUserProfile(user)
+                    setUploadLoading(false)
+                  })
+                })
+            }
+          )
+        }
       }
     }
   }
 
   const updateUserProfile = () => {
-    updateDoc(doc(db, 'users', user.uid), {
-      id: user.uid,
-      displayName: user.displayName,
-      job,
-      company,
-      username,
-      school,
-      city,
-      about,
-      age: moment().diff(moment(date, 'DD-MM-YYYY'), 'years'),
-      ageDate: date,
-      timestamp: serverTimestamp()
-    }).finally(() => getUserProfile(user))
+    setUpdateLoading(true)
+    if (userProfile)
+      updateDoc(doc(db, 'users', user?.uid), {
+        id: user?.uid,
+        displayName: user?.displayName,
+        job,
+        company,
+        username,
+        school,
+        city,
+        about,
+        age: moment().diff(moment(date, 'DD-MM-YYYY'), 'years'),
+        ageDate: date,
+        timestamp: serverTimestamp()
+      }).finally(() => {
+        setUpdateLoading(false)
+        getUserProfile(user)
+      })
+    else
+      setDoc(doc(db, 'users', user?.uid), {
+        id: user?.uid,
+        displayName: user?.displayName,
+        job,
+        company,
+        username,
+        school,
+        city,
+        about,
+        age: moment().diff(moment(date, 'DD-MM-YYYY'), 'years'),
+        ageDate: date,
+        timestamp: serverTimestamp()
+      }).finally(() => {
+        setUpdateLoading(false)
+        getUserProfile(user)
+      })
   }
 
   const maleGender = () => {
-    updateDoc(doc(db, 'users', user?.uid), {
-      gender: 'male'
-    }).finally(() => {
-      setChecked('male')
-      getUserProfile(user)
-    })
+    if (userProfile)
+      updateDoc(doc(db, 'users', user?.uid), {
+        gender: 'male'
+      }).finally(() => {
+        setChecked('male')
+        getUserProfile(user)
+      })
+    else
+      setDoc(doc(db, 'users', user?.uid), {
+        gender: 'male'
+      }).finally(() => {
+        setChecked('male')
+        getUserProfile(user)
+      })
   }
 
   const femaleGender = () => {
-    updateDoc(doc(db, 'users', user?.uid), {
-      gender: 'female'
-    }).finally(() => {
-      setChecked('female')
-      getUserProfile(user)
-    })
+    if (userProfile)
+      updateDoc(doc(db, 'users', user?.uid), {
+        gender: 'female'
+      }).finally(() => {
+        setChecked('female')
+        getUserProfile(user)
+      })
+    else
+      setDoc(doc(db, 'users', user?.uid), {
+        gender: 'female'
+      }).finally(() => {
+        setChecked('female')
+        getUserProfile(user)
+      })
   }
 
   const [loaded] = useFonts({
@@ -190,7 +267,11 @@ const Profile = () => {
     >
       <Header showTitle showAratar showBack title={`Welcome, ${user.displayName}`} />
 
-      <ScrollView>
+      <ScrollView
+        style={{
+          flex: 1
+        }}
+      >
         <View
           style={{
             padding: 10,
@@ -229,23 +310,26 @@ const Profile = () => {
             >
               <MaterialCommunityIcons name='cog' size={28} color={color.white} />
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={pickImage}
-              style={{
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: color.blue,
-                borderRadius: 50
-              }}
-            >
-              {
-                uploadLoading ?
-                  <ActivityIndicator size='large' color={color.white} /> :
-                  <MaterialCommunityIcons name='pencil' size={28} color={color.white} />
-              }
-            </TouchableOpacity>
+            {
+              userProfile?.displayName &&
+              <TouchableOpacity
+                onPress={pickImage}
+                style={{
+                  width: 50,
+                  height: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: color.blue,
+                  borderRadius: 50
+                }}
+              >
+                {
+                  uploadLoading ?
+                    <ActivityIndicator size='large' color={color.white} /> :
+                    <MaterialCommunityIcons name='pencil' size={28} color={color.white} />
+                }
+              </TouchableOpacity>
+            }
           </View>
         </View>
 
@@ -544,17 +628,23 @@ const Profile = () => {
               borderRadius: 12,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: color.blue
+              backgroundColor: color.blue,
+              marginTop: 30,
+              marginBottom: 50
             }}
           >
-            <Text
-              style={{
-                fontFamily: 'text',
-                color: color.white
-              }}
-            >
-              Update Profile
-            </Text>
+            {
+              updateLoading ?
+                <ActivityIndicator size='small' color={color.white} /> :
+                <Text
+                  style={{
+                    fontFamily: 'text',
+                    color: color.white
+                  }}
+                >
+                  Update Profile
+                </Text>
+            }
           </TouchableOpacity>
         </View>
       </ScrollView>

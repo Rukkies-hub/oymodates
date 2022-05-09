@@ -21,6 +21,7 @@ import { db } from '../hooks/firebase'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 
 let file
+let link = `posts/${new Date().toISOString()}`
 
 const Header = ({
   showAratar,
@@ -58,7 +59,7 @@ const Header = ({
         xhr.send(null)
       })
 
-      const mediaRef = ref(storage, `posts/${new Date().toISOString()}`)
+      const mediaRef = ref(storage, link)
 
       uploadTask = uploadBytesResumable(mediaRef, blob)
 
@@ -78,19 +79,21 @@ const Header = ({
         },
         error => console.log('error uploading image: ', error),
         () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
-            file = downloadURL
-            setLoading(true)
-            addDoc(collection(db, 'posts'), {
-              user: userProfile,
-              media: arrayUnion(file),
-              mediaType,
-              caption: postDetails.caption
-            }).finally(() => {
-              setLoading(false)
-              cancelPost()
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then(downloadURL => {
+              file = downloadURL
+              setLoading(true)
+              addDoc(collection(db, 'posts'), {
+                user: userProfile,
+                media: arrayUnion(file),
+                mediaLink: link,
+                mediaType,
+                caption: postDetails.caption
+              }).finally(() => {
+                setLoading(false)
+                cancelPost()
+              })
             })
-          })
         }
       )
     }
@@ -240,7 +243,7 @@ const Header = ({
             <TouchableOpacity
               onPress={cancelPost}
               style={{
-                backgroundColor: color.labelColor,
+                backgroundColor: `${color.blue}33`,
                 borderRadius: 12,
                 width: 70,
                 height: 40,
@@ -252,7 +255,7 @@ const Header = ({
               <Text
                 style={{
                   fontFamily: 'text',
-                  color: color.dark,
+                  color: color.blue,
                   fontSize: 16
                 }}
               >

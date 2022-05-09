@@ -154,7 +154,8 @@ const Posts = () => {
                     alignSelf: 'center',
                     justifyContent: 'center',
                     width: windowWidth,
-                    position: 'relative'
+                    position: 'relative',
+                    backgroundColor: color.black
                   }}
                 >
                   <Image
@@ -183,7 +184,8 @@ const Posts = () => {
                     alignSelf: 'center',
                     justifyContent: 'center',
                     width: windowWidth,
-                    position: 'relative'
+                    position: 'relative',
+                    backgroundColor: color.black
                   }}
                 >
                   <Video
