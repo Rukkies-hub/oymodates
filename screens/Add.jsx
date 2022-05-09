@@ -31,18 +31,14 @@ if (
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
-import { db } from '../hooks/firebase'
-import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
-import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 import { useNavigation } from '@react-navigation/native'
 
-import { Video, AVPlaybackStatus } from 'expo-av'
+import { Video } from 'expo-av'
 
 const Add = () => {
   const { user, media, setMedia, madiaString } = useAuth()
   const navigation = useNavigation()
   const video = useRef(null)
-  const storage = getStorage()
   const windowWidth = useWindowDimensions().width
 
   const [input, setInput] = useState("")

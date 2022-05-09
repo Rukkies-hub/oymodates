@@ -1,4 +1,4 @@
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { db } from '../hooks/firebase'
@@ -24,7 +24,8 @@ const NewComment = (params) => {
           id: userProfile?.id,
           displayName: userProfile?.displayName,
           photoURL: userProfile?.photoURL
-        }
+        },
+        timestamp: serverTimestamp()
       })
     setInput('')
   }
