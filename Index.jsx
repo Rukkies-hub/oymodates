@@ -1,10 +1,9 @@
 import React from 'react'
-
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import { Image } from 'react-native'
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 
-import Home from './screens/Home'
+import Match from './screens/Match'
 import Chat from './screens/Chat'
 import Feeds from './screens/Feeds'
 
@@ -16,29 +15,36 @@ const Index = () => {
   return (
     <Tab.Navigator
       labeled={false}
-      initialRouteName='Feeds'
+      initialRouteName='Match'
       barStyle={{
         backgroundColor: colors.white,
         borderColor: colors.white,
+        borderWidth: 0,
         shadowOpacity: 0,
       }}
 
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName
+        tabBarIcon: ({ focused }) => {
+          let imageName
 
-          if (route.name === 'Feeds') iconName = focused ? 'feather' : 'feather'
-          if (route.name === 'Home') iconName = focused ? 'kiss-wink-heart' : 'kiss-wink-heart'
-          if (route.name === 'Chat') iconName = focused ? 'comment' : 'comment'
+          if (route.name === 'Feeds') imageName = focused ? require('./assets/home-fill.png') : require('./assets/home-outline.png')
+          if (route.name === 'Match') imageName = focused ? require('./assets/tinder-fill.png') : require('./assets/tinder-outline.png')
+          if (route.name === 'Chat') imageName = focused ? require('./assets/chat-fill.png') : require('./assets/chat-outline.png')
 
-          if (route.name === 'Home' || route.name === 'Feeds' || route.name === 'Likes' || route.name === 'Chat') color = focused ? colors.blue : colors.lightText
-
-          return <FontAwesome5 name={iconName} color={color} size={20} />
+          return (
+            <Image
+              source={imageName}
+              style={{
+                width: 25,
+                height: 25
+              }}
+            />
+          )
         }
       })}
     >
       <Tab.Screen name='Feeds' component={Feeds} />
-      <Tab.Screen name='Home' component={Home} />
+      <Tab.Screen name='Match' component={Match} />
       <Tab.Screen name='Chat' component={Chat} />
     </Tab.Navigator>
   )

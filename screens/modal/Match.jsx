@@ -138,7 +138,7 @@ const Match = () => {
           <TouchableOpacity
             onPress={() => {
               navigation.goBack()
-              navigation.navigate("Home")
+              navigation.navigate("Match")
             }}
             style={{
               height: 50,
