@@ -13,9 +13,10 @@ import { db } from '../hooks/firebase'
 
 import NewComment from '../components/NewComment'
 import Comments from '../components/Comments'
-import Likes from '../components/Likes'
+import { useNavigation } from '@react-navigation/native'
 
 const ViewPost = (params) => {
+  const navigation = useNavigation()
   const { user, likes, setLikes } = useAuth()
   const post = params.route.params.post
 
@@ -69,6 +70,11 @@ const ViewPost = (params) => {
           }}
         >
           <Pressable
+            onPress={() =>
+              post?.user.id == user.uid ?
+                navigation.navigate('Profile') :
+                navigation.navigate('UserProfile', { user: post?.user })
+            }
             style={{
               flexDirection: 'row',
               justifyContent: 'flex-start',

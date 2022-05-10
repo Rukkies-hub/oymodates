@@ -229,6 +229,9 @@ const Comments = (params) => {
                   <FlatList
                     data={comment?.reply}
                     keyExtractor={item => item.id}
+                    style={{
+                      flex: 1
+                    }}
                     renderItem={({ item: reply }) => (
                       <View
                         style={{
