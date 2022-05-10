@@ -3,7 +3,6 @@ import React, {
   useContext,
   useEffect,
   useState,
-  useLayoutEffect,
   useMemo
 } from 'react'
 

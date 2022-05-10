@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, Image, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 
 import useAuth from '../hooks/useAuth'
 
@@ -52,70 +52,99 @@ const Likes = () => {
         </Text>
       </View>
 
-      <View
+      <ScrollView
         style={{
-          paddingHorizontal: 10,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          flexWrap: 'wrap'
+          flex: 1
         }}
       >
-        {
-          pendingSwipes.map((like, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  width: (window.width / 2) - 18,
-                  position: 'relative',
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  borderWidth: 4,
-                  borderColor: color.goldDark
-                }}
-              >
-                <AutoHeightImage
-                  resizeMode='cover'
-                  blurRadius={50}
-                  source={{ uri: like.photoURL }}
-                  width={(window.width / 2) - 10}
-                />
-
+        <View
+          style={{
+            paddingHorizontal: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap'
+          }}
+        >
+          {
+            pendingSwipes.map((like, index) => {
+              return (
                 <View
+                  key={index}
                   style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    margin: 20,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center'
+                    width: (window.width / 2) - 18,
+                    position: 'relative',
+                    borderRadius: 20,
+                    overflow: 'hidden',
+                    borderWidth: 4,
+                    borderColor: color.goldDark
                   }}
                 >
-                  <TouchableOpacity
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: 50,
-                      backgroundColor: color.goldDark,
-                      marginRight: 10
-                    }}
+                  <AutoHeightImage
+                    resizeMode='cover'
+                    blurRadius={50}
+                    source={{ uri: like.photoURL }}
+                    width={(window.width / 2) - 10}
                   />
-                  <Text
+
+                  <View
                     style={{
-                      fontFamily: 'text',
-                      color: color.white
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      margin: 20,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center'
                     }}
                   >
-                    New
-                  </Text>
+                    <TouchableOpacity
+                      style={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: 50,
+                        backgroundColor: color.goldDark,
+                        marginRight: 10
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontFamily: 'text',
+                        color: color.white
+                      }}
+                    >
+                      New
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            )
-          })
-        }
-      </View>
+              )
+            })
+          }
+        </View>
+      </ScrollView>
+
+      <TouchableOpacity
+        style={{
+          alignSelf: 'center',
+          backgroundColor: color.goldDark,
+          borderRadius: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '80%',
+          height: 50,
+          marginBottom: 30
+        }}
+      >
+        <Text
+          style={{
+            color: color.white,
+            fontFamily: 'text',
+            fontSize: 18
+          }}
+        >
+          See who likes you
+        </Text>
+      </TouchableOpacity>
     </View>
   )
 }

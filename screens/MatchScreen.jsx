@@ -10,7 +10,7 @@ import color from '../style/color'
 import Header from '../components/Header'
 
 import Swiper from 'react-native-deck-swiper'
-import { collection, doc, getDocs, getDoc, onSnapshot, query, serverTimestamp, setDoc, where } from 'firebase/firestore'
+import { collection, doc, getDocs, getDoc, onSnapshot, query, serverTimestamp, setDoc, where, deleteDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { LinearGradient } from 'expo-linear-gradient'
 
@@ -20,7 +20,7 @@ import { useFonts } from 'expo-font'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const Match = () => {
+const MatchScreen = () => {
   const navigation = useNavigation()
   const { user, userProfile, getUserProfile } = useAuth()
 
@@ -86,12 +86,13 @@ const Match = () => {
 
     const userSwiped = profiles[cardIndex]
 
-
     const loggedInProfile = await (await getDoc(doc(db, 'users', user.uid))).data()
 
     getDoc(doc(db, 'users', userSwiped.id, 'swipes', user.uid))
       .then(documentSnapshot => {
         if (documentSnapshot.exists()) {
+          console.log(`Hooray, you matched with ${userSwiped.displayName}`)
+
           setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
 
           // CREAT A MATCH
@@ -102,13 +103,15 @@ const Match = () => {
             },
             usersMatched: [user.uid, userSwiped.id],
             timestamp: serverTimestamp()
-          })
+          }).finally(async () => await deleteDoc(doc(db, 'users', user.uid, 'pendingSwipes', userSwiped.id)))
 
           navigation.navigate('Match', {
             loggedInProfile,
             userSwiped
           })
         } else {
+          console.log(`You swiped on ${userSwiped.displayName} (${userSwiped.job})`)
+
           setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
 
           setDoc(doc(db, 'users', userSwiped.id, 'pendingSwipes', user.uid), userProfile)
@@ -476,4 +479,4 @@ const Match = () => {
   )
 }
 
-export default Match
+export default MatchScreen
