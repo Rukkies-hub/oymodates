@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, useEffect } from 'react'
 import { View, SafeAreaView } from 'react-native'
 import Header from '../components/Header'
 import color from '../style/color'
@@ -7,7 +7,7 @@ import { useFonts } from 'expo-font'
 import Posts from '../components/Posts'
 
 import Bar from "../components/StatusBar"
-import { doc, onSnapshot } from 'firebase/firestore'
+import { collection, doc, onSnapshot } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'

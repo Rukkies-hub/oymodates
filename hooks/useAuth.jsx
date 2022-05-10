@@ -17,7 +17,7 @@ import {
 } from 'firebase/auth'
 import { auth, db } from './firebase'
 
-import { doc, getDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore'
 
 const AuthContext = createContext({})
 
@@ -49,17 +49,32 @@ export const AuthProvider = ({ children }) => {
   const [media, setMedia] = useState('')
   const [likes, setLikes] = useState({})
 
+  const [pendingSwipes, setPendingSwipes] = useState([])
+
   useEffect(() =>
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user)
         getUserProfile(user)
+        getPendingSwipes(user)
       }
       else setUser(null)
 
       setLoadingInitial(false)
     })
     , [])
+
+  const getPendingSwipes = (user) => {
+    onSnapshot(collection(db, 'users', user.uid, 'pendingSwipes'),
+      snapshot =>
+        setPendingSwipes(
+          snapshot?.docs?.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+        )
+    )
+  }
 
   const getUserProfile = async (user) => {
     let profile = await (await getDoc(doc(db, 'users', user.uid))).data()
@@ -136,7 +151,9 @@ export const AuthProvider = ({ children }) => {
     about,
     setAbout,
     passions,
-    setPassions
+    setPassions,
+    pendingSwipes,
+    setPendingSwipes
   }), [
     user,
     loading,
@@ -161,7 +178,9 @@ export const AuthProvider = ({ children }) => {
     about,
     setAbout,
     passions,
-    setPassions
+    setPassions,
+    pendingSwipes,
+    setPendingSwipes
   ])
 
   return (

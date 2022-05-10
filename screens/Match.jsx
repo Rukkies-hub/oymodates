@@ -92,8 +92,6 @@ const Match = () => {
     getDoc(doc(db, 'users', userSwiped.id, 'swipes', user.uid))
       .then(documentSnapshot => {
         if (documentSnapshot.exists()) {
-          console.log(`Hooray, you matched with ${userSwiped.displayName}`)
-
           setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
 
           // CREAT A MATCH
@@ -111,9 +109,9 @@ const Match = () => {
             userSwiped
           })
         } else {
-          console.log(`You swiped on ${userSwiped.displayName} (${userSwiped.job})`)
-
           setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
+
+          setDoc(doc(db, 'users', userSwiped.id, 'pendingSwipes', user.uid), userProfile)
         }
       })
 
@@ -146,14 +144,15 @@ const Match = () => {
               cards={profiles}
               containerStyle={{
                 backgroundColor: color.transparent,
-                marginTop: -28
+                marginTop: 33
               }}
               cardIndex={0}
               stackSize={stackSize}
               verticalSwipe={true}
               animateCardOpacity={true}
               backgroundColor={color.transparent}
-              cardHorizontalMargin={2}
+              cardHorizontalMargin={1}
+              cardVerticalMargin={0}
               onSwipedLeft={cardIndex => swipeLeft(cardIndex)}
               onSwipedRight={cardIndex => swipeRight(cardIndex)}
               onSwipedBottom={cardIndex => swipeLeft(cardIndex)}
@@ -200,7 +199,7 @@ const Match = () => {
                     height: 698,
                     marginTop: -30,
                     width: '100%',
-                    borderRadius: 10,
+                    borderRadius: 12,
                     position: 'relative',
                     overflow: 'hidden'
                   }}
@@ -363,9 +362,15 @@ const Match = () => {
                     }
                     {
                       card?.about.length >= 20 ?
-                        <View>
-                          <Text>{card?.about}</Text>
-                        </View> : null
+                        <Text
+                          style={{
+                            color: color.white,
+                            fontSize: 18,
+                            fontFamily: 'lightText'
+                          }}
+                        >
+                          {card?.about}
+                        </Text> : null
                     }
                     {
                       card?.passions.length > 0 ?
