@@ -10,8 +10,21 @@ import color from '../style/color'
 import Header from '../components/Header'
 
 import Swiper from 'react-native-deck-swiper'
-import { collection, doc, getDocs, getDoc, onSnapshot, query, serverTimestamp, setDoc, where, deleteDoc } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  onSnapshot,
+  query,
+  serverTimestamp,
+  setDoc,
+  where,
+  deleteDoc
+} from 'firebase/firestore'
+
 import { db } from '../hooks/firebase'
+
 import { LinearGradient } from 'expo-linear-gradient'
 
 import generateId from '../lib/generateId'
@@ -20,13 +33,12 @@ import { useFonts } from 'expo-font'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const MatchScreen = () => {
+const Match = () => {
   const navigation = useNavigation()
-  const { user, userProfile, getUserProfile } = useAuth()
+  const { user, userProfile, getUserProfile, profiles, setProfiles } = useAuth()
 
   const swipeRef = useRef(null)
 
-  const [profiles, setProfiles] = useState([])
   const [stackSize, setStackSize] = useState(1)
 
 
@@ -105,7 +117,7 @@ const MatchScreen = () => {
             timestamp: serverTimestamp()
           }).finally(async () => await deleteDoc(doc(db, 'users', user.uid, 'pendingSwipes', userSwiped.id)))
 
-          navigation.navigate('Match', {
+          navigation.navigate('NewMatch', {
             loggedInProfile,
             userSwiped
           })
@@ -479,4 +491,4 @@ const MatchScreen = () => {
   )
 }
 
-export default MatchScreen
+export default Match

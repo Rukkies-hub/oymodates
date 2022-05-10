@@ -12,7 +12,7 @@ import { Glitch } from 'rn-glitch-effect'
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-const Match = () => {
+const NewMatch = () => {
   const navigation = useNavigation()
   const { params } = useRoute()
 
@@ -164,4 +164,4 @@ const Match = () => {
   )
 }
 
-export default Match
+export default NewMatch

@@ -3,7 +3,7 @@ import { Image } from 'react-native'
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 
-import MatchScreen from './screens/MatchScreen'
+import Match from './screens/Match'
 import Chat from './screens/Chat'
 import Feeds from './screens/Feeds'
 import Likes from './screens/Likes'
@@ -30,7 +30,7 @@ const Index = () => {
           let imageName
 
           if (route.name === 'Feeds') imageName = focused ? require('./assets/home-fill.png') : require('./assets/home-outline.png')
-          if (route.name === 'MatchScreen') imageName = focused ? require('./assets/tinder-fill.png') : require('./assets/tinder-outline.png')
+          if (route.name === 'Match') imageName = focused ? require('./assets/tinder-fill.png') : require('./assets/tinder-outline.png')
           if (route.name === 'Likes') imageName = focused ? require('./assets/diamonds-fill.png') : require('./assets/diamonds-outline.png')
           if (route.name === 'Chat') imageName = focused ? require('./assets/chat-fill.png') : require('./assets/chat-outline.png')
 
@@ -47,7 +47,7 @@ const Index = () => {
       })}
     >
       <Tab.Screen name='Feeds' component={Feeds} />
-      <Tab.Screen name='MatchScreen' component={MatchScreen} />
+      <Tab.Screen name='Match' component={Match} />
       {
         pendingSwipes?.length > 0 ?
           <Tab.Screen

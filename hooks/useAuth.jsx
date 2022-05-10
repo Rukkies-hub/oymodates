@@ -50,6 +50,8 @@ export const AuthProvider = ({ children }) => {
 
   const [pendingSwipes, setPendingSwipes] = useState([])
 
+  const [profiles, setProfiles] = useState([])
+
   useEffect(() =>
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -152,7 +154,9 @@ export const AuthProvider = ({ children }) => {
     passions,
     setPassions,
     pendingSwipes,
-    setPendingSwipes
+    setPendingSwipes,
+    profiles,
+    setProfiles
   }), [
     user,
     loading,
@@ -179,7 +183,9 @@ export const AuthProvider = ({ children }) => {
     passions,
     setPassions,
     pendingSwipes,
-    setPendingSwipes
+    setPendingSwipes,
+    profiles,
+    setProfiles
   ])
 
   return (
