@@ -125,91 +125,184 @@ const Likes = () => {
                 >
                   <AutoHeightImage
                     resizeMode='cover'
-                    blurRadius={0}
+                    blurRadius={userProfile?.plan != 'gold' ? 50 : userProfile?.plan != 'platinum' ? 50 : 0}
                     source={{ uri: like.photoURL }}
                     width={(window.width / 2) - 10}
                   />
 
-                  <View
-                    style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      width: '100%',
-                      flexDirection: 'row',
-                      justifyContent: 'space-evenly',
-                      marginBottom: 10
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => swipeLeft(like)}
-                      style={{
-                        backgroundColor: color.white,
-                        width: 40,
-                        height: 40,
-                        borderRadius: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <Image
-                        source={require('../assets/cancel.png')}
+                  {
+                    userProfile?.plan == 'gold' ? (
+                      <View
                         style={{
-                          width: 20,
-                          height: 20
+                          position: 'absolute',
+                          bottom: 0,
+                          left: 0,
+                          width: '100%',
+                          flexDirection: 'row',
+                          justifyContent: 'space-evenly',
+                          marginBottom: 10
                         }}
-                      />
-                    </TouchableOpacity>
+                      >
+                        <TouchableOpacity
+                          onPress={() => swipeLeft(like)}
+                          style={{
+                            backgroundColor: color.white,
+                            width: 40,
+                            height: 40,
+                            borderRadius: 50,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <Image
+                            source={require('../assets/cancel.png')}
+                            style={{
+                              width: 20,
+                              height: 20
+                            }}
+                          />
+                        </TouchableOpacity>
 
-                    <TouchableOpacity
-                      onPress={() => swipeRight(like)}
-                      style={{
-                        backgroundColor: color.white,
-                        width: 40,
-                        height: 40,
-                        borderRadius: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <Image
-                        source={require('../assets/heart-match.png')}
+                        <TouchableOpacity
+                          onPress={() => swipeRight(like)}
+                          style={{
+                            backgroundColor: color.white,
+                            width: 40,
+                            height: 40,
+                            borderRadius: 50,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <Image
+                            source={require('../assets/heart-match.png')}
+                            style={{
+                              width: 30,
+                              height: 30
+                            }}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    ) : userProfile?.plan == 'planinum' ?
+                      (
+                        <View
+                          style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            width: '100%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            marginBottom: 10
+                          }}
+                        >
+                          <TouchableOpacity
+                            onPress={() => swipeLeft(like)}
+                            style={{
+                              backgroundColor: color.white,
+                              width: 40,
+                              height: 40,
+                              borderRadius: 50,
+                              justifyContent: 'center',
+                              alignItems: 'center'
+                            }}
+                          >
+                            <Image
+                              source={require('../assets/cancel.png')}
+                              style={{
+                                width: 20,
+                                height: 20
+                              }}
+                            />
+                          </TouchableOpacity>
+
+                          <TouchableOpacity
+                            onPress={() => swipeRight(like)}
+                            style={{
+                              backgroundColor: color.white,
+                              width: 40,
+                              height: 40,
+                              borderRadius: 50,
+                              justifyContent: 'center',
+                              alignItems: 'center'
+                            }}
+                          >
+                            <Image
+                              source={require('../assets/heart-match.png')}
+                              style={{
+                                width: 30,
+                                height: 30
+                              }}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      ) : null
+                  }
+
+                  {
+                    userProfile?.plan != 'gold' ? (
+                      <View
                         style={{
-                          width: 30,
-                          height: 30
+                          position: 'absolute',
+                          bottom: 0,
+                          left: 0,
+                          margin: 20,
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center'
                         }}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  {/* <View
-                    style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      margin: 20,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <TouchableOpacity
-                      style={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: 50,
-                        backgroundColor: color.goldDark,
-                        marginRight: 10
-                      }}
-                    />
-                    <Text
-                      style={{
-                        fontFamily: 'text',
-                        color: color.white
-                      }}
-                    >
-                      New
-                    </Text>
-                  </View> */}
+                      >
+                        <TouchableOpacity
+                          style={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: 50,
+                            backgroundColor: color.goldDark,
+                            marginRight: 10
+                          }}
+                        />
+                        <Text
+                          style={{
+                            fontFamily: 'text',
+                            color: color.white
+                          }}
+                        >
+                          New
+                        </Text>
+                      </View>
+                    ) :
+                      userProfile?.plan != 'platinum' ? (
+                        <View
+                          style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            margin: 20,
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <TouchableOpacity
+                            style={{
+                              width: 10,
+                              height: 10,
+                              borderRadius: 50,
+                              backgroundColor: color.goldDark,
+                              marginRight: 10
+                            }}
+                          />
+                          <Text
+                            style={{
+                              fontFamily: 'text',
+                              color: color.white
+                            }}
+                          >
+                            New
+                          </Text>
+                        </View>
+                      ) : false
+                  }
                 </View>
               )
             })

@@ -125,11 +125,10 @@ const Match = () => {
           console.log(`You swiped on ${userSwiped.displayName} (${userSwiped.job})`)
 
           setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
-
-          setDoc(doc(db, 'users', userSwiped.id, 'pendingSwipes', user.uid), userProfile)
         }
       })
 
+    setDoc(doc(db, 'users', userSwiped.id, 'pendingSwipes', user.uid), userProfile)
     setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
   }
 
@@ -156,6 +155,7 @@ const Match = () => {
         {
           profiles?.length >= 1 ?
             <Swiper
+              ref={swipeRef}
               cards={profiles}
               containerStyle={{
                 backgroundColor: color.transparent,
@@ -437,6 +437,70 @@ const Match = () => {
                         </View> :
                         null
                     }
+
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-evenly",
+                        alignItems: "center"
+                      }}
+                    >
+                      <TouchableOpacity
+                        // onPress={rewindPasses}
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: 50,
+                          width: 40,
+                          height: 40,
+                          borderWidth: 1,
+                          borderColor: color.lightGold
+                        }}>
+                        <MaterialCommunityIcons name="refresh" color={color.lightGold} size={30} />
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        onPress={() => swipeRef.current.swipeLeft()}
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: 50,
+                          width: 55,
+                          height: 55,
+                          borderWidth: 1,
+                          borderColor: color.lightRed
+                        }}>
+                        <MaterialCommunityIcons name="close" color={color.lightRed} size={30} />
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        onPress={() => swipeRef.current.swipeRight()}
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: 50,
+                          width: 55,
+                          height: 55,
+                          borderWidth: 1,
+                          borderColor: color.lightGreen
+                        }}>
+                        <MaterialCommunityIcons name="heart" color={color.lightGreen} size={30} />
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        onPress={() => console.log(card)}
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: 50,
+                          width: 40,
+                          height: 40,
+                          borderWidth: 1,
+                          borderColor: color.lightPurple
+                        }}>
+                        <MaterialCommunityIcons name="lightning-bolt" color={color.lightPurple} size={30} />
+                      </TouchableOpacity>
+                    </View>
                   </LinearGradient>
                 </View>
               )}
