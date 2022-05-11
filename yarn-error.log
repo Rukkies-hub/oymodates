@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/share/.config/yarn/global/node_modules/node/bin/node /usr/local/bin/yarnpkg add --offline expo-av@~10.2.1
+  /usr/local/share/.config/yarn/global/node_modules/node/bin/node /usr/local/bin/yarn add expo-images-picker
 
 PATH: 
   /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/rukkiecodes/Android/Sdk/emulator:/home/rukkiecodes/Android/Sdk/tools:/home/rukkiecodes/Android/Sdk/tools/bin:/home/rukkiecodes/Android/Sdk/platform-tools:/home/rukkiecodes/Android/Sdk/emulator:/home/rukkiecodes/Android/Sdk/tools:/home/rukkiecodes/Android/Sdk/tools/bin:/home/rukkiecodes/Android/Sdk/platform-tools
@@ -14,12 +14,7 @@ Platform:
   linux x64
 
 Trace: 
-  Invariant Violation: There should only be one folder in a package cache (got  in /home/rukkiecodes/.cache/yarn/v6/npm-esbuild-linux-32-0.14.8-bbf3e5d3fb30f949030d0c2241ac93a172917d56-integrity/node_modules)
-      at invariant (/usr/local/lib/node_modules/yarn/lib/cli.js:2314:15)
-      at /usr/local/lib/node_modules/yarn/lib/cli.js:60674:7
-      at Generator.next (<anonymous>)
-      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:310:30)
-      at /usr/local/lib/node_modules/yarn/lib/cli.js:321:13
+  Error: EEXIST: file already exists, symlink '../../../parser/bin/babel-parser.js' -> '/home/rukkiecodes/Documents/projects/react_native/oymodates/node_modules/@babel/core/node_modules/.bin/parser'
 
 npm manifest: 
   {
@@ -39,12 +34,16 @@ npm manifest:
       "@react-navigation/native": "^6.0.10",
       "@react-navigation/native-stack": "^6.6.2",
       "expo": "~44.0.0",
+      "expo-av": "~10.2.0",
+      "expo-blur": "~11.0.0",
       "expo-camera": "~12.1.2",
+      "expo-constants": "~13.0.1",
       "expo-font": "~10.0.4",
       "expo-google-app-auth": "9.0.0",
       "expo-google-sign-in": "~10.1.0",
       "expo-image-picker": "~12.0.1",
       "expo-linear-gradient": "~11.0.3",
+      "expo-location": "~14.0.1",
       "expo-media-gallery": "^0.0.3",
       "expo-media-library": "~14.0.0",
       "expo-permissions": "~13.1.0",
@@ -56,9 +55,11 @@ npm manifest:
       "react-animated-popup": "^0.1.3",
       "react-dom": "17.0.1",
       "react-native": "0.64.3",
+      "react-native-auto-height-image": "^3.2.4",
       "react-native-datepicker": "^1.7.2",
       "react-native-deck-swiper": "^2.0.5",
       "react-native-emoji-selector": "^0.2.0",
+      "react-native-gesture-handler": "~2.1.0",
       "react-native-paper": "^4.12.1",
       "react-native-raw-bottom-sheet": "^2.2.0",
       "react-native-safe-area-context": "3.3.2",
@@ -1142,6 +1143,13 @@ Lockfile:
       exec-sh "^0.3.2"
       minimist "^1.2.0"
   
+  "@egjs/hammerjs@^2.0.17":
+    version "2.0.17"
+    resolved "https://registry.yarnpkg.com/@egjs/hammerjs/-/hammerjs-2.0.17.tgz#5dc02af75a6a06e4c2db0202cae38c9263895124"
+    integrity sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==
+    dependencies:
+      "@types/hammerjs" "^2.0.36"
+  
   "@emotion/is-prop-valid@^1.1.0":
     version "1.1.2"
     resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-1.1.2.tgz#34ad6e98e871aa6f7a20469b602911b8b11b3a95"
@@ -2063,6 +2071,11 @@ Lockfile:
     integrity sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==
     dependencies:
       "@types/node" "*"
+  
+  "@types/hammerjs@^2.0.36":
+    version "2.0.41"
+    resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.41.tgz#f6ecf57d1b12d2befcce00e928a6a097c22980aa"
+    integrity sha512-ewXv/ceBaJprikMcxCmWU1FKyMAQ2X7a9Gtmzw8fcg2kIePI1crERDM818W+XYrxqdBBOdlf2rm137bU+BltCA==
   
   "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
     version "2.0.4"
@@ -3164,6 +3177,18 @@ Lockfile:
       path-browserify "^1.0.0"
       url-parse "^1.4.4"
   
+  expo-av@~10.2.0:
+    version "10.2.1"
+    resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-10.2.1.tgz#c08bce464d673d0e90c68cac082bfb75a9437f25"
+    integrity sha512-thrkHVg4HVn8L+jHKVnXYd4TLkJQblFE8QXd3d1hwrYG63gehQT2nK4DM0Frl50EcdV8YN9XjhwHobtK5oMc9A==
+    dependencies:
+      "@expo/config-plugins" "^4.0.2"
+  
+  expo-blur@~11.0.0:
+    version "11.0.0"
+    resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-11.0.0.tgz#3542afed5c0037554657d98c31a5933dd78098dd"
+    integrity sha512-EmIYXFwaqvVDhV4JnG9+nENU7FGZkCcuYZhoOOHjnHyADCGNsT6LIVv9/Q/rO0+qWJJxlUG6bziPHC2wbWcC9A==
+  
   expo-camera@~12.1.2:
     version "12.1.2"
     resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-12.1.2.tgz#b549a8054ce5778fbf37a45b5d41003f36f5bb3c"
@@ -3173,7 +3198,7 @@ Lockfile:
       "@koale/useworker" "^4.0.2"
       invariant "^2.2.4"
   
-  expo-constants@~13.0.2:
+  expo-constants@~13.0.1, expo-constants@~13.0.2:
     version "13.0.2"
     resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-13.0.2.tgz#b489ecd575cc82a9a0b3dfbf2385d45a44300eb1"
     integrity sha512-vGs/kI65vplPFvG8z4W1ariGEtVHHp9Avl28G0zJprt2v/q1E/BnXjwvFSBPc1GB+Zb/7crWSHWRwjaFULBjsg==
@@ -3237,6 +3262,14 @@ Lockfile:
     version "11.0.3"
     resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-11.0.3.tgz#bc559b9a251c9dc8aa37fb6c66c7a497fe92993c"
     integrity sha512-LuzTM5+iEHCQfC2TBHAAI+ZjPvf0TvGiA7GYMsyTnakGA2r4JtsV8Ah/miQPKhfG06jLDOo4grUoSMGqbmSrEw==
+  
+  expo-location@~14.0.1:
+    version "14.0.2"
+    resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-14.0.2.tgz#933276b36558f546964753f107493b37953068b7"
+    integrity sha512-xFlj03NM0g9LZfWyIyL8q6AIXDhXskctX96806QGqZKv9C+JI2osEiTiyFxG8ei1MeTJojHfx+E07ORuByWiMw==
+    dependencies:
+      "@expo/config-plugins" "^4.0.2"
+      unimodules-task-manager-interface "~7.1.0"
   
   expo-manifests@~0.2.2:
     version "0.2.4"
@@ -4411,7 +4444,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
     integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
   
-  lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15:
+  lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.21:
     version "4.17.21"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
     integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -5390,6 +5423,13 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
     integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
   
+  react-native-auto-height-image@^3.2.4:
+    version "3.2.4"
+    resolved "https://registry.yarnpkg.com/react-native-auto-height-image/-/react-native-auto-height-image-3.2.4.tgz#c7a95d4d9701055c680c8dc02076def1107f9522"
+    integrity sha512-PTVzLuYY4Q5IDAk0QmnSNK12VnUPlt+ZiEJUlo5JUiHverR5Lg386iHK7D2bVkTNo7SCahIPlWzdSuX5Col3XQ==
+    dependencies:
+      prop-types "^15.7.2"
+  
   react-native-codegen@^0.0.6:
     version "0.0.6"
     resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.6.tgz#b3173faa879cf71bfade8d030f9c4698388f6909"
@@ -5419,6 +5459,17 @@ Lockfile:
     integrity sha512-+rPPWG5vl5AexdH8udEwtzdq9QUGD6kp+dQ8C/459d3ScM0S3UnT/qAvhmpsTgCbgjpdwiJIcrKNxKmGEDb15g==
     dependencies:
       emoji-datasource "^6.0.0"
+  
+  react-native-gesture-handler@~2.1.0:
+    version "2.1.3"
+    resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.1.3.tgz#b96f1e61932d5062cb1023259e1649d65f78338b"
+    integrity sha512-y5W2MVB+J6vjIT/mUidDv0BqVRbWXn0cP7R2o6fsSYsHh9M0btT979+bCI7nPuhmRHjkhg5xCm4HNMIH0IQO4w==
+    dependencies:
+      "@egjs/hammerjs" "^2.0.17"
+      hoist-non-react-statics "^3.3.0"
+      invariant "^2.2.4"
+      lodash "^4.17.21"
+      prop-types "^15.7.2"
   
   react-native-iphone-x-helper@^1.3.1:
     version "1.3.1"
@@ -6364,6 +6415,11 @@ Lockfile:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/unicode-property-aliases-ecmascript/-/unicode-property-aliases-ecmascript-2.0.0.tgz#0a36cb9a585c4f6abd51ad1deddb285c165297c8"
     integrity sha512-5Zfuy9q/DFr4tfO7ZPeVXb1aPoeQSdeFMLpYuFebehDAhbuevLs5yxSZmIFN1tP5F9Wl4IpJrYojg85/zgyZHQ==
+  
+  unimodules-task-manager-interface@~7.1.0:
+    version "7.1.1"
+    resolved "https://registry.yarnpkg.com/unimodules-task-manager-interface/-/unimodules-task-manager-interface-7.1.1.tgz#1d48585012018971a0f0b62bc5ac53508a7addb4"
+    integrity sha512-vvtxJO3O6fJXvSc9qvgB2FS9xJk2nWG4NOvwCMmTmfblmvzGPFcTheOKzV7Z1dvjlqTZZ+TDqd5XOGa+0+NXVA==
   
   union-value@^1.0.0:
     version "1.0.1"

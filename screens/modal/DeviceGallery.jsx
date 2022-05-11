@@ -1,15 +1,48 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, Pressable, Image, Dimensions, FlatList } from 'react-native'
+
+import * as MediaLibrary from 'expo-media-library'
+
+import * as ImagePicker from 'expo-image-picker'
 
 import Header from '../../components/Header'
-import useAuth from '../../hooks/useAuth'
 import color from '../../style/color'
+import { useNavigation } from '@react-navigation/native'
 
+const window = Dimensions.get('window')
+
+let width = (window.width / 2) - 5
 
 const DeviceGallery = () => {
-  const { galleryItems } = useAuth()
+  const navigation = useNavigation()
+  const [hasGalleryPermission, setHasGalleryPermission] = useState(false)
+  const [galleryItems, setGalleryItems] = useState([])
+  const [limit, setLimit] = useState(40)
 
-  console.log(galleryItems)
+  const loadGallery = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    setHasGalleryPermission(status == 'granted')
+
+    if (status == 'granted') {
+      const userGalleryMedia = await MediaLibrary.getAssetsAsync({
+        first: limit,
+        sortBy: ['creationTime'],
+        mediaType: ['photo', 'video'],
+      })
+      setGalleryItems(userGalleryMedia)
+    }
+  }
+
+  useEffect(() =>
+    loadGallery()
+    , [limit])
+
+  const loadMore = () => {
+    setLimit(limit + 20)
+    loadGallery()
+
+    console.log('limit: ', limit)
+  }
 
   return (
     <View
@@ -19,31 +52,39 @@ const DeviceGallery = () => {
       }}
     >
       <Header showBack showTitle title='Select Media' />
-      <View
+
+      <FlatList
+        data={galleryItems?.assets}
+        keyExtractor={(item, index) => index.toString()}
+        onEndReached={loadMore}
+        numColumns={2}
         style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          flexWrap: 'wrap'
+          paddingHorizontal: 10
         }}
-      >
-        {
-          galleryItems.map(({ item, index }) => (
-            <TouchableOpacity
-              // key={item.id}
+        renderItem={({ item: asset }) => (
+          <View
+            key={asset?.id}
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              marginBottom: 5
+            }}
+          >
+            <Pressable
+              // onLongPress={}
+              // onPress={() => console.log('asset: ', asset)}
             >
-              <Text>{ JSON.stringify(item) }</Text>
-              {/* <Image
-                source={{ uri: item.uri }}
+              <Image
+                source={{ uri: asset?.uri }}
                 style={{
-                  width: 100,
-                  height: 100
+                  width: width - 10,
+                  height: width - 10
                 }}
-              /> */}
-            </TouchableOpacity>
-          ))
-        }
-      </View>
+              />
+            </Pressable>
+          </View>
+        )}
+      />
     </View>
   )
 }

@@ -31,15 +31,15 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { useFonts } from 'expo-font'
 
-import EmojiSelector, { Categories } from "react-native-emoji-selector"
+import EmojiSelector, { Categories } from 'react-native-emoji-selector'
 
 if (
-  Platform.OS === "android" &&
+  Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
-import * as ImagePicker from "expo-image-picker"
+import * as ImagePicker from 'expo-image-picker'
 
 const Message = () => {
   const navigation = useNavigation()
@@ -67,7 +67,7 @@ const Message = () => {
     , [matchDetails, db])
 
   useEffect(() =>
-    Keyboard.addListener("keyboardDidShow", () => {
+    Keyboard.addListener('keyboardDidShow', () => {
       setExpanded(false)
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
       setMediaVidiblity(false)
@@ -152,10 +152,10 @@ const Message = () => {
               style={{
                 width: 40,
                 height: 50,
-                justifyContent: "center",
-                alignItems: "center"
+                justifyContent: 'center',
+                alignItems: 'center'
               }}>
-              <MaterialCommunityIcons name="camera-outline" color={color.lightText} size={26} />
+              <MaterialCommunityIcons name='camera-outline' color={color.lightText} size={26} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -163,10 +163,10 @@ const Message = () => {
               style={{
                 width: 40,
                 height: 50,
-                justifyContent: "center",
-                alignItems: "center"
+                justifyContent: 'center',
+                alignItems: 'center'
               }}>
-              <MaterialCommunityIcons name="image-outline" color={color.lightText} size={26} />
+              <MaterialCommunityIcons name='image-outline' color={color.lightText} size={26} />
             </TouchableOpacity>
           </>
         }
@@ -180,10 +180,10 @@ const Message = () => {
             style={{
               width: 40,
               height: 50,
-              justifyContent: "center",
-              alignItems: "center"
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
-            <MaterialCommunityIcons name="chevron-right" color={color.lightText} size={26} />
+            <MaterialCommunityIcons name='chevron-right' color={color.lightText} size={26} />
           </TouchableOpacity>
         }
         <TouchableOpacity
@@ -195,10 +195,10 @@ const Message = () => {
           style={{
             width: 40,
             height: 50,
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center'
           }}>
-          <MaterialCommunityIcons name="emoticon-happy-outline" color={color.lightText} size={26} />
+          <MaterialCommunityIcons name='emoticon-happy-outline' color={color.lightText} size={26} />
         </TouchableOpacity>
         <TextInput
           multiline
@@ -210,10 +210,10 @@ const Message = () => {
           style={{
             fontSize: 18,
             flex: 1,
-            width: "100%",
+            width: '100%',
             height: activeInput ? height : '100%',
             maxHeight: 70,
-            fontFamily: "text",
+            fontFamily: 'text',
             color: color.lightText
           }}
         />
