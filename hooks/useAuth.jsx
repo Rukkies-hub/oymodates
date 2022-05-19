@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
     if (profile?.gender) setChecked(profile?.gender)
     if (profile?.about) setAbout(profile?.about)
     if (profile?.passions) setPassions([...profile?.passions])
-    if (profile?.address) setAddress([...profile?.address])
+    if (profile?.address) setAddress(...profile?.address)
   }
 
   const signInWighGoogle = async () => {
