@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   View,
   Text,
@@ -8,9 +8,17 @@ import {
 } from 'react-native'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import { FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 
 import { useNavigation } from '@react-navigation/native'
+
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu'
 
 import useAuth from '../hooks/useAuth'
 
@@ -22,6 +30,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 
 let file
 let link = `posts/${new Date().toISOString()}`
+
 
 const Header = ({
   showAratar,
@@ -36,7 +45,8 @@ const Header = ({
   showPost,
   postDetails,
   showAdd,
-  showCancelPost
+  showCancelPost,
+  showMessageImageGallerySelect
 }) => {
   const navigation = useNavigation()
   const { user, userProfile, madiaString, media, setMedia } = useAuth()
@@ -44,6 +54,7 @@ const Header = ({
 
   const [loading, setLoading] = useState(false)
   const [mediaType, setMediaType] = useState('image')
+  const [expanded, setExpanded] = useState(false)
 
   let uploadTask
 
@@ -294,19 +305,87 @@ const Header = ({
           }
 
           {
-            showAdd &&
+            showMessageImageGallerySelect &&
             <TouchableOpacity
-              onPress={() => navigation.navigate('Add')}
+              onPress={() => navigation.navigate('PreviewMessageImage')}
               style={{
-                width: 40,
+                backgroundColor: color.blue,
+                borderRadius: 12,
+                width: 60,
                 height: 40,
                 justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 20
+                alignItems: 'center'
               }}
             >
-              <MaterialCommunityIcons name='plus-box-outline' color={color.dark} size={26} />
+              <Text
+                style={{
+                  fontFamily: 'text',
+                  color: color.white,
+                  fontSize: 16
+                }}
+              >
+                Done
+              </Text>
             </TouchableOpacity>
+          }
+
+          {
+            showAdd &&
+            <Menu>
+              <MenuTrigger
+                customStyles={{
+                  triggerWrapper: {
+                    width: 30,
+                    height: 30,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginRight: 20
+                  }
+                }}
+              >
+                <FontAwesome name='plus-square-o' color={color.dark} size={26} />
+              </MenuTrigger>
+
+              <MenuOptions
+                customStyles={{
+                  optionsContainer: {
+                    width: 120,
+                    borderRadius: 12,
+                    overflow: 'hidden'
+                  }
+                }}
+              >
+                <MenuOption
+                  onSelect={() => navigation.navigate('Add')}
+                  customStyles={{
+                    optionWrapper: {
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: 15,
+                      paddingVertical: 8
+                    }
+                  }}
+                >
+                  <Text>Post</Text>
+                  <MaterialCommunityIcons name='grid' size={20} color={color.dark} />
+                </MenuOption>
+
+                <MenuOption
+                  onSelect={() => alert(`Reels`)}
+                  customStyles={{
+                    optionWrapper: {
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: 15,
+                      paddingVertical: 8
+                    }
+                  }}
+                >
+                  <Text>Reel</Text>
+                    <MaterialIcons name='video-collection' size={20} color={color.dark} />
+                </MenuOption>
+              </MenuOptions>
+            </Menu>
           }
 
           {

@@ -7,14 +7,16 @@ import * as ImagePicker from 'expo-image-picker'
 
 import Header from '../../components/Header'
 import color from '../../style/color'
-import { useNavigation } from '@react-navigation/native'
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import useAuth from '../../hooks/useAuth'
 
 const window = Dimensions.get('window')
 
 let width = (window.width / 2) - 5
 
-const DeviceGallery = () => {
-  const navigation = useNavigation()
+const MessageImageGallery = () => {
+  const { assetsList, setAssetsList } = useAuth()
   const [hasGalleryPermission, setHasGalleryPermission] = useState(false)
   const [galleryItems, setGalleryItems] = useState([])
   const [limit, setLimit] = useState(40)
@@ -27,7 +29,7 @@ const DeviceGallery = () => {
       const userGalleryMedia = await MediaLibrary.getAssetsAsync({
         first: limit,
         sortBy: ['creationTime'],
-        mediaType: ['photo', 'video'],
+        mediaType: ['photo'],
       })
       setGalleryItems(userGalleryMedia)
     }
@@ -51,7 +53,12 @@ const DeviceGallery = () => {
         backgroundColor: color.white
       }}
     >
-      <Header showBack showTitle title='Select Media' />
+      <Header
+        showBack
+        showTitle
+        title='Select Image'
+        showMessageImageGallerySelect
+      />
 
       <FlatList
         data={galleryItems?.assets}
@@ -59,7 +66,7 @@ const DeviceGallery = () => {
         onEndReached={loadMore}
         numColumns={2}
         style={{
-          paddingHorizontal: 10
+          paddingHorizontal: 5
         }}
         renderItem={({ item: asset }) => (
           <View
@@ -71,16 +78,40 @@ const DeviceGallery = () => {
             }}
           >
             <Pressable
-              // onLongPress={}
-              // onPress={() => console.log('asset: ', asset)}
+              onPress={() => {
+                if (assetsList?.includes(asset))
+                  setAssetsList(assetsList.filter(item => item !== asset))
+                else if (assetsList.length <= 4)
+                  setAssetsList(oldArray => [...oldArray, asset])
+              }}
+              style={{
+                position: 'relative'
+              }}
             >
               <Image
                 source={{ uri: asset?.uri }}
                 style={{
-                  width: width - 10,
-                  height: width - 10
+                  width: width - 5,
+                  height: width - 5
                 }}
               />
+              {
+                assetsList?.includes(asset) &&
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: color.faintBlack
+                  }}
+                >
+                  <MaterialCommunityIcons name='check' size={50} color={color.white} />
+                </View>
+              }
             </Pressable>
           </View>
         )}
@@ -89,4 +120,4 @@ const DeviceGallery = () => {
   )
 }
 
-export default DeviceGallery
+export default MessageImageGallery

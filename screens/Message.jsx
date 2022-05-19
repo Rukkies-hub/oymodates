@@ -159,7 +159,7 @@ const Message = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate('DeviceGallery')}
+              onPress={() => navigation.navigate('MessageImageGallery')}
               style={{
                 width: 40,
                 height: 50,

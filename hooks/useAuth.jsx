@@ -44,13 +44,11 @@ export const AuthProvider = ({ children }) => {
   const [checked, setChecked] = useState('male')
   const [about, setAbout] = useState('')
   const [passions, setPassions] = useState([])
-
   const [media, setMedia] = useState('')
   const [likes, setLikes] = useState({})
-
   const [pendingSwipes, setPendingSwipes] = useState([])
-
   const [profiles, setProfiles] = useState([])
+  const [assetsList, setAssetsList] = useState([])
 
   useEffect(() =>
     onAuthStateChanged(auth, (user) => {
@@ -156,7 +154,9 @@ export const AuthProvider = ({ children }) => {
     pendingSwipes,
     setPendingSwipes,
     profiles,
-    setProfiles
+    setProfiles,
+    assetsList,
+    setAssetsList
   }), [
     user,
     loading,
@@ -185,7 +185,9 @@ export const AuthProvider = ({ children }) => {
     pendingSwipes,
     setPendingSwipes,
     profiles,
-    setProfiles
+    setProfiles,
+    assetsList,
+    setAssetsList
   ])
 
   return (

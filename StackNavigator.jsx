@@ -10,12 +10,13 @@ import NewMatch from './screens/modal/NewMatch'
 import Message from './screens/Message'
 import Add from './screens/Add'
 import AddComment from './screens/modal/AddComment'
-import DeviceGallery from './screens/modal/DeviceGallery'
+import MessageImageGallery from './screens/modal/MessageImageGallery'
 import PostCamera from './screens/PostCamera'
 import ViewPost from './screens/ViewPost'
 import UserProfile from './screens/modal/UserProfile'
 import Passion from './screens/modal/Passion'
 import UserLocation from './screens/modal/UserLocation'
+import PreviewMessageImage from './screens/modal/PreviewMessageImage'
 
 import useAuth from './hooks/useAuth'
 
@@ -42,10 +43,11 @@ const StackNavigator = () => {
 
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
               <Stack.Screen name='AddComment' component={AddComment} options={{ headerShown: false }} />
-              <Stack.Screen name='DeviceGallery' component={DeviceGallery} options={{ headerShown: false }} />
+              <Stack.Screen name='MessageImageGallery' component={MessageImageGallery} options={{ headerShown: false }} />
               <Stack.Screen name='UserProfile' component={UserProfile} options={{ headerShown: false }} />
               <Stack.Screen name='Passion' component={Passion} options={{ headerShown: false }} />
               <Stack.Screen name='UserLocation' component={UserLocation} options={{ headerShown: false }} />
+              <Stack.Screen name='PreviewMessageImage' component={PreviewMessageImage} options={{ headerShown: false }} />
             </Stack.Group>
           </>
         ) : (

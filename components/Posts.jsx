@@ -88,7 +88,8 @@ const Posts = () => {
         <View
           style={{
             flex: 1,
-            marginBottom: 20
+            marginBottom: 20,
+            backgroundColor: color.white
           }}
         >
           <View
