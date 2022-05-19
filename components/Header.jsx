@@ -7,9 +7,7 @@ import {
   ActivityIndicator
 } from 'react-native'
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-
-import { FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import { FontAwesome, MaterialCommunityIcons, MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -24,13 +22,24 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 import color from '../style/color'
-import { addDoc, arrayUnion, collection } from 'firebase/firestore'
+import { addDoc, arrayUnion, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 
 let file
 let link = `posts/${new Date().toISOString()}`
 
+import * as Device from 'expo-device'
+
+import * as Notifications from 'expo-notifications'
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+})
 
 const Header = ({
   showAratar,
@@ -54,10 +63,30 @@ const Header = ({
 
   const [loading, setLoading] = useState(false)
   const [mediaType, setMediaType] = useState('image')
-  const [expanded, setExpanded] = useState(false)
+
+  const [expoPushToken, setExpoPushToken] = useState('')
+  const [notification, setNotification] = useState(false)
+  const notificationListener = useRef()
+  const responseListener = useRef()
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification)
+    })
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response)
+    })
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current)
+      Notifications.removeNotificationSubscription(responseListener.current)
+    }
+  }, [])
 
   let uploadTask
-
   const savePost = async () => {
     if (postDetails.caption || postDetails.media) {
       setLoading(true)
@@ -99,11 +128,14 @@ const Header = ({
                 media: arrayUnion(file),
                 mediaLink: link,
                 mediaType,
-                caption: postDetails.caption
-              }).finally(() => {
-                setLoading(false)
-                cancelPost()
+                caption: postDetails.caption,
+                timestamp: serverTimestamp()
               })
+                .then(async () => await schedulePushNotification())
+                .finally(() => {
+                  setLoading(false)
+                  cancelPost()
+                })
             })
         }
       )
@@ -170,7 +202,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <FontAwesome5 name='chevron-left' size={20} color={color.dark} />
+              <Entypo name='chevron-left' size={24} color={color.dark} />
             </TouchableOpacity>
           }
           {
@@ -231,7 +263,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <FontAwesome5 name='phone' color={color.lightText} size={16} />
+              <Entypo name='phone' size={20} color={color.lightText} />
             </TouchableOpacity>
           }
 
@@ -245,7 +277,7 @@ const Header = ({
                 alignItems: 'center'
               }}
             >
-              <FontAwesome5 name='video' color={color.lightText} size={16} />
+              <FontAwesome5 name='video' size={20} color={color.lightText} />
             </TouchableOpacity>
           }
 
@@ -382,7 +414,7 @@ const Header = ({
                   }}
                 >
                   <Text>Reel</Text>
-                    <MaterialIcons name='video-collection' size={20} color={color.dark} />
+                  <MaterialIcons name='video-collection' size={20} color={color.dark} />
                 </MenuOption>
               </MenuOptions>
             </Menu>
@@ -392,6 +424,12 @@ const Header = ({
             showAratar &&
             <TouchableOpacity
               onPress={() => navigation.navigate('Profile')}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
             >
               {
                 user.photoURL ?
@@ -404,7 +442,7 @@ const Header = ({
                     }}
                   />
                   :
-                  <FontAwesome5 name='user' size={16} color={color.lightText} />
+                  <AntDesign name='user' size={24} color={color.lightText} />
               }
             </TouchableOpacity>
           }
@@ -412,6 +450,47 @@ const Header = ({
       </View>
     </View>
   )
+}
+
+async function schedulePushNotification () {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: 'New post added',
+      body: 'Your post has been added successfully.\nYou can check it out now',
+      data: { data: 'goes here' },
+    },
+    trigger: { seconds: 1 },
+  })
+}
+
+async function registerForPushNotificationsAsync () {
+  let token
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync()
+    let finalStatus = existingStatus
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync()
+      finalStatus = status
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!')
+      return
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data
+  } else {
+    alert('Must use physical device for Push Notifications')
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    })
+  }
+
+  return token
 }
 
 export default Header

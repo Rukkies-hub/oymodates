@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+
 import {
   View,
   Text,
@@ -17,8 +18,9 @@ import Header from '../components/Header'
 
 import color from '../style/color'
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import { EvilIcons } from '@expo/vector-icons'
 
 import { useFonts } from 'expo-font'
 
@@ -253,66 +255,63 @@ const Add = () => {
         }
       </ScrollView>
 
-      {
-        mediaVidiblity &&
-        <View
+      <View
+        style={{
+          width: '100%',
+          borderTopWidth: 1,
+          borderTopColor: color.borderColor,
+          flexDirection: 'row',
+          justifyContent: 'space-between'
+        }}
+      >
+        <TouchableOpacity
+          onPress={pickImage}
           style={{
-            width: '100%',
-            borderTopWidth: 1,
-            borderTopColor: color.borderColor,
+            width: '50%',
+            height: 50,
             flexDirection: 'row',
-            justifyContent: 'space-between'
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            backgroundColor: `${color.white}33`,
+            paddingHorizontal: 10
           }}
         >
-          <TouchableOpacity
-            onPress={pickImage}
+          <EvilIcons name="image" size={24} color="black" />
+          <Text
             style={{
-              width: '50%',
-              height: 50,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              backgroundColor: `${color.white}33`,
-              paddingHorizontal: 10
+              color: color.dark,
+              fontFamily: 'text',
+              marginLeft: 10
             }}
           >
-            <FontAwesome5 name='image' size={20} color={color.green} />
-            <Text
-              style={{
-                color: color.dark,
-                fontFamily: 'text',
-                marginLeft: 10
-              }}
-            >
-              Photo/Video
-            </Text>
-          </TouchableOpacity>
+            Photo/Video
+          </Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('PostCamera')}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('PostCamera')}
+          style={{
+            width: '50%',
+            height: 50,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            backgroundColor: `${color.white}33`,
+            paddingHorizontal: 10
+          }}
+        >
+          <EvilIcons name="camera" size={24} color="black" />
+          <Text
             style={{
-              width: '50%',
-              height: 50,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              backgroundColor: `${color.white}33`,
-              paddingHorizontal: 10
+              color: color.dark,
+              fontFamily: 'text',
+              marginLeft: 10
             }}
           >
-            <FontAwesome5 name='camera' size={20} color={color.blue} />
-            <Text
-              style={{
-                color: color.dark,
-                fontFamily: 'text',
-                marginLeft: 10
-              }}
-            >
-              Camera
-            </Text>
-          </TouchableOpacity>
-        </View>
-      }
+            Camera
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
