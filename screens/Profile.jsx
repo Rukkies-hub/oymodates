@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -6,8 +6,12 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform
 } from 'react-native'
+
+import Constants from 'expo-constants'
+import * as Location from 'expo-location'
 
 import Header from '../components/Header'
 
@@ -61,7 +65,9 @@ const Profile = () => {
     setChecked,
     about,
     setAbout,
-    passions
+    passions,
+    address,
+    setAddress
   } = useAuth()
   const storage = getStorage()
   const navigation = useNavigation()
@@ -69,6 +75,9 @@ const Profile = () => {
   const [height, setHeight] = useState(50)
   const [uploadLoading, setUploadLoading] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
+
+  const [location, setLocation] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -163,6 +172,24 @@ const Profile = () => {
             () => {
               getDownloadURL(uploadTask.snapshot.ref)
                 .then((downloadURL) => {
+                  const getLocation = async () => {
+                    if (Platform.OS === "android" && !Constants.isDevice) {
+                      setErrorMsg(
+                        "Oops, this will not work on Snack in an Android emulator. Try it on your device!"
+                      )
+                      return
+                    }
+                    let { status } = await Location.requestForegroundPermissionsAsync()
+                    if (status !== "granted") {
+                      setErrorMsg("Permission to access location was denied")
+                      return
+                    }
+
+                    let location = await Location.getCurrentPositionAsync({})
+                    const address = await Location.reverseGeocodeAsync(location.coords)
+                    setLocation(location)
+                    setAddress(...address)
+                  }
                   setImage(downloadURL)
                   updateDoc(doc(db, 'users', user?.uid), {
                     photoURL: downloadURL,
@@ -249,6 +276,30 @@ const Profile = () => {
         setChecked('female')
         getUserProfile(user)
       })
+  }
+
+  const getLocation = async () => {
+    if (Platform.OS === "android" && !Constants.isDevice) {
+      setErrorMsg(
+        "Oops, this will not work on Snack in an Android emulator. Try it on your device!"
+      )
+      return
+    }
+    let { status } = await Location.requestForegroundPermissionsAsync()
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied")
+      return
+    }
+
+    let location = await Location.getCurrentPositionAsync({})
+    const address = await Location.reverseGeocodeAsync(location.coords)
+    setLocation(location)
+    setAddress(...address)
+
+    await updateDoc(doc(db, 'users', user?.uid), {
+      address,
+      location
+    })
   }
 
   const [loaded] = useFonts({
@@ -522,10 +573,16 @@ const Profile = () => {
             }}
           >
             <View>
-              <Text></Text>
+              <Text
+                style={{
+                  fontFamily: 'text'
+                }}
+              >
+                {address?.subregion}, {address?.country}
+              </Text>
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate('UserLocation')}
+              onPress={getLocation}
               style={{
                 paddingVertical: 15,
                 paddingHorizontal: 10,

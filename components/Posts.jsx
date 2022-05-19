@@ -14,11 +14,9 @@ import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import color from '../style/color'
 
-import { EvilIcons, Fontisto, AntDesign } from '@expo/vector-icons'
+import { Fontisto, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import { arrayRemove, arrayUnion, collection, doc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 import { Video } from 'expo-av'

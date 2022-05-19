@@ -49,6 +49,7 @@ export const AuthProvider = ({ children }) => {
   const [pendingSwipes, setPendingSwipes] = useState([])
   const [profiles, setProfiles] = useState([])
   const [assetsList, setAssetsList] = useState([])
+  const [address, setAddress] = useState(null)
 
   useEffect(() =>
     onAuthStateChanged(auth, (user) => {
@@ -88,6 +89,7 @@ export const AuthProvider = ({ children }) => {
     if (profile?.gender) setChecked(profile?.gender)
     if (profile?.about) setAbout(profile?.about)
     if (profile?.passions) setPassions([...profile?.passions])
+    if (profile?.address) setAddress([...profile?.address])
   }
 
   const signInWighGoogle = async () => {
@@ -156,7 +158,9 @@ export const AuthProvider = ({ children }) => {
     profiles,
     setProfiles,
     assetsList,
-    setAssetsList
+    setAssetsList,
+    address,
+    setAddress
   }), [
     user,
     loading,
@@ -187,7 +191,9 @@ export const AuthProvider = ({ children }) => {
     profiles,
     setProfiles,
     assetsList,
-    setAssetsList
+    setAssetsList,
+    address,
+    setAddress
   ])
 
   return (

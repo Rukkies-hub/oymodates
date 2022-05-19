@@ -1,43 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { Platform, Text, View, StyleSheet } from 'react-native';
-import Constants from 'expo-constants';
-import * as Location from 'expo-location';
+import React, { useState, useEffect } from 'react'
+import { Platform, Text, View, StyleSheet } from 'react-native'
+import Constants from 'expo-constants'
+import * as Location from 'expo-location'
+
+import color from '../../style/color'
 
 export default function UserLocation () {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [location, setLocation] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   useEffect(() => {
     (async () => {
       if (Platform.OS === 'android' && !Constants.isDevice) {
         setErrorMsg(
           'Oops, this will not work on Snack in an Android Emulator. Try it on your device!'
-        );
-        return;
+        )
+        return
       }
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
+        setErrorMsg('Permission to access location was denied')
+        return
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
+      let location = await Location.getCurrentPositionAsync({})
+      setLocation(location)
+    })()
+  }, [])
 
-  let text = 'Waiting..';
+  let text = 'Waiting..'
   if (errorMsg) {
-    text = errorMsg;
+    text = errorMsg
   } else if (location) {
-    text = JSON.stringify(location);
+    text = JSON.stringify(location)
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: color.white
+      }}
+    >
       <Text style={styles.paragraph}>{text}</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -51,4 +58,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
   },
-});
+})

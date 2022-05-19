@@ -2,12 +2,11 @@ import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, onSnapshot, u
 import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons'
 
 const Likes = (params) => {
   const { user, setLikes, likes, userProfile } = useAuth()

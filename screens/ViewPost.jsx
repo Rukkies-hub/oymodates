@@ -6,7 +6,9 @@ import color from '../style/color'
 import { Video } from 'expo-av'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+
+import { AntDesign, Fontisto } from '@expo/vector-icons'
+
 import useAuth from '../hooks/useAuth'
 import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
@@ -193,7 +195,7 @@ const ViewPost = (params) => {
                 marginRight: 20
               }}
             >
-              <MaterialCommunityIcons name='heart' size={25} color={color.red} />
+              <AntDesign name="heart" size={24} color={color.red} />
             </TouchableOpacity>
           }
           {
@@ -208,12 +210,11 @@ const ViewPost = (params) => {
                 marginRight: 20
               }}
             >
-              <MaterialCommunityIcons name='heart-outline' size={25} color={color.lightText} />
+              <AntDesign name="hearto" size={24} color={color.lightText} />
             </TouchableOpacity>
           }
 
           <Pressable
-            // onPress={() => navigation.navigate('AddComment', { post })}
             style={{
               width: 35,
               height: 35,
@@ -222,7 +223,7 @@ const ViewPost = (params) => {
               marginRight: 20
             }}
           >
-            <FontAwesome5 name='comments' size={25} color={color.lightText} />
+            <Fontisto name="comment" size={24} color={color.lightText} />
           </Pressable>
 
           <Pressable
@@ -234,7 +235,7 @@ const ViewPost = (params) => {
               marginRight: 20
             }}
           >
-            <FontAwesome5 name='paper-plane' size={25} color={color.lightText} />
+            <AntDesign name="retweet" size={24} color={color.lightText} />
           </Pressable>
         </View>
 
