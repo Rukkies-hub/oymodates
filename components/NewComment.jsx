@@ -17,7 +17,7 @@ const NewComment = (params) => {
 
   const sendComment = () => {
     if (input != '')
-      addDoc(collection(db, 'posts', post.id, 'comments'), {
+      addDoc(collection(db, 'posts', post?.id, 'comments'), {
         comment: input,
         post,
         user: {

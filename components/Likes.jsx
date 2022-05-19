@@ -7,6 +7,8 @@ import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
+import { AntDesign } from '@expo/vector-icons';
+
 const Likes = (params) => {
   const { user, setLikes, likes, userProfile } = useAuth()
   const post = params?.post
@@ -48,7 +50,7 @@ const Likes = (params) => {
             marginRight: 20
           }}
         >
-          <MaterialCommunityIcons name='heart' size={25} color={color.red} />
+          <AntDesign name="heart" size={24} color={color.red} />
         </TouchableOpacity>
       }
       {
@@ -63,7 +65,7 @@ const Likes = (params) => {
             marginRight: 20
           }}
         >
-          <MaterialCommunityIcons name='heart-outline' size={25} color={color.lightText} />
+          <AntDesign name="hearto" size={24} color={color.lightText} />
         </TouchableOpacity>
       }
     </>

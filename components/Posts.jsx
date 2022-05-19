@@ -14,6 +14,8 @@ import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import color from '../style/color'
 
+import { EvilIcons, Fontisto, AntDesign } from '@expo/vector-icons'
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { arrayRemove, arrayUnion, collection, doc, onSnapshot, updateDoc } from 'firebase/firestore'
@@ -22,8 +24,6 @@ import { useNavigation } from '@react-navigation/native'
 import { Video } from 'expo-av'
 
 import Likes from './Likes'
-
-let lastPress = 0
 
 const Posts = () => {
   const navigation = useNavigation()
@@ -46,29 +46,6 @@ const Posts = () => {
     )
     , [])
 
-  const likePost = async (post) => {
-    await updateDoc(doc(db, 'posts', post.id), {
-      likes: arrayUnion(user.uid)
-    })
-  }
-
-  const dislikePost = async (post) => {
-    await updateDoc(doc(db, 'posts', post.id), {
-      likes: arrayRemove(user.uid)
-    })
-  }
-
-  const onDoublePress = (post) => {
-    const time = new Date().getTime()
-    const delta = time - lastPress;
-
-    const DOUBLE_PRESS_DELAY = 300
-    if (delta < DOUBLE_PRESS_DELAY) {
-      likePost(post)
-    }
-    lastPress = time
-  }
-
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -80,6 +57,9 @@ const Posts = () => {
   return (
     <FlatList
       data={posts}
+      bounces={false}
+      alwaysBounceHorizontal={false}
+      alwaysBounceVertical={false}
       keyExtractor={item => item.id}
       style={{
         flex: 1
@@ -144,9 +124,7 @@ const Posts = () => {
             </TouchableOpacity>
           </View>
 
-          <View
-            onStartShouldSetResponder={(evt) => onDoublePress(post)}
-          >
+          <View>
             {
               post?.mediaType == 'image' ?
                 <View
@@ -241,7 +219,7 @@ const Posts = () => {
                 marginRight: 20
               }}
             >
-              <FontAwesome5 name='comments' size={25} color={color.lightText} />
+              <Fontisto name="comment" size={24} color={color.lightText} />
             </Pressable>
 
             <Pressable
@@ -253,7 +231,7 @@ const Posts = () => {
                 marginRight: 20
               }}
             >
-              <FontAwesome5 name='paper-plane' size={25} color={color.lightText} />
+              <AntDesign name="retweet" size={24} color={color.lightText} />
             </Pressable>
           </View>
 
