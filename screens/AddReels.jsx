@@ -7,7 +7,7 @@ import { Audio } from 'expo-av'
 
 import { useIsFocused } from '@react-navigation/core'
 
-import color from "../style/color"
+import color from '../style/color'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -25,7 +25,7 @@ const AddReels = () => {
   const [hasGalleryPermission, setHasGalleryPermissions] = useState(false)
   const [galleryItems, setGalleryItems] = useState([])
   const [cameraRef, setCameraRef] = useState(null)
-  const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.front)
+  const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
   const [cameraFlash, setCameraFlash] = useState(Camera?.Constants?.FlashMode?.off)
   const [isCameraReady, setIsCameraReady] = useState(false)
 
@@ -62,7 +62,7 @@ const AddReels = () => {
           const data = await videoRecordPromise
           const source = data?.uri
 
-          console.log(source)
+          navigation.navigate('SaveReels', { source })
         }
       } catch (error) {
         console.warn(error)
@@ -84,6 +84,7 @@ const AddReels = () => {
 
     if (!result.cancelled) {
       console.log(result)
+      navigation.navigate('SaveReels', { source: result.uri })
     }
   }
 
@@ -159,7 +160,7 @@ const AddReels = () => {
             marginBottom: 25
           }}
         >
-          <MaterialIcons name="flip-camera-android" size={24} color={color.white} />
+          <MaterialIcons name='flip-camera-android' size={24} color={color.white} />
           <Text
             style={{
               color: color.white,
@@ -183,7 +184,7 @@ const AddReels = () => {
             justifyContent: 'center'
           }}
         >
-          <MaterialIcons name="bolt" size={24} color={color.white} />
+          <MaterialIcons name='bolt' size={24} color={color.white} />
           <Text
             style={{
               color: color.white,

@@ -24,11 +24,11 @@ import { EvilIcons } from '@expo/vector-icons'
 
 import { useFonts } from 'expo-font'
 
-import * as ImagePicker from "expo-image-picker"
+import * as ImagePicker from 'expo-image-picker'
 import useAuth from '../hooks/useAuth'
 
 if (
-  Platform.OS === "android" &&
+  Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -43,7 +43,7 @@ const Add = () => {
   const video = useRef(null)
   const windowWidth = useWindowDimensions().width
 
-  const [input, setInput] = useState("")
+  const [input, setInput] = useState('')
   const [height, setHeight] = useState(50)
   const [expanded, setExpanded] = useState(false)
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
@@ -63,7 +63,7 @@ const Add = () => {
   }
 
   useEffect(() =>
-    Keyboard.addListener("keyboardDidShow", () => {
+    Keyboard.addListener('keyboardDidShow', () => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
       setMediaVidiblity(false)
     })
@@ -132,7 +132,7 @@ const Add = () => {
               multiline
               value={input}
               onChangeText={setInput}
-              placeholder="What's on your mind"
+              placeholder="What's on your mind..."
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               style={{
                 height,
@@ -276,7 +276,7 @@ const Add = () => {
             paddingHorizontal: 10
           }}
         >
-          <EvilIcons name="image" size={24} color="black" />
+          <EvilIcons name='image' size={24} color={color.black} />
           <Text
             style={{
               color: color.dark,
@@ -300,7 +300,7 @@ const Add = () => {
             paddingHorizontal: 10
           }}
         >
-          <EvilIcons name="camera" size={24} color="black" />
+          <EvilIcons name='camera' size={24} color={color.black} />
           <Text
             style={{
               color: color.dark,

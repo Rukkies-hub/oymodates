@@ -10,6 +10,7 @@ import NewMatch from './screens/modal/NewMatch'
 import Message from './screens/Message'
 import Add from './screens/Add'
 import AddReels from './screens/AddReels'
+import SaveReels from './screens/SaveReels'
 import AddComment from './screens/modal/AddComment'
 import MessageImageGallery from './screens/modal/MessageImageGallery'
 import PostCamera from './screens/PostCamera'
@@ -35,6 +36,7 @@ const StackNavigator = () => {
               <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
               <Stack.Screen name='Add' component={Add} options={{ headerShown: false }} />
               <Stack.Screen name='AddReels' component={AddReels} options={{ headerShown: false }} />
+              <Stack.Screen name='SaveReels' component={SaveReels} options={{ headerShown: false }} />
               <Stack.Screen name='PostCamera' component={PostCamera} options={{ headerShown: false }} />
               <Stack.Screen name='ViewPost' component={ViewPost} options={{ headerShown: false }} />
             </Stack.Group>

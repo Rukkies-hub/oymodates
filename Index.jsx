@@ -1,4 +1,5 @@
 import React from 'react'
+import { Image } from 'react-native'
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 
@@ -8,6 +9,7 @@ import Match from './screens/Match'
 import Chat from './screens/Chat'
 import Feeds from './screens/Feeds'
 import Likes from './screens/Likes'
+import Reels from './screens/Reels'
 
 import colors from './style/color'
 import useAuth from './hooks/useAuth'
@@ -42,6 +44,22 @@ const Index = () => {
         options={{
           tabBarIcon: () => (
             <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={colors.black} />
+          )
+        }}
+      />
+
+      <Tab.Screen
+        name='Reels'
+        component={Reels}
+        options={{
+          tabBarIcon: () => (
+            <Image
+              source={require('./assets/video.png')}
+              style={{
+                width: 20,
+                height: 20
+              }}
+            />
           )
         }}
       />
