@@ -59,7 +59,7 @@ const NewComment = (params) => {
           minHeight: 50,
           maxHeight: 150,
           fontFamily: 'text',
-          color: color.lightText,
+          color: color.dark,
           paddingRight: 40,
           paddingVertical: 5
         }}

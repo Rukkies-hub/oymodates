@@ -186,7 +186,8 @@ const Comments = (params) => {
                         />
                         <Text
                           style={{
-                            color: comment?.likes.includes(user.uid) ? color.red : color.dark
+                            color: comment?.likes?.includes(user?.uid) ? color.red : color.dark,
+                            marginLeft: 4
                           }}
                         >
                           {`${comment?.likes?.length} `}
@@ -195,7 +196,7 @@ const Comments = (params) => {
                     }
                     <Text
                       style={{
-                        color: comment?.likes.includes(user.uid) ? color.red : color.dark
+                        color: comment?.likes?.includes(user?.uid) ? color.red : color.dark
                       }}
                     >
                       {
