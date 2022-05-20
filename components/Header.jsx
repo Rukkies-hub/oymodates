@@ -22,7 +22,7 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 import color from '../style/color'
-import { addDoc, arrayUnion, collection, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 
@@ -125,7 +125,7 @@ const Header = ({
               setLoading(true)
               addDoc(collection(db, 'posts'), {
                 user: userProfile,
-                media: arrayUnion(file),
+                media: file,
                 mediaLink: link,
                 mediaType,
                 caption: postDetails.caption,
@@ -403,7 +403,7 @@ const Header = ({
                 </MenuOption>
 
                 <MenuOption
-                  onSelect={() => alert(`Reels`)}
+                  onSelect={() => navigation.navigate('AddReels')}
                   customStyles={{
                     optionWrapper: {
                       flexDirection: 'row',

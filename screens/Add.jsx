@@ -248,7 +248,7 @@ const Add = () => {
                   color: color.blue
                 }}
               >
-                Add more
+                Change
               </Text>
             </TouchableOpacity>
           </View>

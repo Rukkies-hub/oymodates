@@ -136,7 +136,7 @@ const Posts = () => {
                   }}
                 >
                   <Image
-                    source={{ uri: post?.media[0] }}
+                    source={{ uri: post?.media }}
                     style={{
                       width: '100%',
                       height: 400
@@ -177,7 +177,7 @@ const Posts = () => {
                       minHeight: 300,
                     }}
                     source={{
-                      uri: post?.media[0],
+                      uri: post?.media,
                     }}
                     useNativeControls={false}
                     resizeMode='cover'
