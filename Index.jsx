@@ -20,12 +20,13 @@ const Index = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName='Feeds'
+      initialRouteName='Reels'
       barStyle={{
         backgroundColor: colors.white,
         borderColor: colors.white,
         borderWidth: 0,
         shadowOpacity: 0,
+        height: 54
       }}
     >
       <Tab.Screen

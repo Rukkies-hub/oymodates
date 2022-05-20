@@ -381,8 +381,8 @@ const Header = ({
               <MenuOptions
                 customStyles={{
                   optionsContainer: {
-                    width: 120,
-                    borderRadius: 12,
+                    width: 150,
+                    borderRadius: 10,
                     overflow: 'hidden'
                   }
                 }}
@@ -414,7 +414,13 @@ const Header = ({
                   }}
                 >
                   <Text>Reel</Text>
-                  <MaterialIcons name='video-collection' size={20} color={color.dark} />
+                  <Image
+                      source={require('../assets/video.png')}
+                      style={{
+                        width: 19,
+                        height: 19
+                      }}
+                  />
                 </MenuOption>
               </MenuOptions>
             </Menu>
