@@ -1,43 +1,48 @@
 import React, { useEffect, useState } from 'react'
 import { View, SafeAreaView, Text, TouchableOpacity, Image } from 'react-native'
 
-import { Audio } from 'expo-av'
 import { Camera } from 'expo-camera'
-import * as ImagePicker from 'expo-image-picker'
-import * as MediaLibrary from 'expo-media-library'
+
+import { Audio } from 'expo-av'
+
+import { useIsFocused } from '@react-navigation/core'
 
 import color from "../style/color"
-import { useIsFocused, useNavigation } from '@react-navigation/native'
 
-import { FontAwesome, MaterialCommunityIcons, MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
+
+import * as ImagePicker from 'expo-image-picker'
+
+import * as MediaLibrary from 'expo-media-library'
+
+import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
 const AddReels = () => {
   const navigation = useNavigation()
 
-  const [hasCameraPermissions, setHasCameraPermissions] = useState(false)
-  const [hasAudioPermissions, setHasAudioPermissions] = useState(false)
-  const [hasGalleryPermissions, setHasGalleryPermissions] = useState(false)
+  const [hasCameraPermission, setHasCameraPermission] = useState(false)
+  const [hasAudioPermission, setHasAudioPermission] = useState(false)
+  const [hasGalleryPermission, setHasGalleryPermissions] = useState(false)
   const [galleryItems, setGalleryItems] = useState([])
   const [cameraRef, setCameraRef] = useState(null)
-  const [cameraType, setCameraType] = useState(Camera.Constants.Type.back)
-  const [cameraFlash, setCameraFlash] = useState(Camera.Constants.FlashMode.off)
-
+  const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.front)
+  const [cameraFlash, setCameraFlash] = useState(Camera?.Constants?.FlashMode?.off)
   const [isCameraReady, setIsCameraReady] = useState(false)
 
   const isFocused = useIsFocused()
 
   useEffect(() => {
     (async () => {
-      const cameraStatus = await Camera.requestCameraPermissionsAsync()
-      setHasCameraPermissions(cameraStatus.status == 'granted')
+      const cameraStatus = await Camera?.requestCameraPermissionsAsync()
+      setHasCameraPermission(cameraStatus?.status === 'granted')
 
       const audioStatus = await Audio.requestPermissionsAsync()
-      setHasAudioPermissions(audioStatus.status == 'granted')
+      setHasAudioPermission(audioStatus?.status === 'granted')
 
       const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync()
-      setHasGalleryPermissions(galleryStatus.status == 'granted')
+      setHasGalleryPermissions(galleryStatus?.status === 'granted')
 
-      if (galleryStatus.status == 'granted') {
+      if (galleryStatus?.status == 'granted') {
         const userGalleryMedia = await MediaLibrary.getAssetsAsync({
           sortBy: ['creationTime'],
           mediaType: ['video']
@@ -48,7 +53,7 @@ const AddReels = () => {
   }, [])
 
   const recordVideo = async () => {
-    if (cameraRef) {
+    if (cameraRef)
       try {
         const options = { maxDuration: 30, quality: Camera?.Constants?.VideoQuality['480'] }
         const videoRecordPromise = cameraRef?.recordAsync(options)
@@ -62,13 +67,10 @@ const AddReels = () => {
       } catch (error) {
         console.warn(error)
       }
-    }
   }
 
-  const stopVideo = () => {
-    if (cameraRef) {
-      cameraRef.stopRecording()
-    }
+  const stopVideo = async () => {
+    if (cameraRef) cameraRef.stopRecording()
   }
 
   const pickFromGallery = async () => {
@@ -85,7 +87,7 @@ const AddReels = () => {
     }
   }
 
-  if (!hasCameraPermissions || !hasAudioPermissions || !hasGalleryPermissions) {
+  if (!hasCameraPermission || !hasAudioPermission || !hasGalleryPermission) {
     return (
       <View></View>
     )
@@ -100,7 +102,7 @@ const AddReels = () => {
       {
         isFocused ?
           <Camera
-            ref={ref => setCameraRef}
+            ref={ref => setCameraRef(ref)}
             ratio={'16:9'}
             type={cameraType}
             flashMode={cameraFlash}
