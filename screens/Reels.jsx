@@ -15,6 +15,8 @@ import { AntDesign, Fontisto } from '@expo/vector-icons'
 
 import { useFonts } from 'expo-font'
 
+import { LinearGradient } from 'expo-linear-gradient'
+
 const Reels = () => {
   const mediaRefs = useRef([])
 
@@ -64,84 +66,116 @@ const Reels = () => {
       >
         <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)} />
 
-        <View
+        
+        <LinearGradient
+          colors={['transparent', color.labelColor]}
           style={{
-            flex: 1,
             position: 'absolute',
             bottom: 0,
-            right: 0,
-            margin: 30
+            width,
+            height: height / 3
           }}
         >
-          <TouchableOpacity
-            style={{
-              width: 50,
-              height: 50,
-              borderWidth: 4,
-              borderRadius: 100,
-              borderColor: color.white,
-              overflow: 'hidden'
-            }}
-          >
-            <Image
-              source={{ uri: item?.user?.photoURL }}
-              style={{
-                width: 50,
-                height: 50
-              }}
-            />
-          </TouchableOpacity>
-
+          {/* CAPTION */}
           <View
             style={{
-              backgroundColor: color.faintBlack,
-              paddingVertical: 10,
-              borderRadius: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 10
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              marginBottom: 20,
+              marginLeft: 10
+            }}
+          >
+            <Text
+              style={{
+                color: color.white,
+                fontFamily: 'text',
+                fontSize: 18
+              }}
+            >
+              {item?.description}
+            </Text>
+          </View>
+
+          {/* CONTROLS */}
+          <View
+            style={{
+              marginVertical: 30,
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
+              margin: 20
             }}
           >
             <TouchableOpacity
               style={{
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginBottom: 20
+                width: 50,
+                height: 50,
+                borderWidth: 4,
+                borderRadius: 100,
+                borderColor: color.white,
+                overflow: 'hidden'
               }}
             >
-              <AntDesign name="hearto" size={24} color={color.white} />
-              <Text
+              <Image
+                source={{ uri: item?.user?.photoURL }}
                 style={{
-                  color: color.white,
-                  fontFamily: 'text'
+                  width: 50,
+                  height: 50
                 }}
-              >
-                0
-              </Text>
+              />
             </TouchableOpacity>
 
-            <TouchableOpacity
+            <View
               style={{
-                width: 40,
-                height: 40,
+                paddingVertical: 10,
+                borderRadius: 50,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                marginTop: 10
               }}
             >
-              <Fontisto name="comment" size={24} color={color.white} />
-              <Text
+              <TouchableOpacity
                 style={{
-                  color: color.white,
-                  fontFamily: 'text'
+                  width: 40,
+                  height: 40,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 20
                 }}
               >
-                0
-              </Text>
-            </TouchableOpacity>
+                <AntDesign name="hearto" size={24} color={color.white} />
+                <Text
+                  style={{
+                    color: color.white,
+                    fontFamily: 'text'
+                  }}
+                >
+                  0
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Fontisto name="comment" size={24} color={color.white} />
+                <Text
+                  style={{
+                    color: color.white,
+                    fontFamily: 'text'
+                  }}
+                >
+                  0
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </LinearGradient>
       </View>
     )
   }
@@ -158,7 +192,6 @@ const Reels = () => {
       <View
         style={{
           flex: 1,
-          borderRadius: 12,
           overflow: 'hidden'
         }}
       >
