@@ -3,8 +3,9 @@ import React, { forwardRef, useRef, useImperativeHandle, useEffect } from 'react
 import { View, Text } from 'react-native'
 
 import { Video } from 'expo-av'
+import color from '../style/color'
 
-export const PostSingle = forwardRef((props, parentRef) => {
+export const PostSingle = forwardRef(({ item }, parentRef) => {
   const ref = useRef(null)
 
   useImperativeHandle(parentRef, () => ({
@@ -55,13 +56,12 @@ export const PostSingle = forwardRef((props, parentRef) => {
   return (
     <Video
       ref={ref}
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: color.black }}
       resizeMode={Video.RESIZE_MODE_COVER}
       isLooping
+      volume={1}
       shouldPlay={false}
-      source={{
-        uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-      }}
+      source={{ uri: item?.media }}
     />
   )
 })

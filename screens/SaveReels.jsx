@@ -57,15 +57,6 @@ const SaveReels = (params) => {
       snapshot => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         console.log(`Upload is ${Math.floor(progress)}% done`)
-
-        switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused')
-            break
-          case 'running':
-            console.log('Upload is running')
-            break
-        }
       },
       error => console.log('error uploading image: ', error),
       () => {
