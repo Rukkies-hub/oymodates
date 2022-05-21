@@ -32,8 +32,9 @@ const ReelsCommentSheet = (props) => {
     if (comment != '') {
       addDoc(collection(db, 'reels', reel?.id, 'comments'), {
         comment,
-        reel,
+        reel: reel?.id,
         commentsCount: 0,
+        likesCount: 0,
         user: {
           id: userProfile?.id,
           displayName: userProfile?.displayName,

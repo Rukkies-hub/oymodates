@@ -76,28 +76,15 @@ const Index = () => {
           }}
         />
 
-        {
-          pendingSwipes?.length > 0 ?
-            <Tab.Screen
-              name='Likes'
-              component={Likes}
-              options={{
-                tabBarBadge: pendingSwipes?.length,
-                tabBarIcon: () => (
-                  <SimpleLineIcons name='like' size={20} color={color.black} />
-                )
-              }}
-            /> :
-            <Tab.Screen
-              name='Likes'
-              component={Likes}
-              options={{
-                tabBarIcon: () => (
-                  <SimpleLineIcons name='like' size={20} color={color.black} />
-                )
-              }}
-            />
-        }
+        <Tab.Screen
+          name='Likes'
+          component={Likes}
+          options={{
+            tabBarIcon: () => (
+              <SimpleLineIcons name='like' size={20} color={color.black} />
+            )
+          }}
+        />
 
         <Tab.Screen
           name='Chat'

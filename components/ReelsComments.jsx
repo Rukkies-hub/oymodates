@@ -13,7 +13,7 @@ import {
   UIManager,
 } from 'react-native'
 
-import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, increment, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 
 import { db } from '../hooks/firebase'
 
@@ -24,6 +24,7 @@ import useAuth from '../hooks/useAuth'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import uuid from 'uuid-random'
+
 import { useFonts } from 'expo-font'
 
 if (
@@ -54,13 +55,18 @@ const ReelsComments = (props) => {
     , [])
 
   const likeComment = async (comment) => {
-    comment?.likes?.includes(user.uid) ?
-      await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
-        likes: arrayRemove(userProfile?.id)
-      }) :
-      await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
-        likes: arrayUnion(userProfile?.id)
-      })
+    await setDoc(doc(db, 'reels', reel?.id, 'comments', comment?.id, 'likes', userProfile?.id), {
+      user: {
+        id: userProfile?.id,
+        displayName: userProfile?.displayName,
+        photoURL: userProfile?.photoURL
+      },
+      timestamp: serverTimestamp()
+    })
+
+    await updateDoc(doc(db, 'reels', reel?.id, 'comments', comment?.id), {
+      likesCount: increment(1)
+    })
   }
 
   const sendCommentReply = async (comment) => {
@@ -98,7 +104,8 @@ const ReelsComments = (props) => {
         data={comments}
         keyExtractor={item => item.id}
         style={{
-          flex: 1
+          flex: 1,
+          marginHorizontal: 10
         }}
         renderItem={({ item: comment }) => (
           <View
@@ -106,7 +113,7 @@ const ReelsComments = (props) => {
               flexDirection: 'row',
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
-              marginVertical: 10
+              marginBottom: 10
             }}
           >
             <Image
@@ -126,7 +133,7 @@ const ReelsComments = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: color.blue,
+                  backgroundColor: color.offWhite,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -134,7 +141,7 @@ const ReelsComments = (props) => {
               >
                 <Text
                   style={{
-                    color: color.white,
+                    color: color.dark,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -143,7 +150,7 @@ const ReelsComments = (props) => {
                 </Text>
                 <Text
                   style={{
-                    color: color.white
+                    color: color.dark
                   }}
                 >
                   {comment?.comment}
@@ -153,8 +160,7 @@ const ReelsComments = (props) => {
               <View
                 style={{
                   width: '100%',
-                  paddingHorizontal: 10,
-                  marginTop: 5
+                  paddingHorizontal: 10
                 }}
               >
                 <View
@@ -177,7 +183,7 @@ const ReelsComments = (props) => {
                     }}
                   >
                     {
-                      comment?.likes?.length > 0 &&
+                      comment?.likesCount > 0 &&
                       <View
                         style={{
                           flexDirection: 'row',
@@ -194,22 +200,21 @@ const ReelsComments = (props) => {
                         />
                         <Text
                           style={{
-                            color: comment?.likes?.includes(user?.uid) ? color.red : color.dark,
+                            color: color.dark,
                             marginLeft: 4
                           }}
                         >
-                          {`${comment?.likes?.length} `}
+                          {comment?.likesCount}
                         </Text>
                       </View>
                     }
                     <Text
                       style={{
-                        color: comment?.likes?.includes(user?.uid) ? color.red : color.dark
+                        color: color.dark,
+                        marginLeft: 4
                       }}
                     >
-                      {
-                        comment?.likes?.length <= 1 ? 'Like' : 'Likes'
-                      }
+                      Likes
                     </Text>
                   </TouchableOpacity>
 
