@@ -1,9 +1,7 @@
 import React from 'react'
-import { View, Text, Image, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, Image, Dimensions, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native'
 
 import useAuth from '../hooks/useAuth'
-
-import Header from '../components/Header'
 
 import color from '../style/color'
 
@@ -67,14 +65,12 @@ const Likes = () => {
     return null
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: color.white
       }}
     >
-      <Header showLogo showAratar />
-
       <View
         style={{
           justifyContent: 'center',
@@ -335,7 +331,7 @@ const Likes = () => {
           </Text>
         </TouchableOpacity>
       }
-    </View>
+    </SafeAreaView>
   )
 }
 

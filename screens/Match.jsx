@@ -4,10 +4,7 @@ import { View, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import useAuth from '../hooks/useAuth'
 
-import Bar from '../components/StatusBar'
 import color from '../style/color'
-
-import Header from '../components/Header'
 
 import Swiper from 'react-native-deck-swiper'
 import {
@@ -148,9 +145,6 @@ const Match = () => {
         flex: 1
       }}
     >
-      <Bar />
-      <Header showLogo showAratar />
-
       <View style={{ flex: 1, marginTop: -5 }}>
         {
           profiles?.length >= 1 ?

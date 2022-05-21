@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react'
 
-import { View, Image, Pressable, Text } from 'react-native'
+import { View, Image, Pressable, Text, SafeAreaView } from 'react-native'
 
 import color from '../style/color'
-
-import Header from '../components/Header'
 
 import ChatList from '../components/ChatList'
 
@@ -29,14 +27,12 @@ const Chat = () => {
     return null
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: color.white
       }}
     >
-      <Header title='Chat' showTitle showAratar />
-
       {
         pendingSwipes?.length > 0 &&
         <Pressable
@@ -116,7 +112,7 @@ const Chat = () => {
         </Pressable>
       }
       <ChatList />
-    </View>
+    </SafeAreaView>
   )
 }
 

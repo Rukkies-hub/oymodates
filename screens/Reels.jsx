@@ -4,20 +4,22 @@ import { View, Text, SafeAreaView, FlatList, Dimensions, TouchableOpacity, Image
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
-import Header from '../components/Header'
-
 import color from '../style/color'
 import PostSingle from '../components/PostSingle'
 
 const { width, height } = Dimensions.get('window')
 
-import { AntDesign, Fontisto } from '@expo/vector-icons'
+import { AntDesign, FontAwesome } from '@expo/vector-icons'
 
 import { useFonts } from 'expo-font'
 
 import { LinearGradient } from 'expo-linear-gradient'
 
+import useAuth from '../hooks/useAuth'
+import ReelsCommentSheet from './modal/ReelsCommentSheet'
+
 const Reels = () => {
+  const { setReelsCommentSheetIndex } = useAuth()
   const mediaRefs = useRef([])
 
   const onViewableItemsChanged = useRef(({ changed }) => {
@@ -49,11 +51,11 @@ const Reels = () => {
     , [])
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
-  if (!loaded)
-    return null
+  if (!loaded) return null
 
   const renderItem = ({ item, index }) => {
     return (
@@ -61,12 +63,11 @@ const Reels = () => {
         style={{
           flex: 1,
           width,
-          height: height - 108
+          height: height - 99.7
         }}
       >
         <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)} />
 
-        
         <LinearGradient
           colors={['transparent', color.labelColor]}
           style={{
@@ -90,7 +91,15 @@ const Reels = () => {
               style={{
                 color: color.white,
                 fontFamily: 'text',
-                fontSize: 18
+                fontSize: 16
+              }}
+            >
+              {item?.user?.displayName}
+            </Text>
+            <Text
+              style={{
+                color: color.white,
+                fontSize: 16
               }}
             >
               {item?.description}
@@ -132,7 +141,7 @@ const Reels = () => {
                 borderRadius: 50,
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop: 10
+                marginTop: 20
               }}
             >
               <TouchableOpacity
@@ -141,38 +150,22 @@ const Reels = () => {
                   height: 40,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginBottom: 20
+                  marginBottom: 30
                 }}
               >
-                <AntDesign name="hearto" size={24} color={color.white} />
+                <AntDesign name="heart" size={24} color={color.white} />
                 <Text
                   style={{
                     color: color.white,
-                    fontFamily: 'text'
+                    fontFamily: 'text',
+                    marginTop: 5
                   }}
                 >
                   0
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={{
-                  width: 40,
-                  height: 40,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Fontisto name="comment" size={24} color={color.white} />
-                <Text
-                  style={{
-                    color: color.white,
-                    fontFamily: 'text'
-                  }}
-                >
-                  0
-                </Text>
-              </TouchableOpacity>
+              <ReelsCommentSheet item={item} />
             </View>
           </View>
         </LinearGradient>
@@ -187,8 +180,6 @@ const Reels = () => {
         backgroundColor: color.white
       }}
     >
-      <Header showLogo showAratar showAdd />
-
       <View
         style={{
           flex: 1,

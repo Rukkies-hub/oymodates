@@ -1,12 +1,10 @@
 import React, { useLayoutEffect, useEffect } from 'react'
 import { View, SafeAreaView } from 'react-native'
-import Header from '../components/Header'
 import color from '../style/color'
 
 import { useFonts } from 'expo-font'
 import Posts from '../components/Posts'
 
-import Bar from "../components/StatusBar"
 import { collection, doc, getDocs, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
@@ -62,17 +60,14 @@ const Feeds = () => {
     return null
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: color.white
       }}
     >
-      <Bar />
-      <Header showLogo showAratar showAdd />
-
       <Posts />
-    </View>
+    </SafeAreaView>
   )
 }
 

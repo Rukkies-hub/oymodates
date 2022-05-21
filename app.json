@@ -16,6 +16,10 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "androidNavigationBar": {
+      "backgroundColor": "#ffffff",
+      "barStyle": "dark-content"
+    },
     "ios": {
       "supportsTablet": true
     },

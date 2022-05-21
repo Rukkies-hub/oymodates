@@ -20,6 +20,7 @@ const NewComment = (params) => {
       addDoc(collection(db, 'posts', post?.id, 'comments'), {
         comment: input,
         post,
+        commentCount: 0,
         user: {
           id: userProfile?.id,
           displayName: userProfile?.displayName,
@@ -29,6 +30,12 @@ const NewComment = (params) => {
       })
     setInput('')
   }
+
+  const [loaded] = useFonts({
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+  })
+
+  if (!loaded) return null
 
   return (
     <View
