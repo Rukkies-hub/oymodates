@@ -55,17 +55,17 @@ const ReelsComments = (props) => {
 
   const likeComment = async (comment) => {
     comment?.likes?.includes(user.uid) ?
-      await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
+      await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
         likes: arrayRemove(userProfile?.id)
       }) :
-      await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
+      await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
         likes: arrayUnion(userProfile?.id)
       })
   }
 
   const sendCommentReply = async (comment) => {
     if (input != '')
-      await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
+      await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
         reply: arrayUnion({
           reply: input,
           id: uuid(),
@@ -261,7 +261,7 @@ const ReelsComments = (props) => {
                         <View
                           style={{
                             marginLeft: 10,
-                            backgroundColor: color.blue,
+                            backgroundColor: color.offWhite,
                             borderRadius: 12,
                             paddingHorizontal: 10,
                             paddingVertical: 4,
@@ -269,7 +269,7 @@ const ReelsComments = (props) => {
                         >
                           <Text
                             style={{
-                              color: color.white,
+                              color: color.dark,
                               fontFamily: 'text',
                               fontSize: 13
                             }}
@@ -278,7 +278,7 @@ const ReelsComments = (props) => {
                           </Text>
                           <Text
                             style={{
-                              color: color.white
+                              color: color.dark
                             }}
                           >
                             {reply?.reply}
@@ -311,7 +311,7 @@ const ReelsComments = (props) => {
                       style={{
                         minHeight: 40,
                         height,
-                        borderRadius: 12,
+                        borderRadius: 50,
                         backgroundColor: color.offWhite,
                         width: '85%',
                         paddingHorizontal: 10,
@@ -327,13 +327,11 @@ const ReelsComments = (props) => {
                         height: 40,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        marginLeft: 10,
-                        backgroundColor: color.blue,
-                        borderRadius: 12
+                        marginLeft: 10
                       }}>
                       <FontAwesome5
                         name='paper-plane'
-                        color={color.white}
+                        color={color.lightText}
                         size={20}
                       />
                     </TouchableOpacity>
