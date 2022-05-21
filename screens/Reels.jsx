@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, SafeAreaView, FlatList, Dimensions, TouchableOpacity, Image } from 'react-native'
 
-import { collection, onSnapshot } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, collection, doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
 import color from '../style/color'
@@ -19,7 +19,7 @@ import useAuth from '../hooks/useAuth'
 import ReelsCommentSheet from './modal/ReelsCommentSheet'
 
 const Reels = () => {
-  const { setReelsCommentSheetIndex } = useAuth()
+  const { setReelsCommentSheetIndex, userProfile, user } = useAuth()
   const mediaRefs = useRef([])
 
   const onViewableItemsChanged = useRef(({ changed }) => {
@@ -49,6 +49,19 @@ const Reels = () => {
         )
     )
     , [])
+
+  const likeReel = async (item) => {
+    let reels = item
+
+    // console.log(reels)
+    reels?.likes?.includes(user.uid) ?
+      await updateDoc(doc(db, 'reels', reels?.id), {
+        likes: arrayRemove(userProfile?.id)
+      }) :
+      await updateDoc(doc(db, 'reels', reels?.id), {
+        likes: arrayUnion(userProfile?.id)
+      })
+  }
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -145,6 +158,7 @@ const Reels = () => {
               }}
             >
               <TouchableOpacity
+                onPress={() => likeReel(item)}
                 style={{
                   width: 40,
                   height: 40,
@@ -153,7 +167,7 @@ const Reels = () => {
                   marginBottom: 30
                 }}
               >
-                <AntDesign name="heart" size={24} color={color.white} />
+                <AntDesign name="heart" size={24} color={item?.likes?.includes(userProfile?.id) ? color.red : color.white} />
                 <Text
                   style={{
                     color: color.white,
@@ -161,7 +175,9 @@ const Reels = () => {
                     marginTop: 5
                   }}
                 >
-                  0
+                  {
+                    item?.likes?.length > 0 ? item?.likes?.length : '0'
+                  }
                 </Text>
               </TouchableOpacity>
 
