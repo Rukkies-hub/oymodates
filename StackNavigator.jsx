@@ -5,7 +5,7 @@ const Stack = createNativeStackNavigator()
 
 import Index from './Index'
 import Login from './screens/Login'
-import Profile from './screens/Profile'
+import EditProfile from './screens/EditProfile'
 import NewMatch from './screens/modal/NewMatch'
 import Message from './screens/Message'
 import Add from './screens/Add'
@@ -19,6 +19,7 @@ import UserProfile from './screens/modal/UserProfile'
 import Passion from './screens/modal/Passion'
 import UserLocation from './screens/modal/UserLocation'
 import PreviewMessageImage from './screens/modal/PreviewMessageImage'
+import Profile from './screens/profile/Profile'
 
 import useAuth from './hooks/useAuth'
 
@@ -33,12 +34,13 @@ const StackNavigator = () => {
             <Stack.Group>
               <Stack.Screen name='Index' component={Index} options={{ headerShown: false }} />
               <Stack.Screen name='Message' component={Message} options={{ headerShown: false }} />
-              <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
+              <Stack.Screen name='EditProfile' component={EditProfile} options={{ headerShown: false }} />
               <Stack.Screen name='Add' component={Add} options={{ headerShown: false }} />
               <Stack.Screen name='AddReels' component={AddReels} options={{ headerShown: false }} />
               <Stack.Screen name='SaveReels' component={SaveReels} options={{ headerShown: false }} />
               <Stack.Screen name='PostCamera' component={PostCamera} options={{ headerShown: false }} />
               <Stack.Screen name='ViewPost' component={ViewPost} options={{ headerShown: false }} />
+              <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>

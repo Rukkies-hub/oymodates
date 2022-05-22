@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useLayoutEffect } from 'react'
 import { View, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native'
 import useAuth from '../hooks/useAuth'
 
@@ -8,8 +8,15 @@ import Bar from '../components/StatusBar'
 
 import { useFonts } from 'expo-font'
 
+import * as NavigationBar from 'expo-navigation-bar'
+
 const Login = () => {
   const { signInWighGoogle, loading } = useAuth()
+
+  useLayoutEffect(() => {
+    NavigationBar.setBackgroundColorAsync(color.red)
+    NavigationBar.setButtonStyleAsync('light')
+  }, [])
 
   const [loaded] = useFonts({
     logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
@@ -28,7 +35,7 @@ const Login = () => {
         backgroundColor: color.red
       }}
     >
-      <Bar />
+      <Bar color={'light'} />
 
       <Text
         style={{

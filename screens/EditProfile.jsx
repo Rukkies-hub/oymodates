@@ -41,7 +41,7 @@ import { RadioButton } from "react-native-paper"
 
 let link = `avatars/${new Date().toISOString()}`
 
-const Profile = () => {
+const EditProfile = () => {
   const {
     user,
     logout,
@@ -711,4 +711,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default EditProfile

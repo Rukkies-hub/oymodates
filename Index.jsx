@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Image, SafeAreaView } from 'react-native'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 const Tab = createMaterialTopTabNavigator()
 
 import { Ionicons, Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
+
+import * as NavigationBar from 'expo-navigation-bar'
 
 import Match from './screens/Match'
 import Chat from './screens/Chat'
@@ -19,6 +21,11 @@ import Bar from './components/StatusBar'
 const Index = () => {
   const { pendingSwipes } = useAuth()
 
+  useLayoutEffect(() => {
+    NavigationBar.setBackgroundColorAsync(color.white)
+    NavigationBar.setButtonStyleAsync('dark')
+  }, [])
+  
   return (
     <SafeAreaView
       style={{
@@ -26,7 +33,7 @@ const Index = () => {
         backgroundColor: color.white
       }}
     >
-      <Bar />
+      <Bar color={'dark'} />
       <Header showLogo showAratar showAdd />
 
       <Tab.Navigator

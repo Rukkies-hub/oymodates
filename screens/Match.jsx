@@ -41,7 +41,7 @@ const Match = () => {
 
   useLayoutEffect(() =>
     onSnapshot(doc(db, 'users', user.uid), snapshot => {
-      if (!snapshot.exists()) navigation.navigate('Profile')
+      if (!snapshot.exists()) navigation.navigate('EditProfile')
     })
     , [])
 

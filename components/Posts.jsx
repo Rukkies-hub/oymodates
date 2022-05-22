@@ -81,7 +81,7 @@ const Posts = () => {
             <Pressable
               onPress={() =>
                 post?.user.id == user.uid ?
-                  navigation.navigate('Profile') :
+                  navigation.navigate('EditProfile') :
                   navigation.navigate('UserProfile', { user: post?.user })
               }
               style={{

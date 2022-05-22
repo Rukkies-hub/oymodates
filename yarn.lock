@@ -3426,6 +3426,15 @@ expo-modules-core@~0.4.4:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
 
+expo-navigation-bar@~1.1.1:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/expo-navigation-bar/-/expo-navigation-bar-1.1.2.tgz#1caddf41b3fd7652796db933ffe59a1ab0ed658c"
+  integrity sha512-6TEmFArrCazRKrhQrWho1sBEXiFBP+7MIcAeZ5wEB+QEb7ZkYmC+JKFfZl3oz9VWD7nnhgcLRgFE9XL0n74Fow==
+  dependencies:
+    "@expo/config-plugins" "^4.0.2"
+    "@react-native/normalize-color" "^2.0.0"
+    debug "^4.3.2"
+
 expo-notifications@~0.14.0:
   version "0.14.1"
   resolved "https://registry.yarnpkg.com/expo-notifications/-/expo-notifications-0.14.1.tgz#fe2b122ed79488e754b7f993f9b802eaf60b51a3"
@@ -5904,7 +5913,7 @@ react-native-screens@~3.10.1:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-super-grid@^4.1.3:
+react-native-super-grid@^4.1.3, react-native-super-grid@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/react-native-super-grid/-/react-native-super-grid-4.4.0.tgz#4566a288563d035548bcf68354c0c262bc69489e"
   integrity sha512-0msesnKyrOuT0xtlmFzQMgbRLBKnQel/AgJWWh/4UZAnRtLgQufzuVvnuQnyFQQb0ioQa3GkfMwr2ayFn5BHoA==

@@ -18,7 +18,7 @@ const ChatList = () => {
       snapshot => setMatches(
         snapshot.docs.map(doc => ({
           id: doc.id,
-          ...doc.data()
+          ...doc?.data()
         }))
       ))
     , [user])

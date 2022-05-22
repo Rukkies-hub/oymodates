@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
 import { View, SafeAreaView, Text, TouchableOpacity, Image } from 'react-native'
 
 import { Camera } from 'expo-camera'
@@ -17,6 +17,9 @@ import * as MediaLibrary from 'expo-media-library'
 
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
+import * as NavigationBar from 'expo-navigation-bar'
+import Bar from '../components/StatusBar'
+
 const AddReels = () => {
   const navigation = useNavigation()
 
@@ -30,6 +33,11 @@ const AddReels = () => {
   const [isCameraReady, setIsCameraReady] = useState(false)
 
   const isFocused = useIsFocused()
+
+  useLayoutEffect(() => {
+    NavigationBar.setBackgroundColorAsync(color.black)
+    NavigationBar.setButtonStyleAsync('light')
+  }, [])
 
   useEffect(() => {
     (async () => {
@@ -100,6 +108,7 @@ const AddReels = () => {
         flex: 1
       }}
     >
+      <Bar color={'light'} />
       {
         isFocused ?
           <Camera

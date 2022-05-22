@@ -48,7 +48,7 @@ const Reels = () => {
           }))
         )
     )
-    , [])
+    , [db])
 
   const likeReel = async (item) => {
     let reels = item

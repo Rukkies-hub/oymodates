@@ -163,8 +163,7 @@ const Header = ({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
-  if (!loaded)
-    return null
+  if (!loaded) return null
 
   return (
     <View
@@ -415,11 +414,11 @@ const Header = ({
                 >
                   <Text>Reel</Text>
                   <Image
-                      source={require('../assets/video.png')}
-                      style={{
-                        width: 19,
-                        height: 19
-                      }}
+                    source={require('../assets/video.png')}
+                    style={{
+                      width: 19,
+                      height: 19
+                    }}
                   />
                 </MenuOption>
               </MenuOptions>
