@@ -17,8 +17,6 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 import useAuth from '../hooks/useAuth'
 import ReelsCommentSheet from './modal/ReelsCommentSheet'
-import Bar from '../components/StatusBar'
-import Header from '../components/Header'
 
 const Reels = () => {
   const { setReelsCommentSheetIndex, userProfile, user } = useAuth()
@@ -197,8 +195,6 @@ const Reels = () => {
         backgroundColor: color.white
       }}
     >
-      <Bar style={'dark'} />
-      <Header showLogo showAdd showAratar />
 
       <View
         style={{

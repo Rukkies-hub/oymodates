@@ -10,8 +10,6 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
-import Bar from '../components/StatusBar'
-import Header from '../components/Header'
 
 const Chat = () => {
   const navigation = useNavigation()
@@ -35,8 +33,6 @@ const Chat = () => {
         backgroundColor: color.white
       }}
     >
-      <Bar style={'dark'} />
-      <Header showLogo showAdd showAratar />
       {
         pendingSwipes?.length > 0 &&
         <Pressable

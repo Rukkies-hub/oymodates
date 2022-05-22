@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, Image, Dimensions, Pressable } from 'react-native'
 
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 
@@ -51,20 +51,16 @@ const MyReels = () => {
         >
           {
             reels.map((reel, index) => (
-              <TouchableOpacity
+              <Pressable
                 onPress={() => console.log('reel: ', reel)}
                 style={{
                   width: width / 3,
                   height: width / 3
                 }}
               >
-                <Video
-                  key={index}
-                  ref={video}
-                  source={{ uri: reel.media }}
-                  shouldPlay={false}
-                  resizeMode='cover'
-                  useNativeControls={false}
+                <AutoHeightImage
+                  source={{ uri: reel?.thumbnail }}
+                  width={width / 3}
                   style={{
                     flex: 1
                   }}
@@ -95,7 +91,7 @@ const MyReels = () => {
                     {reel?.likes?.length}
                   </Text>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             ))
           }
         </View>
