@@ -19,9 +19,16 @@ import { db } from '../../hooks/firebase'
 import ReelsComments from '../../components/ReelsComments'
 import { useFonts } from 'expo-font'
 
+import * as NavigationBar from 'expo-navigation-bar'
+
 const ReelsCommentSheet = (props) => {
   const refRBSheet = useRef()
   const { userProfile } = useAuth()
+
+  // useEffect(() => {
+  //   NavigationBar.setBackgroundColorAsync(color.black)
+  //   NavigationBar.setButtonStyleAsync('light')
+  // }, [])
 
   const reel = props?.item
 

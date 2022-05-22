@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -23,11 +23,18 @@ import useAuth from '../hooks/useAuth'
 import uuid from 'uuid-random'
 import Bar from '../components/StatusBar'
 
+import * as NavigationBar from 'expo-navigation-bar'
+
 const SaveReels = (params) => {
   const { userProfile, user } = useAuth()
   const navigation = useNavigation()
   const source = params?.route?.params?.source
-  const thumbnail = params?.route?.params?.thumbnail //STOPED HERE
+  const thumbnail = params?.route?.params?.thumbnail
+
+  useEffect(() => {
+    NavigationBar.setBackgroundColorAsync(color.white)
+    NavigationBar.setButtonStyleAsync('dark')
+  }, [])
 
   const storage = getStorage()
 

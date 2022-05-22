@@ -36,7 +36,7 @@ const AddReels = () => {
 
   const isFocused = useIsFocused()
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     NavigationBar.setBackgroundColorAsync(color.black)
     NavigationBar.setButtonStyleAsync('light')
   }, [])

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Image, Dimensions, Pressable } from 'react-native'
+import { View, Text, Image, Dimensions, Pressable, ScrollView } from 'react-native'
 
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 
@@ -39,12 +39,13 @@ const MyReels = () => {
   if (!loaded) return null
 
   return (
-    <>
+    <ScrollView>
       {
         reels?.length > 0 &&
         <View
           style={{
             flexDirection: 'row',
+            justifyContent: 'space-between',
             flexWrap: 'wrap',
             marginTop: 20
           }}
@@ -52,10 +53,13 @@ const MyReels = () => {
           {
             reels.map((reel, index) => (
               <Pressable
+                key={index}
                 onPress={() => console.log('reel: ', reel)}
                 style={{
-                  width: width / 3,
-                  height: width / 3
+                  backgroundColor: color.red,
+                  width: '30%',
+                  height: (width - 10) / 3,
+                  margin: 3
                 }}
               >
                 <AutoHeightImage
@@ -96,7 +100,7 @@ const MyReels = () => {
           }
         </View>
       }
-    </>
+    </ScrollView>
   )
 }
 
