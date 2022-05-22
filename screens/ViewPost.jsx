@@ -112,7 +112,7 @@ const ViewPost = (params) => {
               }}
             >
               <Image
-                source={{ uri: post?.media[0] }}
+                source={{ uri: post?.media }}
                 style={{
                   width: '100%',
                   height: 400

@@ -7,6 +7,7 @@ import color from '../style/color'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import useAuth from '../hooks/useAuth'
+import { useFonts } from 'expo-font'
 
 const NewComment = (params) => {
   const { userProfile } = useAuth()

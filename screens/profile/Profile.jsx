@@ -5,11 +5,10 @@ import Bar from '../../components/StatusBar'
 import Header from '../../components/Header'
 import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
-import { FontAwesome } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import MyReels from './screens/MyReels'
+import { FontAwesome, Feather, Fontisto } from '@expo/vector-icons'
 
-const { width, height } = Dimensions.get('window')
 const Profile = () => {
   const navigation = useNavigation()
   const { userProfile } = useAuth()
@@ -57,15 +56,33 @@ const Profile = () => {
         >
           {
             userProfile?.username &&
-            <Text
+            <View
               style={{
-                color: color.dark,
-                fontFamily: 'boldText',
-                fontSize: 20
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center'
               }}
             >
-              {userProfile?.username}
-            </Text>
+              <Text
+                style={{
+                  color: color.dark,
+                  fontFamily: 'boldText',
+                  fontSize: 20
+                }}
+              >
+                {userProfile?.username}
+              </Text>
+              <Text
+                style={{
+                  color: color.dark,
+                  fontFamily: 'boldText',
+                  fontSize: 20,
+                  marginLeft: 10
+                }}
+              >
+                {userProfile?.age}
+              </Text>
+            </View>
           }
           <Text
             style={{
@@ -74,7 +91,6 @@ const Profile = () => {
           >
             {userProfile?.displayName}
           </Text>
-
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate('EditProfile')}
@@ -187,9 +203,6 @@ const Profile = () => {
 
       <View
         style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
           marginHorizontal: 10,
           marginTop: 20
         }}
@@ -202,6 +215,113 @@ const Profile = () => {
           }}
         >
           {userProfile?.about}
+        </Text>
+      </View>
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <Feather name='home' size={14} color={color.dark} />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginLeft: 10
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: color.dark,
+              marginLeft: 5
+            }}
+          >
+            Lives in
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 16,
+              color: color.dark,
+              marginLeft: 5
+            }}
+          >
+            {userProfile?.city}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <Fontisto name="date" size={14} color={color.dark} />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginLeft: 10
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: color.dark,
+              marginLeft: 5
+            }}
+          >
+            Joined
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 16,
+              color: color.dark,
+              marginLeft: 5
+            }}
+          >
+            {userProfile?.timestamp?.toDate().toDateString()}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <Feather name="briefcase" size={14} color={color.dark} />
+
+        <Text
+          style={{
+            fontFamily: 'text',
+            fontSize: 16,
+            color: color.dark,
+            marginLeft: 10
+          }}
+        >
+          {userProfile?.job} at {userProfile?.company }
         </Text>
       </View>
 

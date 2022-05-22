@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Image, Dimensions, Pressable, ScrollView } from 'react-native'
+import { View, Text, Dimensions, Pressable, ScrollView } from 'react-native'
 
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 
-import { FlatGrid } from 'react-native-super-grid'
 import { db } from '../../../hooks/firebase'
 import useAuth from '../../../hooks/useAuth'
 import AutoHeightImage from 'react-native-auto-height-image'
-import { Video } from 'expo-av'
-import { LinearGradient } from 'expo-linear-gradient'
 import color from '../../../style/color'
 
 const { width, height } = Dimensions.get('window')
-import { AntDesign, FontAwesome } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
 
 const MyReels = () => {
   const { user } = useAuth()
-  const video = React.useRef(null)
   const [reels, setReels] = useState([])
 
   useEffect(() =>
@@ -29,7 +25,7 @@ const MyReels = () => {
           ...doc?.data()
         }))
       ))
-    , [])
+    , [user, db])
 
   const [loaded] = useFonts({
     text: require('../../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -56,7 +52,6 @@ const MyReels = () => {
                 key={index}
                 onPress={() => console.log('reel: ', reel)}
                 style={{
-                  backgroundColor: color.red,
                   width: '30%',
                   height: (width - 10) / 3,
                   margin: 3
