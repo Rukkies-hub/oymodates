@@ -14,6 +14,8 @@ import generateId from '../lib/generateId'
 import { useNavigation } from '@react-navigation/native'
 
 import { AntDesign, Feather } from '@expo/vector-icons'
+import Bar from '../components/StatusBar'
+import Header from '../components/Header'
 
 const Likes = () => {
   const { pendingSwipes, user, profiles, setProfiles, userProfile } = useAuth()
@@ -73,6 +75,8 @@ const Likes = () => {
         backgroundColor: color.white
       }}
     >
+      <Bar style={'dark'} />
+      <Header showLogo  showAdd showAratar />
       <View
         style={{
           justifyContent: 'center',

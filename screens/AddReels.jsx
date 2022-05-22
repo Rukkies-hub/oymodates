@@ -20,6 +20,8 @@ import { MaterialIcons, Entypo } from '@expo/vector-icons'
 import * as NavigationBar from 'expo-navigation-bar'
 import Bar from '../components/StatusBar'
 
+import * as VideoThumbnails from 'expo-video-thumbnails'
+
 const AddReels = () => {
   const navigation = useNavigation()
 
@@ -69,8 +71,10 @@ const AddReels = () => {
         if (videoRecordPromise) {
           const data = await videoRecordPromise
           const source = data?.uri
-
-          navigation.navigate('SaveReels', { source })
+          let thumbnail = await generateThumbnail(source)
+          console.log('thumbnail: ', thumbnail)
+          if (thumbnail)
+            navigation.navigate('SaveReels', { source, thumbnail })
         }
       } catch (error) {
         console.warn(error)
@@ -91,8 +95,25 @@ const AddReels = () => {
     })
 
     if (!result.cancelled) {
-      console.log(result)
-      navigation.navigate('SaveReels', { source: result.uri })
+      let source = result.uri
+      let thumbnail = await generateThumbnail(source)
+      console.log('thumbnail: ', thumbnail)
+      if (thumbnail)
+        navigation.navigate('SaveReels', { source, thumbnail })
+    }
+  }
+
+  const generateThumbnail = async (source) => {
+    try {
+      const { uri } = await VideoThumbnails.getThumbnailAsync(
+        source,
+        {
+          time: 1000,
+        }
+      )
+      return uri
+    } catch (e) {
+      console.warn(e)
     }
   }
 

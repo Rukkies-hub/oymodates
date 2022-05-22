@@ -15,30 +15,28 @@ import { useNavigation } from '@react-navigation/native'
 import { MaterialIcons, Entypo, Feather } from '@expo/vector-icons'
 
 import { useFonts } from 'expo-font'
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
+import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 
 import uuid from 'uuid-random'
-
-let file
-let link
+import Bar from '../components/StatusBar'
 
 const SaveReels = (params) => {
   const { userProfile, user } = useAuth()
   const navigation = useNavigation()
   const source = params?.route?.params?.source
+  const thumbnail = params?.route?.params?.thumbnail //STOPED HERE
 
   const storage = getStorage()
-
-  link = `reels/${user.uid}/${uuid()}`
 
   const [description, setDescription] = useState('')
   const [loading, setLoading] = useState(false)
 
-  let uploadTask
   const saveReel = async () => {
+    console.log(source)
+    console.log(thumbnail)
     setLoading(true)
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
@@ -49,42 +47,50 @@ const SaveReels = (params) => {
       xhr.send(null)
     })
 
-    const mediaRef = ref(storage, link)
+    const thumbnailBlob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.onload = () => resolve(xhr.response)
 
-    uploadTask = uploadBytesResumable(mediaRef, blob)
+      xhr.responseType = 'blob'
+      xhr.open('GET', thumbnail, true)
+      xhr.send(null)
+    })
 
-    uploadTask.on('state_changed',
-      snapshot => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        console.log(`Upload is ${Math.floor(progress)}% done`)
-      },
-      error => console.log('error uploading image: ', error),
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref)
+    const sourceRef = ref(storage, `reels/${user.uid}/video/${uuid()}`)
+
+    const thumbnailRef = ref(storage, `reels/${user.uid}/thumbnail/${uuid()}`)
+
+    uploadBytes(sourceRef, blob)
+      .then(snapshot => {
+        getDownloadURL(snapshot.ref)
           .then(downloadURL => {
-            file = downloadURL
-            setLoading(true)
-            addDoc(collection(db, 'reels'), {
-              user: {
-                id: user?.uid,
-                photoURL: userProfile?.photoURL,
-                displayName: userProfile?.displayName
-              },
-              media: file,
-              mediaLink: link,
-              description,
-              likesCount: 0,
-              commentsCount: 0,
-              timestamp: serverTimestamp()
-            })
-              .finally(() => {
-                setLoading(false)
-                setDescription('')
-                navigation.navigate('Reels')
+            uploadBytes(thumbnailRef, thumbnailBlob)
+              .then(thumbnailSnapshot => {
+                getDownloadURL(thumbnailSnapshot.ref)
+                  .then(thumbnailDownloadURL => {
+                    addDoc(collection(db, 'reels'), {
+                      user: {
+                        id: user?.uid,
+                        photoURL: userProfile?.photoURL,
+                        displayName: userProfile?.displayName
+                      },
+                      media: downloadURL,
+                      mediaLink: snapshot.ref._location.path,
+                      thumbnail: thumbnailDownloadURL,
+                      thumbnailLink: thumbnailSnapshot.ref._location.path,
+                      description,
+                      likesCount: 0,
+                      commentsCount: 0,
+                      timestamp: serverTimestamp()
+                    }).finally(() => {
+                      setLoading(false)
+                      setDescription('')
+                      navigation.navigate('Reels')
+                    })
+                  })
               })
           })
-      }
-    )
+      })
   }
 
   const [loaded] = useFonts({
@@ -101,7 +107,10 @@ const SaveReels = (params) => {
         backgroundColor: color.white
       }}
     >
+      <Bar style={'dark'} />
+
       <Header showBack showTitle title='Save reel' />
+
       <View
         style={{
           marginHorizontal: 10,

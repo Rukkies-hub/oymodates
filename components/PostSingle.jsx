@@ -4,15 +4,25 @@ import { View, Text } from 'react-native'
 
 import { Video } from 'expo-av'
 import color from '../style/color'
+import { useNavigation } from '@react-navigation/native'
 
 export const PostSingle = forwardRef(({ item }, parentRef) => {
   const ref = useRef(null)
+
+  const navigation = useNavigation()
 
   useImperativeHandle(parentRef, () => ({
     play,
     unload,
     stop
   }))
+
+  useEffect(() =>
+    navigation.addListener('blur', () => {
+      ref.current.stopAsync()
+      return () => unload()
+    })
+    , [navigation])
 
   useEffect(() => {
     return () => unload()
@@ -59,7 +69,9 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
       style={{ flex: 1, backgroundColor: color.black }}
       resizeMode={Video.RESIZE_MODE_COVER}
       isLooping
-      volume={1}
+      usePoster
+      posterSource={{ uri: item?.thumbnail }}
+      posterStyle={{ resizeMode: 'cover', height: '100%' }}
       shouldPlay={false}
       source={{ uri: item?.media }}
     />

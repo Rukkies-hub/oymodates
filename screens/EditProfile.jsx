@@ -302,8 +302,6 @@ const EditProfile = () => {
     })
   }
 
-  console.log('address: ', address)
-
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })

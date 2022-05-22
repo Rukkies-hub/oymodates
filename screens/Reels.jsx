@@ -17,6 +17,8 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 import useAuth from '../hooks/useAuth'
 import ReelsCommentSheet from './modal/ReelsCommentSheet'
+import Bar from '../components/StatusBar'
+import Header from '../components/Header'
 
 const Reels = () => {
   const { setReelsCommentSheetIndex, userProfile, user } = useAuth()
@@ -26,7 +28,6 @@ const Reels = () => {
     changed.forEach(element => {
       const cell = mediaRefs.current[element.key]
       if (cell) {
-        console.log('onViewableItemsChanged: ', element, element.isViewable)
         if (element.isViewable) {
           cell.play()
         } else {
@@ -76,7 +77,7 @@ const Reels = () => {
         style={{
           flex: 1,
           width,
-          height: height - 99.7
+          height: height - 109
         }}
       >
         <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)} />
@@ -196,6 +197,9 @@ const Reels = () => {
         backgroundColor: color.white
       }}
     >
+      <Bar style={'dark'} />
+      <Header showLogo showAdd showAratar />
+
       <View
         style={{
           flex: 1,

@@ -29,6 +29,8 @@ import generateId from '../lib/generateId'
 import { useFonts } from 'expo-font'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import Bar from '../components/StatusBar'
+import Header from '../components/Header'
 
 const Match = () => {
   const navigation = useNavigation()
@@ -145,6 +147,8 @@ const Match = () => {
         flex: 1
       }}
     >
+      <Bar style={'dark'} />
+      <Header showLogo showAdd showAratar />
       <View style={{ flex: 1, marginTop: -5 }}>
         {
           profiles?.length >= 1 ?

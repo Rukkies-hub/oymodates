@@ -10,6 +10,9 @@ import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
 
+import Bar from '../components/StatusBar'
+import Header from '../components/Header'
+
 const Feeds = () => {
   const { user, profiles, setProfiles } = useAuth()
   const navigation = useNavigation()
@@ -66,6 +69,8 @@ const Feeds = () => {
         backgroundColor: color.white
       }}
     >
+      <Bar style={'dark'} />
+      <Header showLogo showAdd showAratar />
       <Posts />
     </SafeAreaView>
   )
