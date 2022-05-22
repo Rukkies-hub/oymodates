@@ -92,8 +92,7 @@ const Message = () => {
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
-  if (!loaded)
-    return null
+  if (!loaded) return null
 
   return (
     <View
@@ -107,7 +106,7 @@ const Message = () => {
         showTitle
         showPhone
         showVideo
-        title={getMatchedUserInfo(matchDetails?.users, user.uid).displayName}
+        title={getMatchedUserInfo(matchDetails?.users, user.uid).username}
         showMatchAvatar
         matchAvatar={getMatchedUserInfo(matchDetails?.users, user.uid).photoURL}
       />
@@ -214,7 +213,7 @@ const Message = () => {
             height: activeInput ? height : '100%',
             maxHeight: 70,
             fontFamily: 'text',
-            color: color.lightText
+            color: color.dark
           }}
         />
 

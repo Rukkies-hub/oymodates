@@ -7,7 +7,7 @@ import {
   ActivityIndicator
 } from 'react-native'
 
-import { FontAwesome, MaterialCommunityIcons, MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons'
+import { FontAwesome, MaterialCommunityIcons, MaterialIcons, Entypo, AntDesign, FontAwesome5 } from '@expo/vector-icons'
 
 import { useNavigation } from '@react-navigation/native'
 

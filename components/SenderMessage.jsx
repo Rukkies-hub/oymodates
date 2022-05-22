@@ -22,7 +22,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
       >
         <Pressable
           style={{
-            backgroundColor: messages.message ? color.purple : color.transparent,
+            backgroundColor: messages.message ? color.blue : color.transparent,
             paddingVertical: 8,
             paddingHorizontal: 15,
             borderTopLeftRadius: 12,
@@ -47,7 +47,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 borderWidth: 2,
                 borderRadius: 20,
                 overflow: "hidden",
-                borderColor: color.purple,
+                borderColor: color.blue,
                 right: 6
               }}
             >

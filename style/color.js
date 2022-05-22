@@ -1,6 +1,7 @@
 export default {
     purple: '#651FFF',
     blue: '#4169e1',
+    facebookBlue: '#0084FF',
     darkRed: 'red',
     red: '#ff4040',
     pink: '#FF4081',
