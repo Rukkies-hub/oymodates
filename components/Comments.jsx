@@ -32,6 +32,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
 import moment from 'moment'
+import CommentReplies from './CommentReplies'
 
 const Comments = (params) => {
   const { userProfile, user } = useAuth()
@@ -41,7 +42,6 @@ const Comments = (params) => {
   const [height, setHeight] = useState(40)
   const [input, setInput] = useState('')
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
-  const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: 1 })
 
   useEffect(() =>
     onSnapshot(collection(db, 'posts', post.id, 'comments'),
@@ -181,7 +181,9 @@ const Comments = (params) => {
                   </TouchableOpacity>
                 </View>
 
-                <View
+                <CommentReplies comment={comment} />
+
+                {/* <View
                   style={{
                     marginTop: 10
                   }}
@@ -238,7 +240,7 @@ const Comments = (params) => {
                       </View>
                     )}
                   />
-                </View>
+                </View> */}
 
                 {
                   mediaVidiblity &&
