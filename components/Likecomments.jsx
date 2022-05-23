@@ -69,14 +69,6 @@ const Likecomments = (props) => {
         <Text
           style={{
             color: currentLikesState.state ? color.red : color.dark,
-            marginRight: 5
-          }}
-        >
-          {currentLikesState.counter}
-        </Text>
-        <Text
-          style={{
-            color: color.dark
           }}
         >
           {
