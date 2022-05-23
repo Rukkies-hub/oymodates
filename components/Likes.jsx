@@ -10,14 +10,13 @@ import { AntDesign } from '@expo/vector-icons'
 import { throttle } from 'throttle-debounce'
 
 const Likes = (params) => {
-  const { user, setLikes, likes, userProfile } = useAuth()
+  const { user, userProfile } = useAuth()
   const post = params?.post
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: post?.likesCount })
 
   useEffect(() => {
     getLikesById(post?.id, user.uid).then(res => {
-      console.log({ res })
       setCurrentLikesState({
         ...currentLikesState,
         state: res
@@ -53,7 +52,6 @@ const Likes = (params) => {
       state: !currentLikesState.state,
       counter: currentLikesState.counter + (currentLikesState.state ? -1 : 1)
     })
-
     updateLike()
   }
 

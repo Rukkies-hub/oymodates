@@ -22,6 +22,7 @@ import color from '../style/color'
 import useAuth from '../hooks/useAuth'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import Likecomments from './Likecomments'
 
 if (
   Platform.OS === "android" &&
@@ -37,6 +38,7 @@ const Comments = (params) => {
   const [height, setHeight] = useState(40)
   const [input, setInput] = useState('')
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
+  const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: 1 })
 
   useEffect(() =>
     onSnapshot(collection(db, 'posts', post.id, 'comments'),
@@ -49,16 +51,6 @@ const Comments = (params) => {
         )
     )
     , [])
-
-  const likeComment = async (comment) => {
-    comment?.likes?.includes(user.uid) ?
-      await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
-        likes: arrayRemove(userProfile?.id)
-      }) :
-      await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
-        likes: arrayUnion(userProfile?.id)
-      })
-  }
 
   const sendCommentReply = async (comment) => {
     if (input != '')
@@ -118,7 +110,7 @@ const Comments = (params) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: color.blue,
+                  backgroundColor: color.offWhite,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -126,7 +118,7 @@ const Comments = (params) => {
               >
                 <Text
                   style={{
-                    color: color.white,
+                    color: color.dark,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -135,7 +127,7 @@ const Comments = (params) => {
                 </Text>
                 <Text
                   style={{
-                    color: color.white
+                    color: color.dark
                   }}
                 >
                   {comment?.comment}
@@ -157,53 +149,7 @@ const Comments = (params) => {
                     marginTop: 4
                   }}
                 >
-                  <TouchableOpacity
-                    onPress={() => likeComment(comment)}
-                    style={{
-                      paddingHorizontal: 10,
-                      paddingVertical: 2,
-                      marginRight: 10,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center'
-                    }}
-                  >
-                    {
-                      comment?.likes?.length > 0 &&
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'flex-start',
-                          alignItems: 'center'
-                        }}
-                      >
-                        <Image
-                          source={require('../assets/heart.png')}
-                          style={{
-                            width: 15,
-                            height: 15
-                          }}
-                        />
-                        <Text
-                          style={{
-                            color: comment?.likes?.includes(user?.uid) ? color.red : color.dark,
-                            marginLeft: 4
-                          }}
-                        >
-                          {`${comment?.likes?.length} `}
-                        </Text>
-                      </View>
-                    }
-                    <Text
-                      style={{
-                        color: comment?.likes?.includes(user?.uid) ? color.red : color.dark
-                      }}
-                    >
-                      {
-                        comment?.likes?.length <= 1 ? 'Like' : 'Likes'
-                      }
-                    </Text>
-                  </TouchableOpacity>
+                  <Likecomments comment={comment} />
 
                   <TouchableOpacity
                     onPress={showReplyInput}

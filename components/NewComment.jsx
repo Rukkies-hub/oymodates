@@ -20,8 +20,9 @@ const NewComment = (params) => {
     if (input != '')
       addDoc(collection(db, 'posts', post?.id, 'comments'), {
         comment: input,
-        post,
-        commentCount: 0,
+        post: post.id,
+        likesCount: 0,
+        commentsCount: 0,
         user: {
           id: userProfile?.id,
           displayName: userProfile?.displayName,

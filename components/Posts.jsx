@@ -25,7 +25,7 @@ import Likes from './Likes'
 
 const Posts = () => {
   const navigation = useNavigation()
-  const { userProfile, user, likes, setLikes } = useAuth()
+  const { userProfile, user } = useAuth()
   const video = useRef(null)
   const windowWidth = useWindowDimensions().width
 
@@ -145,7 +145,6 @@ const Posts = () => {
 
                   <TouchableOpacity
                     onPress={() => {
-                      setLikes(post)
                       navigation.navigate('ViewPost', { post })
                     }}
                     style={{
@@ -186,7 +185,6 @@ const Posts = () => {
 
                   <TouchableOpacity
                     onPress={() => {
-                      setLikes(post)
                       navigation.navigate('ViewPost', { post })
                     }}
                     style={{

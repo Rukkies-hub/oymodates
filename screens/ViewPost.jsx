@@ -10,8 +10,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { AntDesign, Fontisto } from '@expo/vector-icons'
 
 import useAuth from '../hooks/useAuth'
-import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
-import { db } from '../hooks/firebase'
 
 import NewComment from '../components/NewComment'
 import Comments from '../components/Comments'

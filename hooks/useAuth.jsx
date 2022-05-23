@@ -50,7 +50,6 @@ export const AuthProvider = ({ children }) => {
   const [about, setAbout] = useState('')
   const [passions, setPassions] = useState([])
   const [media, setMedia] = useState('')
-  const [likes, setLikes] = useState({})
   const [pendingSwipes, setPendingSwipes] = useState([])
   const [profiles, setProfiles] = useState([])
   const [assetsList, setAssetsList] = useState([])
@@ -147,8 +146,6 @@ export const AuthProvider = ({ children }) => {
     media,
     setMedia,
     madiaString,
-    likes,
-    setLikes,
     company,
     setCompany,
     city,
@@ -180,8 +177,6 @@ export const AuthProvider = ({ children }) => {
     media,
     setMedia,
     madiaString,
-    likes,
-    setLikes,
     company,
     setCompany,
     city,
