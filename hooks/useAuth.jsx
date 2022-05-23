@@ -7,8 +7,12 @@ import React, {
 } from 'react'
 
 import * as Google from 'expo-google-app-auth'
+import * as Facebook from 'expo-facebook'
+
+import Constants from 'expo-constants'
 
 import {
+  FacebookAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithCredential,
@@ -17,12 +21,13 @@ import {
 import { auth, db } from './firebase'
 
 import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore'
+import { Alert } from 'react-native'
 
 const AuthContext = createContext({})
 
 const config = {
-  iosClientId: '226795182379-0vc5joofiinjq2lr26ut1qisj4ce3v0m.apps.googleusercontent.com',
-  androidClientId: '226795182379-o54lbfbngssuc4lpnf0ifqbmshbmrbr3.apps.googleusercontent.com',
+  iosClientId: Constants.manifest.iosClientId,
+  androidClientId: Constants.manifest.androidClientId,
   scopes: ['profile', 'email'],
   permissions: ['public_profile', 'email', 'gender', 'location']
 }
@@ -50,6 +55,25 @@ export const AuthProvider = ({ children }) => {
   const [profiles, setProfiles] = useState([])
   const [assetsList, setAssetsList] = useState([])
   const [address, setAddress] = useState(null)
+
+  const signInWighGoogle = async () => {
+    setLoading(true)
+
+    await Google.logInAsync(config)
+      .then(async loginResult => {
+        if (loginResult.type === 'success') {
+          //login
+          const { idToken, accessToken } = loginResult
+          const credential = GoogleAuthProvider.credential(idToken, accessToken)
+
+          console.log('credential: ', credential)
+          await signInWithCredential(auth, credential)
+        }
+
+        return Promise.reject()
+      }).catch(error => setError(error))
+      .finally(() => setLoading(false))
+  }
 
   useEffect(() =>
     onAuthStateChanged(auth, (user) => {
@@ -90,24 +114,6 @@ export const AuthProvider = ({ children }) => {
     if (profile?.about) setAbout(profile?.about)
     if (profile?.passions) setPassions([...profile?.passions])
     if (profile?.address) setAddress(...profile?.address)
-  }
-
-  const signInWighGoogle = async () => {
-    setLoading(true)
-
-    await Google.logInAsync(config)
-      .then(async loginResult => {
-        if (loginResult.type === 'success') {
-          //login
-          const { idToken, accessToken } = loginResult
-          const credential = GoogleAuthProvider.credential(idToken, accessToken)
-
-          await signInWithCredential(auth, credential)
-        }
-
-        return Promise.reject()
-      }).catch(error => setError(error))
-      .finally(() => setLoading(false))
   }
 
   const logout = () => {

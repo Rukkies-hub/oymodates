@@ -16,39 +16,18 @@ import { db } from '../hooks/firebase'
 import NewComment from '../components/NewComment'
 import Comments from '../components/Comments'
 import { useNavigation } from '@react-navigation/native'
+import Likes from '../components/Likes'
 
 const ViewPost = (params) => {
   const navigation = useNavigation()
-  const { user, likes, setLikes } = useAuth()
+  const { user } = useAuth()
   const post = params.route.params.post
-
 
   const windowWidth = useWindowDimensions().width
 
   const video = useRef(null)
   const [status, setStatus] = useState({})
   const [mute, setMute] = useState(true)
-
-  const likePost = async () => {
-    await updateDoc(doc(db, 'posts', post.id), {
-      likes: arrayUnion(user.uid)
-    })
-
-    getLikes()
-  }
-
-  const dislikePost = async () => {
-    await updateDoc(doc(db, 'posts', post.id), {
-      likes: arrayRemove(user.uid)
-    })
-
-    getLikes()
-  }
-
-  const getLikes = async () => {
-    let docSnap = await (await getDoc(doc(db, 'posts', post.id))).data()
-    setLikes(docSnap)
-  }
 
   return (
     <View
@@ -183,36 +162,7 @@ const ViewPost = (params) => {
           }}
         >
 
-          {
-            likes?.likes?.includes(user.uid) &&
-            <TouchableOpacity
-              onPress={dislikePost}
-              style={{
-                width: 35,
-                height: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 20
-              }}
-            >
-              <AntDesign name="heart" size={24} color={color.red} />
-            </TouchableOpacity>
-          }
-          {
-            !likes?.likes?.includes(user.uid) &&
-            <TouchableOpacity
-              onPress={likePost}
-              style={{
-                width: 35,
-                height: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 20
-              }}
-            >
-              <AntDesign name="hearto" size={24} color={color.lightText} />
-            </TouchableOpacity>
-          }
+          <Likes post={post} />
 
           <Pressable
             style={{
@@ -248,14 +198,14 @@ const ViewPost = (params) => {
           }}
         >
           {
-            likes?.likes?.length > 0 &&
+            post?.likesCount > 0 &&
             <Text
               style={{
                 color: color.dark,
                 fontSize: 14
               }}
             >
-              {likes?.likes?.length} {likes?.likes?.length == 1 ? 'Like' : 'Likes'}
+              {post?.likesCount} {post?.likesCount > 1 ? 'Likes' : 'Like'}
             </Text>
           }
           <Text

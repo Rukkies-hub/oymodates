@@ -124,7 +124,13 @@ const Header = ({
               file = downloadURL
               setLoading(true)
               addDoc(collection(db, 'posts'), {
-                user: userProfile,
+                user: {
+                  id: userProfile?.id,
+                  displayName: userProfile?.displayName,
+                  photoURL: userProfile?.photoURL
+                },
+                likesCount: 0,
+                commentsCount: 0,
                 media: file,
                 mediaLink: link,
                 mediaType,

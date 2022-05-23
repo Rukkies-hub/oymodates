@@ -244,14 +244,14 @@ const Posts = () => {
           >
 
             {
-              post?.likes?.length > 0 &&
+              post?.likesCount > 0 &&
               <Text
                 style={{
                   color: color.dark,
                   fontSize: 14
                 }}
               >
-                {post?.likes?.length} {post?.likes?.length == 1 ? 'Like' : 'Likes'}
+                {post?.likesCount} {post?.likesCount > 1 ? 'Likes' : 'Like'}
               </Text>
             }
             <Text
