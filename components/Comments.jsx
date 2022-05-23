@@ -55,18 +55,21 @@ const Comments = (params) => {
     )
     , [])
 
-  const sendCommentReply = async (comment) => {
+  const sendCommentReply = (comment) => {
+    console.log(comment)
     if (input != '')
-      await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
-        reply: arrayUnion({
-          reply: input,
-          id: userProfile?.id + Math.random(),
-          user: {
-            id: userProfile?.id,
-            displayName: userProfile?.displayName,
-            photoURL: userProfile?.photoURL
-          }
-        })
+      addDoc(collection(db, 'posts', comment?.post, 'comments', comment?.id, 'replies'), {
+        reply: input,
+        post: comment?.post,
+        likesCount: 0,
+        repliesCount: 0,
+        user: {
+          id: userProfile?.id,
+          displayName: userProfile?.displayName,
+          photoURL: userProfile?.photoURL
+        },
+        to: comment?.user?.id,
+        timestamp: serverTimestamp()
       })
     setInput('')
   }
@@ -257,14 +260,15 @@ const Comments = (params) => {
                       onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                       placeholder={`Reply ${comment?.user?.displayName}`}
                       style={{
+                        flex: 1,
                         minHeight: 40,
                         height,
-                        borderRadius: 12,
+                        borderRadius: 50,
                         backgroundColor: color.offWhite,
-                        width: '85%',
                         paddingHorizontal: 10,
                         paddingVertical: 4,
-                        color: color.dark
+                        color: color.dark,
+                        fontFamily: 'text'
                       }}
                     />
 
@@ -275,13 +279,11 @@ const Comments = (params) => {
                         height: 40,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        marginLeft: 10,
-                        backgroundColor: color.blue,
-                        borderRadius: 12
+                        marginLeft: 10
                       }}>
                       <FontAwesome5
                         name='paper-plane'
-                        color={color.white}
+                        color={color.lightText}
                         size={20}
                       />
                     </TouchableOpacity>

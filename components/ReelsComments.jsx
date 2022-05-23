@@ -309,11 +309,11 @@ const ReelsComments = (props) => {
                       onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                       placeholder={`Reply ${comment?.user?.displayName}`}
                       style={{
+                        flex: 1,
                         minHeight: 40,
                         height,
                         borderRadius: 50,
                         backgroundColor: color.offWhite,
-                        width: '85%',
                         paddingHorizontal: 10,
                         paddingVertical: 4,
                         color: color.dark
