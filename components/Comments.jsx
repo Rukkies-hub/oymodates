@@ -23,12 +23,15 @@ import useAuth from '../hooks/useAuth'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Likecomments from './Likecomments'
+import { useFonts } from 'expo-font'
 
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)
+
+import moment from 'moment'
 
 const Comments = (params) => {
   const { userProfile, user } = useAuth()
@@ -72,6 +75,12 @@ const Comments = (params) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
     setMediaVidiblity(!mediaVidiblity)
   }
+
+  const [loaded] = useFonts({
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+  })
+
+  if (!loaded) return null
 
   return (
     <TouchableWithoutFeedback
@@ -160,7 +169,8 @@ const Comments = (params) => {
                   >
                     <Text
                       style={{
-                        color: color.dark
+                        color: color.dark,
+                        fontFamily: 'text'
                       }}
                     >
                       Reply

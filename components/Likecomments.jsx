@@ -1,3 +1,4 @@
+import { useFonts } from 'expo-font'
 import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore'
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
@@ -53,6 +54,12 @@ const Likecomments = (props) => {
     updateLike()
   }
 
+  const [loaded] = useFonts({
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+  })
+
+  if (!loaded) return null
+
   return (
     <View>
       <TouchableOpacity
@@ -69,6 +76,7 @@ const Likecomments = (props) => {
         <Text
           style={{
             color: currentLikesState.state ? color.red : color.dark,
+            fontFamily: 'text'
           }}
         >
           {
