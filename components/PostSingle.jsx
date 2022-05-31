@@ -1,6 +1,6 @@
-import React, { forwardRef, useRef, useImperativeHandle, useEffect } from 'react'
+import React, { forwardRef, useRef, useImperativeHandle, useEffect, useState } from 'react'
 
-import { View, Text } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 
 import { Video } from 'expo-av'
 import color from '../style/color'
@@ -10,6 +10,8 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
   const ref = useRef(null)
 
   const navigation = useNavigation()
+
+  const [videoStatus, setVideoStatus] = useState({})
 
   useImperativeHandle(parentRef, () => ({
     play,
@@ -64,17 +66,36 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
   }
 
   return (
-    <Video
-      ref={ref}
-      style={{ flex: 1, backgroundColor: color.black }}
-      resizeMode={Video.RESIZE_MODE_COVER}
-      isLooping
-      usePoster
-      posterSource={{ uri: item?.thumbnail }}
-      posterStyle={{ resizeMode: 'cover', height: '100%' }}
-      shouldPlay={false}
-      source={{ uri: item?.media }}
-    />
+    <View
+      style={{
+        position: 'relative',
+        flex: 1
+      }}
+    >
+      <TouchableOpacity
+        onPress={() => videoStatus.isPlaying ? ref.current.pauseAsync() : ref.current.playAsync()}
+        style={{
+          flex: 1,
+          backgroundColor: color.transparent,
+          position: 'absolute',
+          zIndex: 1,
+          width: '100%',
+          height: '100%',
+        }}
+      />
+      <Video
+        ref={ref}
+        style={{ flex: 1, backgroundColor: color.black }}
+        resizeMode={Video.RESIZE_MODE_COVER}
+        isLooping
+        usePoster
+        posterSource={{ uri: item?.thumbnail }}
+        posterStyle={{ resizeMode: 'cover', height: '100%' }}
+        shouldPlay={false}
+        source={{ uri: item?.media }}
+        onPlaybackStatusUpdate={status => setVideoStatus(() => status)}
+      />
+    </View>
   )
 })
 

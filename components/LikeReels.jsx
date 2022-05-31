@@ -23,7 +23,7 @@ const LikeReels = (props) => {
         state: res
       })
     })
-    , [db, reel])
+    , [])
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {

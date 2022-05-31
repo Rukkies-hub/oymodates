@@ -87,7 +87,8 @@ const Reels = () => {
             position: 'absolute',
             bottom: 0,
             width,
-            height: height / 3
+            height: height / 3,
+            zIndex: 1
           }}
         >
           {/* CAPTION */}
@@ -158,29 +159,6 @@ const Reels = () => {
               }}
             >
               <LikeReels reel={item} />
-              {/* <TouchableOpacity
-                onPress={() => likeReel(item)}
-                style={{
-                  width: 40,
-                  height: 40,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginBottom: 30
-                }}
-              >
-                <AntDesign name="heart" size={24} color={item?.likes?.includes(userProfile?.id) ? color.red : color.white} />
-                <Text
-                  style={{
-                    color: color.white,
-                    fontFamily: 'text',
-                    marginTop: 5
-                  }}
-                >
-                  {
-                    item?.likes?.length > 0 ? item?.likes?.length : '0'
-                  }
-                </Text>
-              </TouchableOpacity> */}
 
               <ReelsCommentSheet item={item} />
             </View>
