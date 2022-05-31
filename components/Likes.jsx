@@ -27,21 +27,16 @@ const Likes = (params) => {
 
   useEffect(() => {
     return sound
-      ? () => {
-        console.log('Unloading Sound')
-        sound.unloadAsync()
-      }
+      ? () => sound.unloadAsync()
       : undefined
   }, [sound])
 
   const playSound = async () => {
-    console.log('Loading Sound')
     const { sound } = await Audio.Sound.createAsync(
       require('../assets/like.wav')
     )
     setSound(sound)
 
-    console.log('Playing Sound')
     sound.setVolumeAsync(0.1)
     await sound.playAsync()
   }
