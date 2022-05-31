@@ -17,6 +17,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 import useAuth from '../hooks/useAuth'
 import ReelsCommentSheet from './modal/ReelsCommentSheet'
+import LikeReels from '../components/LikeReels'
 
 const Reels = () => {
   const { setReelsCommentSheetIndex, userProfile, user } = useAuth()
@@ -156,7 +157,8 @@ const Reels = () => {
                 marginTop: 20
               }}
             >
-              <TouchableOpacity
+              <LikeReels reel={item} />
+              {/* <TouchableOpacity
                 onPress={() => likeReel(item)}
                 style={{
                   width: 40,
@@ -178,7 +180,7 @@ const Reels = () => {
                     item?.likes?.length > 0 ? item?.likes?.length : '0'
                   }
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
               <ReelsCommentSheet item={item} />
             </View>
