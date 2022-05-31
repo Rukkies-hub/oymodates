@@ -7,13 +7,14 @@ import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
 import { AntDesign } from '@expo/vector-icons'
-import { throttle } from 'throttle-debounce'
+import { Audio } from 'expo-av'
 
 const Likes = (params) => {
   const { user, userProfile } = useAuth()
   const post = params?.post
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: post?.likesCount })
+  const [sound, setSound] = useState()
 
   useEffect(() => {
     getLikesById(post?.id, user.uid).then(res => {
@@ -23,6 +24,27 @@ const Likes = (params) => {
       })
     })
   }, [])
+
+  useEffect(() => {
+    return sound
+      ? () => {
+        console.log('Unloading Sound')
+        sound.unloadAsync()
+      }
+      : undefined
+  }, [sound])
+
+  const playSound = async () => {
+    console.log('Loading Sound')
+    const { sound } = await Audio.Sound.createAsync(
+      require('../assets/like.wav')
+    )
+    setSound(sound)
+
+    console.log('Playing Sound')
+    sound.setVolumeAsync(0.1)
+    await sound.playAsync()
+  }
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
@@ -35,7 +57,7 @@ const Likes = (params) => {
         id: userProfile?.id,
         photoURL: userProfile?.photoURL,
         displayName: userProfile?.displayName
-      })
+      }).then(() => playSound())
       await updateDoc(doc(db, 'posts', post?.id), {
         likesCount: increment(1)
       })

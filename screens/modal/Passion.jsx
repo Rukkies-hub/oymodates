@@ -193,14 +193,14 @@ const Passion = () => {
                       paddingVertical: 5,
                       borderWidth: 2,
                       borderRadius: 50,
-                      borderColor: passions?.includes(passion) ? color.blue : color.borderColor,
+                      borderColor: passions?.includes(passion) ? color.red : color.borderColor,
                       marginBottom: 10,
                       marginRight: 10
                     }}
                   >
                     <Text
                       style={{
-                        color: passions?.includes(passion) ? color.blue : color.lightText,
+                        color: passions?.includes(passion) ? color.red : color.lightText,
                         fontSize: 12,
                         fontFamily: "text",
                         textTransform: "capitalize"
@@ -219,9 +219,9 @@ const Passion = () => {
           disabled={passions?.length < 3}
           onPress={updateIntrests}
           style={{
-            backgroundColor: passions?.length >= 3 ? color.blue : color.labelColor,
+            backgroundColor: passions?.length >= 3 ? color.red : color.labelColor,
             height: 50,
-            borderRadius: 12,
+            borderRadius: 4,
             justifyContent: "center",
             alignItems: "center"
           }}

@@ -6,6 +6,11 @@ import React, {
   useMemo
 } from 'react'
 
+import {
+  LayoutAnimation,
+  UIManager,
+} from 'react-native'
+
 import * as Google from 'expo-google-app-auth'
 
 import Constants from 'expo-constants'
@@ -31,8 +36,13 @@ const config = {
   permissions: ['public_profile', 'email', 'gender', 'location']
 }
 
-export const AuthProvider = ({ children }) => {
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+)
+  UIManager.setLayoutAnimationEnabledExperimental(true)
 
+export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null)
   const [user, setUser] = useState(null)
   const [loadingInitial, setLoadingInitial] = useState(true)
@@ -54,6 +64,7 @@ export const AuthProvider = ({ children }) => {
   const [assetsList, setAssetsList] = useState([])
   const [address, setAddress] = useState(null)
   const [appAuth, setAppAuth] = useState(null)
+  const [mediaVidiblity, setMediaVidiblity] = useState(false)
 
   const signInWighGoogle = async () => {
     setLoading(true)
@@ -127,6 +138,11 @@ export const AuthProvider = ({ children }) => {
       .finally(() => setLoading(false))
   }
 
+  const showReplyInput = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+    setMediaVidiblity(!mediaVidiblity)
+  }
+
   let madiaString = JSON.stringify(media)
 
   const memodValue = useMemo(() => ({
@@ -167,7 +183,10 @@ export const AuthProvider = ({ children }) => {
     assetsList,
     setAssetsList,
     address,
-    setAddress
+    setAddress,
+    mediaVidiblity,
+    setMediaVidiblity,
+    showReplyInput
   }), [
     user,
     loading,
@@ -198,7 +217,10 @@ export const AuthProvider = ({ children }) => {
     assetsList,
     setAssetsList,
     address,
-    setAddress
+    setAddress,
+    mediaVidiblity,
+    setMediaVidiblity,
+    showReplyInput
   ])
 
   return (

@@ -63,7 +63,7 @@ const Feeds = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: color.white,
       }}
     >
       <Posts />

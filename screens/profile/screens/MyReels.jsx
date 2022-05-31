@@ -41,7 +41,7 @@ const MyReels = () => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
             flexWrap: 'wrap',
             marginTop: 20
           }}

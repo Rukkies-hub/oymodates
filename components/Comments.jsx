@@ -35,13 +35,15 @@ import moment from 'moment'
 import CommentReplies from './CommentReplies'
 
 const Comments = (params) => {
-  const { userProfile, user } = useAuth()
+  const {
+    userProfile,
+    user,
+  } = useAuth()
   const post = params?.post
 
   const [comments, setComments] = useState([])
   const [height, setHeight] = useState(40)
   const [input, setInput] = useState('')
-  const [mediaVidiblity, setMediaVidiblity] = useState(false)
 
   useEffect(() =>
     onSnapshot(collection(db, 'posts', post.id, 'comments'),
@@ -56,11 +58,11 @@ const Comments = (params) => {
     , [])
 
   const sendCommentReply = (comment) => {
-    console.log(comment)
     if (input != '')
       addDoc(collection(db, 'posts', comment?.post, 'comments', comment?.id, 'replies'), {
         reply: input,
         post: comment?.post,
+        comment: comment.id,
         likesCount: 0,
         repliesCount: 0,
         user: {
@@ -72,11 +74,6 @@ const Comments = (params) => {
         timestamp: serverTimestamp()
       })
     setInput('')
-  }
-
-  const showReplyInput = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    setMediaVidiblity(!mediaVidiblity)
   }
 
   const [loaded] = useFonts({
@@ -164,7 +161,6 @@ const Comments = (params) => {
                   <Likecomments comment={comment} />
 
                   <TouchableOpacity
-                    onPress={showReplyInput}
                     style={{
                       paddingHorizontal: 10,
                       paddingVertical: 2
@@ -183,55 +179,52 @@ const Comments = (params) => {
 
                 <CommentReplies comment={comment} />
 
-                {
-                  mediaVidiblity &&
-                  <View
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    width: '100%',
+                    paddingRight: 20,
+                    marginTop: 10
+                  }}
+                >
+                  <TextInput
+                    multiline
+                    value={input}
+                    onChangeText={setInput}
+                    onSubmitEditing={() => sendCommentReply(comment)}
+                    onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+                    placeholder={`Reply ${comment?.user?.displayName}`}
                     style={{
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      width: '100%',
-                      paddingRight: 20,
-                      marginTop: 10
+                      flex: 1,
+                      minHeight: 40,
+                      height,
+                      borderRadius: 50,
+                      backgroundColor: color.offWhite,
+                      paddingHorizontal: 10,
+                      paddingVertical: 4,
+                      color: color.dark,
+                      fontFamily: 'text'
                     }}
-                  >
-                    <TextInput
-                      multiline
-                      value={input}
-                      onChangeText={setInput}
-                      onSubmitEditing={() => sendCommentReply(comment)}
-                      onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-                      placeholder={`Reply ${comment?.user?.displayName}`}
-                      style={{
-                        flex: 1,
-                        minHeight: 40,
-                        height,
-                        borderRadius: 50,
-                        backgroundColor: color.offWhite,
-                        paddingHorizontal: 10,
-                        paddingVertical: 4,
-                        color: color.dark,
-                        fontFamily: 'text'
-                      }}
-                    />
+                  />
 
-                    <TouchableOpacity
-                      onPress={() => sendCommentReply(comment)}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginLeft: 10
-                      }}>
-                      <FontAwesome5
-                        name='paper-plane'
-                        color={color.lightText}
-                        size={20}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                }
+                  <TouchableOpacity
+                    onPress={() => sendCommentReply(comment)}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginLeft: 10
+                    }}>
+                    <FontAwesome5
+                      name='paper-plane'
+                      color={color.lightText}
+                      size={20}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>

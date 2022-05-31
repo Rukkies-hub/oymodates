@@ -6,7 +6,8 @@ import {
   Pressable,
   TouchableOpacity,
   FlatList,
-  useWindowDimensions
+  useWindowDimensions,
+  Dimensions
 } from 'react-native'
 
 import useAuth from '../hooks/useAuth'
@@ -22,6 +23,8 @@ import { useNavigation } from '@react-navigation/native'
 import { Video } from 'expo-av'
 
 import Likes from './Likes'
+
+const { width, height } = Dimensions.get('window')
 
 const Posts = () => {
   const navigation = useNavigation()
@@ -60,7 +63,8 @@ const Posts = () => {
       alwaysBounceVertical={false}
       keyExtractor={item => item.id}
       style={{
-        flex: 1
+        flex: 1,
+        height: height - 109
       }}
       renderItem={({ item: post }) => (
         <View

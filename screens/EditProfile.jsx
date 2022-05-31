@@ -354,7 +354,7 @@ const EditProfile = () => {
                 height: 50,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: color.blue,
+                backgroundColor: color.red,
                 borderRadius: 50,
                 marginRight: 10
               }}
@@ -370,7 +370,7 @@ const EditProfile = () => {
                   height: 50,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: color.blue,
+                  backgroundColor: color.red,
                   borderRadius: 50
                 }}
               >
@@ -584,11 +584,14 @@ const EditProfile = () => {
             <TouchableOpacity
               onPress={getLocation}
               style={{
-                paddingVertical: 15,
-                paddingHorizontal: 10,
-                backgroundColor: color.blue,
-                borderRadius: 12,
-                marginBottom: 10
+                backgroundColor: color.red,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 4,
+                paddingVertical: 10,
+                paddingHorizontal: 15,
+                marginLeft: 5
               }}
             >
               <Text
@@ -679,15 +682,15 @@ const EditProfile = () => {
           <TouchableOpacity
             onPress={updateUserProfile}
             style={{
-              width: '100%',
-              height: 50,
+              flex: 1,
+              marginTop: 30,
+              marginBottom: 50,
               marginVertical: 20,
-              borderRadius: 12,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: color.blue,
-              marginTop: 30,
-              marginBottom: 50
+              backgroundColor: color.red,
+              borderRadius: 4,
+              height: 50
             }}
           >
             {

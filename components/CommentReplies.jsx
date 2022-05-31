@@ -10,6 +10,8 @@ import color from '../style/color'
 import { useFonts } from 'expo-font'
 
 import { Octicons } from '@expo/vector-icons'
+import LikeReply from './LikeReply'
+import useAuth from '../hooks/useAuth'
 
 const CommentReplies = (props) => {
   const comments = props.comment
@@ -27,8 +29,6 @@ const CommentReplies = (props) => {
         )
     )
     , [])
-
-  console.log('replies: ', replies)
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -65,32 +65,47 @@ const CommentReplies = (props) => {
                 borderRadius: 50,
               }}
             />
-            <View
-              style={{
-                marginLeft: 10,
-                backgroundColor: color.offWhite,
-                borderRadius: 12,
-                paddingHorizontal: 10,
-                paddingVertical: 4,
-              }}
-            >
-              <Text
+            <View>
+              <View
                 style={{
-                  color: color.dark,
-                  fontFamily: 'text',
-                  fontSize: 13
+                  marginLeft: 10,
+                  backgroundColor: color.offWhite,
+                  borderRadius: 12,
+                  paddingHorizontal: 10,
+                  paddingVertical: 4,
                 }}
               >
-                {reply?.user?.displayName}
-              </Text>
-              <Text
+                <Text
+                  style={{
+                    color: color.dark,
+                    fontFamily: 'text',
+                    fontSize: 13
+                  }}
+                >
+                  {reply?.user?.displayName}
+                </Text>
+                <Text
+                  style={{
+                    color: color.dark
+                  }}
+                >
+                  {reply?.reply}
+                </Text>
+              </View>
+              <View
                 style={{
-                  color: color.dark
+                  width: '100%',
+                  paddingHorizontal: 10,
+                  marginTop: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
                 }}
               >
-                {reply?.reply}
-              </Text>
+                <LikeReply reply={reply} />
+              </View>
             </View>
+
           </View>
         )}
       />
