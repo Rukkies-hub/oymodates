@@ -15,7 +15,7 @@ const LikeReels = (props) => {
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reel?.likesCount })
 
-  useEffect(() => {
+  useEffect(() =>
     getLikesById(reel?.id, user.uid).then(res => {
       console.log({ res })
       setCurrentLikesState({
@@ -23,7 +23,7 @@ const LikeReels = (props) => {
         state: res
       })
     })
-  }, [])
+    , [db, reel])
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
@@ -75,7 +75,7 @@ const LikeReels = (props) => {
           marginTop: 5
         }}
       >
-        {currentLikesState.counter}
+        {currentLikesState.counter ? currentLikesState.counter : '0'}
       </Text>
     </TouchableOpacity>
   )
