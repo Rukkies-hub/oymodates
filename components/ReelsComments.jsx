@@ -54,6 +54,25 @@ const ReelsComments = (props) => {
     )
     , [])
 
+  const sendCommentReply = (comment) => {
+    if (input != '')
+      addDoc(collection(db, 'reels', comment?.reel, 'comments', comment?.id, 'replies'), {
+        reply: input,
+        reel: comment?.reel,
+        comment: comment?.id,
+        likesCount: 0,
+        repliesCount: 0,
+        user: {
+          id: userProfile?.id,
+          displayName: userProfile?.displayName,
+          photoURL: userProfile?.photoURL
+        },
+        to: comment?.user?.id,
+        timestamp: serverTimestamp()
+      })
+    setInput('')
+  }
+
   const showReplyInput = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
     setMediaVidiblity(!mediaVidiblity)
@@ -238,6 +257,7 @@ const ReelsComments = (props) => {
                       onChangeText={setInput}
                       onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                       placeholder={`Reply ${comment?.user?.displayName}`}
+                      onSubmitEditing={() => sendCommentReply(comment)}
                       style={{
                         flex: 1,
                         minHeight: 40,
@@ -251,6 +271,7 @@ const ReelsComments = (props) => {
                     />
 
                     <TouchableOpacity
+                      onPress={() => sendCommentReply(comment)}
                       style={{
                         width: 40,
                         height: 40,
