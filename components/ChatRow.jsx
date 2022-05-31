@@ -18,9 +18,9 @@ const ChatRow = ({ matchDetails }) => {
   const [matchedUserInfo, setMatchedUserInfo] = useState({})
   const [lastMessage, setLastMessage] = useState("")
 
-  useEffect(() => {
+  useEffect(() => 
     setMatchedUserInfo(getMatchedUserInfo(matchDetails?.users, user.uid))
-  }, [matchDetails, user])
+  , [matchDetails, user])
 
   useEffect(() =>
     onSnapshot(query(collection(db, 'matches', matchDetails.id, 'messages'),

@@ -21,7 +21,7 @@ const ChatList = () => {
           ...doc?.data()
         }))
       ))
-    , [user])
+    , [user, db])
 
   return (
     matches.length > 0 ? (

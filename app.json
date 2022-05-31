@@ -39,6 +39,17 @@
         {
           "userTrackingPermission": false
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/tinder-fill.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./assets/newMessage.mp3",
+            "./assets/newMessage.mp3"
+          ]
+        }
       ]
     ],
     "firebase": {

@@ -183,65 +183,6 @@ const Comments = (params) => {
 
                 <CommentReplies comment={comment} />
 
-                {/* <View
-                  style={{
-                    marginTop: 10
-                  }}
-                >
-                  <FlatList
-                    data={comment?.reply}
-                    keyExtractor={item => item.id}
-                    style={{
-                      flex: 1
-                    }}
-                    renderItem={({ item: reply }) => (
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'flex-start',
-                          alignItems: 'flex-start',
-                          marginTop: 10
-                        }}
-                      >
-                        <Image
-                          source={{ uri: reply?.user?.photoURL }}
-                          style={{
-                            width: 30,
-                            height: 30,
-                            borderRadius: 50,
-                          }}
-                        />
-                        <View
-                          style={{
-                            marginLeft: 10,
-                            backgroundColor: color.blue,
-                            borderRadius: 12,
-                            paddingHorizontal: 10,
-                            paddingVertical: 4,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              color: color.white,
-                              fontFamily: 'text',
-                              fontSize: 13
-                            }}
-                          >
-                            {reply?.user?.displayName}
-                          </Text>
-                          <Text
-                            style={{
-                              color: color.white
-                            }}
-                          >
-                            {reply?.reply}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                  />
-                </View> */}
-
                 {
                   mediaVidiblity &&
                   <View

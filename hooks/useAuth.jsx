@@ -7,7 +7,6 @@ import React, {
 } from 'react'
 
 import * as Google from 'expo-google-app-auth'
-import * as Facebook from 'expo-facebook'
 
 import Constants from 'expo-constants'
 
@@ -54,6 +53,7 @@ export const AuthProvider = ({ children }) => {
   const [profiles, setProfiles] = useState([])
   const [assetsList, setAssetsList] = useState([])
   const [address, setAddress] = useState(null)
+  const [appAuth, setAppAuth] = useState(null)
 
   const signInWighGoogle = async () => {
     setLoading(true)
@@ -65,7 +65,6 @@ export const AuthProvider = ({ children }) => {
           const { idToken, accessToken } = loginResult
           const credential = GoogleAuthProvider.credential(idToken, accessToken)
 
-          console.log('credential: ', credential)
           await signInWithCredential(auth, credential)
         }
 
@@ -75,13 +74,18 @@ export const AuthProvider = ({ children }) => {
   }
 
   useEffect(() =>
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, user => {
+      setAppAuth(null)
       if (user) {
+        setAppAuth(true)
         setUser(user)
         getUserProfile(user)
         getPendingSwipes(user)
       }
-      else setUser(null)
+      else {
+        setAppAuth(true)
+        setUser(null)
+      }
 
       setLoadingInitial(false)
     })
@@ -99,7 +103,7 @@ export const AuthProvider = ({ children }) => {
     )
   }
 
-  const getUserProfile = async (user) => {
+  const getUserProfile = async user => {
     let profile = await (await getDoc(doc(db, 'users', user.uid))).data()
     setUserProfile(profile)
 
