@@ -75,16 +75,16 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() =>
     onAuthStateChanged(auth, user => {
-      setAppAuth(null)
+      // setAppAuth(null)
       if (user) {
-        setAppAuth(true)
+        // setAppAuth(true)
         setUser(user)
         getUserProfile(user)
         getPendingSwipes(user)
       }
       else {
         setAppAuth(true)
-        setUser(null)
+        // setUser(null)
       }
 
       setLoadingInitial(false)

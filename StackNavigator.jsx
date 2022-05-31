@@ -30,7 +30,7 @@ const StackNavigator = () => {
   return (
     <Stack.Navigator>
       {
-        !appAuth ?
+        appAuth ?
           <>
             <Stack.Screen name='Splash' component={Splash} options={{ headerShown: false }} />
           </> :

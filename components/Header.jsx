@@ -7,7 +7,7 @@ import {
   ActivityIndicator
 } from 'react-native'
 
-import { FontAwesome, MaterialCommunityIcons, MaterialIcons, Entypo, AntDesign, FontAwesome5 } from '@expo/vector-icons'
+import { FontAwesome, MaterialCommunityIcons, MaterialIcons, Entypo, AntDesign, FontAwesome5, Feather } from '@expo/vector-icons'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -24,7 +24,7 @@ import { useFonts } from 'expo-font'
 import color from '../style/color'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
+import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 
 let file
 let link = `posts/${new Date().toISOString()}`
@@ -99,29 +99,13 @@ const Header = ({
         xhr.send(null)
       })
 
-      const mediaRef = ref(storage, link)
+      const mediaRef = ref(storage, `posts/${new Date().toISOString()}`)
 
-      uploadTask = uploadBytesResumable(mediaRef, blob)
-
-      uploadTask.on('state_changed',
-        snapshot => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          console.log('Upload is ' + progress + '% done')
-
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused')
-              break
-            case 'running':
-              console.log('Upload is running')
-              break
-          }
-        },
-        error => console.log('error uploading image: ', error),
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref)
+      // uploadTask = uploadBytesResumable(mediaRef, blob)
+      uploadBytes(mediaRef, blob)
+        .then(snapshot => {
+          getDownloadURL(snapshot.ref)
             .then(downloadURL => {
-              file = downloadURL
               setLoading(true)
               addDoc(collection(db, 'posts'), {
                 user: {
@@ -131,20 +115,61 @@ const Header = ({
                 },
                 likesCount: 0,
                 commentsCount: 0,
-                media: file,
-                mediaLink: link,
+                media: downloadURL,
+                mediaLink: snapshot.ref._location.path,
                 mediaType,
                 caption: postDetails.caption,
                 timestamp: serverTimestamp()
-              })
-                .then(async () => await schedulePushNotification())
+              }).then(async () => await schedulePushNotification())
                 .finally(() => {
                   setLoading(false)
                   cancelPost()
                 })
             })
-        }
-      )
+        })
+
+      // uploadTask.on('state_changed',
+      //   snapshot => {
+      //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      //     console.log('Upload is ' + progress + '% done')
+
+      //     switch (snapshot.state) {
+      //       case 'paused':
+      //         console.log('Upload is paused')
+      //         break
+      //       case 'running':
+      //         console.log('Upload is running')
+      //         break
+      //     }
+      //   },
+      //   error => console.log('error uploading image: ', error),
+      //   () => {
+      //     getDownloadURL(uploadTask.snapshot.ref)
+      //       .then(downloadURL => {
+      //         file = downloadURL
+      //         setLoading(true)
+      //         addDoc(collection(db, 'posts'), {
+      //           user: {
+      //             id: userProfile?.id,
+      //             displayName: userProfile?.displayName,
+      //             photoURL: userProfile?.photoURL
+      //           },
+      //           likesCount: 0,
+      //           commentsCount: 0,
+      //           media: file,
+      //           mediaLink: link,
+      //           mediaType,
+      //           caption: postDetails.caption,
+      //           timestamp: serverTimestamp()
+      //         })
+      //           .then(async () => await schedulePushNotification())
+      //           .finally(() => {
+      //             setLoading(false)
+      //             cancelPost()
+      //           })
+      //       })
+      //   }
+      // )
     }
   }
 
@@ -291,20 +316,22 @@ const Header = ({
             <TouchableOpacity
               onPress={cancelPost}
               style={{
-                backgroundColor: `${color.blue}33`,
-                borderRadius: 12,
-                width: 70,
-                height: 40,
+                flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginRight: 10
+                borderColor: color.borderColor,
+                borderWidth: 1,
+                borderRadius: 4,
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                marginRight: 5
               }}
             >
               <Text
                 style={{
+                  color: color.dark,
                   fontFamily: 'text',
-                  color: color.blue,
-                  fontSize: 16
+                  marginLeft: 10
                 }}
               >
                 Cancel
@@ -317,26 +344,31 @@ const Header = ({
             <TouchableOpacity
               onPress={savePost}
               style={{
-                backgroundColor: color.blue,
-                borderRadius: 12,
-                width: 60,
-                height: 40,
+                flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                backgroundColor: loading == true ? color.faintRed : color.red,
+                borderRadius: 4,
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                marginLeft: 5
               }}
             >
               {
                 loading ? <ActivityIndicator color={color.white} size='small' />
                   :
-                  <Text
-                    style={{
-                      fontFamily: 'text',
-                      color: color.white,
-                      fontSize: 16
-                    }}
-                  >
-                    Post
-                  </Text>
+                  <>
+                    <Feather name="corner-left-up" size={20} color={loading == true ? color.red : color.white} />
+                    <Text
+                      style={{
+                        fontFamily: 'text',
+                        marginLeft: 10,
+                        color: loading == true ? color.red : color.white
+                      }}
+                    >
+                      Post
+                    </Text>
+                  </>
               }
             </TouchableOpacity>
           }

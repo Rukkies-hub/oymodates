@@ -122,6 +122,7 @@ const Profile = () => {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             alignItems: 'center',
+            marginRight: 20
           }}
         >
           <Text
@@ -131,35 +132,7 @@ const Profile = () => {
               color: color.black
             }}
           >
-            16
-          </Text>
-          <Text
-            style={{
-              fontFamily: 'text',
-              fontSize: 16,
-              color: color.lightText,
-              marginLeft: 5
-            }}
-          >
-            Following
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            marginHorizontal: 20
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'boldText',
-              fontSize: 18,
-              color: color.black
-            }}
-          >
-            12
+            {userProfile?.followersCount ? userProfile?.followersCount : '0'}
           </Text>
           <Text
             style={{
@@ -186,7 +159,7 @@ const Profile = () => {
               color: color.black
             }}
           >
-            55
+            {userProfile?.likesCount ? userProfile?.likesCount : '0'}
           </Text>
           <Text
             style={{
@@ -321,7 +294,7 @@ const Profile = () => {
             marginLeft: 10
           }}
         >
-          {userProfile?.job} at {userProfile?.company }
+          {userProfile?.job} at {userProfile?.company}
         </Text>
       </View>
 
