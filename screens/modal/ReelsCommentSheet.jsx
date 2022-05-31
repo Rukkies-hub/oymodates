@@ -5,8 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  TextInput,
-  FlatList
+  TextInput
 } from 'react-native'
 
 import RBSheet from "react-native-raw-bottom-sheet"
@@ -19,16 +18,9 @@ import { db } from '../../hooks/firebase'
 import ReelsComments from '../../components/ReelsComments'
 import { useFonts } from 'expo-font'
 
-import * as NavigationBar from 'expo-navigation-bar'
-
 const ReelsCommentSheet = (props) => {
   const refRBSheet = useRef()
   const { userProfile } = useAuth()
-
-  // useEffect(() => {
-  //   NavigationBar.setBackgroundColorAsync(color.black)
-  //   NavigationBar.setButtonStyleAsync('light')
-  // }, [])
 
   const reel = props?.item
 

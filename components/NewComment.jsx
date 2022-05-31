@@ -1,4 +1,4 @@
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { db } from '../hooks/firebase'
@@ -16,7 +16,7 @@ const NewComment = (params) => {
   const [height, setHeight] = useState(50)
   const [input, setInput] = useState('')
 
-  const sendComment = () => {
+  const sendComment = async () => {
     if (input != '')
       addDoc(collection(db, 'posts', post?.id, 'comments'), {
         comment: input,
@@ -30,6 +30,11 @@ const NewComment = (params) => {
         },
         timestamp: serverTimestamp()
       })
+    
+    await updateDoc(doc(db, 'posts', post?.id), {
+      commentsCount: increment(1)
+    })
+
     setInput('')
   }
 

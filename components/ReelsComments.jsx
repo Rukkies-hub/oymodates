@@ -25,6 +25,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import uuid from 'uuid-random'
 import { useFonts } from 'expo-font'
+import LikeReelsComment from './LikeReelsComment'
 
 if (
   Platform.OS === "android" &&
@@ -52,32 +53,6 @@ const ReelsComments = (props) => {
         )
     )
     , [])
-
-  const likeComment = async (comment) => {
-    comment?.likes?.includes(user.uid) ?
-      await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
-        likes: arrayRemove(userProfile?.id)
-      }) :
-      await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
-        likes: arrayUnion(userProfile?.id)
-      })
-  }
-
-  const sendCommentReply = async (comment) => {
-    if (input != '')
-      await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
-        reply: arrayUnion({
-          reply: input,
-          id: uuid(),
-          user: {
-            id: userProfile?.id,
-            displayName: userProfile?.displayName,
-            photoURL: userProfile?.photoURL
-          }
-        })
-      })
-    setInput('')
-  }
 
   const showReplyInput = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
@@ -165,53 +140,7 @@ const ReelsComments = (props) => {
                     marginTop: 4
                   }}
                 >
-                  <TouchableOpacity
-                    onPress={() => likeComment(comment)}
-                    style={{
-                      paddingHorizontal: 10,
-                      paddingVertical: 2,
-                      marginRight: 10,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center'
-                    }}
-                  >
-                    {
-                      comment?.likes?.length > 0 &&
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'flex-start',
-                          alignItems: 'center'
-                        }}
-                      >
-                        <Image
-                          source={require('../assets/heart.png')}
-                          style={{
-                            width: 15,
-                            height: 15
-                          }}
-                        />
-                        <Text
-                          style={{
-                            color: comment?.likes?.includes(user?.uid) ? color.red : color.dark,
-                            marginLeft: 4
-                          }}
-                        >
-                          {`${comment?.likes?.length} `}
-                        </Text>
-                      </View>
-                    }
-                    <Text
-                      style={{
-                        color: comment?.likes?.includes(user?.uid) ? color.red : color.dark
-                      }}
-                    >
-                      {
-                        comment?.likes?.length <= 1 ? 'Like' : 'Likes'
-                      }
-                    </Text>
-                  </TouchableOpacity>
+                  <LikeReelsComment comment={comment} />
 
                   <TouchableOpacity
                     onPress={showReplyInput}
@@ -222,7 +151,9 @@ const ReelsComments = (props) => {
                   >
                     <Text
                       style={{
-                        color: color.dark
+                        color: color.dark,
+                        fontFamily: 'text',
+                        marginRight: 3
                       }}
                     >
                       Reply
@@ -305,7 +236,6 @@ const ReelsComments = (props) => {
                       multiline
                       value={input}
                       onChangeText={setInput}
-                      onSubmitEditing={() => sendCommentReply(comment)}
                       onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                       placeholder={`Reply ${comment?.user?.displayName}`}
                       style={{
@@ -321,7 +251,6 @@ const ReelsComments = (props) => {
                     />
 
                     <TouchableOpacity
-                      onPress={() => sendCommentReply(comment)}
                       style={{
                         width: 40,
                         height: 40,

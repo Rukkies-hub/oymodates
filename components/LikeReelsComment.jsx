@@ -1,0 +1,114 @@
+import React, { useState, useEffect } from 'react'
+import { View, Text, TouchableOpacity } from 'react-native'
+import color from '../style/color'
+
+import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore'
+import { db } from '../hooks/firebase'
+import useAuth from '../hooks/useAuth'
+import { useFonts } from 'expo-font'
+
+const LikeReelsComment = (props) => {
+  const { user, userProfile } = useAuth()
+  const comment = props.comment
+  // console.log('comment: ', comment)
+
+  const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
+
+  useEffect(() => {
+    getLikesById(comment?.id, user.uid)
+      .then(res => {
+        console.log({ res })
+        setCurrentLikesState({
+          ...currentLikesState,
+          state: res
+        })
+      })
+  }, [])
+
+  const getLikesById = () => new Promise(async (resolve, reject) => {
+    getDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id, 'likes', user.uid))
+      .then(res => resolve(res.exists()))
+  })
+
+  const updateLike = () => new Promise(async (resolve, reject) => {
+    if (currentLikesState.state) {
+      await deleteDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id, 'likes', user.uid))
+      await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
+        likesCount: increment(-1)
+      })
+    } else {
+      await setDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id, 'likes', user.uid), {
+        id: userProfile?.id,
+        photoURL: userProfile?.photoURL,
+        displayName: userProfile?.displayName
+      })
+      await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
+        likesCount: increment(1)
+      })
+    }
+  })
+
+  const handleUpdateLikes = () => {
+    setCurrentLikesState({
+      state: !currentLikesState.state,
+      counter: currentLikesState.counter + (currentLikesState.state ? -1 : 1)
+    })
+    updateLike()
+  }
+
+  const [loaded] = useFonts({
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+  })
+
+  if (!loaded) return null
+
+  return (
+    <TouchableOpacity
+      onPress={handleUpdateLikes}
+      style={{
+        paddingHorizontal: 10,
+        paddingVertical: 2,
+        marginRight: 10,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+      }}
+    >
+      {/* <Text
+        style={{
+          color: color.dark,
+          fontFamily: 'text',
+          marginRight: 3
+        }}
+      >
+        Like
+      </Text> */}
+      {
+        currentLikesState.counter > 0 &&
+        <Text
+          style={{
+            color: currentLikesState.state ? color.red : color.dark,
+            fontFamily: 'text',
+            marginRight: 3
+          }}
+        >
+          {
+            currentLikesState.counter
+          }
+        </Text>
+      }
+      <Text
+        style={{
+          color: currentLikesState.state ? color.red : color.dark,
+          fontFamily: 'text'
+        }}
+      >
+        {
+          currentLikesState.counter <= 1 ? 'Like' : 'Likes'
+        }
+      </Text>
+    </TouchableOpacity>
+  )
+}
+
+export default LikeReelsComment

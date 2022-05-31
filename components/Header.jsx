@@ -127,49 +127,6 @@ const Header = ({
                 })
             })
         })
-
-      // uploadTask.on('state_changed',
-      //   snapshot => {
-      //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-      //     console.log('Upload is ' + progress + '% done')
-
-      //     switch (snapshot.state) {
-      //       case 'paused':
-      //         console.log('Upload is paused')
-      //         break
-      //       case 'running':
-      //         console.log('Upload is running')
-      //         break
-      //     }
-      //   },
-      //   error => console.log('error uploading image: ', error),
-      //   () => {
-      //     getDownloadURL(uploadTask.snapshot.ref)
-      //       .then(downloadURL => {
-      //         file = downloadURL
-      //         setLoading(true)
-      //         addDoc(collection(db, 'posts'), {
-      //           user: {
-      //             id: userProfile?.id,
-      //             displayName: userProfile?.displayName,
-      //             photoURL: userProfile?.photoURL
-      //           },
-      //           likesCount: 0,
-      //           commentsCount: 0,
-      //           media: file,
-      //           mediaLink: link,
-      //           mediaType,
-      //           caption: postDetails.caption,
-      //           timestamp: serverTimestamp()
-      //         })
-      //           .then(async () => await schedulePushNotification())
-      //           .finally(() => {
-      //             setLoading(false)
-      //             cancelPost()
-      //           })
-      //       })
-      //   }
-      // )
     }
   }
 
