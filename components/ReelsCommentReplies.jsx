@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
 
+import { useFonts } from 'expo-font'
 import { collection, onSnapshot } from 'firebase/firestore'
-
 import { db } from '../hooks/firebase'
-
 import color from '../style/color'
 
-import { useFonts } from 'expo-font'
-
-import { Octicons } from '@expo/vector-icons'
-import LikeReply from './LikeReply'
-
-const CommentReplies = (props) => {
+const ReelsCommentReplies = (props) => {
   const comments = props.comment
-
   const [replies, setReplies] = useState([])
 
   useEffect(() =>
-    onSnapshot(collection(db, 'posts', comments?.post, 'comments', comments?.id, 'replies'),
+    onSnapshot(collection(db, 'reels', comments?.reel, 'comments', comments?.id, 'replies'),
       snapshot =>
         setReplies(
           snapshot?.docs?.map(doc => ({
@@ -99,36 +92,14 @@ const CommentReplies = (props) => {
                   alignItems: 'center',
                 }}
               >
-                <LikeReply reply={reply} />
+                {/* <LikeReply reply={reply} /> */}
               </View>
             </View>
           </View>
         )}
       />
-      {
-        replies?.length > 1 &&
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            marginTop: 10
-          }}
-        >
-          <Octicons name='reply' size={18} color={color.lightText} />
-          <Text
-            style={{
-              fontFamily: 'text',
-              marginLeft: 5,
-              fontSize: 14
-            }}
-          >
-            {replies?.length} Replies
-          </Text>
-        </TouchableOpacity>
-      }
     </View>
   )
 }
 
-export default CommentReplies
+export default ReelsCommentReplies

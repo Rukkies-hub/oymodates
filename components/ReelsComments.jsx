@@ -26,6 +26,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import uuid from 'uuid-random'
 import { useFonts } from 'expo-font'
 import LikeReelsComment from './LikeReelsComment'
+import ReelsCommentReplies from './ReelsCommentReplies'
 
 if (
   Platform.OS === "android" &&
@@ -180,7 +181,9 @@ const ReelsComments = (props) => {
                   </TouchableOpacity>
                 </View>
 
-                <View
+                {/* reples */}
+                <ReelsCommentReplies comment={comment} />
+                {/* <View
                   style={{
                     marginTop: 10
                   }}
@@ -237,7 +240,7 @@ const ReelsComments = (props) => {
                       </View>
                     )}
                   />
-                </View>
+                </View> */}
 
                 {
                   mediaVidiblity &&
