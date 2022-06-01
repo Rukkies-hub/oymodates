@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import color from '../style/color'
+import LikeReelsReply from './LikeReelsReply'
 
 const ReelsCommentReplies = (props) => {
   const comments = props.comment
@@ -92,6 +93,7 @@ const ReelsCommentReplies = (props) => {
                   alignItems: 'center',
                 }}
               >
+                <LikeReelsReply reply={reply} />
                 {/* <LikeReply reply={reply} /> */}
               </View>
             </View>
