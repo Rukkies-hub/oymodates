@@ -106,11 +106,11 @@ const Posts = () => {
                 style={{
                   fontFamily: 'text',
                   marginLeft: 10,
-                  fontSize: 14,
+                  fontSize: 18,
                   color: color.dark
                 }}
               >
-                {post?.user?.displayName}
+                {post?.user?.username}
               </Text>
             </Pressable>
 

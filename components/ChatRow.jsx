@@ -75,7 +75,7 @@ const ChatRow = ({ matchDetails }) => {
           <Text
             style={{
               fontSize: 12,
-              color: color.lightText,
+              color: color.dark,
               fontFamily: "text"
             }}
           >

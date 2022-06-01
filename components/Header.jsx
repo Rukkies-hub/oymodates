@@ -111,6 +111,7 @@ const Header = ({
                 user: {
                   id: userProfile?.id,
                   displayName: userProfile?.displayName,
+                  username: userProfile?.username,
                   photoURL: userProfile?.photoURL
                 },
                 likesCount: 0,
@@ -142,7 +143,7 @@ const Header = ({
   useEffect(() => {
     if (extention.includes('jpg' || 'png' || 'gif' || 'jpeg' || 'JPEG' || 'JPG' || 'PNG' || 'GIF'))
       setMediaType('image')
-    else if (extention.includes('mp4'))
+    else if (extention.includes('mp4' || 'webm' || 'WEBM' || 'webM'))
       setMediaType('video')
   }, [media])
 
