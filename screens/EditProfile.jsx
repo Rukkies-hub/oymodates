@@ -21,7 +21,7 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 
-// import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker'
 
 import * as ImagePicker from 'expo-image-picker'
 
@@ -404,7 +404,7 @@ const EditProfile = () => {
             }}
           />
 
-          {/* <DatePicker
+          <DatePicker
             style={{
               width: '100%',
             }}
@@ -439,7 +439,7 @@ const EditProfile = () => {
               }
             }}
             onDateChange={setDate}
-          /> */}
+          />
 
           <TextInput
             placeholder='Enter your occupation'

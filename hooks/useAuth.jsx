@@ -25,8 +25,10 @@ import {
 import { auth, db } from './firebase'
 
 import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore'
-import { Alert } from 'react-native'
+
 import { useNavigation } from '@react-navigation/native'
+
+import * as Facebook from 'expo-facebook'
 
 const AuthContext = createContext({})
 
@@ -65,8 +67,7 @@ export const AuthProvider = ({ children }) => {
   const [pendingSwipes, setPendingSwipes] = useState([])
   const [profiles, setProfiles] = useState([])
   const [assetsList, setAssetsList] = useState([])
-  const [address, setAddress] = useState(null)
-  const [appAuth, setAppAuth] = useState(null)
+  const [address, setAddress] = useState(null) 
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
 
   const signInWighGoogle = async () => {
@@ -89,17 +90,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() =>
     onAuthStateChanged(auth, user => {
-      // setAppAuth(null)
       if (user) {
-        // setAppAuth(true)
         setUser(user)
         getUserProfile(user)
         getPendingSwipes(user)
       }
-      else {
-        setAppAuth(true)
-        // setUser(null)
-      }
+      else setUser(null)
+
 
       setLoadingInitial(false)
     })

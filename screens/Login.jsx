@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react'
-import { View, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { View, Text, Image, ActivityIndicator, TouchableOpacity, SafeAreaView } from 'react-native'
 import useAuth from '../hooks/useAuth'
 
 import color from '../style/color'
@@ -27,7 +27,7 @@ const Login = () => {
     return null
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         justifyContent: 'center',
@@ -89,7 +89,7 @@ const Login = () => {
             </View>
         }
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   )
 }
 

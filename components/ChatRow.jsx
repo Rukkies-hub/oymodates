@@ -45,11 +45,10 @@ const ChatRow = ({ matchDetails }) => {
       }
       style={{
         height: 65,
-        borderBottomWidth: .3,
-        borderBottomColor: color.borderColor,
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
+        marginBottom: 10
       }}
     >
       <View

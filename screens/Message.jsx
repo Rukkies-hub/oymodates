@@ -33,6 +33,9 @@ import { useFonts } from 'expo-font'
 
 import EmojiSelector, { Categories } from 'react-native-emoji-selector'
 
+import EmojiPicker, { emojiFromUtf16 } from '../components/emojiPicker'
+import { emojis } from '../components/emojiPicker/data/emojis'
+
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -54,6 +57,7 @@ const Message = () => {
   const [height, setHeight] = useState(50)
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
   const [activeInput, setActiveInput] = useState(false)
+  const [recent, setRecent] = useState([])
 
   useEffect(() =>
     onSnapshot(query(collection(db,
@@ -71,6 +75,13 @@ const Message = () => {
       setExpanded(false)
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
       setMediaVidiblity(false)
+    })
+    , [])
+  
+  useEffect(() =>
+    Keyboard.addListener('keyboardDidHide', () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+      setMediaVidiblity(true)
     })
     , [])
 
@@ -234,12 +245,15 @@ const Message = () => {
       </View>
       {expanded && (
         <View style={{ minWidth: 250, flex: 1 }}>
-          <EmojiSelector
-            columns={9}
-            showSearchBar={false}
-            showSectionTitles={false}
-            category={Categories.emotion}
-            onEmojiSelected={emoji => setInput(`${input} ${emoji}`)}
+          <EmojiPicker
+            colSize={9}
+            emojis={emojis}
+            recent={recent}
+            autoFocus={false}
+            loading={false}
+            darkMode={false}
+            onSelect={emoji => setInput(`${input} ${emoji.emoji}`)}
+            onChangeRecent={setRecent}
           />
         </View>
       )}
