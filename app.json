@@ -62,7 +62,8 @@
       "measurementId": "G-ZHE14XQR3H"
     },
     "facebook": {
-      "appId": "3131220477131147"
+      "appId": "3131220477131147",
+      "appSecret": "d42efc1a9cd8f314f81342197759d70f"
     },
     "iosClientId": "226795182379-0vc5joofiinjq2lr26ut1qisj4ce3v0m.apps.googleusercontent.com",
     "androidClientId": "226795182379-o54lbfbngssuc4lpnf0ifqbmshbmrbr3.apps.googleusercontent.com"

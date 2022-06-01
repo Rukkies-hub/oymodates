@@ -26,6 +26,7 @@ import { auth, db } from './firebase'
 
 import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore'
 import { Alert } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 const AuthContext = createContext({})
 
@@ -43,6 +44,8 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
 export const AuthProvider = ({ children }) => {
+  const navigation = useNavigation()
+
   const [error, setError] = useState(null)
   const [user, setUser] = useState(null)
   const [loadingInitial, setLoadingInitial] = useState(true)
@@ -135,7 +138,11 @@ export const AuthProvider = ({ children }) => {
 
     signOut(auth)
       .catch(error => setError(error))
-      .finally(() => setLoading(false))
+      .finally(() => {
+        setLoading(false)
+        setUser(null)
+        navigation.navigate('Login')
+      })
   }
 
   const showReplyInput = () => {
