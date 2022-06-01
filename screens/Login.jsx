@@ -14,8 +14,8 @@ const Login = () => {
   const { signInWighGoogle, loading } = useAuth()
 
   useLayoutEffect(() => {
-    NavigationBar.setBackgroundColorAsync(color.red)
-    NavigationBar.setButtonStyleAsync('light')
+    NavigationBar.setBackgroundColorAsync(color.white)
+    NavigationBar.setButtonStyleAsync('dark')
   }, [])
 
   const [loaded] = useFonts({
@@ -32,16 +32,17 @@ const Login = () => {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: color.red
+        backgroundColor: color.white,
+        paddingHorizontal: 10
       }}
     >
-      <Bar color={'light'} />
+      <Bar color={'dark'} />
 
       <Text
         style={{
           fontFamily: 'logo',
-          color: color.white,
-          fontSize: 40,
+          color: color.dark,
+          fontSize: 50,
           marginBottom: 20
         }}
       >
@@ -51,10 +52,10 @@ const Login = () => {
       <TouchableOpacity
         onPress={signInWighGoogle}
         style={{
-          width: '80%',
+          width: '100%',
           height: 50,
-          borderRadius: 12,
-          backgroundColor: color.white,
+          borderRadius: 4,
+          backgroundColor: color.transparent,
           justifyContent: 'center',
           alignItems: 'center'
         }}
@@ -80,7 +81,7 @@ const Login = () => {
               <Text
                 style={{
                   fontFamily: 'text',
-                  color: color.dark
+                  color: color.red
                 }}
               >
                 Continue with Google

@@ -19,11 +19,9 @@ import color from '../style/color'
 
 import useAuth from '../hooks/useAuth'
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-
 import { useFonts } from 'expo-font'
 
-import DatePicker from 'react-native-datepicker'
+// import DatePicker from 'react-native-datepicker'
 
 import * as ImagePicker from 'expo-image-picker'
 
@@ -38,6 +36,8 @@ import { serverTimestamp, setDoc, doc, updateDoc } from 'firebase/firestore'
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 
 import { RadioButton } from "react-native-paper"
+
+import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons'
 
 let link = `avatars/${new Date().toISOString()}`
 
@@ -359,7 +359,7 @@ const EditProfile = () => {
                 marginRight: 10
               }}
             >
-              <MaterialCommunityIcons name='cog' size={28} color={color.white} />
+              <SimpleLineIcons name="logout" size={24} color={color.white} />
             </TouchableOpacity>
             {
               userProfile?.displayName &&
@@ -404,7 +404,7 @@ const EditProfile = () => {
             }}
           />
 
-          <DatePicker
+          {/* <DatePicker
             style={{
               width: '100%',
             }}
@@ -439,7 +439,7 @@ const EditProfile = () => {
               }
             }}
             onDateChange={setDate}
-          />
+          /> */}
 
           <TextInput
             placeholder='Enter your occupation'
