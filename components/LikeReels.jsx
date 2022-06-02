@@ -17,7 +17,6 @@ const LikeReels = (props) => {
 
   useEffect(() =>
     getLikesById(reel?.id, user.uid).then(res => {
-      console.log({ res })
       setCurrentLikesState({
         ...currentLikesState,
         state: res

@@ -6,7 +6,6 @@ import color from '../style/color'
 const SenderMessage = ({ messages, matchDetails }) => {
   const { userProfile, user } = useAuth()
 
-  console.log(userProfile)
   return (
     <View style={{ flexDirection: "row-reverse", marginBottom: 10 }}>
       <Image

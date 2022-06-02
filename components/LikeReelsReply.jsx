@@ -8,7 +8,6 @@ import color from '../style/color'
 
 const LikeReelsReply = (props) => {
   const { user, userProfile } = useAuth()
-  console.log("replies: ", props?.reply)
   const reply = props?.reply
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reply?.likesCount })
@@ -16,7 +15,6 @@ const LikeReelsReply = (props) => {
   useEffect(() => {
     getLikesById(reply.id, user.uid)
       .then(res => {
-        console.log({ res })
         setCurrentLikesState({
           ...currentLikesState,
           state: res

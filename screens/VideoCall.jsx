@@ -22,8 +22,6 @@ import { useNavigation } from '@react-navigation/native'
 const VideoCall = (props) => {
   const navigation = useNavigation()
   const videoCallUser = props?.route?.params?.videoCallUser
-  console.log('videoCallUser: ', videoCallUser)
-
   const isFocused = useIsFocused()
 
   const [hasPermission, setHasPermission] = useState(null)
@@ -41,7 +39,6 @@ const VideoCall = (props) => {
   }, [])
 
   const playSound = async () => {
-    console.log('Loading Sound')
     const { sound } = await Audio.Sound.createAsync(
       require('../assets/vidCallDailing.wav')
     )
@@ -59,7 +56,6 @@ const VideoCall = (props) => {
   React.useEffect(() => {
     return sound
       ? () => {
-        console.log('Unloading Sound')
         sound.unloadAsync()
       }
       : undefined

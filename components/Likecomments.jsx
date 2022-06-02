@@ -15,7 +15,6 @@ const Likecomments = (props) => {
   useEffect(() => {
     getLikesById(comment.id, user.uid)
       .then(res => {
-        console.log({ res })
         setCurrentLikesState({
           ...currentLikesState,
           state: res

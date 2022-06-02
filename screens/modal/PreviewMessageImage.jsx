@@ -13,8 +13,6 @@ const { width, height } = Dimensions.get('window')
 const PreviewMessageImage = () => {
   const { assetsList } = useAuth()
 
-  console.log('assetsList: ', assetsList)
-
   return (
     <SafeAreaView
       style={{

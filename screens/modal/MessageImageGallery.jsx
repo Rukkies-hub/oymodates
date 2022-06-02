@@ -42,8 +42,6 @@ const MessageImageGallery = () => {
   const loadMore = () => {
     setLimit(limit + 20)
     loadGallery()
-
-    console.log('limit: ', limit)
   }
 
   return (

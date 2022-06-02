@@ -38,9 +38,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
 
     try {
       await ref.current.playAsync()
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) { }
   }
   const stop = async () => {
     if (ref.current == null) return
@@ -50,9 +48,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
 
     try {
       await ref.current.stopAsync()
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) { }
   }
 
   const unload = async () => {
@@ -60,9 +56,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
 
     try {
       await ref.current.unloadAsync()
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) { }
   }
 
   return (

@@ -53,7 +53,6 @@ const PostCamera = () => {
           const source = data?.uri
 
           setMedia(source)
-          console.log(source)
           navigation.goBack()
         }
       } catch (error) {
@@ -69,7 +68,6 @@ const PostCamera = () => {
     if (cameraRef) {
       const data = await cameraRef?.takePictureAsync(null)
       setMedia(data?.uri)
-      console.log(data?.uri)
       navigation.goBack()
     }
   }

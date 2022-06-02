@@ -37,8 +37,6 @@ const Likes = () => {
     getDoc(doc(db, 'users', user.uid, 'pendingSwipes', userSwiped.id))
       .then(documentSnapshot => {
         if (documentSnapshot.exists()) {
-          console.log(`Hooray, you matched with ${userSwiped.displayName}`)
-
           setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
 
           // CREAT A MATCH

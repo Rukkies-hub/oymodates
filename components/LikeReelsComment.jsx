@@ -10,14 +10,12 @@ import { useFonts } from 'expo-font'
 const LikeReelsComment = (props) => {
   const { user, userProfile } = useAuth()
   const comment = props.comment
-  // console.log('comment: ', comment)
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
 
   useEffect(() => {
     getLikesById(comment?.id, user.uid)
       .then(res => {
-        console.log({ res })
         setCurrentLikesState({
           ...currentLikesState,
           state: res

@@ -50,7 +50,6 @@ const MyReels = () => {
             reels.map((reel, index) => (
               <Pressable
                 key={index}
-                onPress={() => console.log('reel: ', reel)}
                 style={{
                   width: '30%',
                   height: (width - 10) / 3,

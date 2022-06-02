@@ -72,7 +72,6 @@ const AddReels = () => {
           const data = await videoRecordPromise
           const source = data?.uri
           let thumbnail = await generateThumbnail(source)
-          console.log('thumbnail: ', thumbnail)
           if (thumbnail)
             navigation.navigate('SaveReels', { source, thumbnail })
         }
@@ -97,7 +96,6 @@ const AddReels = () => {
     if (!result.cancelled) {
       let source = result.uri
       let thumbnail = await generateThumbnail(source)
-      console.log('thumbnail: ', thumbnail)
       if (thumbnail)
         navigation.navigate('SaveReels', { source, thumbnail })
     }

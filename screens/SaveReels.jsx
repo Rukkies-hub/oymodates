@@ -42,8 +42,6 @@ const SaveReels = (params) => {
   const [loading, setLoading] = useState(false)
 
   const saveReel = async () => {
-    console.log(source)
-    console.log(thumbnail)
     setLoading(true)
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()

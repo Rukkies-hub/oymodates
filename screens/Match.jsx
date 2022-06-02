@@ -100,8 +100,6 @@ const Match = () => {
     getDoc(doc(db, 'users', userSwiped.id, 'swipes', user.uid))
       .then(documentSnapshot => {
         if (documentSnapshot.exists()) {
-          console.log(`Hooray, you matched with ${userSwiped.displayName}`)
-
           setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
 
           // CREAT A MATCH
@@ -119,8 +117,6 @@ const Match = () => {
             userSwiped
           })
         } else {
-          console.log(`You swiped on ${userSwiped.displayName} (${userSwiped.job})`)
-
           setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
         }
       })
@@ -482,7 +478,6 @@ const Match = () => {
                       </TouchableOpacity>
 
                       <TouchableOpacity
-                        onPress={() => console.log(card)}
                         style={{
                           justifyContent: "center",
                           alignItems: "center",

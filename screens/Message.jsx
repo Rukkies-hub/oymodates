@@ -8,7 +8,8 @@ import {
   FlatList,
   TouchableOpacity,
   LayoutAnimation,
-  UIManager
+  UIManager,
+  Text
 } from 'react-native'
 
 import color from '../style/color'
@@ -30,8 +31,6 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useFonts } from 'expo-font'
-
-import EmojiSelector, { Categories } from 'react-native-emoji-selector'
 
 import EmojiPicker, { emojiFromUtf16 } from '../components/emojiPicker'
 import { emojis } from '../components/emojiPicker/data/emojis'
@@ -58,6 +57,7 @@ const Message = () => {
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
   const [activeInput, setActiveInput] = useState(false)
   const [recent, setRecent] = useState([])
+  const [showRecording, setShowRecording] = useState(false)
 
   useEffect(() =>
     onSnapshot(query(collection(db,
@@ -181,22 +181,6 @@ const Message = () => {
             </TouchableOpacity>
           </>
         }
-        {
-          !mediaVidiblity &&
-          <TouchableOpacity
-            onPress={() => {
-              Keyboard.dismiss()
-              setMediaVidiblity(!mediaVidiblity)
-            }}
-            style={{
-              width: 40,
-              height: 50,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-            <MaterialCommunityIcons name='chevron-right' color={color.lightText} size={26} />
-          </TouchableOpacity>
-        }
         <TouchableOpacity
           onPress={() => {
             Keyboard.dismiss()
@@ -211,23 +195,48 @@ const Message = () => {
           }}>
           <MaterialCommunityIcons name='emoticon-happy-outline' color={color.lightText} size={26} />
         </TouchableOpacity>
-        <TextInput
-          multiline
-          value={input}
-          onChangeText={setInput}
-          onSubmitEditing={sendMessage}
-          onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-          placeholder='Aa..'
-          style={{
-            fontSize: 18,
-            flex: 1,
-            width: '100%',
-            height: activeInput ? height : '100%',
-            maxHeight: 70,
-            fontFamily: 'text',
-            color: color.dark
-          }}
-        />
+
+        {
+          showRecording ?
+            <View
+              style={{
+                flex: 1,
+                width: '100%',
+                height: activeInput ? height : '100%',
+                maxHeight: 70,
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontFamily: 'text',
+                  color: color.dark
+                }}
+              >
+                Recording...
+              </Text>
+            </View> :
+            <TextInput
+              multiline
+              value={input}
+              onChangeText={setInput}
+              onSubmitEditing={sendMessage}
+              onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+              placeholder='Aa..'
+              style={{
+                fontSize: 18,
+                flex: 1,
+                width: '100%',
+                height: activeInput ? height : '100%',
+                maxHeight: 70,
+                fontFamily: 'text',
+                color: color.dark
+              }}
+            />
+        }
 
         <TouchableOpacity
           onPress={sendMessage}
@@ -241,6 +250,22 @@ const Message = () => {
             name='paper-plane'
             color={color.lightText}
             size={20}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onLongPress={() => setShowRecording(true)}
+          onPressOut={() => setShowRecording(false)}
+          style={{
+            width: 50,
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+          <FontAwesome5
+            size={20}
+            name="microphone-alt"
+            color={color.lightText}
           />
         </TouchableOpacity>
       </View>
