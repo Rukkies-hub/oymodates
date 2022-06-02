@@ -20,7 +20,7 @@ import ReelsCommentSheet from './modal/ReelsCommentSheet'
 import LikeReels from '../components/LikeReels'
 
 const Reels = () => {
-  const { setReelsCommentSheetIndex, userProfile, user } = useAuth()
+  const { setBottomSheetIndex, userProfile, user, reelsProps, setReelsProps } = useAuth()
   const mediaRefs = useRef([])
 
   const onViewableItemsChanged = useRef(({ changed }) => {
@@ -160,7 +160,29 @@ const Reels = () => {
             >
               <LikeReels reel={item} />
 
-              <ReelsCommentSheet item={item} />
+              <TouchableOpacity
+                onPress={() => {
+                  setBottomSheetIndex(0)
+                  setReelsProps(item)
+                }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <FontAwesome name="comment" size={24} color={color.white} />
+                <Text
+                  style={{
+                    color: color.white,
+                    fontFamily: 'text',
+                    marginTop: 5
+                  }}
+                >
+                  {item?.commentsCount ? item?.commentsCount : 0}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </LinearGradient>

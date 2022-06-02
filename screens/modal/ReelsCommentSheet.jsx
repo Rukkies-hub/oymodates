@@ -1,37 +1,28 @@
-import React, { useRef, useState, useEffect } from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  TextInput
-} from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native'
 
-import RBSheet from "react-native-raw-bottom-sheet"
+import BottomSheet from '@gorhom/bottom-sheet'
+import useAuth from '../../hooks/useAuth'
 
-import { AntDesign, FontAwesome, FontAwesome5 } from '@expo/vector-icons'
+import ReelsComments from '../../components/ReelsComments'
+
+import { AntDesign, FontAwesome, FontAwesome5, Entypo } from '@expo/vector-icons'
 import color from '../../style/color'
 import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
-import useAuth from '../../hooks/useAuth'
 import { db } from '../../hooks/firebase'
-import ReelsComments from '../../components/ReelsComments'
 import { useFonts } from 'expo-font'
 
-const ReelsCommentSheet = (props) => {
-  const refRBSheet = useRef()
-  const { userProfile } = useAuth()
-
-  const reel = props?.item
+const ReelsCommentSheet = () => {
+  const { userProfile, bottomSheetIndex, setBottomSheetIndex, reelsProps, setReelsProps } = useAuth()
 
   const [comment, setComment] = useState('')
   const [height, setHeight] = useState(40)
 
   const sendComment = async () => {
     if (comment != '') {
-      addDoc(collection(db, 'reels', reel?.id, 'comments'), {
+      addDoc(collection(db, 'reels', reelsProps?.id, 'comments'), {
         comment,
-        reel: reel?.id,
+        reel: reelsProps?.id,
         commentsCount: 0,
         likesCount: 0,
         user: {
@@ -42,7 +33,7 @@ const ReelsCommentSheet = (props) => {
         timestamp: serverTimestamp()
       })
 
-      await updateDoc(doc(db, 'reels', reel?.id), {
+      await updateDoc(doc(db, 'reels', reelsProps?.id), {
         commentsCount: increment(1)
       })
       setComment('')
@@ -57,105 +48,109 @@ const ReelsCommentSheet = (props) => {
 
   return (
     <>
-      <TouchableOpacity
-        onPress={() => {
-          refRBSheet.current.open()
-        }}
-        style={{
-          width: 40,
-          height: 40,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <FontAwesome name="comment" size={24} color={color.white} />
-        <Text
-          style={{
-            color: color.white,
-            fontFamily: 'text',
-            marginTop: 5
+      {
+        reelsProps &&
+        <BottomSheet
+          snapPoints={['70%']}
+          index={bottomSheetIndex}
+          handleHeight={40}
+          enablePanDownToClose={true}
+          enableOverDrag
+          detached={true}
+          handleIndicatorStyle={{
+            display: 'none'
           }}
         >
-          {reel?.commentsCount}
-        </Text>
-      </TouchableOpacity>
-
-      <RBSheet
-        ref={refRBSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={true}
-        closeDuration={300}
-        height={Dimensions.get('window').height / 2}
-        customStyles={{
-          wrapper: {
-            backgroundColor: "transparent"
-          },
-          draggableIcon: {
-            backgroundColor: color.black
-          },
-          container: {
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20
-          }
-        }}
-      >
-
-        <ReelsComments reel={reel} />
-
-        <View
-          style={{
-            minHeight: 50,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginHorizontal: 10
-          }}
-        >
-          <Image
-            source={{ uri: reel?.user?.photoURL }}
+          <View
             style={{
-              width: 40,
               height: 40,
-              borderRadius: 50
-            }}
-          />
-          <TextInput
-            value={comment}
-            onChangeText={setComment}
-            onSubmitEditing={sendComment}
-            placeholder='Write a comment...'
-            onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-            style={{
-              flex: 1,
               marginHorizontal: 10,
-              backgroundColor: color.offWhite,
-              minHeight: 40,
-              borderRadius: 50,
-
-              fontSize: 18,
-              height,
-              maxHeight: 150,
-              fontFamily: 'text',
-              color: color.dark,
-              paddingHorizontal: 10
-            }}
-          />
-          <TouchableOpacity
-            onPress={sendComment}
-            style={{
-              width: 40,
-              height: 40,
+              marginBottom: 10,
               justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-            <FontAwesome5
-              name='paper-plane'
-              color={color.lightText}
-              size={20}
+              alignItems: 'flex-end'
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                setBottomSheetIndex(-1)
+                setReelsProps(null)
+              }}
+              style={{
+                width: '100%',
+                height: '100%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'flex-start'
+              }}
+            >
+              <View
+                style={{
+                  width: 50,
+                  height: 5,
+                  backgroundColor: color.dark,
+                  borderRadius: 12
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <ReelsComments reel={reelsProps} />
+
+          <View
+            style={{
+              minHeight: 50,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginHorizontal: 10
+            }}
+          >
+            <Image
+              source={{ uri: reelsProps?.user?.photoURL }}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 50
+              }}
             />
-          </TouchableOpacity>
-        </View>
-      </RBSheet>
+            <TextInput
+              value={comment}
+              onChangeText={setComment}
+              onSubmitEditing={sendComment}
+              placeholder='Write a comment...'
+              onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+              style={{
+                flex: 1,
+                marginHorizontal: 10,
+                backgroundColor: color.offWhite,
+                minHeight: 40,
+                borderRadius: 50,
+
+                fontSize: 18,
+                height,
+                maxHeight: 150,
+                fontFamily: 'text',
+                color: color.dark,
+                paddingHorizontal: 10
+              }}
+            />
+            <TouchableOpacity
+              onPress={sendComment}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              <FontAwesome5
+                name='paper-plane'
+                color={color.lightText}
+                size={20}
+              />
+            </TouchableOpacity>
+          </View>
+        </BottomSheet>
+      }
     </>
   )
 }

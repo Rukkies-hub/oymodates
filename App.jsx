@@ -5,6 +5,7 @@ import StackNavigator from './StackNavigator'
 import { AuthProvider } from './hooks/useAuth'
 
 import { MenuProvider } from 'react-native-popup-menu'
+import ReelsCommentSheet from './screens/modal/ReelsCommentSheet'
 
 LogBox.ignoreAllLogs()
 
@@ -15,6 +16,7 @@ export default function App () {
         <MenuProvider>
           <StackNavigator />
         </MenuProvider>
+        <ReelsCommentSheet />
       </AuthProvider>
     </NavigationContainer>
   )

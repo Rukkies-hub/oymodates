@@ -91,6 +91,7 @@ const ReelsComments = (props) => {
     >
       <FlatList
         data={comments}
+        inverted={-1}
         keyExtractor={item => item.id}
         style={{
           flex: 1,
