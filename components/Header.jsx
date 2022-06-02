@@ -32,6 +32,7 @@ let link = `posts/${new Date().toISOString()}`
 import * as Device from 'expo-device'
 
 import * as Notifications from 'expo-notifications'
+import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -55,11 +56,13 @@ const Header = ({
   postDetails,
   showAdd,
   showCancelPost,
-  showMessageImageGallerySelect
+  showMessageImageGallerySelect,
+  matchDetails
 }) => {
   const navigation = useNavigation()
   const { user, userProfile, madiaString, media, setMedia } = useAuth()
   const storage = getStorage()
+  const videoCallUser = getMatchedUserInfo(matchDetails?.users, user.uid)
 
   const [loading, setLoading] = useState(false)
   const [mediaType, setMediaType] = useState('image')
@@ -76,9 +79,7 @@ const Header = ({
       setNotification(notification)
     })
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response)
-    })
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => { })
 
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current)
@@ -258,6 +259,7 @@ const Header = ({
           {
             showVideo &&
             <TouchableOpacity
+              onPress={() => navigation.navigate('VideoCall', { videoCallUser })}
               style={{
                 width: 40,
                 height: 40,

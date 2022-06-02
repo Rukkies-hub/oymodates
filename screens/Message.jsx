@@ -77,7 +77,7 @@ const Message = () => {
       setMediaVidiblity(false)
     })
     , [])
-  
+
   useEffect(() =>
     Keyboard.addListener('keyboardDidHide', () => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
@@ -120,6 +120,7 @@ const Message = () => {
         title={getMatchedUserInfo(matchDetails?.users, user.uid).username}
         showMatchAvatar
         matchAvatar={getMatchedUserInfo(matchDetails?.users, user.uid).photoURL}
+        matchDetails={matchDetails}
       />
       <TouchableWithoutFeedback
         onPress={Keyboard.dismiss}

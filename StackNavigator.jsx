@@ -20,7 +20,7 @@ import Passion from './screens/modal/Passion'
 import UserLocation from './screens/modal/UserLocation'
 import PreviewMessageImage from './screens/modal/PreviewMessageImage'
 import Profile from './screens/profile/Profile'
-import Splash from './screens/Splash'
+import VideoCall from './screens/VideoCall'
 
 import useAuth from './hooks/useAuth'
 
@@ -42,6 +42,7 @@ const StackNavigator = () => {
               <Stack.Screen name='PostCamera' component={PostCamera} options={{ headerShown: false }} />
               <Stack.Screen name='ViewPost' component={ViewPost} options={{ headerShown: false }} />
               <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
+              <Stack.Screen name='VideoCall' component={VideoCall} options={{ headerShown: false }} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
