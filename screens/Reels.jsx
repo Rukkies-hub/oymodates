@@ -180,7 +180,7 @@ const Reels = () => {
                     marginTop: 5
                   }}
                 >
-                  {item?.commentsCount ? item?.commentsCount : 0}
+                  {item?.commentsCount ? item?.commentsCount : '0'}
                 </Text>
               </TouchableOpacity>
             </View>
