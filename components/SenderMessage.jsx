@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, Pressable, Image, TouchableOpacity } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
@@ -34,6 +34,8 @@ const SenderMessage = ({ messages, matchDetails }) => {
   const UpdateStatus = async (data) => {
     try {
       if (data.didJustFinish) {
+        SetValue(0)
+        setIsPlaying(false)
       } else if (data.positionMillis) {
         if (data.durationMillis) {
           SetValue((data.positionMillis / data.durationMillis) * 100)

@@ -1,8 +1,55 @@
-import React from 'react'
-import { View, Text, Image, Pressable } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native'
 import color from '../style/color'
 
+import { AntDesign } from '@expo/vector-icons'
+
+import Slider from '@react-native-community/slider'
+
+import { Audio } from 'expo-av'
+import useAuth from '../hooks/useAuth'
+
 const RecieverMessage = ({ messages, matchDetails }) => {
+  const { userProfile, user } = useAuth()
+
+  const [sound, setSound] = useState()
+  const [status, setStatus] = useState()
+  const [Value, SetValue] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
+
+  const playVoicenote = async voiceNote => {
+    const { sound, status } = await Audio.Sound.createAsync({ uri: voiceNote })
+    setSound(sound)
+    setStatus(status)
+    setIsPlaying(true)
+    sound.setOnPlaybackStatusUpdate(UpdateStatus)
+    await sound.playAsync()
+  }
+
+  const pauseVoicenote = async voiceNote => {
+    sound.pauseAsync()
+    setIsPlaying(false)
+  }
+
+  const UpdateStatus = async (data) => {
+    try {
+      if (data.didJustFinish) {
+        SetValue(0)
+        setIsPlaying(false)
+      } else if (data.positionMillis) {
+        if (data.durationMillis) {
+          SetValue((data.positionMillis / data.durationMillis) * 100)
+        }
+      }
+    } catch (error) {
+      console.log('Error')
+    }
+  }
+
+  useEffect(() => {
+    return sound ? () => sound.unloadAsync() : undefined
+  }, [sound])
+
   return (
     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
       <Image
@@ -76,6 +123,53 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                   <Text>{messages?.caption}</Text>
                 </View>
               }
+            </View>
+          }
+
+          {
+            messages.voiceNote &&
+            <View
+              style={{
+                position: "relative",
+                width: 200,
+                height: 35,
+                borderRadius: 20,
+                overflow: "hidden",
+                backgroundColor: color.offWhite,
+                left: -10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: 2,
+                paddingRight: 10
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => !isPlaying ? playVoicenote(messages.voiceNote) : pauseVoicenote(messages.voiceNote)}
+                style={{
+                  backgroundColor: color.blue,
+                  width: 30,
+                  height: 30,
+                  borderRadius: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                {
+                  !isPlaying ?
+                    <AntDesign name="caretright" size={20} color={color.white} /> :
+                    <AntDesign name="pause" size={20} color={color.white} />
+                }
+              </TouchableOpacity>
+              <Slider
+                style={{ width: 150 }}
+                value={Value}
+                minimumValue={0}
+                maximumValue={100}
+                minimumTrackTintColor={color.blue}
+                maximumTrackTintColor={color.blue}
+                thumbTintColor={color.blue}
+              />
             </View>
           }
         </Pressable>
