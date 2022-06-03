@@ -1141,6 +1141,27 @@
     xcode "^3.0.1"
     xml2js "0.4.23"
 
+"@expo/config-plugins@^4.0.14":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-4.1.5.tgz#9d357d2cda9c095e511b51583ede8a3b76174068"
+  integrity sha512-RVvU40RtZt12HavuDAe+LDIq9lHj7sheOfMEHdmpJ/uTA8pgvkbc56XF6JHQD+yRr6+uhhb+JnAasGq49dsQbw==
+  dependencies:
+    "@expo/config-types" "^45.0.0"
+    "@expo/json-file" "8.2.36"
+    "@expo/plist" "0.0.18"
+    "@expo/sdk-runtime-versions" "^1.0.0"
+    "@react-native/normalize-color" "^2.0.0"
+    chalk "^4.1.2"
+    debug "^4.3.1"
+    find-up "~5.0.0"
+    getenv "^1.0.0"
+    glob "7.1.6"
+    resolve-from "^5.0.0"
+    semver "^7.3.5"
+    slash "^3.0.0"
+    xcode "^3.0.1"
+    xml2js "0.4.23"
+
 "@expo/config-types@^43.0.1":
   version "43.0.1"
   resolved "https://registry.yarnpkg.com/@expo/config-types/-/config-types-43.0.1.tgz#3e047dccb371741a540980eaff26fb0c95039c30"
@@ -1943,6 +1964,11 @@
     strip-ansi "^5.2.0"
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
+
+"@react-native-community/slider@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.2.2.tgz#06a0de89c26c6bd03d95798b777db1872b60c066"
+  integrity sha512-C1ldx1ypQo+uDWx78TUBG0evLVopKYHK2mQencl+vxi4ebMTL+ipJv5MF5mEvmZWLUOAMm5AsoQNHChYUdyWrQ==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"
@@ -3336,6 +3362,41 @@ expo-crypto@~10.1.0:
   version "10.1.2"
   resolved "https://registry.yarnpkg.com/expo-crypto/-/expo-crypto-10.1.2.tgz#5dfc0f0a5b4aa94dae2ecfb744d4aa8c001660b7"
   integrity sha512-TYaBtV9oK5OH+EfsAUHQkWkRPifZjCMDn6Yf9gk3/LyHdJHDYnB6NQWTJo9Qkl6vzI9svQ6PMnQTm2Yxrb3ZfQ==
+
+expo-dev-client@~0.8.5:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/expo-dev-client/-/expo-dev-client-0.8.5.tgz#2eba4081660e75c45847a2dfea08042eb565143c"
+  integrity sha512-sdqkAQAsGqqbTLStyK239qfWrDg+gBOmu59ow4yxv0kdNkp1pVmpNu5kFv/nL0n4ao9aClbY5AjmZwfiGC3rYQ==
+  dependencies:
+    "@expo/config-plugins" "^4.0.14"
+    expo-dev-launcher "0.10.5"
+    expo-dev-menu "0.9.3"
+    expo-dev-menu-interface "0.5.3"
+    expo-manifests "~0.2.2"
+    expo-updates-interface "~0.5.0"
+
+expo-dev-launcher@0.10.5:
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/expo-dev-launcher/-/expo-dev-launcher-0.10.5.tgz#4e99212ffb1c3cc10fe42781256d4442014a6eca"
+  integrity sha512-6E/Za439cbq0DtksQup8szLBw2pf9o9vdx8BcvlwyPGglbJICx+OqApAbhQUJTpefXLH0s/sbLuPCThmOYUp4g==
+  dependencies:
+    "@expo/config-plugins" "^4.0.14"
+    expo-dev-menu "0.9.3"
+    resolve-from "^5.0.0"
+    semver "^7.3.5"
+
+expo-dev-menu-interface@0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/expo-dev-menu-interface/-/expo-dev-menu-interface-0.5.3.tgz#d1a43ef450d6c727780ed3018376046f0a185980"
+  integrity sha512-i1d7vtKILnq7mo6r5jSQ++UxkpP+VX/IkOAKuWGeB/B32pCTFCD32rplymFS3qPQ+vlmb5zKl5yhYSYZSVobhg==
+
+expo-dev-menu@0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/expo-dev-menu/-/expo-dev-menu-0.9.3.tgz#d4572d86c28b19f4f807534091122b5077821cba"
+  integrity sha512-ZUCDSO2rAhFOKuCXdwBf09VVkvAqZBhjA36b7YkwfvKxQ4nb6ZbB/JRCdtxLcre5hDJX1ya3YMNPY3R0/WCBbg==
+  dependencies:
+    "@expo/config-plugins" "^4.0.14"
+    expo-dev-menu-interface "0.5.3"
 
 expo-device@~4.1.0:
   version "4.1.1"
@@ -6058,6 +6119,11 @@ react-native-screens@~3.10.1:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-simple-audio-player@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-simple-audio-player/-/react-native-simple-audio-player-1.0.2.tgz#4da7459a8157f2222519d4926f47c2c78c72a08a"
+  integrity sha512-f9OAMwPd/JUHJsNtZ38sFb9EHVgCb4xzdZBnWHjwTfdeMCagc+dbY8ZLV3GkYtzMWW5KOan7+WpZATE2d9tRqg==
+
 react-native-slider@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/react-native-slider/-/react-native-slider-0.11.0.tgz#b68a0bc43c8422b24cd57947cc5ac2bcdb58fadc"
@@ -6076,6 +6142,11 @@ react-native-tab-view@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.1.1.tgz#1f8d7a835ab4f5b1b1407ec8dddc1053b53fa3c6"
   integrity sha512-M5pRN6utQfytKWoKlKVzg5NbkYu308qNoW1khGTtEOTs1k14p2dHJ/BWOJoJYHKbPVUyZldbG9MFT7gUl4YHnw==
+
+react-native-track-player@^2.2.0-rc3:
+  version "2.2.0-rc3"
+  resolved "https://registry.yarnpkg.com/react-native-track-player/-/react-native-track-player-2.2.0-rc3.tgz#4f1d809b5c3fc1726465a9ff4acf10b1483bbff5"
+  integrity sha512-Pvmum3MQ5PE8/yOIIPsk00zZk3EzdocUuVUwuBKSCmdKK/3O9YhnZRC3EuT59XCDm23pZZJZDSR44VeXN6Gamg==
 
 react-native-vector-icons@^9.1.0:
   version "9.1.0"

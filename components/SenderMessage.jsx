@@ -1,36 +1,51 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, Pressable, Image, TouchableOpacity } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
 import { AntDesign } from '@expo/vector-icons'
 
-import Slider from 'react-native-slider'
+import Slider from '@react-native-community/slider'
 
 import { Audio } from 'expo-av'
 
 const SenderMessage = ({ messages, matchDetails }) => {
-  // const context = useContext()
   const { userProfile, user } = useAuth()
 
   const [sound, setSound] = useState()
+  const [status, setStatus] = useState()
+  const [Value, SetValue] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
 
   const playVoicenote = async voiceNote => {
-    console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync({ uri: voiceNote })
+    const { sound, status } = await Audio.Sound.createAsync({ uri: voiceNote })
     setSound(sound)
-
-    console.log('Playing Sound')
+    setStatus(status)
+    setIsPlaying(true)
+    sound.setOnPlaybackStatusUpdate(UpdateStatus)
     await sound.playAsync()
   }
 
-  useEffect(() => {
-    return sound
-      ? () => {
-        console.log('Unloading Sound')
-        sound.unloadAsync()
+  const pauseVoicenote = async voiceNote => {
+    sound.pauseAsync()
+    setIsPlaying(false)
+  }
+
+  const UpdateStatus = async (data) => {
+    try {
+      if (data.didJustFinish) {
+      } else if (data.positionMillis) {
+        if (data.durationMillis) {
+          SetValue((data.positionMillis / data.durationMillis) * 100)
+        }
       }
-      : undefined
+    } catch (error) {
+      console.log('Error')
+    }
+  }
+
+  useEffect(() => {
+    return sound ? () => sound.unloadAsync() : undefined
   }, [sound])
 
   return (
@@ -125,18 +140,15 @@ const SenderMessage = ({ messages, matchDetails }) => {
             >
               <Slider
                 style={{ width: 150 }}
-                value={parseInt(messages.duration)}
+                value={Value}
                 minimumValue={0}
-                maximumValue={1}
+                maximumValue={100}
                 minimumTrackTintColor={color.white}
                 maximumTrackTintColor={color.offWhite}
                 thumbTintColor={color.offWhite}
-                onValueChange={value => {
-                  console.log(value)
-                }}
               />
               <TouchableOpacity
-                onPress={() => playVoicenote(messages.voiceNote)}
+                onPress={() => !isPlaying ? playVoicenote(messages.voiceNote) : pauseVoicenote(messages.voiceNote)}
                 style={{
                   backgroundColor: color.white,
                   width: 30,
@@ -146,7 +158,11 @@ const SenderMessage = ({ messages, matchDetails }) => {
                   alignItems: 'center'
                 }}
               >
-                <AntDesign name="caretright" size={20} color={color.blue} />
+                {
+                  !isPlaying ?
+                    <AntDesign name="caretright" size={20} color={color.blue} /> :
+                    <AntDesign name="pause" size={20} color={color.blue} />
+                }
               </TouchableOpacity>
             </View>
           }
