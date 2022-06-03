@@ -77,10 +77,8 @@ const MessageImageGallery = () => {
           >
             <Pressable
               onPress={() => {
-                if (assetsList?.includes(asset))
-                  setAssetsList(assetsList.filter(item => item !== asset))
-                else if (assetsList.length <= 4)
-                  setAssetsList(oldArray => [...oldArray, asset])
+                if (assetsList?.includes(asset)) setAssetsList(assetsList.filter(item => item !== asset))
+                else if (assetsList.length <= 1) setAssetsList(oldArray => [...oldArray, asset])
               }}
               style={{
                 position: 'relative'

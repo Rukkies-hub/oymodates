@@ -10,6 +10,8 @@ import useAuth from '../../hooks/useAuth'
 
 const { width, height } = Dimensions.get('window')
 
+import AutoHeightImage from 'react-native-auto-height-image'
+
 const PreviewMessageImage = () => {
   const { assetsList } = useAuth()
 
@@ -36,13 +38,11 @@ const PreviewMessageImage = () => {
               flex: 1
             }}
           >
-            <Image
+            <AutoHeightImage
+              source={{ uri: media?.uri }}
+              width={width}
               style={{
-                width: width,
-                height: width
-              }}
-              source={{
-                uri: media?.uri,
+                flex: 1
               }}
               resizeMode='cover'
             />

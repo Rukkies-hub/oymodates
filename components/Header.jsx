@@ -338,9 +338,9 @@ const Header = ({
             <TouchableOpacity
               onPress={() => navigation.navigate('PreviewMessageImage')}
               style={{
-                backgroundColor: color.blue,
-                borderRadius: 12,
-                width: 60,
+                backgroundColor: color.red,
+                borderRadius: 4,
+                width: 80,
                 height: 40,
                 justifyContent: 'center',
                 alignItems: 'center'

@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   LayoutAnimation,
   UIManager,
-  Text
+  Text,
+  ActivityIndicator
 } from 'react-native'
 
 import color from '../style/color'
@@ -42,13 +43,19 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
 import * as ImagePicker from 'expo-image-picker'
+import { Audio } from 'expo-av'
+
+import uuid from 'uuid-random'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
 const Message = () => {
   const navigation = useNavigation()
-  const { user } = useAuth()
+  const { user, userProfile } = useAuth()
 
   const { params } = useRoute()
   const { matchDetails } = params
+
+  const storage = getStorage()
 
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState([])
@@ -58,6 +65,10 @@ const Message = () => {
   const [activeInput, setActiveInput] = useState(false)
   const [recent, setRecent] = useState([])
   const [showRecording, setShowRecording] = useState(false)
+  const [showSend, setShowSend] = useState(true)
+  const [recording, setRecording] = useState()
+  const [recordings, setRecordings] = useState([])
+  const [recordingLoading, setRecordingLoading] = useState(false)
 
   useEffect(() =>
     onSnapshot(query(collection(db,
@@ -91,12 +102,116 @@ const Message = () => {
       addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
         timestamp: serverTimestamp(),
         userId: user.uid,
-        displayName: user.displayName,
+        username: userProfile.username,
         photoURL: matchDetails.users[user.uid].photoURL,
         message: input,
         seen: false
       })
     setInput('')
+  }
+
+  const startRecording = async () => {
+    try {
+      const { status } = await Audio.requestPermissionsAsync()
+
+      if (status === 'granted') {
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          playsInSilentModeIOS: true
+        })
+
+        const { recording } = await Audio.Recording.createAsync(
+          Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+        )
+
+        setRecording(recording)
+      } else console.log('Please grant permission to app microphone')
+    } catch (error) {
+      console.log('Failed to start recording: ', error)
+    }
+  }
+
+  const stopRecording = async () => {
+    setRecording(undefined)
+    await recording.stopAndUnloadAsync()
+
+    let updateRecordings = [...recordings]
+    const { sound, status } = await recording.createNewLoadedSoundAsync()
+    updateRecordings = []
+    updateRecordings.push({
+      sound,
+      duration: getDurationFormated(status.durationMillis),
+      file: recording.getURI()
+    })
+
+    setRecordings(updateRecordings)
+
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.onload = () => resolve(xhr.response)
+
+      xhr.responseType = 'blob'
+      xhr.open('GET', recording.getURI(), true)
+      xhr.send(null)
+    })
+
+    const sourceRef = ref(storage, `messages/${user.uid}/audio/${uuid()}`)
+
+    setRecordingLoading(true)
+
+    uploadBytes(sourceRef, blob)
+      .then(snapshot => {
+        getDownloadURL(snapshot.ref)
+          .then(downloadURL => {
+            addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
+              userId: user.uid,
+              username: userProfile.username,
+              photoURL: matchDetails.users[user.uid].photoURL,
+              voiceNote: downloadURL,
+              mediaLink: snapshot.ref._location.path,
+              duration: getDurationFormated(status.durationMillis),
+              seen: false,
+              timestamp: serverTimestamp(),
+            }).finally(() => setRecordingLoading(false))
+          })
+      })
+  }
+
+  const getDurationFormated = millis => {
+    const minutes = millis / 1000 / 60
+    const minutesDisplay = Math.floor(minutes)
+    const seconds = Math.round((minutes - minutesDisplay) * 60)
+    const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds
+    return `${minutesDisplay}:${secondsDisplay}`
+  }
+
+  const getRecordingLines = () => {
+    return recordings.map((recordingLines, index) => {
+      return (
+        <View
+          key={index}
+          style={{
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            maxHeight: 70,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: 'text',
+              color: color.lightText
+            }}
+          >
+            Recording {index + 1} - {recordingLines.duration}
+          </Text>
+        </View>
+      )
+    })
   }
 
   const [loaded] = useFonts({
@@ -202,23 +317,27 @@ const Message = () => {
               style={{
                 flex: 1,
                 width: '100%',
-                height: activeInput ? height : '100%',
+                height: '100%',
                 maxHeight: 70,
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
                 alignItems: 'center'
               }}
             >
+              {/* {
+                getRecordingLines()
+              } */}
               <Text
                 style={{
                   fontSize: 18,
                   fontFamily: 'text',
-                  color: color.dark
+                  color: color.lightText
                 }}
               >
                 Recording...
               </Text>
-            </View> :
+            </View>
+            :
             <TextInput
               multiline
               value={input}
@@ -238,35 +357,50 @@ const Message = () => {
             />
         }
 
-        <TouchableOpacity
-          onPress={sendMessage}
-          style={{
-            width: 50,
-            height: 50,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-          <FontAwesome5
-            name='paper-plane'
-            color={color.lightText}
-            size={20}
-          />
-        </TouchableOpacity>
+        {
+          showSend &&
+          <TouchableOpacity
+            onPress={sendMessage}
+            style={{
+              width: 50,
+              height: 50,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+            <FontAwesome5
+              name='paper-plane'
+              color={color.lightText}
+              size={20}
+            />
+          </TouchableOpacity>
+        }
 
         <TouchableOpacity
-          onLongPress={() => setShowRecording(true)}
-          onPressOut={() => setShowRecording(false)}
+          onLongPress={() => {
+            setShowRecording(true)
+            setShowSend(false)
+            startRecording()
+          }}
+          onPressOut={() => {
+            setShowRecording(false)
+            setShowSend(true)
+            stopRecording()
+          }}
           style={{
             width: 50,
             height: 50,
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-          <FontAwesome5
-            size={20}
-            name="microphone-alt"
-            color={color.lightText}
-          />
+          {
+            recordingLoading ?
+              <ActivityIndicator size='small' color={color.lightText} /> :
+              <FontAwesome5
+                size={20}
+                name="microphone-alt"
+                color={color.lightText}
+              />
+          }
         </TouchableOpacity>
       </View>
       {expanded && (
