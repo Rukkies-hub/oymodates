@@ -26,7 +26,8 @@ const NewComment = (params) => {
         user: {
           id: userProfile?.id,
           displayName: userProfile?.displayName,
-          photoURL: userProfile?.photoURL
+          photoURL: userProfile?.photoURL,
+          username: userProfile?.username,
         },
         timestamp: serverTimestamp()
       })

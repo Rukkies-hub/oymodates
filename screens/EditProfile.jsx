@@ -37,9 +37,11 @@ import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } f
 
 import { RadioButton } from "react-native-paper"
 
-import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons'
+import { SimpleLineIcons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons'
 
 let link = `avatars/${new Date().toISOString()}`
+
+import Bar from '../components/StatusBar'
 
 const EditProfile = () => {
   const {
@@ -281,8 +283,7 @@ const EditProfile = () => {
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
-  if (!loaded)
-    return null
+  if (!loaded) return null
 
   return (
     <View
@@ -291,6 +292,7 @@ const EditProfile = () => {
         backgroundColor: color.white
       }}
     >
+      <Bar style={'light'} />
       <Header showTitle showAratar showBack title={`Welcome, ${user.displayName}`} />
 
       <ScrollView
@@ -323,7 +325,7 @@ const EditProfile = () => {
             }}
           >
             <TouchableOpacity
-              onPress={logout}
+              onPress={() => navigation.navigate('AccountSettings')}
               style={{
                 width: 50,
                 height: 50,
@@ -334,7 +336,7 @@ const EditProfile = () => {
                 marginRight: 10
               }}
             >
-              <SimpleLineIcons name="logout" size={24} color={color.white} />
+              <AntDesign name="setting" size={24} color={color.white} />
             </TouchableOpacity>
             {
               userProfile?.displayName &&
@@ -352,7 +354,7 @@ const EditProfile = () => {
                 {
                   uploadLoading ?
                     <ActivityIndicator size='large' color={color.white} /> :
-                    <MaterialCommunityIcons name='pencil' size={28} color={color.white} />
+                    <AntDesign name='picture' size={24} color={color.white} />
                 }
               </TouchableOpacity>
             }
@@ -659,8 +661,6 @@ const EditProfile = () => {
             style={{
               flex: 1,
               marginTop: 30,
-              marginBottom: 50,
-              marginVertical: 20,
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: color.red,
@@ -680,6 +680,33 @@ const EditProfile = () => {
                   Update Profile
                 </Text>
             }
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={logout}
+            style={{
+              flex: 1,
+              marginTop: 30,
+              marginBottom: 50,
+              marginVertical: 20,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: color.offWhite,
+              borderRadius: 4,
+              height: 50
+            }}
+          >
+            <SimpleLineIcons name="logout" size={20} color={color.red} />
+            <Text
+              style={{
+                fontFamily: 'text',
+                color: color.red,
+                marginLeft: 10
+              }}
+            >
+              Logout
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

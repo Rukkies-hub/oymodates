@@ -65,6 +65,7 @@ const Comments = (params) => {
         user: {
           id: userProfile?.id,
           displayName: userProfile?.displayName,
+          username: userProfile?.username,
           photoURL: userProfile?.photoURL
         },
         to: comment?.user?.id,

@@ -37,7 +37,8 @@ const Likecomments = (props) => {
       await setDoc(doc(db, 'posts', comment?.post, 'comments', comment?.id, 'likes', user.uid), {
         id: userProfile?.id,
         photoURL: userProfile?.photoURL,
-        displayName: userProfile?.displayName
+        displayName: userProfile?.displayName,
+        username: userProfile?.username,
       })
       await updateDoc(doc(db, 'posts', comment?.post, 'comments', comment?.id), {
         likesCount: increment(1)

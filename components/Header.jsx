@@ -87,7 +87,6 @@ const Header = ({
     }
   }, [])
 
-  let uploadTask
   const savePost = async () => {
     if (postDetails.caption || postDetails.media) {
       setLoading(true)
@@ -102,7 +101,6 @@ const Header = ({
 
       const mediaRef = ref(storage, `posts/${new Date().toISOString()}`)
 
-      // uploadTask = uploadBytesResumable(mediaRef, blob)
       uploadBytes(mediaRef, blob)
         .then(snapshot => {
           getDownloadURL(snapshot.ref)

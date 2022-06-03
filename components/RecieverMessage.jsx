@@ -18,16 +18,16 @@ const RecieverMessage = ({ messages, matchDetails }) => {
   const [isPlaying, setIsPlaying] = useState(false)
 
   const playVoicenote = async voiceNote => {
-    const { sound, status } = await Audio.Sound.createAsync({ uri: voiceNote })
+    const { sound, status } = await Audio?.Sound?.createAsync({ uri: voiceNote })
     setSound(sound)
     setStatus(status)
     setIsPlaying(true)
-    sound.setOnPlaybackStatusUpdate(UpdateStatus)
-    await sound.playAsync()
+    sound?.setOnPlaybackStatusUpdate(UpdateStatus)
+    await sound?.playAsync()
   }
 
   const pauseVoicenote = async voiceNote => {
-    sound.pauseAsync()
+    sound?.pauseAsync()
     setIsPlaying(false)
   }
 
@@ -47,7 +47,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
   }
 
   useEffect(() => {
-    return sound ? () => sound.unloadAsync() : undefined
+    return sound ? () => sound?.unloadAsync() : undefined
   }, [sound])
 
   return (

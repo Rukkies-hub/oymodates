@@ -77,7 +77,8 @@ const SaveReels = (params) => {
                       user: {
                         id: user?.uid,
                         photoURL: userProfile?.photoURL,
-                        displayName: userProfile?.displayName
+                        displayName: userProfile?.displayName,
+                        username: userProfile?.username,
                       },
                       media: downloadURL,
                       mediaLink: snapshot.ref._location.path,

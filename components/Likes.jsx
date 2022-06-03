@@ -51,7 +51,8 @@ const Likes = (params) => {
       await setDoc(doc(db, 'posts', post?.id, 'likes', user?.uid), {
         id: userProfile?.id,
         photoURL: userProfile?.photoURL,
-        displayName: userProfile?.displayName
+        displayName: userProfile?.displayName,
+        username: userProfile?.username,
       }).then(() => playSound())
       await updateDoc(doc(db, 'posts', post?.id), {
         likesCount: increment(1)

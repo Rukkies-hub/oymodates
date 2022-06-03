@@ -66,7 +66,8 @@ const ReelsComments = (props) => {
         user: {
           id: userProfile?.id,
           displayName: userProfile?.displayName,
-          photoURL: userProfile?.photoURL
+          photoURL: userProfile?.photoURL,
+          username: userProfile?.username,
         },
         to: comment?.user?.id,
         timestamp: serverTimestamp()
