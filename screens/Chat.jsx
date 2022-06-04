@@ -30,7 +30,7 @@ const Chat = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
       }}
     >
       {
@@ -73,7 +73,7 @@ const Chat = () => {
                     style={{
                       fontFamily: 'text',
                       fontSize: 18,
-                      color: userProfile?.appMode != 'light' ? color.lightText : color.white
+                      color: userProfile?.appMode == 'light' ? color.lightText : color.white
                     }}
                   >
                     {pendingSwipes[0].username}
@@ -104,7 +104,7 @@ const Chat = () => {
             <Text
               style={{
                 fontFamily: 'text',
-                color: userProfile?.appMode != 'light' ? color.lightText : color.white
+                color: userProfile?.appMode == 'light' ? color.lightText : color.white
               }}
             >
               Recently active, match now!

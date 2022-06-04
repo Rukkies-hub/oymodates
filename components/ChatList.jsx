@@ -40,7 +40,7 @@ const ChatList = () => {
       <View
         style={{
           flex: 1,
-          backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
+          backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
           justifyContent: 'center',
           alignItems: 'center'
         }}
@@ -53,7 +53,7 @@ const ChatList = () => {
           }}
         >
           {
-            userProfile?.appMode != 'light' &&
+            userProfile?.appMode == 'light' &&
             <Image
               source={require('../assets/rader.gif')}
               style={{
@@ -74,7 +74,7 @@ const ChatList = () => {
         <Text
           style={{
             fontFamily: 'text',
-            color: userProfile?.appMode != 'light' ? color.lightText : color.white,
+            color: userProfile?.appMode == 'light' ? color.lightText : color.white,
             marginTop: 50
           }}
         >

@@ -100,10 +100,10 @@ const UserProfile = (params) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
       }}
     >
-      <Bar color={userProfile?.appMode != 'light' ? 'dark' : 'light'} />
+      <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
       <Header showBack showTitle title={currentUser?.username} showAratar />
 
       <View
@@ -141,7 +141,7 @@ const UserProfile = (params) => {
             >
               <Text
                 style={{
-                  color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
                   fontFamily: 'boldText',
                   fontSize: 20
                 }}
@@ -150,7 +150,7 @@ const UserProfile = (params) => {
               </Text>
               <Text
                 style={{
-                  color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
                   fontFamily: 'boldText',
                   fontSize: 20,
                   marginLeft: 10
@@ -163,7 +163,7 @@ const UserProfile = (params) => {
           <Text
             style={{
               fontFamily: 'text',
-              color: userProfile?.appMode != 'light' ? color.lightText : color.white
+              color: userProfile?.appMode == 'light' ? color.lightText : color.white
             }}
           >
             {currentUser?.displayName}
@@ -215,7 +215,7 @@ const UserProfile = (params) => {
             style={{
               fontFamily: 'boldText',
               fontSize: 18,
-              color: userProfile?.appMode != 'light' ? color.black : color.white
+              color: userProfile?.appMode == 'light' ? color.black : color.white
             }}
           >
             {viewingUser?.followersCount ? viewingUser?.followersCount : '0'}
@@ -224,7 +224,7 @@ const UserProfile = (params) => {
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: userProfile?.appMode != 'light' ? color.lightText : color.white,
+              color: userProfile?.appMode == 'light' ? color.lightText : color.white,
               marginLeft: 5
             }}
           >
@@ -243,7 +243,7 @@ const UserProfile = (params) => {
             style={{
               fontFamily: 'boldText',
               fontSize: 18,
-              color: userProfile?.appMode != 'light' ? color.black : color.white
+              color: userProfile?.appMode == 'light' ? color.black : color.white
             }}
           >
             {viewingUser?.likesCount ? viewingUser?.likesCount : '0'}
@@ -252,7 +252,7 @@ const UserProfile = (params) => {
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: userProfile?.appMode != 'light' ? color.lightText : color.white,
+              color: userProfile?.appMode == 'light' ? color.lightText : color.white,
               marginLeft: 5
             }}
           >
@@ -273,7 +273,7 @@ const UserProfile = (params) => {
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: userProfile?.appMode != 'light' ? color.dark : color.white
+              color: userProfile?.appMode == 'light' ? color.dark : color.white
             }}
           >
             {viewingUser?.about}
@@ -290,7 +290,7 @@ const UserProfile = (params) => {
           alignItems: 'center'
         }}
       >
-        <Feather name='home' size={14} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
+        <Feather name='home' size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
         <View
           style={{
@@ -304,7 +304,7 @@ const UserProfile = (params) => {
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: userProfile?.appMode != 'light' ? color.dark : color.white,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
               marginLeft: 5
             }}
           >
@@ -314,7 +314,7 @@ const UserProfile = (params) => {
             style={{
               fontFamily: 'boldText',
               fontSize: 16,
-              color: userProfile?.appMode != 'light' ? color.dark : color.white,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
               marginLeft: 5
             }}
           >
@@ -332,7 +332,7 @@ const UserProfile = (params) => {
           alignItems: 'center'
         }}
       >
-        <Fontisto name="date" size={14} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
+        <Fontisto name="date" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
         <View
           style={{
@@ -346,7 +346,7 @@ const UserProfile = (params) => {
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: userProfile?.appMode != 'light' ? color.dark : color.white,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
               marginLeft: 5
             }}
           >
@@ -356,7 +356,7 @@ const UserProfile = (params) => {
             style={{
               fontFamily: 'boldText',
               fontSize: 16,
-              color: userProfile?.appMode != 'light' ? color.dark : color.white,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
               marginLeft: 5
             }}
           >
@@ -374,13 +374,13 @@ const UserProfile = (params) => {
           alignItems: 'center'
         }}
       >
-        <Feather name="briefcase" size={14} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
+        <Feather name="briefcase" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
         <Text
           style={{
             fontFamily: 'text',
             fontSize: 16,
-            color: userProfile?.appMode != 'light' ? color.dark : color.white,
+            color: userProfile?.appMode == 'light' ? color.dark : color.white,
             marginLeft: 10
           }}
         >

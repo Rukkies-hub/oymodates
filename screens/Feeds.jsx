@@ -18,8 +18,8 @@ const Feeds = () => {
   const navigation = useNavigation()
 
   useLayoutEffect(() => {
-    NavigationBar.setBackgroundColorAsync(setProfiles?.appMode != 'light' ? color.white : color.dark)
-    NavigationBar.setButtonStyleAsync(setProfiles?.appMode != 'light' ? 'dark' : 'light')
+    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : color.dark)
+    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
   }, [])
 
   useLayoutEffect(() =>
@@ -71,7 +71,7 @@ const Feeds = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
       }}
     >
       <Posts />

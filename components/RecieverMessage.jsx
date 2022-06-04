@@ -65,7 +65,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
       >
         <Pressable
           style={{
-            backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
+            backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
             paddingVertical: 6,
             paddingHorizontal: 15,
             alignSelf: 'flex-end',
@@ -79,7 +79,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             messages?.message &&
             <Text
                 style={{
-                  color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
                   fontSize: 18,
                   textAlign: 'left'
                 }}
@@ -139,7 +139,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 height: 35,
                 borderRadius: 20,
                 overflow: "hidden",
-                backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
+                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
                 left: -10,
                 flexDirection: 'row',
                 alignItems: 'center',

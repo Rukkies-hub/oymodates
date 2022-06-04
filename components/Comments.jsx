@@ -122,7 +122,7 @@ const Comments = (params) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
+                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -130,7 +130,7 @@ const Comments = (params) => {
               >
                 <Text
                   style={{
-                    color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -139,7 +139,7 @@ const Comments = (params) => {
                 </Text>
                 <Text
                   style={{
-                    color: userProfile?.appMode != 'light' ? color.dark : color.white
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white
                   }}
                 >
                   {comment?.comment}
@@ -172,7 +172,7 @@ const Comments = (params) => {
                   >
                     <Text
                       style={{
-                        color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
                         fontFamily: 'text'
                       }}
                     >
@@ -202,16 +202,16 @@ const Comments = (params) => {
                       onSubmitEditing={() => sendCommentReply(comment)}
                       onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                       placeholder={`Reply ${comment?.user?.displayName}`}
-                      placeholderTextColor={userProfile?.appMode != 'light' ? color.lightText : color.white}
+                      placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
                       style={{
                         flex: 1,
                         minHeight: 40,
                         height,
                         borderRadius: 50,
-                        backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
+                        backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
                         paddingHorizontal: 10,
                         paddingVertical: 4,
-                        color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
                         fontFamily: 'text'
                       }}
                     />
@@ -227,7 +227,7 @@ const Comments = (params) => {
                       }}>
                       <FontAwesome5
                         name='paper-plane'
-                        color={userProfile?.appMode != 'light' ? color.lightText : color.white}
+                        color={userProfile?.appMode == 'light' ? color.lightText : color.white}
                         size={20}
                       />
                     </TouchableOpacity>

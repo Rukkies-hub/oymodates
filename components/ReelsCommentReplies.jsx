@@ -62,7 +62,7 @@ const ReelsCommentReplies = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
+                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -70,7 +70,7 @@ const ReelsCommentReplies = (props) => {
               >
                 <Text
                   style={{
-                    color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -79,7 +79,7 @@ const ReelsCommentReplies = (props) => {
                 </Text>
                 <Text
                   style={{
-                    color: userProfile?.appMode != 'light' ? color.dark : color.white
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white
                   }}
                 >
                   {reply?.reply}

@@ -196,7 +196,7 @@ const Message = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
       }}
     >
       <Header
@@ -238,7 +238,7 @@ const Message = () => {
           paddingHorizontal: 10,
           borderTopWidth: .3,
           borderTopColor: color.borderColor,
-          backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
+          backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
           minHeight: 50,
           overflow: 'hidden',
           position: 'relative',
@@ -255,7 +255,7 @@ const Message = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}>
-              <MaterialCommunityIcons name='camera-outline' color={userProfile?.appMode != 'light' ? color.lightText : color.white} size={26} />
+              <MaterialCommunityIcons name='camera-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -266,7 +266,7 @@ const Message = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}>
-              <MaterialCommunityIcons name='image-outline' color={userProfile?.appMode != 'light' ? color.lightText : color.white} size={26} />
+              <MaterialCommunityIcons name='image-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
             </TouchableOpacity>
           </>
         }
@@ -282,7 +282,7 @@ const Message = () => {
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-          <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode != 'light' ? color.lightText : color.white} size={26} />
+          <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
         </TouchableOpacity>
 
         {
@@ -302,7 +302,7 @@ const Message = () => {
                 style={{
                   fontSize: 18,
                   fontFamily: 'text',
-                  color: userProfile?.appMode != 'light' ? color.lightText : color.white
+                  color: userProfile?.appMode == 'light' ? color.lightText : color.white
                 }}
               >
                 Recording...
@@ -316,7 +316,7 @@ const Message = () => {
               onSubmitEditing={sendMessage}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               placeholder='Aa..'
-              placeholderTextColor={userProfile?.appMode != 'light' ? color.lightText : color.white}
+              placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
               style={{
                 fontSize: 18,
                 flex: 1,
@@ -324,7 +324,7 @@ const Message = () => {
                 height: activeInput ? height : '100%',
                 maxHeight: 70,
                 fontFamily: 'text',
-                color: userProfile?.appMode != 'light' ? color.dark : color.white
+                color: userProfile?.appMode == 'light' ? color.dark : color.white
               }}
             />
         }
@@ -341,7 +341,7 @@ const Message = () => {
             }}>
             <FontAwesome5
               name='paper-plane'
-              color={userProfile?.appMode != 'light' ? color.lightText : color.white}
+              color={userProfile?.appMode == 'light' ? color.lightText : color.white}
               size={20}
             />
           </TouchableOpacity>
@@ -366,11 +366,11 @@ const Message = () => {
           }}>
           {
             recordingLoading ?
-              <ActivityIndicator size='small' color={userProfile?.appMode != 'light' ? color.lightText : color.white} /> :
+              <ActivityIndicator size='small' color={userProfile?.appMode == 'light' ? color.lightText : color.white} /> :
               <FontAwesome5
                 size={20}
                 name="microphone-alt"
-                color={userProfile?.appMode != 'light' ? color.lightText : color.white}
+                color={userProfile?.appMode == 'light' ? color.lightText : color.white}
               />
           }
         </TouchableOpacity>

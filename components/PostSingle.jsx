@@ -66,7 +66,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
       style={{
         position: 'relative',
         flex: 1,
-        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
       }}
     >
       <TouchableOpacity

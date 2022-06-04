@@ -53,7 +53,7 @@ const NewComment = (params) => {
         paddingHorizontal: 10,
         borderTopWidth: .3,
         borderTopColor: color.borderColor,
-        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.lightText,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.lightText,
         minHeight: 50,
         overflow: 'hidden',
         position: 'relative',
@@ -67,7 +67,7 @@ const NewComment = (params) => {
         onChangeText={setInput}
         onSubmitEditing={sendComment}
         placeholder='Write a comment...'
-        placeholderTextColor={userProfile?.appMode != 'light' ? color.lightText : color.white}
+        placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
         onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
         style={{
           fontSize: 18,
@@ -77,7 +77,7 @@ const NewComment = (params) => {
           minHeight: 50,
           maxHeight: 150,
           fontFamily: 'text',
-          color: userProfile?.appMode != 'light' ? color.dark : color.white,
+          color: userProfile?.appMode == 'light' ? color.dark : color.white,
           paddingRight: 40,
           paddingVertical: 5
         }}
@@ -96,7 +96,7 @@ const NewComment = (params) => {
         }}>
         <FontAwesome5
           name='paper-plane'
-          color={userProfile?.appMode != 'light' ? color.lightText : color.white}
+          color={userProfile?.appMode == 'light' ? color.lightText : color.white}
           size={20}
         />
       </TouchableOpacity>

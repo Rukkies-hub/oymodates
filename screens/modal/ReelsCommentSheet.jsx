@@ -62,7 +62,7 @@ const ReelsCommentSheet = () => {
             display: 'none'
           }}
           backgroundStyle={{
-            backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
+            backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
           }}
         >
           <View
@@ -91,7 +91,7 @@ const ReelsCommentSheet = () => {
                 style={{
                   width: 50,
                   height: 5,
-                  backgroundColor: userProfile?.appMode != 'light' ? color.dark : color.white,
+                  backgroundColor: userProfile?.appMode == 'light' ? color.dark : color.white,
                   borderRadius: 12
                 }}
               />
@@ -122,19 +122,19 @@ const ReelsCommentSheet = () => {
               onChangeText={setComment}
               onSubmitEditing={sendComment}
               placeholder='Write a comment...'
-              placeholderTextColor={userProfile?.appMode != 'light' ? color.dark : color.white}
+              placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               style={{
                 flex: 1,
                 marginHorizontal: 10,
-                backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
+                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
                 minHeight: 40,
                 borderRadius: 50,
                 fontSize: 18,
                 height,
                 maxHeight: 150,
                 fontFamily: 'text',
-                color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                color: userProfile?.appMode == 'light' ? color.dark : color.white,
                 paddingHorizontal: 10
               }}
             />
@@ -148,7 +148,7 @@ const ReelsCommentSheet = () => {
               }}>
               <FontAwesome5
                 name='paper-plane'
-                color={userProfile?.appMode != 'light' ? color.lightText : color.white}
+                color={userProfile?.appMode == 'light' ? color.lightText : color.white}
                 size={20}
               />
             </TouchableOpacity>

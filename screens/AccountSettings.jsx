@@ -9,18 +9,18 @@ import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 
 const AccountSettings = () => {
-  const { user } = useAuth()
+  const { user, getUserProfile } = useAuth()
 
   const lightMode = () => {
     updateDoc(doc(db, 'users', user.uid), {
       appMode: 'light'
-    })
+    }).then(() => getUserProfile(user))
   }
 
   const darkMode = () => {
     updateDoc(doc(db, 'users', user.uid), {
       appMode: 'dark'
-    })
+    }).then(() => getUserProfile(user))
   }
 
   const [loaded] = useFonts({

@@ -137,7 +137,7 @@ const Match = () => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
         flex: 1
       }}
     >
@@ -200,7 +200,7 @@ const Match = () => {
                 <View
                   key={card.id}
                   style={{
-                    backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
+                    backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
                     height: 698,
                     marginTop: -30,
                     width: '100%',
@@ -486,7 +486,7 @@ const Match = () => {
               <View
                 style={{
                   flex: 1,
-                  backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
+                  backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}
@@ -499,7 +499,7 @@ const Match = () => {
                   }}
                 >
                   {
-                    userProfile?.appMode != 'light' &&
+                    userProfile?.appMode == 'light' &&
                     <Image
                       source={require('../assets/rader.gif')}
                       style={{
@@ -520,7 +520,7 @@ const Match = () => {
                 <Text
                   style={{
                     fontFamily: 'text',
-                    color: userProfile?.appMode != 'light' ? color.lightText : color.white,
+                    color: userProfile?.appMode == 'light' ? color.lightText : color.white,
                     marginTop: 50
                   }}
                 >

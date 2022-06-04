@@ -234,7 +234,8 @@ export const AuthProvider = ({ children }) => {
     bottomSheetIndex,
     setBottomSheetIndex,
     reelsProps,
-    setReelsProps
+    setReelsProps,
+    getUserProfile
   ])
 
   return (

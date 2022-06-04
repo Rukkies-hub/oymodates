@@ -71,7 +71,7 @@ const Posts = () => {
           style={{
             flex: 1,
             marginBottom: 20,
-            backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
+            backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
           }}
         >
           <View
@@ -107,7 +107,7 @@ const Posts = () => {
                   fontFamily: 'text',
                   marginLeft: 10,
                   fontSize: 18,
-                  color: userProfile?.appMode != 'light' ? color.dark : color.white
+                  color: userProfile?.appMode == 'light' ? color.dark : color.white
                 }}
               >
                 {post?.user?.username}
@@ -122,7 +122,7 @@ const Posts = () => {
                 alignItems: 'center'
               }}
             >
-              <MaterialCommunityIcons name='dots-vertical' color={userProfile?.appMode != 'light' ? color.lightText : color.white} size={25} />
+              <MaterialCommunityIcons name='dots-vertical' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={25} />
             </TouchableOpacity>
           </View>
 
@@ -219,7 +219,7 @@ const Posts = () => {
                 marginRight: 20
               }}
             >
-              <Fontisto name="comment" size={24} color={userProfile?.appMode != 'light' ? color.lightText : color.white} />
+              <Fontisto name="comment" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
             </Pressable>
 
             <Pressable
@@ -231,7 +231,7 @@ const Posts = () => {
                 marginRight: 20
               }}
             >
-              <AntDesign name="retweet" size={24} color={userProfile?.appMode != 'light' ? color.lightText : color.white} />
+              <AntDesign name="retweet" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
             </Pressable>
           </View>
 
@@ -249,7 +249,7 @@ const Posts = () => {
               post?.likesCount > 0 &&
               <Text
                 style={{
-                  color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
                   fontSize: 14
                 }}
               >
@@ -258,7 +258,7 @@ const Posts = () => {
             }
             <Text
               style={{
-                color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                color: userProfile?.appMode == 'light' ? color.dark : color.white,
                 fontSize: 16
               }}
             >
@@ -287,7 +287,7 @@ const Posts = () => {
 
             <View
               style={{
-                backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
+                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
                 padding: 5,
                 paddingHorizontal: 10,
                 borderRadius: 12,
@@ -300,7 +300,7 @@ const Posts = () => {
             >
               <Text
                 style={{
-                  color: userProfile?.appMode != 'light' ? color.lightText : color.white
+                  color: userProfile?.appMode == 'light' ? color.lightText : color.white
                 }}
               >
                 Write a comment...

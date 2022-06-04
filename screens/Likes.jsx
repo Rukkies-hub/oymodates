@@ -68,7 +68,7 @@ const Likes = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
       }}
     >
       <View
@@ -81,7 +81,7 @@ const Likes = () => {
       >
         <Text
           style={{
-            color: userProfile?.appMode != 'light' ? color.lightText : color.white,
+            color: userProfile?.appMode == 'light' ? color.lightText : color.white,
             fontFamily: 'text',
             fontSize: 16,
             textAlign: 'center'

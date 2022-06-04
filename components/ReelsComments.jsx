@@ -124,7 +124,7 @@ const ReelsComments = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
+                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -132,7 +132,7 @@ const ReelsComments = (props) => {
               >
                 <Text
                   style={{
-                    color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -141,7 +141,7 @@ const ReelsComments = (props) => {
                 </Text>
                 <Text
                   style={{
-                    color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
                     fontSize: 14
                   }}
                 >
@@ -174,7 +174,7 @@ const ReelsComments = (props) => {
                   >
                     <Text
                       style={{
-                        color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
                         fontFamily: 'text',
                         marginRight: 3
                       }}
@@ -263,14 +263,14 @@ const ReelsComments = (props) => {
                       onChangeText={setInput}
                       onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                       placeholder={`Reply  ${comment?.user?.username}`}
-                      placeholderTextColor={userProfile?.appMode != 'light' ? color.dark : color.white}
+                      placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
                       onSubmitEditing={() => sendCommentReply(comment)}
                       style={{
                         flex: 1,
                         minHeight: 40,
                         height,
                         borderRadius: 50,
-                        backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
+                        backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
                         paddingHorizontal: 10,
                         paddingVertical: 4,
                         color: color.dark
@@ -288,7 +288,7 @@ const ReelsComments = (props) => {
                       }}>
                       <FontAwesome5
                         name='paper-plane'
-                        color={userProfile?.appMode != 'light' ? color.lightText : color.white}
+                        color={userProfile?.appMode == 'light' ? color.lightText : color.white}
                         size={20}
                       />
                     </TouchableOpacity>

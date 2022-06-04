@@ -67,7 +67,7 @@ const ChatRow = ({ matchDetails }) => {
             style={{
               fontSize: 18,
               fontFamily: "text",
-              color: userProfile?.appMode != 'light' ? color.dark : color.white
+              color: userProfile?.appMode == 'light' ? color.dark : color.white
             }}
           >
             {matchedUserInfo?.username}
@@ -75,7 +75,7 @@ const ChatRow = ({ matchDetails }) => {
           <Text
             style={{
               fontSize: 12,
-              color: userProfile?.appMode != 'light' ? color.dark : color.white,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
               fontFamily: "text"
             }}
           >
