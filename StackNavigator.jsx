@@ -1,7 +1,7 @@
 import React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createStackNavigator } from '@react-navigation/stack'
 
-const Stack = createNativeStackNavigator()
+const Stack = createStackNavigator()
 
 import Index from './Index'
 import Login from './screens/Login'
@@ -28,8 +28,32 @@ import useAuth from './hooks/useAuth'
 const StackNavigator = () => {
   const { user, appAuth } = useAuth()
 
+  const config = {
+    animation: 'spring',
+    config: {
+      stiffness: 1000,
+      damping: 500,
+      mass: 3,
+      overshootClamping: true,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    },
+  }
+
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        animationEnabled: true,
+        animationTypeForReplace: 'pop',
+        headerMode: 'float',
+        transitionSpec: {
+          open: config,
+          close: config,
+        }
+      }}
+    >
       {
         user ? (
           <>

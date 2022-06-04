@@ -23,6 +23,12 @@ const AccountSettings = () => {
     })
   }
 
+  const lightsOut = () => {
+    updateDoc(doc(db, 'users', user.uid), {
+      appMode: 'lightsOut'
+    })
+  }
+
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
@@ -104,6 +110,28 @@ const AccountSettings = () => {
               }}
             >
               Dark
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={lightsOut}
+            style={{
+              flex: 1,
+              height: 45,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: color.lightText,
+              borderRadius: 4,
+              marginLeft: 2
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: 'text',
+                color: color.white
+              }}
+            >
+              Lights out
             </Text>
           </TouchableOpacity>
         </View>

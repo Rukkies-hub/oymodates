@@ -7,6 +7,8 @@ import { AuthProvider } from './hooks/useAuth'
 import { MenuProvider } from 'react-native-popup-menu'
 import ReelsCommentSheet from './screens/modal/ReelsCommentSheet'
 
+import 'react-native-gesture-handler'
+
 LogBox.ignoreAllLogs()
 
 const MyTheme = {
