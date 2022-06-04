@@ -5,8 +5,10 @@ import { View, TouchableOpacity } from 'react-native'
 import { Video } from 'expo-av'
 import color from '../style/color'
 import { useNavigation } from '@react-navigation/native'
+import useAuth from '../hooks/useAuth'
 
 export const PostSingle = forwardRef(({ item }, parentRef) => {
+  const { userProfile } = useAuth()
   const ref = useRef(null)
 
   const navigation = useNavigation()
@@ -63,7 +65,8 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
     <View
       style={{
         position: 'relative',
-        flex: 1
+        flex: 1,
+        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
       }}
     >
       <TouchableOpacity

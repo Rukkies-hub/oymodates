@@ -59,9 +59,7 @@ const MyReels = () => {
                 <AutoHeightImage
                   source={{ uri: reel?.thumbnail }}
                   width={width / 3}
-                  style={{
-                    flex: 1
-                  }}
+                  style={{ flex: 1 }}
                 />
                 <View
                   style={{
@@ -73,7 +71,7 @@ const MyReels = () => {
                     justifyContent: 'flex-start',
                     alignItems: 'center',
                     backgroundColor: color.faintBlack,
-                    padding: 10,
+                    padding: 5,
                     borderRadius: 50
                   }}
                 >
@@ -86,7 +84,7 @@ const MyReels = () => {
                       fontSize: 18
                     }}
                   >
-                    {reel?.likes?.length}
+                    {reel?.likesCount}
                   </Text>
                 </View>
               </Pressable>

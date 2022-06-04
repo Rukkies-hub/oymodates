@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native'
 import React, { useState, useEffect } from 'react'
 import {
   View,
@@ -10,6 +9,8 @@ import {
   Pressable,
   TouchableOpacity
 } from 'react-native'
+
+import { useNavigation } from '@react-navigation/native'
 
 import Header from '../../components/Header'
 import Bar from '../../components/StatusBar'
@@ -99,48 +100,38 @@ const UserProfile = (params) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
       }}
     >
-      <Bar color={'dark'} />
+      <Bar color={userProfile?.appMode != 'light' ? 'dark' : 'light'} />
       <Header showBack showTitle title={currentUser?.username} showAratar />
 
-      <ScrollView>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginHorizontal: 10,
+          marginVertical: 20
+        }}
+      >
+        <Image
+          source={{ uri: currentUser?.photoURL }}
+          style={{
+            width: 80,
+            height: 80,
+            borderRadius: 100
+          }}
+        />
+
         <View
           style={{
-            alignItems: 'center',
-            marginHorizontal: 10,
-            marginTop: 20
+            flex: 1,
+            paddingLeft: 20,
+            justifyContent: 'center'
           }}
         >
-          <Image
-            source={{ uri: currentUser?.photoURL }}
-            style={{
-              width: 80,
-              height: 80,
-              borderRadius: 100
-            }}
-          />
-
-          <Text
-            style={{
-              marginTop: 20,
-              fontFamily: 'text',
-              fontSize: 17,
-              color: color.dark
-            }}
-          >
-            @{currentUser?.username}
-          </Text>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 20
-            }}
-          >
+          {
+            currentUser?.username &&
             <View
               style={{
                 flexDirection: 'row',
@@ -150,213 +141,260 @@ const UserProfile = (params) => {
             >
               <Text
                 style={{
+                  color: userProfile?.appMode != 'light' ? color.dark : color.white,
                   fontFamily: 'boldText',
-                  fontSize: 18,
-                  color: color.black
+                  fontSize: 20
                 }}
               >
-                {viewingUser?.followersCount ? viewingUser?.followersCount : '0'}
+                {viewingUser?.username}
               </Text>
               <Text
                 style={{
-                  fontFamily: 'text',
-                  fontSize: 16,
-                  color: color.lightText,
-                  marginLeft: 5
+                  color: userProfile?.appMode != 'light' ? color.dark : color.white,
+                  fontFamily: 'boldText',
+                  fontSize: 20,
+                  marginLeft: 10
                 }}
               >
-                {
-                  viewingUser?.followersCount == 1 ? 'Follower' : 'Followers'
-                }
+                {viewingUser?.age}
               </Text>
             </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginLeft: 20
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'boldText',
-                  fontSize: 18,
-                  color: color.black
-                }}
-              >
-                55
-              </Text>
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  fontSize: 16,
-                  color: color.lightText,
-                  marginLeft: 5
-                }}
-              >
-                Likes
-              </Text>
-            </View>
-          </View>
-
-          <TouchableOpacity
-            onPress={handleUpdateLikes}
+          }
+          <Text
             style={{
-              marginHorizontal: 10,
-              backgroundColor: color.red,
-              width: '30%',
-              height: 35,
-              borderRadius: 4,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 20
+              fontFamily: 'text',
+              color: userProfile?.appMode != 'light' ? color.lightText : color.white
             }}
           >
-            <Text
-              style={{
-                color: color.white,
-                fontFamily: 'text',
-                fontSize: 16
-              }}
-            >
-              {
-                currentLikesState.state ? 'Unfollow' : 'Follow'
-              }
-            </Text>
-          </TouchableOpacity>
+            {currentUser?.displayName}
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          onPress={handleUpdateLikes}
+          style={{
+            backgroundColor: color.red,
+            paddingHorizontal: 20,
+            height: 35,
+            borderRadius: 4,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              color: color.white,
+              fontFamily: 'text',
+              fontSize: 16
+            }}
+          >
+            {
+              currentLikesState.state ? 'Unfollow' : 'Follow'
+            }
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          marginHorizontal: 10
+        }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginRight: 20
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 18,
+              color: userProfile?.appMode != 'light' ? color.black : color.white
+            }}
+          >
+            {viewingUser?.followersCount ? viewingUser?.followersCount : '0'}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode != 'light' ? color.lightText : color.white,
+              marginLeft: 5
+            }}
+          >
+            {viewingUser?.followersCount == 1 ? 'Follower' : 'Followers'}
+          </Text>
         </View>
 
         <View
           style={{
-            marginHorizontal: 10
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 18,
+              color: userProfile?.appMode != 'light' ? color.black : color.white
+            }}
+          >
+            {viewingUser?.likesCount ? viewingUser?.likesCount : '0'}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode != 'light' ? color.lightText : color.white,
+              marginLeft: 5
+            }}
+          >
+            Likes
+          </Text>
+        </View>
+      </View>
+
+      {
+        viewingUser?.about &&
+        <View
+          style={{
+            marginHorizontal: 10,
+            marginTop: 20
           }}
         >
           <Text
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: color.dark
+              color: userProfile?.appMode != 'light' ? color.dark : color.white
             }}
           >
-            {currentUser?.about}
+            {viewingUser?.about}
           </Text>
         </View>
+      }
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <Feather name='home' size={14} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
 
         <View
           style={{
-            marginHorizontal: 10,
-            marginTop: 10,
             flexDirection: 'row',
             justifyContent: 'flex-start',
-            alignItems: 'center'
+            alignItems: 'center',
+            marginLeft: 10
           }}
         >
-          <Feather name='home' size={14} color={color.dark} />
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              marginLeft: 10
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: 'text',
-                fontSize: 16,
-                color: color.dark,
-                marginLeft: 5
-              }}
-            >
-              Lives in
-            </Text>
-            <Text
-              style={{
-                fontFamily: 'boldText',
-                fontSize: 16,
-                color: color.dark,
-                marginLeft: 5
-              }}
-            >
-              {currentUser?.city}
-            </Text>
-          </View>
-        </View>
-
-        <View
-          style={{
-            marginHorizontal: 10,
-            marginTop: 10,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center'
-          }}
-        >
-          <Fontisto name="date" size={14} color={color.dark} />
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              marginLeft: 10
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: 'text',
-                fontSize: 16,
-                color: color.dark,
-                marginLeft: 5
-              }}
-            >
-              Joined
-            </Text>
-            <Text
-              style={{
-                fontFamily: 'boldText',
-                fontSize: 16,
-                color: color.dark,
-                marginLeft: 5
-              }}
-            >
-              {currentUser?.timestamp?.toDate().toDateString()}
-            </Text>
-          </View>
-        </View>
-
-        <View
-          style={{
-            marginHorizontal: 10,
-            marginTop: 10,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center'
-          }}
-        >
-          <Feather name="briefcase" size={14} color={color.dark} />
-
           <Text
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: color.dark,
-              marginLeft: 10
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
+              marginLeft: 5
             }}
           >
-            {currentUser?.job} at {currentUser?.company}
+            Lives in
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 16,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
+              marginLeft: 5
+            }}
+          >
+            {viewingUser?.city}
           </Text>
         </View>
+      </View>
 
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <Fontisto name="date" size={14} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginLeft: 10
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
+              marginLeft: 5
+            }}
+          >
+            Joined
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 16,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
+              marginLeft: 5
+            }}
+          >
+            {viewingUser?.timestamp?.toDate().toDateString()}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <Feather name="briefcase" size={14} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
+
+        <Text
+          style={{
+            fontFamily: 'text',
+            fontSize: 16,
+            color: userProfile?.appMode != 'light' ? color.dark : color.white,
+            marginLeft: 10
+          }}
+        >
+          {viewingUser?.job} {viewingUser?.job ? 'at' : null} {viewingUser?.company}
+        </Text>
+      </View>
+
+      <ScrollView>
         {
           reels?.length > 0 &&
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-start',
               flexWrap: 'wrap',
               marginTop: 20
             }}
@@ -374,10 +412,34 @@ const UserProfile = (params) => {
                   <AutoHeightImage
                     source={{ uri: reel?.thumbnail }}
                     width={width / 3}
-                    style={{
-                      flex: 1
-                    }}
+                    style={{ flex: 1 }}
                   />
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      margin: 10,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      backgroundColor: color.faintBlack,
+                      padding: 5,
+                      borderRadius: 50
+                    }}
+                  >
+                    <AntDesign name="heart" size={18} color={color.white} />
+                    <Text
+                      style={{
+                        fontFamily: 'boldText',
+                        marginLeft: 10,
+                        color: color.white,
+                        fontSize: 18
+                      }}
+                    >
+                      {reel?.likesCount}
+                    </Text>
+                  </View>
                 </Pressable>
               ))
             }

@@ -31,7 +31,7 @@ const NewComment = (params) => {
         },
         timestamp: serverTimestamp()
       })
-    
+
     await updateDoc(doc(db, 'posts', post?.id), {
       commentsCount: increment(1)
     })
@@ -53,10 +53,12 @@ const NewComment = (params) => {
         paddingHorizontal: 10,
         borderTopWidth: .3,
         borderTopColor: color.borderColor,
-        backgroundColor: color.white,
+        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.lightText,
         minHeight: 50,
         overflow: 'hidden',
-        position: 'relative'
+        position: 'relative',
+        marginHorizontal: 10,
+        borderRadius: 50
       }}
     >
       <TextInput
@@ -65,6 +67,7 @@ const NewComment = (params) => {
         onChangeText={setInput}
         onSubmitEditing={sendComment}
         placeholder='Write a comment...'
+        placeholderTextColor={userProfile?.appMode != 'light' ? color.lightText : color.white}
         onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
         style={{
           fontSize: 18,
@@ -74,7 +77,7 @@ const NewComment = (params) => {
           minHeight: 50,
           maxHeight: 150,
           fontFamily: 'text',
-          color: color.dark,
+          color: userProfile?.appMode != 'light' ? color.dark : color.white,
           paddingRight: 40,
           paddingVertical: 5
         }}
@@ -93,7 +96,7 @@ const NewComment = (params) => {
         }}>
         <FontAwesome5
           name='paper-plane'
-          color={color.lightText}
+          color={userProfile?.appMode != 'light' ? color.lightText : color.white}
           size={20}
         />
       </TouchableOpacity>

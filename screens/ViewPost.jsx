@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { View, Text, useWindowDimensions, Image, Pressable, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, useWindowDimensions, Image, Pressable, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native'
 import Header from '../components/Header'
 import color from '../style/color'
 
@@ -18,7 +18,7 @@ import Likes from '../components/Likes'
 
 const ViewPost = (params) => {
   const navigation = useNavigation()
-  const { user } = useAuth()
+  const { user, userProfile } = useAuth()
   const post = params.route.params.post
 
   const windowWidth = useWindowDimensions().width
@@ -28,10 +28,10 @@ const ViewPost = (params) => {
   const [mute, setMute] = useState(true)
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
       }}
     >
       <Header showBack showTitle title='View Post' />
@@ -73,7 +73,7 @@ const ViewPost = (params) => {
                 fontFamily: 'text',
                 marginLeft: 10,
                 fontSize: 14,
-                color: color.dark
+                color: userProfile?.appMode != 'light' ? color.dark : color.white
               }}
             >
               {post?.user?.displayName}
@@ -109,7 +109,7 @@ const ViewPost = (params) => {
                   width: windowWidth,
                   height: 522,
                   minHeight: 300,
-                  backgroundColor: color.black
+                  backgroundColor: userProfile?.appMode != 'light' ? color.black : color.white
                 }}
                 source={{
                   uri: post?.media[0],
@@ -171,7 +171,7 @@ const ViewPost = (params) => {
               marginRight: 20
             }}
           >
-            <Fontisto name="comment" size={24} color={color.lightText} />
+            <Fontisto name="comment" size={24} color={userProfile?.appMode != 'light' ? color.lightText : color.white} />
           </Pressable>
 
           <Pressable
@@ -183,7 +183,7 @@ const ViewPost = (params) => {
               marginRight: 20
             }}
           >
-            <AntDesign name="retweet" size={24} color={color.lightText} />
+            <AntDesign name="retweet" size={24} color={userProfile?.appMode != 'light' ? color.lightText : color.white} />
           </Pressable>
         </View>
 
@@ -199,7 +199,7 @@ const ViewPost = (params) => {
             post?.likesCount > 0 &&
             <Text
               style={{
-                color: color.dark,
+                color: userProfile?.appMode != 'light' ? color.dark : color.white,
                 fontSize: 14
               }}
             >
@@ -208,7 +208,7 @@ const ViewPost = (params) => {
           }
           <Text
             style={{
-              color: color.dark,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
               fontSize: 16
             }}
           >
@@ -223,7 +223,7 @@ const ViewPost = (params) => {
         <Comments post={post} />
       </ScrollView>
       <NewComment post={post} />
-    </View>
+    </SafeAreaView>
   )
 }
 

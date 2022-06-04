@@ -1,14 +1,16 @@
-import { useNavigation } from '@react-navigation/native'
-import { doc, setDoc, updateDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
-
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  SafeAreaView
 } from 'react-native'
+
+import { doc, setDoc, updateDoc } from 'firebase/firestore'
+import { useNavigation } from '@react-navigation/native'
+
 
 import Header from '../../components/Header'
 import { db } from '../../hooks/firebase'
@@ -105,10 +107,10 @@ const Passion = () => {
   }
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
       }}
     >
       <Header showBack showTitle title='Select Passion' />
@@ -117,7 +119,8 @@ const Passion = () => {
         style={{
           fontSize: 16,
           marginVertical: 20,
-          marginHorizontal: 10
+          marginHorizontal: 10,
+          color: userProfile?.appMode != 'light' ? color.lightText : color.white
         }}
       >
         Select passions that you'd like to share with the people you connect with. Choose a minimum of 3.
@@ -134,7 +137,7 @@ const Passion = () => {
         <Text
           style={{
             fontSize: 20,
-            color: color.dark,
+            color: userProfile?.appMode != 'light' ? color.dark : color.white,
             fontFamily: "text"
           }}
         >
@@ -145,7 +148,7 @@ const Passion = () => {
           <Text
             style={{
               fontFamily: 'text',
-              color: color.dark,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
               fontSize: 20
             }}
           >
@@ -193,14 +196,14 @@ const Passion = () => {
                       paddingVertical: 5,
                       borderWidth: 2,
                       borderRadius: 50,
-                      borderColor: passions?.includes(passion) ? color.red : color.borderColor,
+                      borderColor: passions?.includes(passion) ? color.red : userProfile?.appMode != 'light' ? color.borderColor : color.lightBorderColor,
                       marginBottom: 10,
                       marginRight: 10
                     }}
                   >
                     <Text
                       style={{
-                        color: passions?.includes(passion) ? color.red : color.lightText,
+                        color: passions?.includes(passion) ? color.red : userProfile?.appMode != 'light' ? color.lightText : color.white,
                         fontSize: 12,
                         fontFamily: "text",
                         textTransform: "capitalize"
@@ -219,7 +222,7 @@ const Passion = () => {
           disabled={passions?.length < 3}
           onPress={updateIntrests}
           style={{
-            backgroundColor: passions?.length >= 3 ? color.red : color.labelColor,
+            backgroundColor: passions?.length >= 3 ? color.red : userProfile?.appMode != 'light' ? color.labelColor : color.lightText,
             height: 50,
             borderRadius: 4,
             justifyContent: "center",
@@ -242,7 +245,7 @@ const Passion = () => {
           }
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

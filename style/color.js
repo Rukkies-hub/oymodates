@@ -13,6 +13,7 @@ export default {
     transparent: 'transparent',
     lightText: 'rgba(0,0,0,0.6)',
     borderColor: 'rgba(0,0,0,0.2)',
+    lightBorderColor: 'rgba(255,255,255,0.2)',
     labelColor: 'rgba(0,0,0,0.4)',
     transparentBackground: 'rgba(0,0,0,0.4)',
     gold: '#FFD700',

@@ -61,6 +61,9 @@ const ReelsCommentSheet = () => {
           handleIndicatorStyle={{
             display: 'none'
           }}
+          backgroundStyle={{
+            backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
+          }}
         >
           <View
             style={{
@@ -88,7 +91,7 @@ const ReelsCommentSheet = () => {
                 style={{
                   width: 50,
                   height: 5,
-                  backgroundColor: color.dark,
+                  backgroundColor: userProfile?.appMode != 'light' ? color.dark : color.white,
                   borderRadius: 12
                 }}
               />
@@ -109,8 +112,8 @@ const ReelsCommentSheet = () => {
             <Image
               source={{ uri: reelsProps?.user?.photoURL }}
               style={{
-                width: 40,
-                height: 40,
+                width: 35,
+                height: 35,
                 borderRadius: 50
               }}
             />
@@ -119,19 +122,19 @@ const ReelsCommentSheet = () => {
               onChangeText={setComment}
               onSubmitEditing={sendComment}
               placeholder='Write a comment...'
+              placeholderTextColor={userProfile?.appMode != 'light' ? color.dark : color.white}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               style={{
                 flex: 1,
                 marginHorizontal: 10,
-                backgroundColor: color.offWhite,
+                backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
                 minHeight: 40,
                 borderRadius: 50,
-
                 fontSize: 18,
                 height,
                 maxHeight: 150,
                 fontFamily: 'text',
-                color: color.dark,
+                color: userProfile?.appMode != 'light' ? color.dark : color.white,
                 paddingHorizontal: 10
               }}
             />
@@ -145,7 +148,7 @@ const ReelsCommentSheet = () => {
               }}>
               <FontAwesome5
                 name='paper-plane'
-                color={color.lightText}
+                color={userProfile?.appMode != 'light' ? color.lightText : color.white}
                 size={20}
               />
             </TouchableOpacity>

@@ -137,7 +137,7 @@ const Match = () => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: color.white,
+        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
         flex: 1
       }}
     >
@@ -200,7 +200,7 @@ const Match = () => {
                 <View
                   key={card.id}
                   style={{
-                    backgroundColor: color.white,
+                    backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
                     height: 698,
                     marginTop: -30,
                     width: '100%',
@@ -247,29 +247,16 @@ const Match = () => {
                           alignItems: 'center'
                         }}
                       >
-                        {
-                          card?.useUsername == true ?
-                            <Text
-                              style={{
-                                fontSize: 30,
-                                color: color.white,
-                                marginBottom: 10,
-                                fontFamily: 'boldText',
-                                textTransform: 'capitalize'
-                              }}>
-                              {card?.username}
-                            </Text> :
-                            <Text
-                              style={{
-                                fontSize: 30,
-                                color: color.white,
-                                marginBottom: 10,
-                                fontFamily: 'boldText',
-                                textTransform: 'capitalize'
-                              }}>
-                              {card?.displayName}
-                            </Text>
-                        }
+                        <Text
+                          style={{
+                            fontSize: 30,
+                            color: color.white,
+                            marginBottom: 10,
+                            fontFamily: 'boldText',
+                            textTransform: 'capitalize'
+                          }}>
+                          {card?.username}
+                        </Text>
                         {
                           card?.hideAge == true ? null : (
                             <Text
@@ -378,7 +365,7 @@ const Match = () => {
                         </Text> : null
                     }
                     {
-                      card?.passions.length > 0 ?
+                      card?.passions?.length > 0 ?
                         <View
                           style={{
                             flexDirection: 'row',
@@ -396,7 +383,7 @@ const Match = () => {
                             }}
                           >
                             {
-                              card?.passions.map((passion, index) => {
+                              card?.passions?.map((passion, index) => {
                                 return (
                                   <View
                                     key={index}
@@ -499,7 +486,7 @@ const Match = () => {
               <View
                 style={{
                   flex: 1,
-                  backgroundColor: color.white,
+                  backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}
@@ -511,12 +498,15 @@ const Match = () => {
                     alignItems: 'center'
                   }}
                 >
-                  <Image
-                    source={require('../assets/rader.gif')}
-                    style={{
-                      position: 'absolute'
-                    }}
-                  />
+                  {
+                    userProfile?.appMode != 'light' &&
+                    <Image
+                      source={require('../assets/rader.gif')}
+                      style={{
+                        position: 'absolute'
+                      }}
+                    />
+                  }
                   <Image
                     source={{ uri: userProfile?.photoURL || user?.photoURL }}
                     style={{
@@ -530,7 +520,7 @@ const Match = () => {
                 <Text
                   style={{
                     fontFamily: 'text',
-                    color: color.lightText,
+                    color: userProfile?.appMode != 'light' ? color.lightText : color.white,
                     marginTop: 50
                   }}
                 >

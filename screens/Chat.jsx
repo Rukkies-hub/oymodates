@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const Chat = () => {
   const navigation = useNavigation()
-  const { getUserProfile, user, pendingSwipes } = useAuth()
+  const { getUserProfile, user, pendingSwipes, userProfile } = useAuth()
 
   useEffect(() => {
     getUserProfile(user)
@@ -30,7 +30,7 @@ const Chat = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
       }}
     >
       {
@@ -72,7 +72,8 @@ const Chat = () => {
                   <Text
                     style={{
                       fontFamily: 'text',
-                      fontSize: 18
+                      fontSize: 18,
+                      color: userProfile?.appMode != 'light' ? color.lightText : color.white
                     }}
                   >
                     {pendingSwipes[0].username}
@@ -103,7 +104,7 @@ const Chat = () => {
             <Text
               style={{
                 fontFamily: 'text',
-                color: color.lightText
+                color: userProfile?.appMode != 'light' ? color.lightText : color.white
               }}
             >
               Recently active, match now!

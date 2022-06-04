@@ -12,15 +12,15 @@ import { db } from '../hooks/firebase'
 import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 
 const ChatRow = ({ matchDetails }) => {
-  const { user } = useAuth()
+  const { user, userProfile } = useAuth()
   const navigation = useNavigation()
 
   const [matchedUserInfo, setMatchedUserInfo] = useState({})
   const [lastMessage, setLastMessage] = useState("")
 
-  useEffect(() => 
+  useEffect(() =>
     setMatchedUserInfo(getMatchedUserInfo(matchDetails?.users, user.uid))
-  , [matchDetails, user])
+    , [matchDetails, user])
 
   useEffect(() =>
     onSnapshot(query(collection(db, 'matches', matchDetails.id, 'messages'),
@@ -67,15 +67,15 @@ const ChatRow = ({ matchDetails }) => {
             style={{
               fontSize: 18,
               fontFamily: "text",
-              textTransform: "capitalize"
+              color: userProfile?.appMode != 'light' ? color.dark : color.white
             }}
           >
-            {matchedUserInfo?.displayName}
+            {matchedUserInfo?.username}
           </Text>
           <Text
             style={{
               fontSize: 12,
-              color: color.dark,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
               fontFamily: "text"
             }}
           >

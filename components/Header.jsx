@@ -161,7 +161,7 @@ const Header = ({
     >
       <View
         style={{
-          backgroundColor: color.white,
+          backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
           height: 50,
           marginTop: 40,
           paddingHorizontal: 10,
@@ -189,7 +189,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <Entypo name='chevron-left' size={24} color={color.dark} />
+              <Entypo name='chevron-left' size={24} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
             </TouchableOpacity>
           }
           {
@@ -199,7 +199,8 @@ const Header = ({
                 fontFamily: 'logo',
                 fontSize: 30,
                 margin: 0,
-                marginTop: -10
+                marginTop: -10,
+                color: userProfile?.appMode != 'light' ? color.black : color.white
               }}
             >
               Oymo
@@ -224,7 +225,7 @@ const Header = ({
                 fontFamily: 'text',
                 fontSize: 18,
                 textTransform: 'capitalize',
-                color: color.dark
+                color: userProfile?.appMode != 'light' ? color.dark : color.white
               }}
             >
               {title}
@@ -250,7 +251,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <Entypo name='phone' size={20} color={color.lightText} />
+              <Entypo name='phone' size={20} color={userProfile?.appMode != 'light' ? color.lightText : color.white} />
             </TouchableOpacity>
           }
 
@@ -265,7 +266,7 @@ const Header = ({
                 alignItems: 'center'
               }}
             >
-              <FontAwesome5 name='video' size={20} color={color.lightText} />
+              <FontAwesome5 name='video' size={20} color={userProfile?.appMode != 'light' ? color.lightText : color.white} />
             </TouchableOpacity>
           }
 
@@ -277,7 +278,7 @@ const Header = ({
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderColor: color.borderColor,
+                borderColor: userProfile?.appMode != 'light' ? color.borderColor : color.white,
                 borderWidth: 1,
                 borderRadius: 4,
                 paddingVertical: 10,
@@ -287,7 +288,7 @@ const Header = ({
             >
               <Text
                 style={{
-                  color: color.dark,
+                  color: userProfile?.appMode != 'light' ? color.dark : color.white,
                   fontFamily: 'text',
                   marginLeft: 10
                 }}
@@ -370,7 +371,7 @@ const Header = ({
                   }
                 }}
               >
-                <FontAwesome name='plus-square-o' color={color.dark} size={26} />
+                <FontAwesome name='plus-square-o' color={userProfile?.appMode != 'light' ? color.dark : color.white} size={26} />
               </MenuTrigger>
 
               <MenuOptions

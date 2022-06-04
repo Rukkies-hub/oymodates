@@ -40,7 +40,7 @@ const ChatList = () => {
       <View
         style={{
           flex: 1,
-          backgroundColor: color.white,
+          backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
           justifyContent: 'center',
           alignItems: 'center'
         }}
@@ -52,12 +52,15 @@ const ChatList = () => {
             alignItems: 'center'
           }}
         >
-          <Image
-            source={require('../assets/rader.gif')}
-            style={{
-              position: 'absolute'
-            }}
-          />
+          {
+            userProfile?.appMode != 'light' &&
+            <Image
+              source={require('../assets/rader.gif')}
+              style={{
+                position: 'absolute'
+              }}
+            />
+          }
           <Image
             source={{ uri: userProfile?.photoURL || user?.photoURL }}
             style={{
@@ -71,7 +74,7 @@ const ChatList = () => {
         <Text
           style={{
             fontFamily: 'text',
-            color: color.lightText,
+            color: userProfile?.appMode != 'light' ? color.lightText : color.white,
             marginTop: 50
           }}
         >

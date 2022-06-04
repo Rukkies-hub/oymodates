@@ -24,10 +24,10 @@ const Profile = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
       }}
     >
-      <Bar color={'dark'} />
+      <Bar color={userProfile?.appMode != 'light' ? 'dark' : 'light'} />
       <Header showBack showTitle title='Profile' showAratar />
 
       <View
@@ -65,7 +65,7 @@ const Profile = () => {
             >
               <Text
                 style={{
-                  color: color.dark,
+                  color: userProfile?.appMode != 'light' ? color.dark : color.white,
                   fontFamily: 'boldText',
                   fontSize: 20
                 }}
@@ -74,7 +74,7 @@ const Profile = () => {
               </Text>
               <Text
                 style={{
-                  color: color.dark,
+                  color: userProfile?.appMode != 'light' ? color.dark : color.white,
                   fontFamily: 'boldText',
                   fontSize: 20,
                   marginLeft: 10
@@ -86,7 +86,8 @@ const Profile = () => {
           }
           <Text
             style={{
-              fontFamily: 'text'
+              fontFamily: 'text',
+              color: userProfile?.appMode != 'light' ? color.lightText : color.white
             }}
           >
             {userProfile?.displayName}
@@ -99,13 +100,13 @@ const Profile = () => {
             justifyContent: 'center',
             alignItems: 'center',
             borderWidth: 1,
-            borderColor: color.borderColor,
+            borderColor: userProfile?.appMode != 'light' ? color.borderColor : color.lightBorderColor,
             borderRadius: 50,
             height: 50,
             width: 50,
           }}
         >
-          <FontAwesome name="edit" size={20} color="black" />
+          <FontAwesome name="edit" size={20} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
         </TouchableOpacity>
       </View>
 
@@ -129,7 +130,7 @@ const Profile = () => {
             style={{
               fontFamily: 'boldText',
               fontSize: 18,
-              color: color.black
+              color: userProfile?.appMode != 'light' ? color.black : color.white
             }}
           >
             {userProfile?.followersCount ? userProfile?.followersCount : '0'}
@@ -138,7 +139,7 @@ const Profile = () => {
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: color.lightText,
+              color: userProfile?.appMode != 'light' ? color.lightText : color.white,
               marginLeft: 5
             }}
           >
@@ -156,7 +157,7 @@ const Profile = () => {
             style={{
               fontFamily: 'boldText',
               fontSize: 18,
-              color: color.black
+              color: userProfile?.appMode != 'light' ? color.black : color.white
             }}
           >
             {userProfile?.likesCount ? userProfile?.likesCount : '0'}
@@ -165,7 +166,7 @@ const Profile = () => {
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: color.lightText,
+              color: userProfile?.appMode != 'light' ? color.lightText : color.white,
               marginLeft: 5
             }}
           >
@@ -174,22 +175,25 @@ const Profile = () => {
         </View>
       </View>
 
-      <View
-        style={{
-          marginHorizontal: 10,
-          marginTop: 20
-        }}
-      >
-        <Text
+      {
+        userProfile?.about &&
+        <View
           style={{
-            fontFamily: 'text',
-            fontSize: 16,
-            color: color.dark
+            marginHorizontal: 10,
+            marginTop: 20
           }}
         >
-          {userProfile?.about}
-        </Text>
-      </View>
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white
+            }}
+          >
+            {userProfile?.about}
+          </Text>
+        </View>
+      }
 
       <View
         style={{
@@ -200,7 +204,7 @@ const Profile = () => {
           alignItems: 'center'
         }}
       >
-        <Feather name='home' size={14} color={color.dark} />
+        <Feather name='home' size={14} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
 
         <View
           style={{
@@ -214,7 +218,7 @@ const Profile = () => {
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: color.dark,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
               marginLeft: 5
             }}
           >
@@ -224,7 +228,7 @@ const Profile = () => {
             style={{
               fontFamily: 'boldText',
               fontSize: 16,
-              color: color.dark,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
               marginLeft: 5
             }}
           >
@@ -242,7 +246,7 @@ const Profile = () => {
           alignItems: 'center'
         }}
       >
-        <Fontisto name="date" size={14} color={color.dark} />
+        <Fontisto name="date" size={14} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
 
         <View
           style={{
@@ -256,7 +260,7 @@ const Profile = () => {
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: color.dark,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
               marginLeft: 5
             }}
           >
@@ -266,7 +270,7 @@ const Profile = () => {
             style={{
               fontFamily: 'boldText',
               fontSize: 16,
-              color: color.dark,
+              color: userProfile?.appMode != 'light' ? color.dark : color.white,
               marginLeft: 5
             }}
           >
@@ -284,13 +288,13 @@ const Profile = () => {
           alignItems: 'center'
         }}
       >
-        <Feather name="briefcase" size={14} color={color.dark} />
+        <Feather name="briefcase" size={14} color={userProfile?.appMode != 'light' ? color.dark : color.white} />
 
         <Text
           style={{
             fontFamily: 'text',
             fontSize: 16,
-            color: color.dark,
+            color: userProfile?.appMode != 'light' ? color.dark : color.white,
             marginLeft: 10
           }}
         >

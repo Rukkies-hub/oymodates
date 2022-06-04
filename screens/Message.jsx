@@ -10,7 +10,8 @@ import {
   LayoutAnimation,
   UIManager,
   Text,
-  ActivityIndicator
+  ActivityIndicator,
+  SafeAreaView
 } from 'react-native'
 
 import color from '../style/color'
@@ -185,35 +186,6 @@ const Message = () => {
     return `${minutesDisplay}:${secondsDisplay}`
   }
 
-  const getRecordingLines = () => {
-    return recordings.map((recordingLines, index) => {
-      return (
-        <View
-          key={index}
-          style={{
-            flex: 1,
-            width: '100%',
-            height: '100%',
-            maxHeight: 70,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center'
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 18,
-              fontFamily: 'text',
-              color: color.lightText
-            }}
-          >
-            Recording {index + 1} - {recordingLines.duration}
-          </Text>
-        </View>
-      )
-    })
-  }
-
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
@@ -221,10 +193,10 @@ const Message = () => {
   if (!loaded) return null
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark
       }}
     >
       <Header
@@ -232,10 +204,10 @@ const Message = () => {
         showTitle
         showPhone
         showVideo
-        title={getMatchedUserInfo(matchDetails?.users, user.uid).username}
         showMatchAvatar
-        matchAvatar={getMatchedUserInfo(matchDetails?.users, user.uid).photoURL}
         matchDetails={matchDetails}
+        title={getMatchedUserInfo(matchDetails?.users, user.uid).username}
+        matchAvatar={getMatchedUserInfo(matchDetails?.users, user.uid).photoURL}
       />
       <TouchableWithoutFeedback
         onPress={Keyboard.dismiss}
@@ -266,10 +238,12 @@ const Message = () => {
           paddingHorizontal: 10,
           borderTopWidth: .3,
           borderTopColor: color.borderColor,
-          backgroundColor: color.white,
+          backgroundColor: userProfile?.appMode != 'light' ? color.offWhite : color.lightText,
           minHeight: 50,
           overflow: 'hidden',
-          position: 'relative'
+          position: 'relative',
+          marginHorizontal: 10,
+          borderRadius: 50
         }}
       >
         {
@@ -281,7 +255,7 @@ const Message = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}>
-              <MaterialCommunityIcons name='camera-outline' color={color.lightText} size={26} />
+              <MaterialCommunityIcons name='camera-outline' color={userProfile?.appMode != 'light' ? color.lightText : color.white} size={26} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -292,7 +266,7 @@ const Message = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}>
-              <MaterialCommunityIcons name='image-outline' color={color.lightText} size={26} />
+              <MaterialCommunityIcons name='image-outline' color={userProfile?.appMode != 'light' ? color.lightText : color.white} size={26} />
             </TouchableOpacity>
           </>
         }
@@ -308,7 +282,7 @@ const Message = () => {
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-          <MaterialCommunityIcons name='emoticon-happy-outline' color={color.lightText} size={26} />
+          <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode != 'light' ? color.lightText : color.white} size={26} />
         </TouchableOpacity>
 
         {
@@ -324,14 +298,11 @@ const Message = () => {
                 alignItems: 'center'
               }}
             >
-              {/* {
-                getRecordingLines()
-              } */}
               <Text
                 style={{
                   fontSize: 18,
                   fontFamily: 'text',
-                  color: color.lightText
+                  color: userProfile?.appMode != 'light' ? color.lightText : color.white
                 }}
               >
                 Recording...
@@ -345,6 +316,7 @@ const Message = () => {
               onSubmitEditing={sendMessage}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               placeholder='Aa..'
+              placeholderTextColor={userProfile?.appMode != 'light' ? color.lightText : color.white}
               style={{
                 fontSize: 18,
                 flex: 1,
@@ -352,7 +324,7 @@ const Message = () => {
                 height: activeInput ? height : '100%',
                 maxHeight: 70,
                 fontFamily: 'text',
-                color: color.dark
+                color: userProfile?.appMode != 'light' ? color.dark : color.white
               }}
             />
         }
@@ -369,7 +341,7 @@ const Message = () => {
             }}>
             <FontAwesome5
               name='paper-plane'
-              color={color.lightText}
+              color={userProfile?.appMode != 'light' ? color.lightText : color.white}
               size={20}
             />
           </TouchableOpacity>
@@ -394,11 +366,11 @@ const Message = () => {
           }}>
           {
             recordingLoading ?
-              <ActivityIndicator size='small' color={color.lightText} /> :
+              <ActivityIndicator size='small' color={userProfile?.appMode != 'light' ? color.lightText : color.white} /> :
               <FontAwesome5
                 size={20}
                 name="microphone-alt"
-                color={color.lightText}
+                color={userProfile?.appMode != 'light' ? color.lightText : color.white}
               />
           }
         </TouchableOpacity>
@@ -417,7 +389,7 @@ const Message = () => {
           />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   )
 }
 

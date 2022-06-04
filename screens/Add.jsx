@@ -231,26 +231,6 @@ const Add = () => {
                   </View>
               }
             </View>
-
-            <TouchableOpacity
-              onPress={pickImage}
-              style={{
-                width: '100%',
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 10
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  color: color.blue
-                }}
-              >
-                Change
-              </Text>
-            </TouchableOpacity>
           </View>
         }
       </ScrollView>

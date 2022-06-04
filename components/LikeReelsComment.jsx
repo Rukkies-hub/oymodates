@@ -73,20 +73,11 @@ const LikeReelsComment = (props) => {
         alignItems: 'center'
       }}
     >
-      {/* <Text
-        style={{
-          color: color.dark,
-          fontFamily: 'text',
-          marginRight: 3
-        }}
-      >
-        Like
-      </Text> */}
       {
         currentLikesState.counter > 0 &&
         <Text
           style={{
-            color: currentLikesState.state ? color.red : color.dark,
+            color: currentLikesState.state ? color.red : userProfile?.appMode != 'light' ? color.dark : color.white,
             fontFamily: 'text',
             marginRight: 3
           }}
@@ -98,7 +89,7 @@ const LikeReelsComment = (props) => {
       }
       <Text
         style={{
-          color: currentLikesState.state ? color.red : color.dark,
+          color: currentLikesState.state ? color.red : userProfile?.appMode != 'light' ? color.dark : color.white,
           fontFamily: 'text'
         }}
       >

@@ -10,9 +10,17 @@ import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
 
+import * as NavigationBar from 'expo-navigation-bar'
+import Bar from '../components/StatusBar'
+
 const Feeds = () => {
-  const { user, profiles, setProfiles } = useAuth()
+  const { user, profiles, setProfiles, userProfile } = useAuth()
   const navigation = useNavigation()
+
+  useLayoutEffect(() => {
+    NavigationBar.setBackgroundColorAsync(setProfiles?.appMode != 'light' ? color.white : color.dark)
+    NavigationBar.setButtonStyleAsync(setProfiles?.appMode != 'light' ? 'dark' : 'light')
+  }, [])
 
   useLayoutEffect(() =>
     onSnapshot(doc(db, 'users', user.uid),
@@ -63,7 +71,7 @@ const Feeds = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white,
+        backgroundColor: userProfile?.appMode != 'light' ? color.white : color.dark,
       }}
     >
       <Posts />
