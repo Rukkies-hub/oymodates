@@ -16,11 +16,11 @@ import Bar from '../components/StatusBar'
 const Feeds = () => {
   const { user, profiles, setProfiles, userProfile } = useAuth()
   const navigation = useNavigation()
-  
-  useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : color.dark)
-    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
-  }, [])
+
+  NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
+  NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
+  // useLayoutEffect(() => {
+  // }, [])
 
   useLayoutEffect(() =>
     onSnapshot(doc(db, 'users', user.uid),
@@ -64,14 +64,13 @@ const Feeds = () => {
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
-  if (!loaded)
-    return null
+  if (!loaded) return null
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
       }}
     >
       <Posts />

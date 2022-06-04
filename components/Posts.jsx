@@ -52,8 +52,7 @@ const Posts = () => {
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
-  if (!loaded)
-    return null
+  if (!loaded) return null
 
   return (
     <FlatList
@@ -71,7 +70,7 @@ const Posts = () => {
           style={{
             flex: 1,
             marginBottom: 20,
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
+            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
           }}
         >
           <View
@@ -287,7 +286,7 @@ const Posts = () => {
 
             <View
               style={{
-                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
+                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
                 padding: 5,
                 paddingHorizontal: 10,
                 borderRadius: 12,

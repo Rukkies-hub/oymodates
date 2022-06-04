@@ -131,8 +131,7 @@ const ReelsCommentSheet = (props) => {
               marginHorizontal: 10,
               backgroundColor: color.offWhite,
               minHeight: 40,
-              borderRadius: 50,
-
+              borderRadius: 12,
               fontSize: 18,
               height,
               maxHeight: 150,

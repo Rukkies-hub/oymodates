@@ -196,7 +196,7 @@ const Message = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
       }}
     >
       <Header
@@ -238,12 +238,12 @@ const Message = () => {
           paddingHorizontal: 10,
           borderTopWidth: .3,
           borderTopColor: color.borderColor,
-          backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
+          backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
           minHeight: 50,
           overflow: 'hidden',
           position: 'relative',
           marginHorizontal: 10,
-          borderRadius: 50
+          borderRadius: 12
         }}
       >
         {

@@ -53,12 +53,12 @@ const NewComment = (params) => {
         paddingHorizontal: 10,
         borderTopWidth: .3,
         borderTopColor: color.borderColor,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.lightText,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
         minHeight: 50,
         overflow: 'hidden',
         position: 'relative',
         marginHorizontal: 10,
-        borderRadius: 50
+        borderRadius: 12
       }}
     >
       <TextInput

@@ -23,8 +23,7 @@ const NewMatch = () => {
     text: require("../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
   })
 
-  if (!loaded)
-    return null
+  if (!loaded) return null
 
   return (
     <ImageBackground

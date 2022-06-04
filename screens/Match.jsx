@@ -127,13 +127,12 @@ const Match = () => {
     boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
-  if (!loaded)
-    return null
+  if (!loaded) return null
 
   return (
     <SafeAreaView
       style={{
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
         flex: 1
       }}
     >
@@ -196,7 +195,7 @@ const Match = () => {
                 <View
                   key={card.id}
                   style={{
-                    backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
+                    backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
                     height: 698,
                     marginTop: -30,
                     width: '100%',
@@ -483,7 +482,7 @@ const Match = () => {
               <View
                 style={{
                   flex: 1,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
+                  backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}

@@ -62,7 +62,7 @@ const ReelsCommentReplies = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
+                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,

@@ -122,7 +122,7 @@ const Comments = (params) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
+                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -207,8 +207,8 @@ const Comments = (params) => {
                         flex: 1,
                         minHeight: 40,
                         height,
-                        borderRadius: 50,
-                        backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
+                        borderRadius: 12,
+                        backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
                         paddingHorizontal: 10,
                         paddingVertical: 4,
                         color: userProfile?.appMode == 'light' ? color.dark : color.white,

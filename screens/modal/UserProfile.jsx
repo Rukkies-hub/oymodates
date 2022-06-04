@@ -100,7 +100,7 @@ const UserProfile = (params) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
       }}
     >
       <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />

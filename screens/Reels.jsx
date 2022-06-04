@@ -76,7 +76,7 @@ const Reels = () => {
           flex: 1,
           width,
           height: height - 109,
-          backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
+          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
         }}
       >
         <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)} />

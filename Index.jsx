@@ -25,7 +25,7 @@ const Index = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
       }}
     >
       <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
@@ -33,7 +33,7 @@ const Index = () => {
       <Tab.Navigator
         initialRouteName='Feeds'
         barStyle={{
-          backgroundColor: userProfile?.appMode == 'light' ? colors.white : color.dark,
+          backgroundColor: userProfile?.appMode == 'light' ? colors.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
           height: 54,
           elevation: 0
         }}

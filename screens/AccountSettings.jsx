@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native'
 import { useFonts } from 'expo-font'
 import Header from '../components/Header'
@@ -8,8 +8,17 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 
+import { Entypo, MaterialCommunityIcons, Fontisto } from '@expo/vector-icons'
+
+import * as NavigationBar from 'expo-navigation-bar'
+
 const AccountSettings = () => {
   const { user, userProfile } = useAuth()
+
+  useEffect(() => {
+    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
+    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
+  }, [])
 
   const lightMode = () => {
     updateDoc(doc(db, 'users', user.uid), {
@@ -39,7 +48,7 @@ const AccountSettings = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
         paddingHorizontal: 10
       }}
     >
@@ -56,7 +65,7 @@ const AccountSettings = () => {
           style={{
             fontFamily: 'text',
             fontSize: 16,
-            color: color.dark
+            color: userProfile?.appMode == 'light' ? color.dark : color.white
           }}
         >
           App mode
@@ -78,13 +87,16 @@ const AccountSettings = () => {
               alignItems: 'center',
               backgroundColor: color.offWhite,
               borderRadius: 4,
-              marginRight: 2
+              marginRight: 2,
+              flexDirection: 'row'
             }}
           >
+            <Entypo name="light-down" size={24} color={color.red} />
             <Text
               style={{
                 fontFamily: 'text',
-                color: color.red
+                color: color.red,
+                marginLeft: 10
               }}
             >
               Light
@@ -100,13 +112,16 @@ const AccountSettings = () => {
               alignItems: 'center',
               backgroundColor: color.red,
               borderRadius: 4,
-              marginLeft: 2
+              marginLeft: 2,
+              flexDirection: 'row'
             }}
           >
+            <MaterialCommunityIcons name="theme-light-dark" size={22} color={color.white} />
             <Text
               style={{
                 fontFamily: 'text',
-                color: color.white
+                color: color.white,
+                marginLeft: 10
               }}
             >
               Dark
@@ -122,13 +137,16 @@ const AccountSettings = () => {
               alignItems: 'center',
               backgroundColor: color.lightText,
               borderRadius: 4,
-              marginLeft: 2
+              marginLeft: 2,
+              flexDirection: 'row'
             }}
           >
+            <Fontisto name="night-alt-cloudy" size={20} color={color.white} />
             <Text
               style={{
                 fontFamily: 'text',
-                color: color.white
+                color: color.white,
+                marginLeft: 10
               }}
             >
               Lights out

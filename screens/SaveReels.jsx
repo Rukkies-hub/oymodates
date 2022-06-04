@@ -32,7 +32,7 @@ const SaveReels = (params) => {
   const thumbnail = params?.route?.params?.thumbnail
 
   useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : color.dark)
+    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
     NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
   }, [])
 
@@ -103,14 +103,13 @@ const SaveReels = (params) => {
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
-  if (!loaded)
-    return null
+  if (!loaded) return null
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
       }}
     >
       <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
@@ -170,11 +169,9 @@ const SaveReels = (params) => {
             marginRight: 5
           }}
         >
-          <Feather name="x" size={24} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
           <Text
             style={{
               fontFamily: 'text',
-              marginLeft: 10,
               color: userProfile?.appMode == 'light' ? color.dark : color.white
             }}
           >

@@ -62,7 +62,7 @@ const ReelsCommentSheet = () => {
             display: 'none'
           }}
           backgroundStyle={{
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
+            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
           }}
         >
           <View
@@ -127,9 +127,9 @@ const ReelsCommentSheet = () => {
               style={{
                 flex: 1,
                 marginHorizontal: 10,
-                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
+                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
                 minHeight: 40,
-                borderRadius: 50,
+                borderRadius: 12,
                 fontSize: 18,
                 height,
                 maxHeight: 150,

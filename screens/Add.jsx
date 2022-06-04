@@ -92,14 +92,13 @@ const Add = () => {
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
-  if (!loaded)
-    return null
+  if (!loaded) return null
 
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
         position: 'relative'
       }}
     >
@@ -141,7 +140,7 @@ const Add = () => {
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               style={{
                 height,
-                backgroundColor: userProfile?.appMode == 'light' ? color.white : color.lightText,
+                backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
                 maxHeight: 300,
                 fontSize: 18,
                 paddingVertical: 10,
@@ -247,7 +246,7 @@ const Add = () => {
         style={{
           width: '100%',
           borderTopWidth: .3,
-          borderTopColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
+          borderTopColor: userProfile?.appMode == 'light' ? color.borderColor : userProfile?.appMode == 'dark' ? color.transparent : color.transparent,
           flexDirection: 'row',
           justifyContent: 'space-between'
         }}

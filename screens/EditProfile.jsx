@@ -281,7 +281,7 @@ const EditProfile = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
       }}
     >
       <Header showTitle showAratar showBack title={`Welcome, ${user.displayName}`} />
@@ -692,7 +692,7 @@ const EditProfile = () => {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : color.lightText,
+              backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
               borderRadius: 4,
               height: 50
             }}

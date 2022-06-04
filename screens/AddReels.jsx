@@ -22,8 +22,11 @@ import Bar from '../components/StatusBar'
 
 import * as VideoThumbnails from 'expo-video-thumbnails'
 
+import useAuth from '../hooks/useAuth'
+
 const AddReels = () => {
   const navigation = useNavigation()
+  const { userProfile } = useAuth()
 
   const [hasCameraPermission, setHasCameraPermission] = useState(false)
   const [hasAudioPermission, setHasAudioPermission] = useState(false)
@@ -37,8 +40,8 @@ const AddReels = () => {
   const isFocused = useIsFocused()
 
   useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(color.black)
-    NavigationBar.setButtonStyleAsync('light')
+    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
+    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
   }, [])
 
   useEffect(() => {

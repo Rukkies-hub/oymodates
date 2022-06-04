@@ -25,18 +25,18 @@ const LikeReply = (props) => {
   }, [])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply.id, 'likes', user.uid))
+    getDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user.uid))
       .then(res => resolve(res.exists()))
   })
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply.id, 'likes', user.uid))
-      await updateDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply.id), {
+      await deleteDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user.uid))
+      await updateDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id), {
         likesCount: increment(-1)
       })
     } else {
-      await setDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply.id, 'likes', user.uid), {
+      await setDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user.uid), {
         id: userProfile?.id,
         comment: reply?.comment,
         reply: reply.id,
@@ -44,7 +44,7 @@ const LikeReply = (props) => {
         displayName: userProfile?.displayName,
         username: userProfile?.username,
       })
-      await updateDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply.id), {
+      await updateDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id), {
         likesCount: increment(1)
       })
     }
@@ -81,7 +81,7 @@ const LikeReply = (props) => {
           currentLikesState.counter > 0 &&
           <Text
             style={{
-              color: currentLikesState.state ? color.red : color.dark,
+              color: currentLikesState.state ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.white,
               fontFamily: 'text',
               marginRight: 3
             }}
@@ -93,7 +93,7 @@ const LikeReply = (props) => {
         }
         <Text
           style={{
-            color: currentLikesState.state ? color.red : color.dark,
+            color: currentLikesState.state ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.white,
             fontFamily: 'text'
           }}
         >
