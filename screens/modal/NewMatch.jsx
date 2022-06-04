@@ -125,7 +125,7 @@ const NewMatch = () => {
                 textTransform: "capitalize"
               }}
             >
-              {" " + userSwiped?.displayName}
+              {" " + userSwiped?.username}
             </Text>
           </Text>
         </TouchableOpacity>

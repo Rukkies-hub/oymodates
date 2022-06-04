@@ -32,8 +32,8 @@ const SaveReels = (params) => {
   const thumbnail = params?.route?.params?.thumbnail
 
   useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(color.white)
-    NavigationBar.setButtonStyleAsync('dark')
+    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : color.dark)
+    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
   }, [])
 
   const storage = getStorage()
@@ -110,10 +110,10 @@ const SaveReels = (params) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
       }}
     >
-      <Bar style={'dark'} />
+      <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
 
       <Header showBack showTitle title='Save reel' />
 
@@ -129,10 +129,12 @@ const SaveReels = (params) => {
           multiline
           maxLength={150}
           placeholder="What's on your mind..."
+          placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
           style={{
             paddingVertical: 10,
             marginRight: 20,
-            flex: 1
+            flex: 1,
+            color: userProfile?.appMode == 'light' ? color.dark : color.white
           }}
         />
         <Image
@@ -160,7 +162,7 @@ const SaveReels = (params) => {
             justifyContent: 'center',
             alignItems: 'center',
             flex: 1,
-            borderColor: color.borderColor,
+            borderColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
             borderWidth: 1,
             borderRadius: 4,
             paddingVertical: 10,
@@ -168,11 +170,12 @@ const SaveReels = (params) => {
             marginRight: 5
           }}
         >
-          <Feather name="x" size={24} color="black" />
+          <Feather name="x" size={24} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
           <Text
             style={{
               fontFamily: 'text',
-              marginLeft: 10
+              marginLeft: 10,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white
             }}
           >
             Cancel

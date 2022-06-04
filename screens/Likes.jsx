@@ -71,105 +71,136 @@ const Likes = () => {
         backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark
       }}
     >
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginVertical: 20,
-          paddingHorizontal: 10
-        }}
-      >
-        <Text
-          style={{
-            color: userProfile?.appMode == 'light' ? color.lightText : color.white,
-            fontFamily: 'text',
-            fontSize: 16,
-            textAlign: 'center'
-          }}
-        >
-          See people who already liked you.
-        </Text>
-      </View>
-      <ScrollView
-        style={{
-          flex: 1
-        }}
-      >
-        <View
-          style={{
-            paddingHorizontal: 10,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            flexWrap: 'wrap'
-          }}
-        >
-          {
-            pendingSwipes.map((like, index) => {
-              return (
-                <View
-                  key={index}
+      {
+        pendingSwipes?.length > 0 ?
+          <ScrollView
+            style={{
+              flex: 1,
+              marginTop: 20
+            }}
+          >
+            <View
+              style={{
+                paddingHorizontal: 10,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                flexWrap: 'wrap'
+              }}
+            >
+              {
+                pendingSwipes.map((like, index) => {
+                  return (
+                    <View
+                      key={index}
+                      style={{
+                        width: (window.width / 2) - 18,
+                        position: 'relative',
+                        borderRadius: 20,
+                        overflow: 'hidden'
+                      }}
+                    >
+                      <AutoHeightImage
+                        resizeMode='cover'
+                        // blurRadius={userProfile?.plan != 'gold' ? 50 : userProfile?.plan != 'platinum' ? 50 : 0}
+                        source={{ uri: like.photoURL }}
+                        width={(window.width / 2) - 10}
+                        style={{
+                          maxHeight: 250
+                        }}
+                      />
+
+                      <View
+                        style={{
+                          position: 'absolute',
+                          bottom: 0,
+                          left: 0,
+                          width: '100%',
+                          flexDirection: 'row',
+                          justifyContent: 'space-evenly',
+                          marginBottom: 10
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => swipeLeft(like)}
+                          style={{
+                            backgroundColor: color.white,
+                            width: 40,
+                            height: 40,
+                            borderRadius: 50,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <Feather name="x" size={24} color={color.red} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          onPress={() => swipeRight(like)}
+                          style={{
+                            backgroundColor: color.white,
+                            width: 40,
+                            height: 40,
+                            borderRadius: 50,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <AntDesign name="heart" size={24} color={color.lightGreen} />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  )
+                })
+              }
+            </View>
+          </ScrollView> :
+
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <View
+              style={{
+                position: 'relative',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              {
+                userProfile?.appMode == 'light' &&
+                <Image
+                  source={require('../assets/rader.gif')}
                   style={{
-                    width: (window.width / 2) - 18,
-                    position: 'relative',
-                    borderRadius: 20,
-                    overflow: 'hidden',
-                    borderWidth: 4,
-                    borderColor: color.goldDark
+                    position: 'absolute'
                   }}
-                >
-                  <AutoHeightImage
-                    resizeMode='cover'
-                    // blurRadius={userProfile?.plan != 'gold' ? 50 : userProfile?.plan != 'platinum' ? 50 : 0}
-                    source={{ uri: like.photoURL }}
-                    width={(window.width / 2) - 10}
-                  />
+                />
+              }
+              <Image
+                source={{ uri: userProfile?.photoURL || user?.photoURL }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 100
+                }}
+              />
+            </View>
 
-                  <View
-                    style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      width: '100%',
-                      flexDirection: 'row',
-                      justifyContent: 'space-evenly',
-                      marginBottom: 10
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => swipeLeft(like)}
-                      style={{
-                        backgroundColor: color.white,
-                        width: 40,
-                        height: 40,
-                        borderRadius: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <Feather name="x" size={24} color={color.red} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      onPress={() => swipeRight(like)}
-                      style={{
-                        backgroundColor: color.white,
-                        width: 40,
-                        height: 40,
-                        borderRadius: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <AntDesign name="heart" size={24} color={color.lightGreen} />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )
-            })
-          }
-        </View>
-      </ScrollView>
+            <Text
+              style={{
+                fontFamily: 'text',
+                color: userProfile?.appMode == 'light' ? color.lightText : color.white,
+                marginTop: 50
+              }}
+            >
+              No likes at the moment
+            </Text>
+          </View>
+      }
     </SafeAreaView>
   )
 }
