@@ -32,7 +32,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const Match = () => {
   const navigation = useNavigation()
-  const { user, userProfile, getUserProfile, profiles, setProfiles } = useAuth()
+  const { user, userProfile, profiles, setProfiles } = useAuth()
 
   const swipeRef = useRef(null)
 
@@ -44,10 +44,6 @@ const Match = () => {
       if (!snapshot.exists()) navigation.navigate('EditProfile')
     })
     , [])
-
-  useEffect(() => {
-    getUserProfile(user)
-  }, [])
 
   useEffect(() => {
     let unsub
@@ -419,7 +415,8 @@ const Match = () => {
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-evenly",
-                        alignItems: "center"
+                        alignItems: "center",
+                        paddingTop: 20
                       }}
                     >
                       <TouchableOpacity

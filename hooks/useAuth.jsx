@@ -117,19 +117,24 @@ export const AuthProvider = ({ children }) => {
   }
 
   const getUserProfile = async user => {
-    let profile = await (await getDoc(doc(db, 'users', user.uid))).data()
-    setUserProfile(profile)
+    const unsub = onSnapshot(doc(db, 'users', user.uid),
+      doc => {
+        let profile = doc.data()
+        setUserProfile(profile)
 
-    if (profile?.ageDate) setDate(profile?.ageDate)
-    if (profile?.job) setJob(profile?.job)
-    if (profile?.company) setCompany(profile?.company)
-    if (profile?.username) setUsername(profile?.username)
-    if (profile?.school) setSchool(profile?.school)
-    if (profile?.city) setCity(profile?.city)
-    if (profile?.gender) setChecked(profile?.gender)
-    if (profile?.about) setAbout(profile?.about)
-    if (profile?.passions) setPassions([...profile?.passions])
-    if (profile?.address) setAddress(...profile?.address)
+        if (profile?.ageDate) setDate(profile?.ageDate)
+        if (profile?.job) setJob(profile?.job)
+        if (profile?.company) setCompany(profile?.company)
+        if (profile?.username) setUsername(profile?.username)
+        if (profile?.school) setSchool(profile?.school)
+        if (profile?.city) setCity(profile?.city)
+        if (profile?.gender) setChecked(profile?.gender)
+        if (profile?.about) setAbout(profile?.about)
+        if (profile?.passions) setPassions([...profile?.passions])
+        if (profile?.address) setAddress(...profile?.address)
+      })
+    
+    return unsub
   }
 
   const logout = () => {
@@ -158,7 +163,6 @@ export const AuthProvider = ({ children }) => {
     logout,
     signInWighGoogle,
     userProfile,
-    getUserProfile,
     date,
     setDate,
     job,
@@ -234,8 +238,7 @@ export const AuthProvider = ({ children }) => {
     bottomSheetIndex,
     setBottomSheetIndex,
     reelsProps,
-    setReelsProps,
-    getUserProfile
+    setReelsProps
   ])
 
   return (

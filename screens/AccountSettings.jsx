@@ -14,13 +14,13 @@ const AccountSettings = () => {
   const lightMode = () => {
     updateDoc(doc(db, 'users', user.uid), {
       appMode: 'light'
-    }).then(() => getUserProfile(user))
+    })
   }
 
   const darkMode = () => {
     updateDoc(doc(db, 'users', user.uid), {
       appMode: 'dark'
-    }).then(() => getUserProfile(user))
+    })
   }
 
   const [loaded] = useFonts({

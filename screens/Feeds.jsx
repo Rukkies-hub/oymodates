@@ -17,10 +17,12 @@ const Feeds = () => {
   const { user, profiles, setProfiles, userProfile } = useAuth()
   const navigation = useNavigation()
 
-  useLayoutEffect(() => {
-    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : color.dark)
-    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
-  }, [])
+  NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : color.dark)
+  NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
+  // useEffect(() => {
+  //   NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : color.dark)
+  //   NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
+  // }, [])
 
   useLayoutEffect(() =>
     onSnapshot(doc(db, 'users', user.uid),

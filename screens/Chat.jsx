@@ -13,11 +13,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const Chat = () => {
   const navigation = useNavigation()
-  const { getUserProfile, user, pendingSwipes, userProfile } = useAuth()
-
-  useEffect(() => {
-    getUserProfile(user)
-  }, [])
+  const { user, pendingSwipes, userProfile } = useAuth()
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')

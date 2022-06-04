@@ -58,7 +58,6 @@ const EditProfile = () => {
     setUsername,
     school,
     setSchool,
-    getUserProfile,
     company,
     setCompany,
     city,
@@ -126,7 +125,6 @@ const EditProfile = () => {
                         photoURL: downloadURL,
                         photoLink: link
                       }).finally(() => {
-                        getUserProfile(user)
                         setUploadLoading(false)
                       })
                     })
@@ -172,7 +170,6 @@ const EditProfile = () => {
                     photoURL: downloadURL,
                     photoLink: link
                   }).finally(() => {
-                    getUserProfile(user)
                     setUploadLoading(false)
                   })
                 })
@@ -199,7 +196,6 @@ const EditProfile = () => {
         ageDate: date
       }).finally(() => {
         setUpdateLoading(false)
-        getUserProfile(user)
       })
     else
       setDoc(doc(db, 'users', user?.uid), {
@@ -218,7 +214,6 @@ const EditProfile = () => {
         timestamp: serverTimestamp()
       }).finally(() => {
         setUpdateLoading(false)
-        getUserProfile(user)
       })
   }
 
@@ -228,14 +223,12 @@ const EditProfile = () => {
         gender: 'male'
       }).finally(() => {
         setChecked('male')
-        getUserProfile(user)
       })
     else
       setDoc(doc(db, 'users', user?.uid), {
         gender: 'male'
       }).finally(() => {
         setChecked('male')
-        getUserProfile(user)
       })
   }
 
@@ -245,14 +238,12 @@ const EditProfile = () => {
         gender: 'female'
       }).finally(() => {
         setChecked('female')
-        getUserProfile(user)
       })
     else
       setDoc(doc(db, 'users', user?.uid), {
         gender: 'female'
       }).finally(() => {
         setChecked('female')
-        getUserProfile(user)
       })
   }
 
