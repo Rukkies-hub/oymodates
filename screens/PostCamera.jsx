@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
 
 import { Camera } from 'expo-camera'
 
@@ -13,6 +13,9 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { useNavigation } from '@react-navigation/native'
 import useAuth from '../hooks/useAuth'
+import Bar from '../components/StatusBar'
+
+import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
 const PostCamera = () => {
   const navigation = useNavigation()
@@ -73,13 +76,12 @@ const PostCamera = () => {
   }
 
   return (
-    <View
+    <SafeAreaView
       style={{
-        flex: 1,
-        backgroundColor: color.black,
-        position: 'relative'
+        flex: 1
       }}
     >
+      <Bar color={'light'} />
       {
         isFocused ?
           <Camera
@@ -112,7 +114,7 @@ const PostCamera = () => {
           backgroundColor: `${color.dark}89`
         }}
       >
-        <FontAwesome5 name='chevron-left' size={20} color={color.white} />
+        <Entypo name='chevron-left' size={24} color={color.white} />
       </TouchableOpacity>
 
       <View
@@ -120,7 +122,11 @@ const PostCamera = () => {
           position: 'absolute',
           top: 60,
           right: 0,
-          marginHorizontal: 20
+          marginHorizontal: 20,
+          backgroundColor: `${color.dark}89`,
+          paddingHorizontal: 10,
+          paddingVertical: 10,
+          borderRadius: 50
         }}
       >
         <TouchableOpacity
@@ -136,12 +142,13 @@ const PostCamera = () => {
             marginBottom: 25
           }}
         >
-          <FontAwesome5 name='retweet' color={color.white} size={20} />
+          <MaterialIcons name='flip-camera-android' color={color.white} size={24} />
           <Text
             style={{
               color: color.white,
               fontSize: 12,
-              marginTop: 5
+              marginTop: 5,
+              marginLeft: 3
             }}
           >
             Flip
@@ -157,11 +164,10 @@ const PostCamera = () => {
           }
           style={{
             alignContent: 'center',
-            justifyContent: 'center',
-            marginBottom: 25
+            justifyContent: 'center'
           }}
         >
-          <FontAwesome5 name='bolt' color={color.white} size={20} />
+          <MaterialIcons name='bolt' color={color.white} size={24} />
           <Text
             style={{
               color: color.white,
@@ -196,17 +202,17 @@ const PostCamera = () => {
             onPressOut={stopVideo}
             style={{
               borderWidth: 8,
-              borderColor: `${color.red}89`,
+              borderColor: color.faintRed,
               backgroundColor: color.red,
               borderRadius: 100,
-              height: 80,
               width: 80,
+              height: 80,
               alignSelf: 'center'
             }}
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

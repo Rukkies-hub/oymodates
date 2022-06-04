@@ -37,8 +37,10 @@ import { useNavigation } from '@react-navigation/native'
 
 import { Video } from 'expo-av'
 
+import Bar from '../components/StatusBar'
+
 const Add = () => {
-  const { user, media, setMedia, madiaString } = useAuth()
+  const { user, media, setMedia, madiaString, userProfile } = useAuth()
   const navigation = useNavigation()
   const video = useRef(null)
   const windowWidth = useWindowDimensions().width
@@ -97,10 +99,11 @@ const Add = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: color.white,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
         position: 'relative'
       }}
     >
+      <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
       <Header
         showBack
         showTitle
@@ -125,7 +128,8 @@ const Add = () => {
             style={{
               maxHeight: 300,
               overflow: 'hidden',
-              paddingHorizontal: 10
+              paddingHorizontal: 10,
+              marginTop: 20
             }}
           >
             <TextInput
@@ -133,13 +137,17 @@ const Add = () => {
               value={input}
               onChangeText={setInput}
               placeholder="What's on your mind..."
+              placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               style={{
                 height,
-                backgroundColor: color.white,
+                backgroundColor: userProfile?.appMode == 'light' ? color.white : color.lightText,
                 maxHeight: 300,
                 fontSize: 18,
-                paddingVertical: 10
+                paddingVertical: 10,
+                borderRadius: 12,
+                paddingHorizontal: 10,
+                color: userProfile?.appMode == 'light' ? color.dark : color.white
               }}
             />
           </View>
@@ -238,8 +246,8 @@ const Add = () => {
       <View
         style={{
           width: '100%',
-          borderTopWidth: 1,
-          borderTopColor: color.borderColor,
+          borderTopWidth: .3,
+          borderTopColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
           flexDirection: 'row',
           justifyContent: 'space-between'
         }}
@@ -252,14 +260,14 @@ const Add = () => {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            backgroundColor: `${color.white}33`,
+            // backgroundColor: `${color.white}33`,
             paddingHorizontal: 10
           }}
         >
-          <EvilIcons name='image' size={24} color={color.black} />
+          <EvilIcons name='image' size={24} color={userProfile?.appMode == 'light' ? color.black : color.white} />
           <Text
             style={{
-              color: color.dark,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
               fontFamily: 'text',
               marginLeft: 10
             }}
@@ -276,14 +284,14 @@ const Add = () => {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            backgroundColor: `${color.white}33`,
+            // backgroundColor: `${color.white}33`,
             paddingHorizontal: 10
           }}
         >
-          <EvilIcons name='camera' size={24} color={color.black} />
+          <EvilIcons name='camera' size={24} color={userProfile?.appMode == 'light' ? color.black : color.white} />
           <Text
             style={{
-              color: color.dark,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
               fontFamily: 'text',
               marginLeft: 10
             }}

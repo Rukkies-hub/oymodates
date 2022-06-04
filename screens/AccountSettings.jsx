@@ -9,7 +9,7 @@ import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 
 const AccountSettings = () => {
-  const { user, getUserProfile } = useAuth()
+  const { user, userProfile } = useAuth()
 
   const lightMode = () => {
     updateDoc(doc(db, 'users', user.uid), {
@@ -33,11 +33,11 @@ const AccountSettings = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : color.dark,
         paddingHorizontal: 10
       }}
     >
-      <Bar style={'light'} />
+      <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
       <Header
         showBack
         showTitle

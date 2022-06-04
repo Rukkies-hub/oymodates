@@ -193,7 +193,8 @@ const AddReels = () => {
             style={{
               color: color.white,
               fontSize: 12,
-              marginTop: 5
+              marginTop: 5,
+              marginLeft: 3
             }}
           >
             Flip

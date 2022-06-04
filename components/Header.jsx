@@ -278,7 +278,7 @@ const Header = ({
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderColor: userProfile?.appMode == 'light' ? color.borderColor : color.white,
+                borderColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
                 borderWidth: 1,
                 borderRadius: 4,
                 paddingVertical: 10,
@@ -289,8 +289,7 @@ const Header = ({
               <Text
                 style={{
                   color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                  fontFamily: 'text',
-                  marginLeft: 10
+                  fontFamily: 'text'
                 }}
               >
                 Cancel

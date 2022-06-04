@@ -68,7 +68,7 @@ const UserProfile = (params) => {
       await deleteDoc(doc(db, 'users', currentUser?.id, 'following', user?.uid))
       await updateDoc(doc(db, 'users', currentUser?.id), {
         followersCount: increment(-1)
-      })
+      }).then(() => getUserProfile())
     } else {
       await setDoc(doc(db, 'users', currentUser?.id, 'following', user?.uid), {
         id: userProfile?.id,
@@ -77,7 +77,7 @@ const UserProfile = (params) => {
       })
       await updateDoc(doc(db, 'users', currentUser?.id), {
         followersCount: increment(1)
-      })
+      }).then(() => getUserProfile())
     }
   })
 
