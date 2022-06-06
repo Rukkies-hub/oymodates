@@ -14,7 +14,7 @@ const ChatList = () => {
 
   useEffect(() =>
     onSnapshot(query(collection(db, 'matches'),
-      where('usersMatched', 'array-contains', user.uid)),
+      where('usersMatched', 'array-contains', user?.uid)),
       snapshot => setMatches(
         snapshot.docs.map(doc => ({
           id: doc.id,

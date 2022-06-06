@@ -22,6 +22,7 @@ import PreviewMessageImage from './screens/modal/PreviewMessageImage'
 import Profile from './screens/profile/Profile'
 import VideoCall from './screens/VideoCall'
 import AccountSettings from './screens/AccountSettings'
+import Notifications from './screens/Notifications'
 
 import useAuth from './hooks/useAuth'
 
@@ -69,6 +70,7 @@ const StackNavigator = () => {
               <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
               <Stack.Screen name='VideoCall' component={VideoCall} options={{ headerShown: false }} />
               <Stack.Screen name='AccountSettings' component={AccountSettings} options={{ headerShown: false }} />
+              <Stack.Screen name='Notifications' component={Notifications} options={{ headerShown: false }} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>

@@ -61,9 +61,9 @@ const SaveReels = (params) => {
       xhr.send(null)
     })
 
-    const sourceRef = ref(storage, `reels/${user.uid}/video/${uuid()}`)
+    const sourceRef = ref(storage, `reels/${user?.uid}/video/${uuid()}`)
 
-    const thumbnailRef = ref(storage, `reels/${user.uid}/thumbnail/${uuid()}`)
+    const thumbnailRef = ref(storage, `reels/${user?.uid}/thumbnail/${uuid()}`)
 
     uploadBytes(sourceRef, blob)
       .then(snapshot => {

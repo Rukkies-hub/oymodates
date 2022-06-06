@@ -102,9 +102,9 @@ const Message = () => {
     if (input != '')
       addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
         timestamp: serverTimestamp(),
-        userId: user.uid,
+        userId: user?.uid,
         username: userProfile.username,
-        photoURL: matchDetails.users[user.uid].photoURL,
+        photoURL: matchDetails.users[user?.uid].photoURL,
         message: input,
         seen: false
       })
@@ -156,7 +156,7 @@ const Message = () => {
       xhr.send(null)
     })
 
-    const sourceRef = ref(storage, `messages/${user.uid}/audio/${uuid()}`)
+    const sourceRef = ref(storage, `messages/${user?.uid}/audio/${uuid()}`)
 
     setRecordingLoading(true)
 
@@ -165,9 +165,9 @@ const Message = () => {
         getDownloadURL(snapshot.ref)
           .then(downloadURL => {
             addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
-              userId: user.uid,
+              userId: user?.uid,
               username: userProfile.username,
-              photoURL: matchDetails.users[user.uid].photoURL,
+              photoURL: matchDetails.users[user?.uid].photoURL,
               voiceNote: downloadURL,
               mediaLink: snapshot.ref._location.path,
               duration: getDurationFormated(status.durationMillis),
@@ -206,8 +206,8 @@ const Message = () => {
         showVideo
         showMatchAvatar
         matchDetails={matchDetails}
-        title={getMatchedUserInfo(matchDetails?.users, user.uid).username}
-        matchAvatar={getMatchedUserInfo(matchDetails?.users, user.uid).photoURL}
+        title={getMatchedUserInfo(matchDetails?.users, user?.uid).username}
+        matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL}
       />
       <TouchableWithoutFeedback
         onPress={Keyboard.dismiss}
@@ -221,7 +221,7 @@ const Message = () => {
           data={messages}
           keyExtractor={item => item.id}
           renderItem={({ item: message }) => (
-            message.userId === user.uid ? (
+            message.userId === user?.uid ? (
               <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} />
             ) : (
               <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} />
@@ -320,7 +320,6 @@ const Message = () => {
               style={{
                 fontSize: 18,
                 flex: 1,
-                width: '100%',
                 height: activeInput ? height : '100%',
                 maxHeight: 70,
                 fontFamily: 'text',

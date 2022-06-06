@@ -15,7 +15,7 @@ const LikeReply = (props) => {
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reply?.likesCount })
 
   useEffect(() => {
-    getLikesById(reply.id, user.uid)
+    getLikesById(reply.id, user?.uid)
       .then(res => {
         setCurrentLikesState({
           ...currentLikesState,
@@ -25,18 +25,18 @@ const LikeReply = (props) => {
   }, [])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user.uid))
+    getDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid))
       .then(res => resolve(res.exists()))
   })
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user.uid))
+      await deleteDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid))
       await updateDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id), {
         likesCount: increment(-1)
       })
     } else {
-      await setDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user.uid), {
+      await setDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid), {
         id: userProfile?.id,
         comment: reply?.comment,
         reply: reply.id,

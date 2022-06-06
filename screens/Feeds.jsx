@@ -19,11 +19,9 @@ const Feeds = () => {
 
   NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
   NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
-  // useLayoutEffect(() => {
-  // }, [])
 
   useLayoutEffect(() =>
-    onSnapshot(doc(db, 'users', user.uid),
+    onSnapshot(doc(db, 'users', user?.uid),
       snapshot => {
         if (!snapshot.exists()) navigation.navigate('EditProfile')
       })
@@ -33,12 +31,12 @@ const Feeds = () => {
     let unsub
 
     const fetchCards = async () => {
-      const passes = await getDocs(collection(db, 'users', user.uid, 'passes'))
+      const passes = await getDocs(collection(db, 'users', user?.uid, 'passes'))
         .then(snapshot => snapshot.docs.map(doc => doc.id))
 
       const passeedUserIds = (await passes).length > 0 ? passes : ['test']
 
-      const swipes = await getDocs(collection(db, 'users', user.uid, 'swipes'))
+      const swipes = await getDocs(collection(db, 'users', user?.uid, 'swipes'))
         .then(snapshot => snapshot.docs.map(doc => doc.id))
 
       const swipededUserIds = (await swipes).length > 0 ? swipes : ['test']
@@ -47,7 +45,7 @@ const Feeds = () => {
         onSnapshot(query(collection(db, 'users'), where('id', 'not-in', [...passeedUserIds, ...swipededUserIds])),
           snapshot => {
             setProfiles(
-              snapshot?.docs?.filter(doc => doc.id !== user.uid)
+              snapshot?.docs?.filter(doc => doc.id !== user?.uid)
                 .map(doc => ({
                   id: doc.id,
                   ...doc.data()

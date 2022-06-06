@@ -1,4 +1,4 @@
-import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, increment, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, increment, onSnapshot, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 
@@ -15,9 +15,10 @@ const Likes = (params) => {
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: post?.likesCount })
   const [sound, setSound] = useState()
+  const [likeDisable, setLikeDisable] = useState(false)
 
   useEffect(() => {
-    getLikesById(post?.id, user.uid).then(res => {
+    getLikesById(post?.id, user?.uid).then(res => {
       setCurrentLikesState({
         ...currentLikesState,
         state: res
@@ -42,21 +43,38 @@ const Likes = (params) => {
   }
 
   const updateLike = () => new Promise(async (resolve, reject) => {
+    setLikeDisable(true)
     if (currentLikesState.state) {
       await deleteDoc(doc(db, 'posts', post?.id, 'likes', user?.uid))
       await updateDoc(doc(db, 'posts', post?.id), {
         likesCount: increment(-1)
-      })
+      }).finally(() => setLikeDisable(false))
     } else {
       await setDoc(doc(db, 'posts', post?.id, 'likes', user?.uid), {
         id: userProfile?.id,
         photoURL: userProfile?.photoURL,
         displayName: userProfile?.displayName,
         username: userProfile?.username,
-      }).then(() => playSound())
+      }).then(async () => {
+        playSound()
+        if (post?.user?.id != user?.uid)
+          await addDoc(collection(db, 'users', post?.user?.id, 'notifications'), {
+            action: 'post',
+            notify: post?.user,
+            id: post?.id,
+            seen: false,
+            user: {
+              id: userProfile?.id,
+              username: userProfile?.username,
+              displayName: userProfile?.displayName,
+              photoURL: userProfile?.photoURL
+            },
+            timestamp: serverTimestamp()
+          })
+      })
       await updateDoc(doc(db, 'posts', post?.id), {
         likesCount: increment(1)
-      })
+      }).finally(() => setLikeDisable(false))
     }
   })
 
@@ -76,6 +94,7 @@ const Likes = (params) => {
   return (
     <TouchableOpacity
       onPress={handleUpdateLikes}
+      disabled={likeDisable}
       style={{
         width: 35,
         height: 35,

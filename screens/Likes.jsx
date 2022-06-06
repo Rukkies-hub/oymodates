@@ -22,8 +22,8 @@ const Likes = () => {
   const window = Dimensions.get('window')
 
   const swipeLeft = async like => {
-    setDoc(doc(db, 'users', user.uid, 'passes', like.id), like)
-    await deleteDoc(doc(db, 'users', user.uid, 'pendingSwipes', like.id))
+    setDoc(doc(db, 'users', user?.uid, 'passes', like.id), like)
+    await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', like.id))
   }
 
   const swipeRight = async like => {
@@ -34,20 +34,20 @@ const Likes = () => {
 
     const userSwiped = profiles[cardIndex]
 
-    getDoc(doc(db, 'users', user.uid, 'pendingSwipes', userSwiped.id))
+    getDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped.id))
       .then(documentSnapshot => {
         if (documentSnapshot.exists()) {
-          setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
+          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped.id), userSwiped)
 
           // CREAT A MATCH
-          setDoc(doc(db, 'matches', generateId(user.uid, userSwiped.id)), {
+          setDoc(doc(db, 'matches', generateId(user?.uid, userSwiped.id)), {
             users: {
-              [user.uid]: userProfile,
+              [user?.uid]: userProfile,
               [userSwiped.id]: userSwiped
             },
-            usersMatched: [user.uid, userSwiped.id],
+            usersMatched: [user?.uid, userSwiped.id],
             timestamp: serverTimestamp()
-          }).finally(async () => await deleteDoc(doc(db, 'users', user.uid, 'pendingSwipes', userSwiped.id)))
+          }).finally(async () => await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped.id)))
 
           navigation.navigate('NewMatch', {
             loggedInProfile: userProfile,

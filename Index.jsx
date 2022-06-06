@@ -29,7 +29,7 @@ const Index = () => {
       }}
     >
       <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
-      <Header showLogo showAdd showAratar />
+      <Header showLogo showAdd showAratar showNotification />
       <Tab.Navigator
         initialRouteName='Feeds'
         barStyle={{

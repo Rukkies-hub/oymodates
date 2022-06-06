@@ -50,7 +50,7 @@ const ViewPost = (params) => {
         >
           <Pressable
             onPress={() =>
-              post?.user.id == user.uid ?
+              post?.user?.id == user?.uid ?
                 navigation.navigate('EditProfile') :
                 navigation.navigate('UserProfile', { user: post?.user })
             }

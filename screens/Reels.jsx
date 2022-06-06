@@ -53,7 +53,7 @@ const Reels = () => {
   const likeReel = async (item) => {
     let reels = item
 
-    reels?.likes?.includes(user.uid) ?
+    reels?.likes?.includes(user?.uid) ?
       await updateDoc(doc(db, 'reels', reels?.id), {
         likes: arrayRemove(userProfile?.id)
       }) :

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
 import { View, Text, SafeAreaView, ImageBackground, TouchableOpacity, Dimensions } from 'react-native'
 import color from '../style/color'
 
@@ -19,7 +19,15 @@ import { useFonts } from 'expo-font'
 
 import { useNavigation } from '@react-navigation/native'
 
+import { io } from 'socket.io-client'
+let socket
+
+import uuid from 'uuid-random'
+
+import useAuth from '../hooks/useAuth'
+
 const VideoCall = (props) => {
+  const { userProfile } = useAuth()
   const navigation = useNavigation()
   const videoCallUser = props?.route?.params?.videoCallUser
   const isFocused = useIsFocused()
@@ -30,6 +38,8 @@ const VideoCall = (props) => {
   const [cameraFlash, setCameraFlash] = useState(Camera?.Constants?.FlashMode?.off)
   const [isCameraReady, setIsCameraReady] = useState(false)
   const [sound, setSound] = useState()
+  const [connectionState, setConnectionState] = useState('Connecting...')
+  const [activeUsers, setActiveUsers] = useState()
 
   useEffect(() => {
     (async () => {
@@ -61,12 +71,40 @@ const VideoCall = (props) => {
       : undefined
   }, [sound])
 
+  useLayoutEffect(() => {
+    const apiURL = 'http://192.168.43.97:3000'
+    socket = io(`${apiURL}`)
+
+    socket.on('all-users', users => {
+      console.log('active users')
+      users = users.filter(user => (user?.username != userProfile?.username))
+      setActiveUsers(users)
+    })
+  }, [videoCallUser])
+
+  useEffect(() => {
+    socket.emit('startCall', {
+      roomId: uuid(),
+      user: userProfile,
+      calling: videoCallUser
+    })
+  }, [videoCallUser])
+
+  const hangup = () => {
+    sound.stopAsync()
+    navigation.goBack()
+    socket.emit('startCall', {
+      roomId: uuid(),
+      user: userProfile,
+      calling: videoCallUser
+    }, e => e.emit('disconnect'))
+  }
+
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
-
 
   return (
     <SafeAreaView
@@ -104,7 +142,7 @@ const VideoCall = (props) => {
               fontSize: 30
             }}
           >
-            Ringging...
+            {connectionState}
           </Text>
         </LinearGradient>
 
@@ -173,7 +211,7 @@ const VideoCall = (props) => {
             }}
           >
             <TouchableOpacity
-              onPress={() => navigation.goBack()}
+              onPress={hangup}
               style={{
                 width: 70,
                 height: 70,

@@ -21,19 +21,19 @@ const AccountSettings = () => {
   }, [])
 
   const lightMode = () => {
-    updateDoc(doc(db, 'users', user.uid), {
+    updateDoc(doc(db, 'users', user?.uid), {
       appMode: 'light'
     })
   }
 
   const darkMode = () => {
-    updateDoc(doc(db, 'users', user.uid), {
+    updateDoc(doc(db, 'users', user?.uid), {
       appMode: 'dark'
     })
   }
 
   const lightsOut = () => {
-    updateDoc(doc(db, 'users', user.uid), {
+    updateDoc(doc(db, 'users', user?.uid), {
       appMode: 'lightsOut'
     })
   }

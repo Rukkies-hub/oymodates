@@ -18,7 +18,7 @@ const MyReels = () => {
 
   useEffect(() =>
     onSnapshot(query(collection(db, 'reels'),
-      where('user.id', '==', user?.uid)),
+      where('user?.id', '==', user?.uid)),
       snapshot => setReels(
         snapshot.docs.map(doc => ({
           id: doc?.id,

@@ -7,7 +7,7 @@ import {
   ActivityIndicator
 } from 'react-native'
 
-import { FontAwesome, MaterialCommunityIcons, MaterialIcons, Entypo, AntDesign, FontAwesome5, Feather } from '@expo/vector-icons'
+import { FontAwesome, MaterialCommunityIcons, MaterialIcons, Entypo, AntDesign, FontAwesome5, Feather, SimpleLineIcons } from '@expo/vector-icons'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -22,7 +22,7 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 import color from '../style/color'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, getDocs, onSnapshot, query, serverTimestamp, where } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 
@@ -31,16 +31,7 @@ let link = `posts/${new Date().toISOString()}`
 
 import * as Device from 'expo-device'
 
-import * as Notifications from 'expo-notifications'
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-})
 
 const Header = ({
   showAratar,
@@ -57,35 +48,27 @@ const Header = ({
   showAdd,
   showCancelPost,
   showMessageImageGallerySelect,
-  matchDetails
+  matchDetails,
+  showNotification
 }) => {
   const navigation = useNavigation()
   const { user, userProfile, madiaString, media, setMedia } = useAuth()
   const storage = getStorage()
-  const videoCallUser = getMatchedUserInfo(matchDetails?.users, user.uid)
+  const videoCallUser = getMatchedUserInfo(matchDetails?.users, user?.uid)
 
   const [loading, setLoading] = useState(false)
   const [mediaType, setMediaType] = useState('image')
+  const [notifications, setNotificatios] = useState([])
 
-  const [expoPushToken, setExpoPushToken] = useState('')
-  const [notification, setNotification] = useState(false)
-  const notificationListener = useRef()
-  const responseListener = useRef()
-
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
-
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification)
-    })
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => { })
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current)
-      Notifications.removeNotificationSubscription(responseListener.current)
-    }
-  }, [])
+  useEffect(async () => {
+    const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)))
+    setNotificatios(
+      querySnapshot.docs.map(doc => ({
+        id: doc?.id,
+        ...doc?.data()
+      }))
+    )
+  }, [userProfile, db])
 
   const savePost = async () => {
     if (postDetails.caption || postDetails.media) {
@@ -120,11 +103,10 @@ const Header = ({
                 mediaType,
                 caption: postDetails.caption,
                 timestamp: serverTimestamp()
-              }).then(async () => await schedulePushNotification())
-                .finally(() => {
-                  setLoading(false)
-                  cancelPost()
-                })
+              }).finally(() => {
+                setLoading(false)
+                cancelPost()
+              })
             })
         })
     }
@@ -181,6 +163,7 @@ const Header = ({
             showBack &&
             <TouchableOpacity
               onPress={() => navigation.goBack()}
+              onLongPress={() => navigation.navigate('Feeds')}
               style={{
                 width: 40,
                 height: 40,
@@ -357,6 +340,46 @@ const Header = ({
           }
 
           {
+            showNotification &&
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Notifications')}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+                marginRight: 10
+              }}
+            >
+              <SimpleLineIcons name="bell" size={20} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+
+              {
+                notifications?.length > 0 &&
+                <View
+                  style={{
+                    borderRadius: 50,
+                    backgroundColor: color.red,
+                    paddingHorizontal: 5,
+                    position: 'absolute',
+                    top: 0,
+                    right: 0
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: color.white,
+                      fontSize: 10
+                    }}
+                  >
+                    {notifications?.length}
+                  </Text>
+                </View>
+              }
+            </TouchableOpacity>
+          }
+
+          {
             showAdd &&
             <Menu>
               <MenuTrigger
@@ -433,9 +456,9 @@ const Header = ({
               }}
             >
               {
-                user.photoURL ?
+                user?.photoURL ?
                   <Image
-                    source={{ uri: userProfile?.photoURL || user.photoURL }}
+                    source={{ uri: userProfile?.photoURL || user?.photoURL }}
                     style={{
                       width: 40,
                       height: 40,
@@ -453,45 +476,5 @@ const Header = ({
   )
 }
 
-async function schedulePushNotification () {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: 'New post added',
-      body: 'Your post has been added successfully.\nYou can check it out now',
-      data: { data: 'goes here' },
-    },
-    trigger: { seconds: 1 },
-  })
-}
-
-async function registerForPushNotificationsAsync () {
-  let token
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync()
-    let finalStatus = existingStatus
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync()
-      finalStatus = status
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!')
-      return
-    }
-    token = (await Notifications.getExpoPushTokenAsync()).data
-  } else {
-    alert('Must use physical device for Push Notifications')
-  }
-
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    })
-  }
-
-  return token
-}
 
 export default Header

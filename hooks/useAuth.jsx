@@ -24,7 +24,7 @@ import {
 } from 'firebase/auth'
 import { auth, db } from './firebase'
 
-import { collection, doc, getDoc, onSnapshot } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, onSnapshot, query, where } from 'firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }) => {
     , [])
 
   const getPendingSwipes = (user) => {
-    onSnapshot(collection(db, 'users', user.uid, 'pendingSwipes'),
+    onSnapshot(collection(db, 'users', user?.uid, 'pendingSwipes'),
       snapshot =>
         setPendingSwipes(
           snapshot?.docs?.map(doc => ({
@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const getUserProfile = async user => {
-    const unsub = onSnapshot(doc(db, 'users', user.uid),
+    const unsub = onSnapshot(doc(db, 'users', user?.uid),
       doc => {
         let profile = doc.data()
         setUserProfile(profile)
@@ -133,7 +133,7 @@ export const AuthProvider = ({ children }) => {
         if (profile?.passions) setPassions([...profile?.passions])
         if (profile?.address) setAddress(...profile?.address)
       })
-    
+
     return unsub
   }
 

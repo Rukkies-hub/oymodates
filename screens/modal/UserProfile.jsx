@@ -33,7 +33,7 @@ const UserProfile = (params) => {
 
   useEffect(() =>
     onSnapshot(query(collection(db, 'reels'),
-      where('user.id', '==', currentUser?.id)),
+      where('user?.id', '==', currentUser?.id)),
       snapshot => setReels(
         snapshot.docs.map(doc => ({
           id: doc?.id,
@@ -44,13 +44,13 @@ const UserProfile = (params) => {
 
   const getUserProfile = async () => {
     const user = await getDoc(doc(db, 'users', currentUser?.id))
-    setViewingUser(user.data())
+    setViewingUser(user?.data())
   }
 
   useEffect(() => getUserProfile(), [])
 
   useEffect(() => {
-    getLikesById(currentUser?.id, user.uid).then(res => {
+    getLikesById(currentUser?.id, user?.uid).then(res => {
       setCurrentLikesState({
         ...currentLikesState,
         state: res

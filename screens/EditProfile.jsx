@@ -284,7 +284,7 @@ const EditProfile = () => {
         backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
       }}
     >
-      <Header showTitle showAratar showBack title={`Welcome, ${user.displayName}`} />
+      <Header showTitle showAratar showBack title={`Welcome, ${userProfile?.username}`} />
 
       <ScrollView style={{ flex: 1 }}>
         <View
@@ -299,7 +299,7 @@ const EditProfile = () => {
               height: 400,
               borderRadius: 12
             }}
-            source={{ uri: image ? image : userProfile?.photoURL || user.photoURL }}
+            source={{ uri: image ? image : userProfile?.photoURL || user?.photoURL }}
           />
           <View
             style={{
