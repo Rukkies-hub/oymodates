@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDoc, getDocs, serverTimestamp, setDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { View, Text, SafeAreaView, FlatList, Image, TouchableOpacity } from 'react-native'
 import { db } from '../hooks/firebase'
@@ -11,10 +11,13 @@ import Header from '../components/Header'
 
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
+import generateId from '../lib/generateId'
+import { useNavigation } from '@react-navigation/native'
 
 const AllPostLikes = (props) => {
+  const navigation = useNavigation()
   const post = props?.route?.params?.post
-  const { user, userProfile } = useAuth()
+  const { user, userProfile, profiles } = useAuth()
 
   const [allLikes, setAllLikes] = useState([])
 
@@ -29,6 +32,37 @@ const AllPostLikes = (props) => {
   }, [post])
 
   console.log(allLikes)
+
+  const swipeRight = like => {
+    const needle = like.id
+    const cardIndex = profiles.findIndex(item => item.id === needle)
+
+    if (!profiles[cardIndex]) return
+
+    const userSwiped = profiles[cardIndex]
+
+    getDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped.id))
+      .then(documentSnapshot => {
+        if (documentSnapshot.exists()) {
+          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped.id), userSwiped)
+
+          // CREAT A MATCH
+          setDoc(doc(db, 'matches', generateId(user?.uid, userSwiped.id)), {
+            users: {
+              [user?.uid]: userProfile,
+              [userSwiped.id]: userSwiped
+            },
+            usersMatched: [user?.uid, userSwiped.id],
+            timestamp: serverTimestamp()
+          }).finally(async () => await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped.id)))
+
+          navigation.navigate('NewMatch', {
+            loggedInProfile: userProfile,
+            userSwiped
+          })
+        }
+      })
+  }
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -106,47 +140,30 @@ const AllPostLikes = (props) => {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={{
-                borderWidth: 1,
-                borderColor: color.red,
-                height: 30,
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 10,
-                borderRadius: 4
-              }}
-            >
-              <Text
+            {
+              user?.id != userProfile?.id &&
+              <TouchableOpacity
+                onPress={() => swipeRight(user)}
                 style={{
-                  color: color.red,
-                  fontSize: 14
+                  backgroundColor: color.red,
+                  height: 30,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  paddingHorizontal: 10,
+                  marginLeft: 10,
+                  borderRadius: 4
                 }}
               >
-                Follow
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                backgroundColor: color.red,
-                height: 30,
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 10,
-                marginLeft: 10,
-                borderRadius: 4
-              }}
-            >
-              <Text
-                style={{
-                  color: color.white,
-                  fontSize: 14
-                }}
-              >
-                Match
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: color.white,
+                    fontSize: 14
+                  }}
+                >
+                  Match
+                </Text>
+              </TouchableOpacity>
+            }
           </View>
         )}
       />
