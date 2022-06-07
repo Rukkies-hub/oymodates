@@ -244,14 +244,18 @@ const Posts = () => {
 
             {
               post?.likesCount > 0 &&
-              <Text
-                style={{
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                  fontSize: 14
-                }}
+              <TouchableOpacity
+                onPress={() => navigation.navigate('AllPostLikes', { post })}
               >
-                {post?.likesCount} {post?.likesCount > 1 ? 'Likes' : 'Like'}
-              </Text>
+                <Text
+                  style={{
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                    fontSize: 14
+                  }}
+                >
+                  {post?.likesCount} {post?.likesCount > 1 ? 'Likes' : 'Like'}
+                </Text>
+              </TouchableOpacity>
             }
             <Text
               style={{

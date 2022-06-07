@@ -23,6 +23,7 @@ import Profile from './screens/profile/Profile'
 import VideoCall from './screens/VideoCall'
 import AccountSettings from './screens/AccountSettings'
 import Notifications from './screens/Notifications'
+import AllPostLikes from './screens/AllPostLikes'
 
 import useAuth from './hooks/useAuth'
 
@@ -71,6 +72,7 @@ const StackNavigator = () => {
               <Stack.Screen name='VideoCall' component={VideoCall} options={{ headerShown: false }} />
               <Stack.Screen name='AccountSettings' component={AccountSettings} options={{ headerShown: false }} />
               <Stack.Screen name='Notifications' component={Notifications} options={{ headerShown: false }} />
+              <Stack.Screen name='AllPostLikes' component={AllPostLikes} options={{ headerShown: false }} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
