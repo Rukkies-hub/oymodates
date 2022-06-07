@@ -28,13 +28,13 @@ import { collection, doc, getDoc, getDocs, onSnapshot, query, where } from 'fire
 
 import { useNavigation } from '@react-navigation/native'
 
-import * as Facebook from 'expo-facebook'
+import { iosClientId, androidClientId } from '@env'
 
 const AuthContext = createContext({})
 
 const config = {
-  iosClientId: Constants.manifest.iosClientId,
-  androidClientId: Constants.manifest.androidClientId,
+  iosClientId,
+  androidClientId,
   scopes: ['profile', 'email'],
   permissions: ['public_profile', 'email', 'gender', 'location']
 }

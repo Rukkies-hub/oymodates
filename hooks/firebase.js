@@ -1,9 +1,19 @@
 import { initializeApp } from "firebase/app"
 import { getAuth } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
-import Constants from 'expo-constants'
 
-const app = initializeApp(Constants.manifest.firebase)
+import { apiKey, authDomain, projectId, storageBucket, messagingSenderId, appId, measurementId } from '@env'
+
+const app = initializeApp({
+  apiKey,
+  authDomain,
+  projectId,
+  storageBucket,
+  messagingSenderId,
+  appId,
+  measurementId
+})
+
 const auth = getAuth()
 const db = getFirestore()
 
