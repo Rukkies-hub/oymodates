@@ -9,8 +9,10 @@ import { useFonts } from 'expo-font'
 
 import Comments from '../../components/Comments'
 import NewComment from '../../components/NewComment'
+import useAuth from '../../hooks/useAuth'
 
 const AddComment = params => {
+  const { userProfile } = useAuth()
   const post = params?.route?.params?.post
 
   const [loaded] = useFonts({
@@ -23,7 +25,7 @@ const AddComment = params => {
     <View
       style={{
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
       }}
     >
       <Header showBack showTitle title='Comment' />

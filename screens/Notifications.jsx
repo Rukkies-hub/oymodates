@@ -6,7 +6,7 @@ import Header from '../components/Header'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
+import { AntDesign, MaterialCommunityIcons, Fontisto } from '@expo/vector-icons'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
@@ -19,8 +19,8 @@ const Notifications = () => {
     if (!notification.seen)
       await updateDoc(doc(db, 'users', user?.uid, 'notifications', notification?.notification), {
         seen: true
-      }).then(() => navigation.navigate('ViewPost', { post: notification?.post }))
-    else navigation.navigate('ViewPost', { post: notification?.post })
+      }).then(() => navigation.navigate(notification?.activity == 'likes' ? 'ViewPost' : 'AddComment', { post: notification?.post }))
+    else navigation.navigate(notification?.activity == 'likes' ? 'ViewPost' : 'AddComment', { post: notification?.post })
   }
 
   const [loaded] = useFonts({
@@ -40,7 +40,7 @@ const Notifications = () => {
 
       <FlatList
         data={notifications}
-        keyExtractor={item => item.id}
+        keyExtractor={item => Math.random(item.id)}
         style={{
           flex: 1,
           paddingHorizontal: 10,
@@ -80,7 +80,7 @@ const Notifications = () => {
                     position: 'absolute',
                     bottom: 0,
                     right: -4,
-                    backgroundColor: color.red,
+                    backgroundColor: notification?.activity == 'likes' ? color.red : color.green,
                     borderRadius: 50,
                     width: 20,
                     height: 20,
@@ -88,7 +88,11 @@ const Notifications = () => {
                     alignItems: 'center'
                   }}
                 >
-                  <AntDesign name='heart' size={10} color={color.white} />
+                  {
+                    notification?.activity == 'likes' ?
+                      <AntDesign name='heart' size={10} color={color.white} /> :
+                      <Fontisto name="comment" size={10} color={color.white} />
+                  }
                 </View>
               </View>
               <View
@@ -117,7 +121,7 @@ const Notifications = () => {
                       fontSize: 14
                     }}
                   >
-                    {notification?.activity} your post
+                    {notification?.activity == 'likes' ? 'likes your post' : 'commented on your post'}
                   </Text>
                 </View>
                 <Text
@@ -133,7 +137,7 @@ const Notifications = () => {
           )
         }}
       />
-    </SafeAreaView>
+    </SafeAreaView >
   )
 }
 

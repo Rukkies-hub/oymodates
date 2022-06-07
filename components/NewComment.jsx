@@ -30,6 +30,22 @@ const NewComment = (params) => {
           username: userProfile?.username,
         },
         timestamp: serverTimestamp()
+      }).then(async () => {
+        await addDoc(collection(db, 'users', post?.user?.id, 'notifications'), {
+          action: 'post',
+          activity: 'comments',
+          notify: post?.user,
+          id: post?.id,
+          seen: false,
+          post,
+          user: {
+            id: userProfile?.id,
+            username: userProfile?.username,
+            displayName: userProfile?.displayName,
+            photoURL: userProfile?.photoURL
+          },
+          timestamp: serverTimestamp()
+        })
       })
 
     await updateDoc(doc(db, 'posts', post?.id), {
