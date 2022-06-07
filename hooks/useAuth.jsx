@@ -71,6 +71,7 @@ export const AuthProvider = ({ children }) => {
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
   const [bottomSheetIndex, setBottomSheetIndex] = useState(-1)
   const [reelsProps, setReelsProps] = useState(null)
+  const [notifications, setNotificatios] = useState([])
 
   const signInWighGoogle = async () => {
     setLoading(true)
@@ -200,7 +201,9 @@ export const AuthProvider = ({ children }) => {
     bottomSheetIndex,
     setBottomSheetIndex,
     reelsProps,
-    setReelsProps
+    setReelsProps,
+    notifications,
+    setNotificatios
   }), [
     user,
     loading,
@@ -238,7 +241,9 @@ export const AuthProvider = ({ children }) => {
     bottomSheetIndex,
     setBottomSheetIndex,
     reelsProps,
-    setReelsProps
+    setReelsProps,
+    notifications,
+    setNotificatios
   ])
 
   return (

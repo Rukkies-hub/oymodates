@@ -60,9 +60,11 @@ const Likes = (params) => {
         if (post?.user?.id != user?.uid)
           await addDoc(collection(db, 'users', post?.user?.id, 'notifications'), {
             action: 'post',
+            activity: 'likes',
             notify: post?.user,
             id: post?.id,
             seen: false,
+            post,
             user: {
               id: userProfile?.id,
               username: userProfile?.username,

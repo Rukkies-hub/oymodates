@@ -43,7 +43,7 @@ const Comments = (params) => {
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
 
   useEffect(() =>
-    onSnapshot(collection(db, 'posts', post.id, 'comments'),
+    onSnapshot(collection(db, 'posts', post?.id, 'comments'),
       snapshot =>
         setComments(
           snapshot?.docs?.map(doc => ({
@@ -59,7 +59,7 @@ const Comments = (params) => {
       addDoc(collection(db, 'posts', comment?.post, 'comments', comment?.id, 'replies'), {
         reply: input,
         post: comment?.post,
-        comment: comment.id,
+        comment: comment?.id,
         likesCount: 0,
         repliesCount: 0,
         user: {

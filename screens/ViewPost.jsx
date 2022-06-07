@@ -19,7 +19,7 @@ import Likes from '../components/Likes'
 const ViewPost = (params) => {
   const navigation = useNavigation()
   const { user, userProfile } = useAuth()
-  const post = params.route.params.post
+  const post = params?.route?.params?.post
 
   const windowWidth = useWindowDimensions().width
 
@@ -76,13 +76,13 @@ const ViewPost = (params) => {
                 color: userProfile?.appMode == 'light' ? color.dark : color.white
               }}
             >
-              {post?.user?.displayName}
+              {post?.user?.username}
             </Text>
           </Pressable>
         </View>
 
         {
-          post.mediaType == 'image' ?
+          post?.mediaType == 'image' ?
             <View
               style={{
                 position: 'relative'
@@ -219,7 +219,7 @@ const ViewPost = (params) => {
           style={{
             marginTop: 30
           }}
-        ></View>
+        />
         <Comments post={post} />
       </ScrollView>
       <NewComment post={post} />

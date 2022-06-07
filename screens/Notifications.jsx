@@ -1,12 +1,33 @@
+import { useFonts } from 'expo-font'
 import React from 'react'
-import { View, Text, SafeAreaView } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, Pressable, Image, TouchableOpacity } from 'react-native'
 
 import Header from '../components/Header'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { db } from '../hooks/firebase'
+import { useNavigation } from '@react-navigation/native'
+
 const Notifications = () => {
-  const { userProfile } = useAuth()
+  const navigation = useNavigation()
+  const { userProfile, notifications, user } = useAuth()
+
+  const viewNotification = async notification => {
+    if (!notification.seen)
+      await updateDoc(doc(db, 'users', user?.uid, 'notifications', notification?.notification), {
+        seen: true
+      }).then(() => navigation.navigate('ViewPost', { post: notification?.post }))
+    else navigation.navigate('ViewPost', { post: notification?.post })
+  }
+
+  const [loaded] = useFonts({
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+  })
+
+  if (!loaded) return null
 
   return (
     <SafeAreaView
@@ -15,14 +36,103 @@ const Notifications = () => {
         flex: 1
       }}
     >
-      <Header showBack showTitle title='Notification' showAratar />
-      <Text
+      <Header showBack showTitle title='Notifications' showAratar showNotification />
+
+      <FlatList
+        data={notifications}
+        keyExtractor={item => item.id}
         style={{
-          color: userProfile?.appMode == 'light' ? color.dark : color.white
+          flex: 1,
+          paddingHorizontal: 10,
+          marginTop: 20
         }}
-      >
-        Notifications
-      </Text>
+        renderItem={({ item: notification }) => {
+          return (
+            <TouchableOpacity
+              onPress={() => viewNotification(notification)}
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 10,
+                paddingHorizontal: 10,
+                paddingVertical: 10,
+                borderRadius: 12,
+                backgroundColor: notification?.seen == false ? (userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark) : color.transparent
+              }}
+            >
+              <View
+                style={{
+                  position: 'relative',
+                  marginRight: 10
+                }}
+              >
+                <Image
+                  source={{ uri: notification?.user?.photoURL }}
+                  style={{
+                    width: 45,
+                    height: 45,
+                    borderRadius: 50
+                  }}
+                />
+                <View
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    right: -4,
+                    backgroundColor: color.red,
+                    borderRadius: 50,
+                    width: 20,
+                    height: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <AntDesign name='heart' size={10} color={color.white} />
+                </View>
+              </View>
+              <View
+                style={{
+                  flex: 1
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row'
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                      fontFamily: 'text',
+                      fontSize: 14
+                    }}
+                  >
+                    {notification?.user?.username}
+                  </Text>
+                  <Text
+                    style={{
+                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                      marginLeft: 6,
+                      fontSize: 14
+                    }}
+                  >
+                    {notification?.activity} your post
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    color: color.red,
+                    marginTop: 3
+                  }}
+                >
+                  {notification?.timestamp?.toDate().toDateString()}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )
+        }}
+      />
     </SafeAreaView>
   )
 }

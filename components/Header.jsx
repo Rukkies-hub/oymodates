@@ -22,7 +22,7 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 import color from '../style/color'
-import { addDoc, collection, getDocs, onSnapshot, query, serverTimestamp, where } from 'firebase/firestore'
+import { addDoc, collection, getDocs, onSnapshot, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 
@@ -52,19 +52,31 @@ const Header = ({
   showNotification
 }) => {
   const navigation = useNavigation()
-  const { user, userProfile, madiaString, media, setMedia } = useAuth()
+  const { user, userProfile, madiaString, media, setMedia, notifications, setNotificatios } = useAuth()
   const storage = getStorage()
   const videoCallUser = getMatchedUserInfo(matchDetails?.users, user?.uid)
 
   const [loading, setLoading] = useState(false)
   const [mediaType, setMediaType] = useState('image')
-  const [notifications, setNotificatios] = useState([])
+  const [notificationCount, setNotificationCount] = useState([])
 
   useEffect(async () => {
-    const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)))
+    const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')))
     setNotificatios(
       querySnapshot.docs.map(doc => ({
         id: doc?.id,
+        notification: doc?.id,
+        ...doc?.data()
+      }))
+    )
+  }, [userProfile, db])
+
+  useEffect(async () => {
+    const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)))
+    setNotificationCount(
+      querySnapshot.docs.map(doc => ({
+        id: doc?.id,
+        notification: doc?.id,
         ...doc?.data()
       }))
     )
@@ -372,7 +384,7 @@ const Header = ({
                       fontSize: 10
                     }}
                   >
-                    {notifications?.length}
+                    {notificationCount?.length}
                   </Text>
                 </View>
               }
