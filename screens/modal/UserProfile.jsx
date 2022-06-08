@@ -33,7 +33,7 @@ const UserProfile = (params) => {
 
   useEffect(() =>
     onSnapshot(query(collection(db, 'reels'),
-      where('user?.id', '==', currentUser?.id)),
+      where('user.id', '==', currentUser?.id)),
       snapshot => setReels(
         snapshot.docs.map(doc => ({
           id: doc?.id,
