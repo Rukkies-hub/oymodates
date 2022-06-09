@@ -39,12 +39,6 @@ const config = {
   permissions: ['public_profile', 'email', 'gender', 'location']
 }
 
-if (
-  Platform.OS === "android" &&
-  UIManager.setLayoutAnimationEnabledExperimental
-)
-  UIManager.setLayoutAnimationEnabledExperimental(true)
-
 export const AuthProvider = ({ children }) => {
   const navigation = useNavigation()
 

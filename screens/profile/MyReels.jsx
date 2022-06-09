@@ -49,6 +49,7 @@ const MyReels = () => {
           {
             reels.map((reel, index) => (
               <Pressable
+                onPress={() => console.log(reel)}
                 key={index}
                 style={{
                   width: '30%',
