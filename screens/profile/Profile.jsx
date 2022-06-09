@@ -6,7 +6,7 @@ import Header from '../../components/Header'
 import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
-import MyReels from './screens/MyReels'
+import MyReels from './MyReels'
 import { FontAwesome, Feather, Fontisto } from '@expo/vector-icons'
 
 const Profile = () => {

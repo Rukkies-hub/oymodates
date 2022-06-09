@@ -3,10 +3,10 @@ import { View, Text, Dimensions, Pressable, ScrollView } from 'react-native'
 
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 
-import { db } from '../../../hooks/firebase'
-import useAuth from '../../../hooks/useAuth'
+import { db } from '../../hooks/firebase'
+import useAuth from '../../hooks/useAuth'
 import AutoHeightImage from 'react-native-auto-height-image'
-import color from '../../../style/color'
+import color from '../../style/color'
 
 const { width, height } = Dimensions.get('window')
 import { AntDesign } from '@expo/vector-icons'
@@ -28,8 +28,8 @@ const MyReels = () => {
     , [user, db])
 
   const [loaded] = useFonts({
-    text: require('../../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
-    boldText: require('../../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
