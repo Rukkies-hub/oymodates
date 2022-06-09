@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   FlatList,
   useWindowDimensions,
-  Dimensions
+  Dimensions,
+  RefreshControl
 } from 'react-native'
 
 import useAuth from '../hooks/useAuth'
@@ -17,7 +18,7 @@ import color from '../style/color'
 
 import { Fontisto, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 
-import { collection, onSnapshot } from 'firebase/firestore'
+import { collection, getDocs, onSnapshot } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 import { Video } from 'expo-av'
@@ -25,6 +26,12 @@ import { Video } from 'expo-av'
 import Likes from './Likes'
 
 const { width, height } = Dimensions.get('window')
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const Posts = () => {
   const navigation = useNavigation()
@@ -34,18 +41,36 @@ const Posts = () => {
 
   const [posts, setPosts] = useState([])
   const [status, setStatus] = useState({})
+  const [refreshing, setRefreshing] = React.useState(false)
 
-  useEffect(() =>
-    onSnapshot(collection(db, 'posts'),
-      snapshot =>
-        setPosts(
-          snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }))
-        )
+  const getPosts = async () => {
+    const querySnapshot = await getDocs(collection(db, 'posts'))
+
+    setPosts(
+      querySnapshot?.docs?.map(doc => ({
+        id: doc.id,
+        ...doc?.data()
+      }))
     )
-    , [])
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    wait(2000).then(() => {
+      getPosts()
+      setRefreshing(false)
+    })
+  }, [])
+
+  useEffect(async () => {
+    const postCache = await AsyncStorage.getItem('posts')
+    if (postCache) {
+      setPosts(JSON.parse(postCache))
+    } else {
+      getPosts()
+      await AsyncStorage.setItem('posts', JSON.stringify(posts))
+    }
+  }, [])
 
 
   const [loaded] = useFonts({
@@ -61,6 +86,12 @@ const Posts = () => {
       alwaysBounceHorizontal={false}
       alwaysBounceVertical={false}
       keyExtractor={item => item.id}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
       style={{
         flex: 1,
         height: height - 109
