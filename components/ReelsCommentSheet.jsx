@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native'
 
 import BottomSheet from '@gorhom/bottom-sheet'
-import useAuth from '../../hooks/useAuth'
+import useAuth from '../hooks/useAuth'
 
-import ReelsComments from '../../components/ReelsComments'
+import ReelsComments from '../components/ReelsComments'
 
 import { AntDesign, FontAwesome, FontAwesome5, Entypo } from '@expo/vector-icons'
-import color from '../../style/color'
+import color from '../style/color'
 import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { db } from '../../hooks/firebase'
+import { db } from '../hooks/firebase'
 import { useFonts } from 'expo-font'
 
 const ReelsCommentSheet = () => {
@@ -42,7 +42,7 @@ const ReelsCommentSheet = () => {
   }
 
   const [loaded] = useFonts({
-    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null

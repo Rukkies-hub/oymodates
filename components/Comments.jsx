@@ -54,9 +54,11 @@ const Comments = (params) => {
     )
     , [])
 
-  const sendCommentReply = (comment) => {
+  const sendCommentReply = async comment => {
+
+    console.log(comment)
     if (input != '')
-      addDoc(collection(db, 'posts', comment?.post, 'comments', comment?.id, 'replies'), {
+      await addDoc(collection(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'replies'), {
         reply: input,
         post: comment?.post,
         comment: comment?.id,
@@ -72,6 +74,25 @@ const Comments = (params) => {
         timestamp: serverTimestamp()
       })
     setInput('')
+
+    if (comment?.user?.id != userProfile?.id) {
+      await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
+        action: 'post',
+        activity: 'comment likes',
+        text: 'likes your comment',
+        notify: comment?.user,
+        id: comment?.id,
+        seen: false,
+        post: comment?.post,
+        user: {
+          id: userProfile?.id,
+          username: userProfile?.username,
+          displayName: userProfile?.displayName,
+          photoURL: userProfile?.photoURL
+        },
+        timestamp: serverTimestamp()
+      })
+    }
   }
 
   const showReplyInput = () => {
@@ -135,7 +156,7 @@ const Comments = (params) => {
                     fontSize: 13
                   }}
                 >
-                  {comment?.user?.displayName}
+                  {comment?.user?.username}
                 </Text>
                 <Text
                   style={{
@@ -201,7 +222,7 @@ const Comments = (params) => {
                       onChangeText={setInput}
                       onSubmitEditing={() => sendCommentReply(comment)}
                       onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-                      placeholder={`Reply ${comment?.user?.displayName}`}
+                      placeholder={`Reply ${comment?.user?.username}`}
                       placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
                       style={{
                         flex: 1,

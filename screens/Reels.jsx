@@ -16,7 +16,7 @@ import { useFonts } from 'expo-font'
 import { LinearGradient } from 'expo-linear-gradient'
 
 import useAuth from '../hooks/useAuth'
-import ReelsCommentSheet from './modal/ReelsCommentSheet'
+import ReelsCommentSheet from '../components/ReelsCommentSheet'
 import LikeReels from '../components/LikeReels'
 
 const Reels = () => {

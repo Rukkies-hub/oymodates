@@ -1,6 +1,7 @@
-import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Keyboard, Dimensions } from 'react-native'
+
+import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import color from '../style/color'
 
@@ -20,7 +21,7 @@ const NewComment = (params) => {
     if (input != '')
       addDoc(collection(db, 'posts', post?.id, 'comments'), {
         comment: input,
-        post: post.id,
+        post,
         likesCount: 0,
         commentsCount: 0,
         user: {
@@ -31,21 +32,23 @@ const NewComment = (params) => {
         },
         timestamp: serverTimestamp()
       }).then(async () => {
-        await addDoc(collection(db, 'users', post?.user?.id, 'notifications'), {
-          action: 'post',
-          activity: 'comments',
-          notify: post?.user,
-          id: post?.id,
-          seen: false,
-          post,
-          user: {
-            id: userProfile?.id,
-            username: userProfile?.username,
-            displayName: userProfile?.displayName,
-            photoURL: userProfile?.photoURL
-          },
-          timestamp: serverTimestamp()
-        })
+        if (post?.user?.id != userProfile?.id)
+          await addDoc(collection(db, 'users', post?.user?.id, 'notifications'), {
+            action: 'post',
+            activity: 'comments',
+            text: 'commented on your post',
+            notify: post?.user,
+            id: post?.id,
+            seen: false,
+            post,
+            user: {
+              id: userProfile?.id,
+              username: userProfile?.username,
+              displayName: userProfile?.displayName,
+              photoURL: userProfile?.photoURL
+            },
+            timestamp: serverTimestamp()
+          })
       })
 
     await updateDoc(doc(db, 'posts', post?.id), {

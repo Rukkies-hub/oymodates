@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font'
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, SafeAreaView, FlatList, Pressable, Image, TouchableOpacity } from 'react-native'
 
 import Header from '../components/Header'
@@ -11,16 +11,22 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const Notifications = () => {
   const navigation = useNavigation()
   const { userProfile, notifications, user } = useAuth()
+
+  const [refreshing, setRefreshing] = useState(false)
 
   const viewNotification = async notification => {
     if (!notification.seen)
       await updateDoc(doc(db, 'users', user?.uid, 'notifications', notification?.notification), {
         seen: true
       }).then(() => navigation.navigate(notification?.activity == 'likes' ? 'ViewPost' : 'AddComment', { post: notification?.post }))
-    else navigation.navigate(notification?.activity == 'likes' ? 'ViewPost' : 'AddComment', { post: notification?.post })
+    else navigation.navigate(notification?.activity == 'likes' ? 'ViewPost' : notification?.activity == 'comment likes' ? 'ViewPosts' : 'AddComment', { post: notification?.post })
   }
 
   const [loaded] = useFonts({

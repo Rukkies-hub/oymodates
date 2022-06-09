@@ -5,7 +5,7 @@ import StackNavigator from './StackNavigator'
 import { AuthProvider } from './hooks/useAuth'
 
 import { MenuProvider } from 'react-native-popup-menu'
-import ReelsCommentSheet from './screens/modal/ReelsCommentSheet'
+import ReelsCommentSheet from './components/ReelsCommentSheet'
 
 import 'react-native-gesture-handler'
 

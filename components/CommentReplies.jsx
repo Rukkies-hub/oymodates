@@ -18,7 +18,7 @@ const CommentReplies = (props) => {
   const [replies, setReplies] = useState([])
 
   useEffect(() =>
-    onSnapshot(collection(db, 'posts', comments?.post, 'comments', comments?.id, 'replies'),
+    onSnapshot(collection(db, 'posts', comments?.post?.id, 'comments', comments?.id, 'replies'),
       snapshot =>
         setReplies(
           snapshot?.docs?.map(doc => ({
@@ -66,7 +66,7 @@ const CommentReplies = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: color.offWhite,
+                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.black,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,

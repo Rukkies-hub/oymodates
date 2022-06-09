@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font'
-import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore'
+import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { db } from '../hooks/firebase'
@@ -23,25 +23,46 @@ const Likecomments = (props) => {
   }, [])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'posts', comment?.post, 'comments', comment?.id, 'likes', user?.uid))
+    getDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'likes', user?.uid))
       .then(res => resolve(res.exists()))
   })
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'posts', comment?.post, 'comments', comment?.id, 'likes', user?.uid))
-      await updateDoc(doc(db, 'posts', comment?.post, 'comments', comment?.id), {
+      await deleteDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'likes', user?.uid))
+      await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
         likesCount: increment(-1)
       })
     } else {
-      await setDoc(doc(db, 'posts', comment?.post, 'comments', comment?.id, 'likes', user?.uid), {
+      await setDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'likes', user?.uid), {
         id: userProfile?.id,
         photoURL: userProfile?.photoURL,
         displayName: userProfile?.displayName,
         username: userProfile?.username,
       })
-      await updateDoc(doc(db, 'posts', comment?.post, 'comments', comment?.id), {
+      await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
         likesCount: increment(1)
+      })
+    }
+
+    if (comment?.user?.id != userProfile?.id) {
+      const post = await (await getDoc(doc(db, 'posts', comment?.post?.id))).data()
+      
+      await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
+        action: 'post',
+        activity: 'comment likes',
+        text: 'likes your comment',
+        notify: comment?.user,
+        id: comment?.id,
+        seen: false,
+        post,
+        user: {
+          id: userProfile?.id,
+          username: userProfile?.username,
+          displayName: userProfile?.displayName,
+          photoURL: userProfile?.photoURL
+        },
+        timestamp: serverTimestamp()
       })
     }
   })

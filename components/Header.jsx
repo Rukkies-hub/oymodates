@@ -367,7 +367,7 @@ const Header = ({
               <SimpleLineIcons name="bell" size={20} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
               {
-                notifications?.length > 0 &&
+                notificationCount?.length > 0 &&
                 <View
                   style={{
                     borderRadius: 50,

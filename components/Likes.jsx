@@ -61,6 +61,7 @@ const Likes = (params) => {
           await addDoc(collection(db, 'users', post?.user?.id, 'notifications'), {
             action: 'post',
             activity: 'likes',
+            text: 'likes your post',
             notify: post?.user,
             id: post?.id,
             seen: false,
