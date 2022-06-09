@@ -4,13 +4,15 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { useFonts } from 'expo-font'
 import useAuth from '../hooks/useAuth'
 
-import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import color from '../style/color'
 
 const LikeReply = (props) => {
   const { user, userProfile } = useAuth()
   const reply = props?.reply
+
+  console.log('reply: ', reply)
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reply?.likesCount })
 
@@ -25,18 +27,18 @@ const LikeReply = (props) => {
   }, [])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid))
+    getDoc(doc(db, 'posts', reply?.post?.id, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid))
       .then(res => resolve(res.exists()))
   })
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid))
-      await updateDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id), {
+      await deleteDoc(doc(db, 'posts', reply?.post?.id, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid))
+      await updateDoc(doc(db, 'posts', reply?.post?.id, 'comments', reply?.comment, 'replies', reply?.id), {
         likesCount: increment(-1)
       })
     } else {
-      await setDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid), {
+      await setDoc(doc(db, 'posts', reply?.post?.id, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid), {
         id: userProfile?.id,
         comment: reply?.comment,
         reply: reply.id,
@@ -44,8 +46,27 @@ const LikeReply = (props) => {
         displayName: userProfile?.displayName,
         username: userProfile?.username,
       })
-      await updateDoc(doc(db, 'posts', reply?.post, 'comments', reply?.comment, 'replies', reply?.id), {
+      await updateDoc(doc(db, 'posts', reply?.post?.id, 'comments', reply?.comment, 'replies', reply?.id), {
         likesCount: increment(1)
+      })
+    }
+
+    if (reply?.post?.user?.id != userProfile?.id) {
+      await addDoc(collection(db, 'users', reply?.post?.user?.id, 'notifications'), {
+        action: 'post',
+        activity: 'reply likes',
+        text: 'likes your reply',
+        notify: reply?.post?.user,
+        id: reply?.comment,
+        seen: false,
+        post: reply?.post,
+        user: {
+          id: userProfile?.id,
+          username: userProfile?.username,
+          displayName: userProfile?.displayName,
+          photoURL: userProfile?.photoURL
+        },
+        timestamp: serverTimestamp()
       })
     }
   })

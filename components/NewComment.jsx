@@ -23,7 +23,7 @@ const NewComment = (params) => {
         comment: input,
         post,
         likesCount: 0,
-        commentsCount: 0,
+        repliesCount: 0,
         user: {
           id: userProfile?.id,
           displayName: userProfile?.displayName,

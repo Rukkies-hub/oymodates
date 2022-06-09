@@ -11,9 +11,11 @@ import { useFonts } from 'expo-font'
 
 import { Octicons } from '@expo/vector-icons'
 import LikeReply from './LikeReply'
+import useAuth from '../hooks/useAuth'
 
 const CommentReplies = (props) => {
   const comments = props.comment
+  const { userProfile } = useAuth()
 
   const [replies, setReplies] = useState([])
 
@@ -66,7 +68,7 @@ const CommentReplies = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.black,
+                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -74,7 +76,7 @@ const CommentReplies = (props) => {
               >
                 <Text
                   style={{
-                    color: color.dark,
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -83,7 +85,7 @@ const CommentReplies = (props) => {
                 </Text>
                 <Text
                   style={{
-                    color: color.dark
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white
                   }}
                 >
                   {reply?.reply}

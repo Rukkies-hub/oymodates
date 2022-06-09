@@ -21,7 +21,6 @@ import color from '../style/color'
 
 import useAuth from '../hooks/useAuth'
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Likecomments from './Likecomments'
 import { useFonts } from 'expo-font'
 
@@ -32,14 +31,13 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
 import CommentReplies from './CommentReplies'
+import PostCommentReplySheet from './PostCommentReplySheet'
 
 const Comments = (params) => {
   const { userProfile, user } = useAuth()
   const post = params?.post
 
   const [comments, setComments] = useState([])
-  const [height, setHeight] = useState(40)
-  const [input, setInput] = useState('')
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
 
   useEffect(() =>
@@ -53,47 +51,6 @@ const Comments = (params) => {
         )
     )
     , [])
-
-  const sendCommentReply = async comment => {
-
-    console.log(comment)
-    if (input != '')
-      await addDoc(collection(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'replies'), {
-        reply: input,
-        post: comment?.post,
-        comment: comment?.id,
-        likesCount: 0,
-        repliesCount: 0,
-        user: {
-          id: userProfile?.id,
-          displayName: userProfile?.displayName,
-          username: userProfile?.username,
-          photoURL: userProfile?.photoURL
-        },
-        to: comment?.user?.id,
-        timestamp: serverTimestamp()
-      })
-    setInput('')
-
-    if (comment?.user?.id != userProfile?.id) {
-      await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
-        action: 'post',
-        activity: 'comment likes',
-        text: 'likes your comment',
-        notify: comment?.user,
-        id: comment?.id,
-        seen: false,
-        post: comment?.post,
-        user: {
-          id: userProfile?.id,
-          username: userProfile?.username,
-          displayName: userProfile?.displayName,
-          photoURL: userProfile?.photoURL
-        },
-        timestamp: serverTimestamp()
-      })
-    }
-  }
 
   const showReplyInput = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
@@ -184,76 +141,10 @@ const Comments = (params) => {
                 >
                   <Likecomments comment={comment} />
 
-                  <TouchableOpacity
-                    onPress={showReplyInput}
-                    style={{
-                      paddingHorizontal: 10,
-                      paddingVertical: 2
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                        fontFamily: 'text'
-                      }}
-                    >
-                      Reply
-                    </Text>
-                  </TouchableOpacity>
+                  <PostCommentReplySheet comment={comment} />
                 </View>
 
                 <CommentReplies comment={comment} />
-
-                {
-                  mediaVidiblity &&
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      width: '100%',
-                      paddingRight: 20,
-                      marginTop: 10
-                    }}
-                  >
-                    <TextInput
-                      multiline
-                      value={input}
-                      onChangeText={setInput}
-                      onSubmitEditing={() => sendCommentReply(comment)}
-                      onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-                      placeholder={`Reply ${comment?.user?.username}`}
-                      placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
-                      style={{
-                        flex: 1,
-                        minHeight: 40,
-                        height,
-                        borderRadius: 12,
-                        backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-                        paddingHorizontal: 10,
-                        paddingVertical: 4,
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                        fontFamily: 'text'
-                      }}
-                    />
-
-                    <TouchableOpacity
-                      onPress={() => sendCommentReply(comment)}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginLeft: 10
-                      }}>
-                      <FontAwesome5
-                        name='paper-plane'
-                        color={userProfile?.appMode == 'light' ? color.lightText : color.white}
-                        size={20}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                }
               </View>
             </View>
           </View>

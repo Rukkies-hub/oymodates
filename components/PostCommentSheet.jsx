@@ -14,7 +14,7 @@ const PostCommentSheet = (props) => {
   const post = props?.post
 
   return (
-    <View>
+    <>
       <TouchableOpacity
         onPress={() => refCommentSheet.current.open()}
         style={{
@@ -81,7 +81,7 @@ const PostCommentSheet = (props) => {
 
         <NewComment post={post} />
       </RBSheet>
-    </View>
+    </>
   )
 }
 
