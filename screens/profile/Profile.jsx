@@ -7,7 +7,7 @@ import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
 import MyReels from './MyReels'
-import { FontAwesome, Feather, Fontisto } from '@expo/vector-icons'
+import { FontAwesome, Feather, Fontisto, MaterialIcons } from '@expo/vector-icons'
 
 const Profile = () => {
   const navigation = useNavigation()
@@ -71,16 +71,6 @@ const Profile = () => {
                 }}
               >
                 {userProfile?.username}
-              </Text>
-              <Text
-                style={{
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                  fontFamily: 'boldText',
-                  fontSize: 20,
-                  marginLeft: 10
-                }}
-              >
-                {userProfile?.age}
               </Text>
             </View>
           }
@@ -233,6 +223,48 @@ const Profile = () => {
             }}
           >
             {userProfile?.city}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <MaterialIcons name="cake" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginLeft: 10
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
+              marginLeft: 5
+            }}
+          >
+            Birthday
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 16,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
+              marginLeft: 5
+            }}
+          >
+            {userProfile?.ageDate}
           </Text>
         </View>
       </View>

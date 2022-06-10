@@ -8,13 +8,8 @@ import Bar from '../components/StatusBar'
 
 import { useFonts } from 'expo-font'
 
-import * as NavigationBar from 'expo-navigation-bar'
-
 const Login = () => {
   const { signInWighGoogle, loading } = useAuth()
-
-  NavigationBar.setBackgroundColorAsync(color.white)
-  NavigationBar.setButtonStyleAsync('dark')
 
   const [loaded] = useFonts({
     logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
