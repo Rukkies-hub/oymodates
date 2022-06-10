@@ -1,7 +1,7 @@
-import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, increment, onSnapshot, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 
+import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, increment, onSnapshot, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
@@ -10,12 +10,18 @@ import { AntDesign } from '@expo/vector-icons'
 import { Audio } from 'expo-av'
 
 const Likes = (params) => {
-  const { user, userProfile } = useAuth()
+  const {
+    user,
+    userProfile,
+    currentLikesState,
+    setCurrentLikesState,
+    likeDisable,
+    setLikeDisable
+  } = useAuth()
+
   const post = params?.post
 
-  const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: post?.likesCount })
   const [sound, setSound] = useState()
-  const [likeDisable, setLikeDisable] = useState(false)
 
   useEffect(() => {
     getLikesById(post?.id, user?.uid).then(res => {

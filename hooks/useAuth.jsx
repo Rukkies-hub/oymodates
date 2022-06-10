@@ -67,6 +67,8 @@ export const AuthProvider = ({ children }) => {
   const [reelsProps, setReelsProps] = useState(null)
   const [notifications, setNotificatios] = useState([])
   const [postCommentSheetHeight, setPostCommentSheetHeight] = useState()
+  const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: 0 })
+  const [likeDisable, setLikeDisable] = useState(false)
 
   const signInWighGoogle = async () => {
     setLoading(true)
@@ -200,7 +202,11 @@ export const AuthProvider = ({ children }) => {
     notifications,
     setNotificatios,
     postCommentSheetHeight,
-    setPostCommentSheetHeight
+    setPostCommentSheetHeight,
+    currentLikesState,
+    setCurrentLikesState,
+    likeDisable,
+    setLikeDisable
   }), [
     user,
     loading,
@@ -242,7 +248,11 @@ export const AuthProvider = ({ children }) => {
     notifications,
     setNotificatios,
     postCommentSheetHeight,
-    setPostCommentSheetHeight
+    setPostCommentSheetHeight,
+    currentLikesState,
+    setCurrentLikesState,
+    likeDisable,
+    setLikeDisable
   ])
 
   return (

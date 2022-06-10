@@ -11,7 +11,8 @@ import {
   Keyboard,
   LayoutAnimation,
   UIManager,
-  useWindowDimensions
+  useWindowDimensions,
+  Dimensions
 } from 'react-native'
 
 import Header from '../components/Header'
@@ -26,6 +27,8 @@ import { useFonts } from 'expo-font'
 
 import * as ImagePicker from 'expo-image-picker'
 import useAuth from '../hooks/useAuth'
+
+import AutoHeightImage from 'react-native-auto-height-image'
 
 if (
   Platform.OS === 'android' &&
@@ -56,7 +59,6 @@ const Add = () => {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      aspect: [1, 1],
       allowsEditing: true,
       quality: 1,
     })
@@ -169,12 +171,11 @@ const Add = () => {
             >
               {
                 mediaType == 'image' ?
-                  <Image
+                  <AutoHeightImage
                     source={{ uri: media }}
-                    style={{
-                      width: '100%',
-                      height: 400
-                    }}
+                    width={Dimensions.get('window').width}
+                    style={{ flex: 1 }}
+                    resizeMode='cover'
                   /> :
                   <View
                     style={{

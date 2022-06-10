@@ -7,8 +7,10 @@ import {
   TouchableOpacity,
   FlatList,
   useWindowDimensions,
-  Dimensions
+  Dimensions,
+  Button
 } from 'react-native'
+
 
 import useAuth from '../hooks/useAuth'
 
@@ -26,6 +28,8 @@ import Likes from './Likes'
 import PostCommentSheet from './PostCommentSheet'
 
 const { width, height } = Dimensions.get('window')
+
+import PostImage from './PostImage'
 
 const Posts = () => {
   const navigation = useNavigation()
@@ -139,22 +143,7 @@ const Posts = () => {
                     backgroundColor: color.black
                   }}
                 >
-                  <Image
-                    source={{ uri: post?.media }}
-                    style={{
-                      width: '100%',
-                      height: 400
-                    }}
-                  />
-
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('ViewPost', { post })}
-                    style={{
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%'
-                    }}
-                  />
+                  <PostImage post={post} />
                 </View> :
                 <View
                   style={{

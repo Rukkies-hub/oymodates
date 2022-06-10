@@ -16,7 +16,7 @@ import Header from '../../components/Header'
 import Bar from '../../components/StatusBar'
 import color from '../../style/color'
 import { useFonts } from 'expo-font'
-import { Feather, Fontisto, AntDesign } from '@expo/vector-icons'
+import { Feather, Fontisto, AntDesign, MaterialIcons } from '@expo/vector-icons'
 import { collection, deleteDoc, doc, getDoc, increment, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import AutoHeightImage from 'react-native-auto-height-image'
@@ -147,16 +147,6 @@ const UserProfile = (params) => {
                 }}
               >
                 {viewingUser?.username}
-              </Text>
-              <Text
-                style={{
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                  fontFamily: 'boldText',
-                  fontSize: 20,
-                  marginLeft: 10
-                }}
-              >
-                {viewingUser?.age}
               </Text>
             </View>
           }
@@ -319,6 +309,48 @@ const UserProfile = (params) => {
             }}
           >
             {viewingUser?.city}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <MaterialIcons name="cake" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginLeft: 10
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
+              marginLeft: 5
+            }}
+          >
+            Birthday
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 16,
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
+              marginLeft: 5
+            }}
+          >
+            {viewingUser?.ageDate}
           </Text>
         </View>
       </View>
