@@ -52,7 +52,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
 const Message = () => {
   const navigation = useNavigation()
-  const { user, userProfile } = useAuth()
+  const { user, userProfile, chatTheme } = useAuth()
 
   const { params } = useRoute()
   const { matchDetails } = params
@@ -71,7 +71,6 @@ const Message = () => {
   const [recording, setRecording] = useState()
   const [recordings, setRecordings] = useState([])
   const [recordingLoading, setRecordingLoading] = useState(false)
-  const [chatTheme, setChatTheme] = useState(1)
 
   useEffect(() =>
     onSnapshot(query(collection(db,
@@ -210,11 +209,21 @@ const Message = () => {
         matchDetails={matchDetails}
         title={getMatchedUserInfo(matchDetails?.users, user?.uid).username}
         matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL}
-        showChatMenu={matchDetails}
+        showChatMenu
       />
       <ImageBackground
+        resizeMode='cover'
         source={
-          matchDetails?.chatTheme ? require(`../assets/chat/1.jpg`) : null
+          matchDetails?.chatTheme == 1 ? require(`../assets/chat/1.jpg`) :
+            matchDetails?.chatTheme == 2 ? require(`../assets/chat/2.jpg`) :
+              matchDetails?.chatTheme == 3 ? require(`../assets/chat/3.jpg`) :
+                matchDetails?.chatTheme == 4 ? require(`../assets/chat/4.jpg`) :
+                  matchDetails?.chatTheme == 5 ? require(`../assets/chat/5.jpg`) :
+                    matchDetails?.chatTheme == 6 ? require(`../assets/chat/6.jpg`) :
+                      matchDetails?.chatTheme == 7 ? require(`../assets/chat/7.jpg`) :
+                        matchDetails?.chatTheme == 8 ? require(`../assets/chat/8.jpg`) :
+                          matchDetails?.chatTheme == 9 ? require(`../assets/chat/9.jpg`) :
+                            matchDetails?.chatTheme == 10 ? require(`../assets/chat/10.jpg`) : null
         }
         blurRadius={matchDetails?.chatTheme ? 0 : 50}
         style={{
@@ -389,21 +398,23 @@ const Message = () => {
         </View>
       </ImageBackground>
 
-      {expanded && (
-        <View style={{ minWidth: 250, flex: 1 }}>
-          <EmojiPicker
-            colSize={9}
-            emojis={emojis}
-            recent={recent}
-            autoFocus={false}
-            loading={false}
-            darkMode={false}
-            onSelect={emoji => setInput(`${input} ${emoji.emoji}`)}
-            onChangeRecent={setRecent}
-          />
-        </View>
-      )}
-    </SafeAreaView>
+      {
+        expanded && (
+          <View style={{ minWidth: 250, flex: 1 }}>
+            <EmojiPicker
+              colSize={9}
+              emojis={emojis}
+              recent={recent}
+              autoFocus={false}
+              loading={false}
+              darkMode={false}
+              onSelect={emoji => setInput(`${input} ${emoji.emoji}`)}
+              onChangeRecent={setRecent}
+            />
+          </View>
+        )
+      }
+    </SafeAreaView >
   )
 }
 

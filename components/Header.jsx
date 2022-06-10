@@ -32,6 +32,7 @@ let link = `posts/${new Date().toISOString()}`
 import * as Device from 'expo-device'
 
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
+import MessageSettings from './MessageSettings'
 
 const Header = ({
   showAratar,
@@ -268,16 +269,7 @@ const Header = ({
 
           {
             showChatMenu &&
-            <TouchableOpacity
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-                <MaterialCommunityIcons name="dots-vertical" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
-            </TouchableOpacity>
+            <MessageSettings matchDetails={matchDetails} />
           }
 
           {
