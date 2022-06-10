@@ -65,7 +65,6 @@ const MessageSettings = (props) => {
     await updateDoc(doc(db, 'matches', matchDetails?.id), {
       chatTheme: background?.id
     })
-    setChatTheme(background?.id)
   }
 
   const [loaded] = useFonts({
