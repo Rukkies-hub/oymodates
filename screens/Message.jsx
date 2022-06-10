@@ -250,7 +250,7 @@ const Message = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingHorizontal: 10,
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+            backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
             minHeight: 50,
             overflow: 'hidden',
             position: 'relative',

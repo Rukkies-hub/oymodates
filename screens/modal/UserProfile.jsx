@@ -16,7 +16,7 @@ import Header from '../../components/Header'
 import Bar from '../../components/StatusBar'
 import color from '../../style/color'
 import { useFonts } from 'expo-font'
-import { Feather, Fontisto, AntDesign, MaterialIcons } from '@expo/vector-icons'
+import { Feather, Fontisto, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 import { collection, deleteDoc, doc, getDoc, increment, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import AutoHeightImage from 'react-native-auto-height-image'
@@ -322,7 +322,7 @@ const UserProfile = (params) => {
           alignItems: 'center'
         }}
       >
-        <MaterialIcons name="cake" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+        <MaterialCommunityIcons name="cake-variant-outline" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
         <View
           style={{

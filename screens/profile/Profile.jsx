@@ -7,7 +7,7 @@ import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
 import MyReels from './MyReels'
-import { FontAwesome, Feather, Fontisto, MaterialIcons } from '@expo/vector-icons'
+import { FontAwesome, Feather, Fontisto, MaterialCommunityIcons } from '@expo/vector-icons'
 
 const Profile = () => {
   const navigation = useNavigation()
@@ -236,7 +236,7 @@ const Profile = () => {
           alignItems: 'center'
         }}
       >
-        <MaterialIcons name="cake" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+        <MaterialCommunityIcons name="cake" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
         <View
           style={{
