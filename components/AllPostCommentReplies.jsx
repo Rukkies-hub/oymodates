@@ -1,19 +1,17 @@
-import React, { useRef, useState } from 'react'
-import { View, Text, TouchableOpacity, TextInput, Dimensions, FlatList, Image } from 'react-native'
+import React, { useRef, useState, useEffect } from 'react'
+import { View, Text, TouchableOpacity, Dimensions, FlatList, Image } from 'react-native'
 
 import RBSheet from 'react-native-raw-bottom-sheet'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
-import Comments from './Comments'
-import NewComment from './NewComment'
 
 import { Octicons } from '@expo/vector-icons'
 
-import { FontAwesome5 } from '@expo/vector-icons'
-import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { db } from '../hooks/firebase'
 import PostCommentReplyReplySheet from './PostCommentReplyReplySheet'
 import LikeReply from './LikeReply'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { db } from '../hooks/firebase'
+import PostSubReplies from './PostSubReplies'
 
 const AllPostCommentReplies = (props) => {
   const { userProfile } = useAuth()
@@ -22,25 +20,20 @@ const AllPostCommentReplies = (props) => {
   const reply = props?.reply
   const replies = props?.replies
 
+  // useEffect(() =>
+  //   onSnapshot(collection(db, 'posts', comments?.post?.id, 'comments', comments?.id, 'replies'),
+  //     snapshot =>
+  //       setReplies(
+  //         snapshot?.docs?.map(doc => ({
+  //           id: doc?.id,
+  //           ...doc?.data()
+  //         }))
+  //       )
+  //   )
+  //   , [])
+
   return (
     <>
-      {/* <TouchableOpacity
-        onPress={() => refCommentSheet.current.open()}
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 2
-        }}
-      >
-        <Text
-          style={{
-            color: userProfile?.appMode == 'light' ? color.dark : color.white,
-            fontFamily: 'text'
-          }}
-        >
-          Reply
-        </Text>
-      </TouchableOpacity> */}
-
       <TouchableOpacity
         onPress={() => refCommentSheet.current.open()}
         style={{
@@ -59,7 +52,7 @@ const AllPostCommentReplies = (props) => {
             color: userProfile?.appMode == 'light' ? color.lightText : color.white
           }}
         >
-          {replies?.length} Replies
+          {1 + replies?.length} Replies
         </Text>
       </TouchableOpacity>
 
@@ -122,7 +115,7 @@ const AllPostCommentReplies = (props) => {
                       fontSize: 13
                     }}
                   >
-                    {reply?.user?.displayName}
+                    {reply?.user?.username}
                   </Text>
                   <Text
                     style={{
@@ -147,6 +140,7 @@ const AllPostCommentReplies = (props) => {
                   <PostCommentReplyReplySheet comment={reply} />
                 </View>
               </View>
+              <PostSubReplies reply={reply} />
             </View>
           )}
         />
