@@ -13,15 +13,13 @@ const Likes = (params) => {
   const {
     user,
     userProfile,
-    currentLikesState,
-    setCurrentLikesState,
-    likeDisable,
-    setLikeDisable
   } = useAuth()
 
   const post = params?.post
 
   const [sound, setSound] = useState()
+  const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: post?.likesCount })
+  const [likeDisable, setLikeDisable] = useState(false)
 
   useEffect(() => {
     getLikesById(post?.id, user?.uid).then(res => {

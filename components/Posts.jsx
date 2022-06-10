@@ -17,12 +17,11 @@ import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import color from '../style/color'
 
-import { Fontisto, AntDesign, MaterialCommunityIcons, Feather } from '@expo/vector-icons'
+import { Fontisto, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
-import { Video } from 'expo-av'
 
 import Likes from './Likes'
 import PostCommentSheet from './PostCommentSheet'
@@ -30,15 +29,14 @@ import PostCommentSheet from './PostCommentSheet'
 const { width, height } = Dimensions.get('window')
 
 import PostImage from './PostImage'
+import PostVideo from './PostVideo'
 
 const Posts = () => {
   const navigation = useNavigation()
   const { userProfile, user } = useAuth()
-  const video = useRef(null)
   const windowWidth = useWindowDimensions().width
 
   const [posts, setPosts] = useState([])
-  const [status, setStatus] = useState({})
 
   useEffect(() =>
     onSnapshot(collection(db, 'posts'),
@@ -145,51 +143,7 @@ const Posts = () => {
                 >
                   <PostImage post={post} />
                 </View> :
-                <View
-                  style={{
-                    flex: 1,
-                    alignSelf: 'center',
-                    justifyContent: 'center',
-                    width: windowWidth,
-                    position: 'relative',
-                    backgroundColor: color.black
-                  }}
-                >
-                  <Video
-                    isLooping
-                    ref={video}
-                    style={{
-                      flex: 1,
-                      alignSelf: 'center',
-                      justifyContent: 'center',
-                      width: windowWidth,
-                      height: 522,
-                      minHeight: 300,
-                    }}
-                    source={{
-                      uri: post?.media,
-                    }}
-                    useNativeControls={false}
-                    resizeMode='cover'
-                    onPlaybackStatusUpdate={status => setStatus(() => status)}
-                  />
-
-                  <TouchableOpacity
-                    onPress={() => status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}
-                    style={{
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    {
-                      !status.isPlaying &&
-                      <Feather name="play" size={60} color={color.white} />
-                    }
-                  </TouchableOpacity>
-                </View>
+                <PostVideo post={post} />
             }
           </View>
 

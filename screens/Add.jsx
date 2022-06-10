@@ -21,7 +21,7 @@ import color from '../style/color'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { EvilIcons } from '@expo/vector-icons'
+import { EvilIcons, Feather } from '@expo/vector-icons'
 
 import { useFonts } from 'expo-font'
 
@@ -54,7 +54,6 @@ const Add = () => {
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
   const [mediaType, setMediaType] = useState('image')
   const [status, setStatus] = useState({})
-  const [mute, setMute] = useState(false)
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -193,15 +192,14 @@ const Add = () => {
                         alignSelf: 'center',
                         justifyContent: 'center',
                         width: windowWidth,
-                        height: 600,
-                        minHeight: 300,
+                        aspectRatio: 1,
+                        width: "100%"
                       }}
                       source={{
                         uri: media,
                       }}
                       useNativeControls={false}
-                      resizeMode='cover'
-                      isMuted={mute}
+                      resizeMode='contain'
                       usePoster={true}
                       isLooping
                       onPlaybackStatusUpdate={status => setStatus(() => status)}
@@ -214,27 +212,15 @@ const Add = () => {
                       style={{
                         position: 'absolute',
                         width: '100%',
-                        height: '100%'
-                      }}
-                    />
-
-                    <TouchableOpacity
-                      onPress={() => setMute(!mute)}
-                      style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        right: 0,
-                        margin: 30,
+                        height: '100%',
                         justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: `${color.dark}89`,
-                        borderRadius: 50,
-                        zIndex: 1,
-                        width: 50,
-                        height: 50
+                        alignItems: 'center'
                       }}
                     >
-                      <MaterialCommunityIcons name={mute ? 'volume-high' : 'volume-mute'} size={24} color={color.white} />
+                      {
+                        !status.isPlaying &&
+                        <Feather name="play" size={60} color={color.white} />
+                      }
                     </TouchableOpacity>
                   </View>
               }
@@ -260,7 +246,6 @@ const Add = () => {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            // backgroundColor: `${color.white}33`,
             paddingHorizontal: 10
           }}
         >
@@ -284,7 +269,6 @@ const Add = () => {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            // backgroundColor: `${color.white}33`,
             paddingHorizontal: 10
           }}
         >

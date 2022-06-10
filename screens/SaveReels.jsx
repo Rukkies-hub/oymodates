@@ -187,7 +187,7 @@ const SaveReels = (params) => {
             justifyContent: 'center',
             alignItems: 'center',
             flex: 1,
-            backgroundColor: loading == true ? color.faintRed : color.red,
+            backgroundColor: color.red,
             borderRadius: 4,
             paddingVertical: 10,
             paddingHorizontal: 20,
@@ -209,7 +209,7 @@ const SaveReels = (params) => {
                   Post
                 </Text>
               </> :
-              <ActivityIndicator color={loading == true ? color.red : color.white} size='small' />
+              <ActivityIndicator color={color.white} size='small' />
           }
         </TouchableOpacity>
       </View>

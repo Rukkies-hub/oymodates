@@ -49,7 +49,8 @@ const Header = ({
   showCancelPost,
   showMessageImageGallerySelect,
   matchDetails,
-  showNotification
+  showNotification,
+  showChatMenu
 }) => {
   const navigation = useNavigation()
   const { user, userProfile, madiaString, media, setMedia, notifications, setNotificatios } = useAuth()
@@ -262,6 +263,20 @@ const Header = ({
               }}
             >
               <FontAwesome5 name='video' size={20} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+            </TouchableOpacity>
+          }
+
+          {
+            showChatMenu &&
+            <TouchableOpacity
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+                <MaterialCommunityIcons name="dots-vertical" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
             </TouchableOpacity>
           }
 
