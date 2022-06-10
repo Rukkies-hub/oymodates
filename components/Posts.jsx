@@ -17,7 +17,7 @@ import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import color from '../style/color'
 
-import { Fontisto, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
+import { Fontisto, AntDesign, MaterialCommunityIcons, Feather } from '@expo/vector-icons'
 
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
@@ -175,15 +175,20 @@ const Posts = () => {
                   />
 
                   <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('ViewPost', { post })
-                    }}
+                    onPress={() => status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}
                     style={{
                       position: 'absolute',
                       width: '100%',
-                      height: '100%'
+                      height: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center'
                     }}
-                  />
+                  >
+                    {
+                      !status.isPlaying &&
+                      <Feather name="play" size={60} color={color.white} />
+                    }
+                  </TouchableOpacity>
                 </View>
             }
           </View>
