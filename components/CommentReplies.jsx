@@ -12,6 +12,7 @@ import { useFonts } from 'expo-font'
 import { Octicons } from '@expo/vector-icons'
 import LikeReply from './LikeReply'
 import useAuth from '../hooks/useAuth'
+import PostCommentReplyReplySheet from './PostCommentReplyReplySheet'
 
 const CommentReplies = (props) => {
   const comments = props.comment
@@ -45,6 +46,7 @@ const CommentReplies = (props) => {
     >
       <FlatList
         data={replies.splice(0, 1)}
+        // data={replies}
         keyExtractor={item => item.id}
         style={{ flex: 1 }}
         renderItem={({ item: reply }) => (
@@ -102,6 +104,7 @@ const CommentReplies = (props) => {
                 }}
               >
                 <LikeReply reply={reply} />
+                <PostCommentReplyReplySheet comment={reply} />
               </View>
             </View>
           </View>

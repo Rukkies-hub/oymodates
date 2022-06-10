@@ -12,8 +12,6 @@ const LikeReply = (props) => {
   const { user, userProfile } = useAuth()
   const reply = props?.reply
 
-  console.log('reply: ', reply)
-
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reply?.likesCount })
 
   useEffect(() => {

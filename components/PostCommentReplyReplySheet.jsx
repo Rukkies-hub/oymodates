@@ -11,21 +11,23 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
-const PostCommentReplySheet = (props) => {
+const PostCommentReplyReplySheet = (props) => {
   const { userProfile } = useAuth()
   const refCommentSheet = useRef()
 
   const comment = props?.comment
+
+  console.log('comment comment comment: ', comment)
 
   const [height, setHeight] = useState(50)
   const [reply, setReply] = useState('')
 
   const sendCommentReply = async () => {
     if (reply != '')
-      await addDoc(collection(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'replies'), {
+      await addDoc(collection(db, 'posts', comment?.post?.id, 'comments', comment?.comment, 'replies', comment?.id, 'reply'), {
         reply,
         post: comment?.post,
-        comment: comment?.id,
+        comment: comment?.comment,
         likesCount: 0,
         repliesCount: 0,
         user: {
@@ -55,7 +57,7 @@ const PostCommentReplySheet = (props) => {
           })
       })
 
-    await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
+    await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.comment, 'replies', comment?.id), {
       repliesCount: increment(1)
     })
     setReply('')
@@ -178,4 +180,4 @@ const PostCommentReplySheet = (props) => {
   )
 }
 
-export default PostCommentReplySheet
+export default PostCommentReplyReplySheet
