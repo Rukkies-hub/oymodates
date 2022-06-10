@@ -77,15 +77,31 @@ const RecieverMessage = ({ messages, matchDetails }) => {
         >
           {
             messages?.message &&
-            <Text
-              style={{
-                color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                fontSize: 18,
-                textAlign: 'left'
-              }}
-            >
-              {messages?.message}
-            </Text>
+            <>
+              <View
+                style={{
+                  backgroundColor: messages.message ? color.blue : color.transparent,
+                  paddingVertical: 8,
+                  paddingHorizontal: 8,
+                  borderTopLeftRadius: 12,
+                  borderBottomLeftRadius: 12,
+                  borderBottomRightRadius: 12,
+                }}
+              >
+                <Text
+                  style={{
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                    fontSize: 18,
+                    textAlign: 'left'
+                  }}
+                >
+                  {messages?.message}
+                </Text>
+              </View>
+              <Text style={{ color: color.white, fontSize: 10, textAlign: "left" }}>
+                {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+              </Text>
+            </>
           }
           {
             messages?.image &&

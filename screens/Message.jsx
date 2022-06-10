@@ -214,7 +214,7 @@ const Message = () => {
       />
       <ImageBackground
         source={
-          matchDetails?.chatTheme == chatTheme ? (userProfile?.appMode == 'light' ? require('../assets/chat/defaultLight.jpg') : require('../assets/chat/defaultDark.jpg')) : require('../assets/chat/defaultLight.jpg')
+          matchDetails?.chatTheme ? require(`../assets/chat/1.jpg`) : null
         }
         blurRadius={matchDetails?.chatTheme ? 0 : 50}
         style={{

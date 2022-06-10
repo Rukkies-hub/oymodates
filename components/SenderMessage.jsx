@@ -8,6 +8,7 @@ import { AntDesign } from '@expo/vector-icons'
 import Slider from '@react-native-community/slider'
 
 import { Audio } from 'expo-av'
+import moment from 'moment'
 
 const SenderMessage = ({ messages, matchDetails }) => {
   const { userProfile, user } = useAuth()
@@ -63,22 +64,28 @@ const SenderMessage = ({ messages, matchDetails }) => {
           maxWidth: "80%"
         }}
       >
-        <Pressable
-          style={{
-            backgroundColor: messages.message ? color.blue : color.transparent,
-            paddingVertical: 8,
-            paddingHorizontal: 15,
-            borderTopLeftRadius: 12,
-            borderBottomLeftRadius: 12,
-            borderBottomRightRadius: 12,
-          }}
-        >
+        <Pressable>
           {
-            messages?.message && <Text
-              style={{ color: color.white, fontSize: 18, textAlign: "right" }}
-            >
-              {messages?.message}
-            </Text>
+            messages?.message &&
+            <>
+              <View
+                style={{
+                  backgroundColor: messages.message ? color.blue : color.transparent,
+                  paddingVertical: 8,
+                  paddingHorizontal: 8,
+                  borderTopLeftRadius: 12,
+                  borderBottomLeftRadius: 12,
+                  borderBottomRightRadius: 12,
+                }}
+              >
+                <Text style={{ color: color.white, fontSize: 18, textAlign: "right" }}>
+                  {messages?.message}
+                </Text>
+              </View>
+              <Text style={{ color: color.white, fontSize: 10, textAlign: "right" }}>
+                {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+              </Text>
+            </>
           }
           {
             messages?.image &&
