@@ -99,48 +99,50 @@ const AllPostCommentReplies = (props) => {
                 }}
               />
               <View>
-                <View
-                  style={{
-                    marginLeft: 10,
-                    backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-                    borderRadius: 12,
-                    paddingHorizontal: 10,
-                    paddingVertical: 4,
-                  }}
-                >
-                  <Text
+                <View>
+                  <View
                     style={{
-                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                      fontFamily: 'text',
-                      fontSize: 13
+                      marginLeft: 10,
+                      backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                      borderRadius: 12,
+                      paddingHorizontal: 10,
+                      paddingVertical: 4,
                     }}
                   >
-                    {reply?.user?.username}
-                  </Text>
-                  <Text
-                    style={{
-                      color: userProfile?.appMode == 'light' ? color.dark : color.white
-                    }}
-                  >
-                    {reply?.reply}
-                  </Text>
-                </View>
+                    <Text
+                      style={{
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        fontFamily: 'text',
+                        fontSize: 13
+                      }}
+                    >
+                      {reply?.user?.username}
+                    </Text>
+                    <Text
+                      style={{
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white
+                      }}
+                    >
+                      {reply?.reply}
+                    </Text>
+                  </View>
 
-                <View
-                  style={{
-                    width: '100%',
-                    paddingHorizontal: 10,
-                    marginTop: 5,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                  }}
-                >
-                  <LikeReply reply={reply} />
-                  <PostCommentReplyReplySheet comment={reply} />
+                  <View
+                    style={{
+                      width: '100%',
+                      paddingHorizontal: 10,
+                      marginTop: 5,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <LikeReply reply={reply} />
+                    <PostCommentReplyReplySheet comment={reply} />
+                  </View>
                 </View>
+                <PostSubReplies reply={reply} />
               </View>
-              <PostSubReplies reply={reply} />
             </View>
           )}
         />

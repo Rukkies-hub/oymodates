@@ -9,8 +9,6 @@ const PostSubReplies = (props) => {
   const { userProfile } = useAuth()
   const reply = props?.reply
 
-  console.log(reply)
-
   const [replies, setReplies] = useState([])
 
   useEffect(() =>
@@ -36,7 +34,8 @@ const PostSubReplies = (props) => {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             alignItems: 'flex-start',
-            marginTop: 10
+            marginTop: 10,
+            marginLeft: 20
           }}
         >
           <Image
