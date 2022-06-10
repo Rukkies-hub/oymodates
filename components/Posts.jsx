@@ -234,7 +234,7 @@ const Posts = () => {
           </View>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('ViewPost', { post })}
+            // onPress={() => navigation.navigate('ViewPost', { post })}
             style={{
               paddingHorizontal: 10,
               maxHeight: 100,

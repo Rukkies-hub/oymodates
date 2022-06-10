@@ -13,6 +13,7 @@ import { Octicons } from '@expo/vector-icons'
 import LikeReply from './LikeReply'
 import useAuth from '../hooks/useAuth'
 import PostCommentReplyReplySheet from './PostCommentReplyReplySheet'
+import AllPostCommentReplies from './AllPostCommentReplies'
 
 const CommentReplies = (props) => {
   const comments = props.comment
@@ -45,7 +46,6 @@ const CommentReplies = (props) => {
       }}
     >
       <FlatList
-        // data={replies}
         data={replies.splice(0, 1)}
         keyExtractor={item => item.id}
         style={{ flex: 1 }}
@@ -106,33 +106,14 @@ const CommentReplies = (props) => {
                 <LikeReply reply={reply} />
                 <PostCommentReplyReplySheet comment={reply} />
               </View>
+              {
+                replies?.length > 1 &&
+                <AllPostCommentReplies reply={reply} replies={replies} />
+              }
             </View>
           </View>
         )}
       />
-      {
-        replies?.length > 1 &&
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            marginTop: 10
-          }}
-        >
-          <Octicons name='reply' size={18} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
-          <Text
-            style={{
-              fontFamily: 'text',
-              marginLeft: 5,
-              fontSize: 14,
-              color: userProfile?.appMode == 'light' ? color.lightText : color.white
-            }}
-          >
-            {replies?.length} Replies
-          </Text>
-        </TouchableOpacity>
-      }
     </View>
   )
 }
