@@ -207,7 +207,7 @@ const Posts = () => {
           >
             <Likes post={post} />
 
-            <Pressable
+            <TouchableOpacity
               onPress={() => navigation.navigate('AddComment', { post })}
               style={{
                 width: 35,
@@ -218,9 +218,9 @@ const Posts = () => {
               }}
             >
               <Fontisto name="comment" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
-            </Pressable>
+            </TouchableOpacity>
 
-            <Pressable
+            <TouchableOpacity
               style={{
                 width: 35,
                 height: 35,
@@ -230,7 +230,7 @@ const Posts = () => {
               }}
             >
               <AntDesign name="retweet" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
-            </Pressable>
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity

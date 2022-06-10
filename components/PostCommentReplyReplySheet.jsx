@@ -17,8 +17,6 @@ const PostCommentReplyReplySheet = (props) => {
 
   const comment = props?.comment
 
-  console.log('comment comment comment: ', comment)
-
   const [height, setHeight] = useState(50)
   const [reply, setReply] = useState('')
 

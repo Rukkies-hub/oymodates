@@ -45,7 +45,6 @@ const CommentReplies = (props) => {
       }}
     >
       <FlatList
-        // data={replies}
         data={replies.splice(0, 1)}
         keyExtractor={item => item.id}
         style={{ flex: 1 }}
@@ -120,13 +119,12 @@ const CommentReplies = (props) => {
             marginTop: 10
           }}
         >
-          <Octicons name='reply' size={18} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+          <Octicons name='reply' size={18} color={color.lightText} />
           <Text
             style={{
               fontFamily: 'text',
               marginLeft: 5,
-              fontSize: 14,
-              color: userProfile?.appMode == 'light' ? color.lightText : color.white
+              fontSize: 14
             }}
           >
             {replies?.length} Replies
