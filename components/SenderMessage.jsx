@@ -78,13 +78,16 @@ const SenderMessage = ({ messages, matchDetails }) => {
                   borderBottomRightRadius: 12,
                 }}
               >
-                <Text style={{ color: color.white, fontSize: 18, textAlign: "right" }}>
+                <Text style={{ color: color.white, fontSize: 16, textAlign: "left" }}>
                   {messages?.message}
                 </Text>
               </View>
-              <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 10, textAlign: "right" }}>
-                {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
-              </Text>
+              {
+                messages?.timestamp &&
+                <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 10, textAlign: "right" }}>
+                  {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                </Text>
+              }
             </>
           }
           {

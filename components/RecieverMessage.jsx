@@ -59,48 +59,41 @@ const RecieverMessage = ({ messages, matchDetails }) => {
       <View
         style={{
           alignSelf: 'flex-end',
-          marginLeft: 1,
+          marginLeft: 10,
           maxWidth: '80%'
         }}
       >
-        <Pressable
-          style={{
-            backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-            paddingVertical: 6,
-            paddingHorizontal: 15,
-            alignSelf: 'flex-end',
-            borderTopRightRadius: 12,
-            borderBottomRightRadius: 12,
-            borderBottomLeftRadius: 12,
-            marginLeft: 10
-          }}
-        >
+        <Pressable>
           {
             messages?.message &&
             <>
               <View
                 style={{
-                  backgroundColor: messages.message ? color.blue : color.transparent,
+                  backgroundColor: messages.message ? color.offWhite : color.transparent,
                   paddingVertical: 8,
                   paddingHorizontal: 8,
-                  borderTopLeftRadius: 12,
+                  borderTopLeftRadius: 0,
                   borderBottomLeftRadius: 12,
                   borderBottomRightRadius: 12,
+                  borderTopRightRadius: 12
                 }}
               >
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                    fontSize: 18,
+                    color: color.dark,
+                    fontSize: 16,
                     textAlign: 'left'
                   }}
                 >
                   {messages?.message}
                 </Text>
               </View>
-              <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 10, textAlign: "left" }}>
-                {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
-              </Text>
+              {
+                messages?.timestamp &&
+                <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 10, textAlign: "left" }}>
+                  {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                </Text>
+              }
             </>
           }
           {
