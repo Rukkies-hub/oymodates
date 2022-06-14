@@ -8,7 +8,7 @@ import Comments from './Comments'
 import NewComment from './NewComment'
 
 const PostCommentSheet = (props) => {
-  const { userProfile } = useAuth()
+  const { userProfile, user } = useAuth()
   const refCommentSheet = useRef()
 
   const post = props?.post

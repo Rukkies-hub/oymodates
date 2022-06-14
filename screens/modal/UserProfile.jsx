@@ -47,7 +47,7 @@ const UserProfile = (params) => {
     setViewingUser(user?.data())
   }
 
-  useEffect(() => getUserProfile(), [])
+  useEffect(() => getUserProfile(user), [])
 
   useEffect(() => {
     getLikesById(currentUser?.id, user?.uid).then(res => {
@@ -68,7 +68,7 @@ const UserProfile = (params) => {
       await deleteDoc(doc(db, 'users', currentUser?.id, 'following', user?.uid))
       await updateDoc(doc(db, 'users', currentUser?.id), {
         followersCount: increment(-1)
-      }).then(() => getUserProfile())
+      }).then(() => getUserProfile(user))
     } else {
       await setDoc(doc(db, 'users', currentUser?.id, 'following', user?.uid), {
         id: userProfile?.id,
@@ -77,7 +77,7 @@ const UserProfile = (params) => {
       })
       await updateDoc(doc(db, 'users', currentUser?.id), {
         followersCount: increment(1)
-      }).then(() => getUserProfile())
+      }).then(() => getUserProfile(user))
     }
   })
 
