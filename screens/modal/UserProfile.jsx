@@ -26,6 +26,7 @@ const { width, height } = Dimensions.get('window')
 const UserProfile = (params) => {
   const { user, userProfile } = useAuth()
   const currentUser = params?.route?.params?.user
+  const navigation = useNavigation()
 
   const [reels, setReels] = useState([])
   const [viewingUser, setViewingUser] = useState(null)
@@ -322,7 +323,7 @@ const UserProfile = (params) => {
           alignItems: 'center'
         }}
       >
-        <MaterialCommunityIcons name="cake-variant-outline" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+        <MaterialCommunityIcons name="cake" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
         <View
           style={{
@@ -435,6 +436,7 @@ const UserProfile = (params) => {
               reels.map((reel, index) => (
                 <Pressable
                   key={index}
+                  onPress={() => navigation.navigate('ViewReel', { reel })}
                   style={{
                     width: '30%',
                     height: (width - 10) / 3,

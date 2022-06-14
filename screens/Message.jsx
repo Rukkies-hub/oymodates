@@ -209,194 +209,172 @@ const Message = () => {
         matchDetails={matchDetails}
         title={getMatchedUserInfo(matchDetails?.users, user?.uid).username}
         matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL}
-        showChatMenu
       />
-      <ImageBackground
-        resizeMode='cover'
-        source={
-          matchDetails?.chatTheme == 1 ? require(`../assets/chat/1.jpg`) :
-            matchDetails?.chatTheme == 2 ? require(`../assets/chat/2.jpg`) :
-              matchDetails?.chatTheme == 3 ? require(`../assets/chat/3.jpg`) :
-                matchDetails?.chatTheme == 4 ? require(`../assets/chat/4.jpg`) :
-                  matchDetails?.chatTheme == 5 ? require(`../assets/chat/5.jpg`) :
-                    matchDetails?.chatTheme == 6 ? require(`../assets/chat/6.jpg`) :
-                      matchDetails?.chatTheme == 7 ? require(`../assets/chat/7.jpg`) :
-                        matchDetails?.chatTheme == 8 ? require(`../assets/chat/8.jpg`) :
-                          matchDetails?.chatTheme == 9 ? require(`../assets/chat/9.jpg`) :
-                            matchDetails?.chatTheme == 10 ? require(`../assets/chat/10.jpg`) : null
-        }
-        blurRadius={matchDetails?.chatTheme ? 0 : 50}
+
+      <TouchableWithoutFeedback
+        onPress={Keyboard.dismiss}
+      >
+        <FlatList
+          inverted={-1}
+          style={{
+            flex: 1,
+            paddingHorizontal: 10
+          }}
+          data={messages}
+          keyExtractor={item => item.id}
+          renderItem={({ item: message }) => (
+            message.userId === user?.uid ? (
+              <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} />
+            ) : (
+              <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} />
+            )
+          )}
+        />
+      </TouchableWithoutFeedback>
+
+      <View
         style={{
-          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 10,
+          backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+          minHeight: 50,
+          overflow: 'hidden',
+          position: 'relative',
+          marginHorizontal: 10,
           borderRadius: 12,
-          overflow: 'hidden'
+          marginBottom: 15
         }}
       >
-        <TouchableWithoutFeedback
-          onPress={Keyboard.dismiss}
-        >
-          <FlatList
-            inverted={-1}
-            style={{
-              flex: 1,
-              paddingHorizontal: 10
-            }}
-            data={messages}
-            keyExtractor={item => item.id}
-            renderItem={({ item: message }) => (
-              message.userId === user?.uid ? (
-                <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} />
-              ) : (
-                <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} />
-              )
-            )}
-          />
-        </TouchableWithoutFeedback>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: 10,
-            backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-            minHeight: 50,
-            overflow: 'hidden',
-            position: 'relative',
-            marginHorizontal: 10,
-            borderRadius: 12,
-            marginBottom: 15
-          }}
-        >
-          {
-            mediaVidiblity && <>
-              <TouchableOpacity
-                style={{
-                  width: 40,
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                <MaterialCommunityIcons name='camera-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => navigation.navigate('MessageImageGallery')}
-                style={{
-                  width: 40,
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                <MaterialCommunityIcons name='image-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-              </TouchableOpacity>
-            </>
-          }
-          <TouchableOpacity
-            onPress={() => {
-              Keyboard.dismiss()
-              LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-              setExpanded(!expanded)
-            }}
-            style={{
-              width: 40,
-              height: 50,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-            <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-          </TouchableOpacity>
-
-          {
-            showRecording ?
-              <View
-                style={{
-                  flex: 1,
-                  width: '100%',
-                  height: '100%',
-                  maxHeight: 70,
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center'
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontFamily: 'text',
-                    color: userProfile?.appMode == 'light' ? color.lightText : color.white
-                  }}
-                >
-                  Recording...
-                </Text>
-              </View>
-              :
-              <TextInput
-                multiline
-                value={input}
-                onChangeText={setInput}
-                onSubmitEditing={sendMessage}
-                onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-                placeholder='Aa..'
-                placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
-                style={{
-                  fontSize: 18,
-                  flex: 1,
-                  height: activeInput ? height : '100%',
-                  maxHeight: 70,
-                  fontFamily: 'text',
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white
-                }}
-              />
-          }
-
-          {
-            showSend &&
+        {
+          mediaVidiblity && <>
             <TouchableOpacity
-              onPress={sendMessage}
               style={{
-                width: 50,
+                width: 40,
                 height: 50,
                 justifyContent: 'center',
                 alignItems: 'center'
               }}>
-              <FontAwesome5
-                name='paper-plane'
-                color={userProfile?.appMode == 'light' ? color.lightText : color.white}
-                size={20}
-              />
+              <MaterialCommunityIcons name='camera-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
             </TouchableOpacity>
-          }
 
+            <TouchableOpacity
+              onPress={() => navigation.navigate('MessageImageGallery')}
+              style={{
+                width: 40,
+                height: 50,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              <MaterialCommunityIcons name='image-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+            </TouchableOpacity>
+          </>
+        }
+        <TouchableOpacity
+          onPress={() => {
+            Keyboard.dismiss()
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+            setExpanded(!expanded)
+          }}
+          style={{
+            width: 40,
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+          <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+        </TouchableOpacity>
+
+        {
+          showRecording ?
+            <View
+              style={{
+                flex: 1,
+                width: '100%',
+                height: '100%',
+                maxHeight: 70,
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontFamily: 'text',
+                  color: userProfile?.appMode == 'light' ? color.lightText : color.white
+                }}
+              >
+                Recording...
+              </Text>
+            </View>
+            :
+            <TextInput
+              multiline
+              value={input}
+              onChangeText={setInput}
+              onSubmitEditing={sendMessage}
+              onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+              placeholder='Aa..'
+              placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
+              style={{
+                fontSize: 18,
+                flex: 1,
+                height: activeInput ? height : '100%',
+                maxHeight: 70,
+                fontFamily: 'text',
+                color: userProfile?.appMode == 'light' ? color.dark : color.white
+              }}
+            />
+        }
+
+        {
+          showSend &&
           <TouchableOpacity
-            onLongPress={() => {
-              setShowRecording(true)
-              setShowSend(false)
-              startRecording()
-            }}
-            onPressOut={() => {
-              setShowRecording(false)
-              setShowSend(true)
-              stopRecording()
-            }}
+            onPress={sendMessage}
             style={{
               width: 50,
               height: 50,
               justifyContent: 'center',
               alignItems: 'center'
             }}>
-            {
-              recordingLoading ?
-                <ActivityIndicator size='small' color={userProfile?.appMode == 'light' ? color.lightText : color.white} /> :
-                <FontAwesome5
-                  size={20}
-                  name="microphone-alt"
-                  color={userProfile?.appMode == 'light' ? color.lightText : color.white}
-                />
-            }
+            <FontAwesome5
+              name='paper-plane'
+              color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+              size={20}
+            />
           </TouchableOpacity>
-        </View>
-      </ImageBackground>
+        }
+
+        <TouchableOpacity
+          onLongPress={() => {
+            setShowRecording(true)
+            setShowSend(false)
+            startRecording()
+          }}
+          onPressOut={() => {
+            setShowRecording(false)
+            setShowSend(true)
+            stopRecording()
+          }}
+          style={{
+            width: 50,
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+          {
+            recordingLoading ?
+              <ActivityIndicator size='small' color={userProfile?.appMode == 'light' ? color.lightText : color.white} /> :
+              <FontAwesome5
+                size={20}
+                name="microphone-alt"
+                color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+              />
+          }
+        </TouchableOpacity>
+      </View>
 
       {
         expanded && (

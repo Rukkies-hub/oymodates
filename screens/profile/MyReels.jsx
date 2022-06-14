@@ -11,9 +11,12 @@ import color from '../../style/color'
 const { width, height } = Dimensions.get('window')
 import { AntDesign } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
+import { useNavigation } from '@react-navigation/native'
 
 const MyReels = () => {
   const { user } = useAuth()
+  const navigation = useNavigation()
+
   const [reels, setReels] = useState([])
 
   useEffect(() =>
@@ -49,7 +52,7 @@ const MyReels = () => {
           {
             reels.map((reel, index) => (
               <Pressable
-                onPress={() => console.log(reel)}
+                onPress={() => navigation.navigate('ViewReel', { reel })}
                 key={index}
                 style={{
                   width: '30%',
