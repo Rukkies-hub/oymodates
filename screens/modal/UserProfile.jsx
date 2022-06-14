@@ -115,14 +115,18 @@ const UserProfile = (params) => {
           marginVertical: 20
         }}
       >
-        <Image
-          source={{ uri: currentUser?.photoURL }}
-          style={{
-            width: 80,
-            height: 80,
-            borderRadius: 100
-          }}
-        />
+        <Pressable
+          onPress={() => navigation.navigate('ViewAvarar', { avatar: currentUser?.photoURL })}
+        >
+          <Image
+            source={{ uri: currentUser?.photoURL }}
+            style={{
+              width: 80,
+              height: 80,
+              borderRadius: 100
+            }}
+          />
+        </Pressable>
 
         <View
           style={{

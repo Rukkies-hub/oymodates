@@ -24,7 +24,6 @@ import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 
 import Likes from './Likes'
-import PostCommentSheet from './PostCommentSheet'
 
 const { width, height } = Dimensions.get('window')
 
@@ -215,8 +214,6 @@ const Posts = () => {
               {post?.caption}
             </Text>
           </TouchableOpacity>
-
-          <PostCommentSheet post={post} />
         </View>
       )}
     />

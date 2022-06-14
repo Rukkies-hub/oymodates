@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions, Pressable } from 'react-native'
 import color from '../../style/color'
 import Bar from '../../components/StatusBar'
 import Header from '../../components/Header'
@@ -38,14 +38,18 @@ const Profile = () => {
           marginVertical: 20
         }}
       >
-        <Image
-          source={{ uri: userProfile?.photoURL }}
-          style={{
-            width: 80,
-            height: 80,
-            borderRadius: 100
-          }}
-        />
+        <Pressable
+          onPress={() => navigation.navigate('ViewAvarar', { avatar: userProfile?.photoURL })}
+        >
+          <Image
+            source={{ uri: userProfile?.photoURL }}
+            style={{
+              width: 80,
+              height: 80,
+              borderRadius: 100
+            }}
+          />
+        </Pressable>
 
         <View
           style={{

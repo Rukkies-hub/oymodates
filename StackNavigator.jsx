@@ -25,6 +25,7 @@ import AccountSettings from './screens/AccountSettings'
 import Notifications from './screens/Notifications'
 import AllPostLikes from './screens/AllPostLikes'
 import ViewReel from './screens/ViewReel'
+import ViewAvarar from './screens/modal/ViewAvarar'
 
 import useAuth from './hooks/useAuth'
 
@@ -79,6 +80,7 @@ const StackNavigator = () => {
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
               <Stack.Screen name='NewMatch' component={NewMatch} options={{ headerShown: false }} />
+              <Stack.Screen name='ViewAvarar' component={ViewAvarar} options={{ headerShown: false }} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
