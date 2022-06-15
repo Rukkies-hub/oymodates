@@ -379,7 +379,7 @@ const Message = () => {
       {
         expanded && (
           <View style={{ minWidth: 250, flex: 1 }}>
-            <EmojiPicker
+            {/* <EmojiPicker
               colSize={9}
               emojis={emojis}
               recent={recent}
@@ -388,7 +388,7 @@ const Message = () => {
               darkMode={false}
               onSelect={emoji => setInput(`${input} ${emoji.emoji}`)}
               onChangeRecent={setRecent}
-            />
+            /> */}
           </View>
         )
       }

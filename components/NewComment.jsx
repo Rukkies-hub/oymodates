@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Keyboard, Dimensions } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Keyboard, Dimensions, FlatList, ScrollView } from 'react-native'
 
 import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
