@@ -72,6 +72,7 @@ const Message = () => {
   const [recording, setRecording] = useState()
   const [recordings, setRecordings] = useState([])
   const [recordingLoading, setRecordingLoading] = useState(false)
+  const [showEmoji, setShowEmoji] = useState(false)
 
   useEffect(() =>
     onSnapshot(query(collection(db,
@@ -277,6 +278,8 @@ const Message = () => {
             Keyboard.dismiss()
             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
             setExpanded(!expanded)
+
+            setTimeout(() => setShowEmoji(!showEmoji), 500)
           }}
           style={{
             width: 40,
@@ -388,16 +391,18 @@ const Message = () => {
                 flexWrap: 'wrap'
               }}
             >
-
-              <FlatGrid
-                data={smileys}
-                itemDimension={30}
-                renderItem={({ item: emoji }) => (
-                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                  </TouchableOpacity>
-                )}
-              />
+              {
+                showEmoji &&
+                <FlatGrid
+                  data={smileys}
+                  itemDimension={30}
+                  renderItem={({ item: emoji }) => (
+                    <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                      <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+              }
             </View>
           </View>
         )

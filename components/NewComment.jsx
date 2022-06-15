@@ -39,6 +39,7 @@ const NewComment = (params) => {
   const [input, setInput] = useState('')
 
   const [expanded, setExpanded] = useState(false)
+  const [showEmoji, setShowEmoji] = useState(false)
 
   const sendComment = async () => {
     if (input != '')
@@ -121,7 +122,7 @@ const NewComment = (params) => {
             maxHeight: 150,
             fontFamily: 'text',
             color: userProfile?.appMode == 'light' ? color.dark : color.white,
-            paddingRight: 40,
+            paddingRight: 40 + 50,
             paddingVertical: 5
           }}
         />
@@ -131,6 +132,8 @@ const NewComment = (params) => {
             Keyboard.dismiss()
             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
             setExpanded(!expanded)
+
+            setTimeout(() => setShowEmoji(!showEmoji), 500)
           }}
           style={{
             width: 50,
@@ -209,16 +212,18 @@ const NewComment = (params) => {
                 flexWrap: 'wrap'
               }}
             >
-
-              <FlatGrid
-                data={smileys}
-                itemDimension={30}
-                renderItem={({ item: emoji }) => (
-                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                  </TouchableOpacity>
-                )}
-              />
+              {
+                showEmoji &&
+                <FlatGrid
+                  data={smileys}
+                  itemDimension={30}
+                  renderItem={({ item: emoji }) => (
+                    <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                      <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+              }
             </View>
           </View>
         )
