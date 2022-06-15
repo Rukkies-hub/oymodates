@@ -1,14 +1,35 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Keyboard, Dimensions, FlatList, ScrollView } from 'react-native'
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Keyboard,
+  Dimensions,
+  FlatList,
+  ScrollView,
+  LayoutAnimation,
+  UIManager,
+  Platform
+} from 'react-native'
 
 import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import color from '../style/color'
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-
 import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
+
+import smileys from '../components/emoji/smileys'
+
+import { FlatGrid } from 'react-native-super-grid'
+
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const NewComment = (params) => {
   const { userProfile } = useAuth()
@@ -16,6 +37,8 @@ const NewComment = (params) => {
 
   const [height, setHeight] = useState(50)
   const [input, setInput] = useState('')
+
+  const [expanded, setExpanded] = useState(false)
 
   const sendComment = async () => {
     if (input != '')
@@ -104,6 +127,24 @@ const NewComment = (params) => {
         />
 
         <TouchableOpacity
+          onPress={() => {
+            Keyboard.dismiss()
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+            setExpanded(!expanded)
+          }}
+          style={{
+            width: 50,
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+            right: 50,
+            bottom: 0
+          }}>
+          <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
           onPress={sendComment}
           style={{
             width: 50,
@@ -156,6 +197,32 @@ const NewComment = (params) => {
           <Text style={{ fontSize: 30 }}>❤️</Text>
         </TouchableOpacity>
       </View>
+
+      {
+        expanded && (
+          <View style={{ minWidth: 200, maxHeight: 200 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                flexWrap: 'wrap'
+              }}
+            >
+
+              <FlatGrid
+                data={smileys}
+                itemDimension={30}
+                renderItem={({ item: emoji }) => (
+                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          </View>
+        )
+      }
     </View>
   )
 }

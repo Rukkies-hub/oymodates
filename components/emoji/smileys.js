@@ -1,5 +1,3 @@
-import people from './people'
-
 export default [
   {
     "emoji": "😀",
@@ -80,14 +78,6 @@ export default [
     "slug": "upside_down_face",
     "unicode_version": "1.0",
     "emoji_version": "1.0"
-  },
-  {
-    "emoji": "🫠",
-    "skin_tone_support": false,
-    "name": "melting face",
-    "slug": "melting_face",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
   },
   {
     "emoji": "😉",
@@ -178,14 +168,6 @@ export default [
     "emoji_version": "1.0"
   },
   {
-    "emoji": "🥲",
-    "skin_tone_support": false,
-    "name": "smiling face with tear",
-    "slug": "smiling_face_with_tear",
-    "unicode_version": "13.0",
-    "emoji_version": "13.0"
-  },
-  {
     "emoji": "😋",
     "skin_tone_support": false,
     "name": "face savoring food",
@@ -249,22 +231,6 @@ export default [
     "unicode_version": "5.0",
     "emoji_version": "5.0"
   },
-  // {
-  //   "emoji": "🫢",
-  //   "skin_tone_support": false,
-  //   "name": "face with open eyes and hand over mouth",
-  //   "slug": "face_with_open_eyes_and_hand_over_mouth",
-  //   "unicode_version": "14.0",
-  //   "emoji_version": "14.0"
-  // },
-  // {
-  //   "emoji": "🫣",
-  //   "skin_tone_support": false,
-  //   "name": "face with peeking eye",
-  //   "slug": "face_with_peeking_eye",
-  //   "unicode_version": "14.0",
-  //   "emoji_version": "14.0"
-  // },
   {
     "emoji": "🤫",
     "skin_tone_support": false,
@@ -281,14 +247,6 @@ export default [
     "unicode_version": "1.0",
     "emoji_version": "1.0"
   },
-  // {
-  //   "emoji": "🫡",
-  //   "skin_tone_support": false,
-  //   "name": "saluting face",
-  //   "slug": "saluting_face",
-  //   "unicode_version": "14.0",
-  //   "emoji_version": "14.0"
-  // },
   {
     "emoji": "🤐",
     "skin_tone_support": false,
@@ -329,14 +287,6 @@ export default [
     "unicode_version": "1.0",
     "emoji_version": "1.0"
   },
-  // {
-  //   "emoji": "🫥",
-  //   "skin_tone_support": false,
-  //   "name": "dotted line face",
-  //   "slug": "dotted_line_face",
-  //   "unicode_version": "14.0",
-  //   "emoji_version": "14.0"
-  // },
   {
     "emoji": "😶‍🌫️",
     "skin_tone_support": false,
@@ -546,14 +496,6 @@ export default [
     "emoji_version": "11.0"
   },
   {
-    "emoji": "🥸",
-    "skin_tone_support": false,
-    "name": "disguised face",
-    "slug": "disguised_face",
-    "unicode_version": "13.0",
-    "emoji_version": "13.0"
-  },
-  {
     "emoji": "😎",
     "skin_tone_support": false,
     "name": "smiling face with sunglasses",
@@ -585,14 +527,6 @@ export default [
     "unicode_version": "1.0",
     "emoji_version": "1.0"
   },
-  // {
-  //   "emoji": "🫤",
-  //   "skin_tone_support": false,
-  //   "name": "face with diagonal mouth",
-  //   "slug": "face_with_diagonal_mouth",
-  //   "unicode_version": "14.0",
-  //   "emoji_version": "14.0"
-  // },
   {
     "emoji": "😟",
     "skin_tone_support": false,
@@ -656,14 +590,6 @@ export default [
     "slug": "pleading_face",
     "unicode_version": "11.0",
     "emoji_version": "11.0"
-  },
-  {
-    "emoji": "🥹",
-    "skin_tone_support": false,
-    "name": "face holding back tears",
-    "slug": "face_holding_back_tears",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
   },
   {
     "emoji": "😦",
@@ -834,158 +760,6 @@ export default [
     "emoji_version": "0.6"
   },
   {
-    "emoji": "💀",
-    "skin_tone_support": false,
-    "name": "skull",
-    "slug": "skull",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "☠️",
-    "skin_tone_support": false,
-    "name": "skull and crossbones",
-    "slug": "skull_and_crossbones",
-    "unicode_version": "1.0",
-    "emoji_version": "1.0"
-  },
-  {
-    "emoji": "💩",
-    "skin_tone_support": false,
-    "name": "pile of poo",
-    "slug": "pile_of_poo",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "🤡",
-    "skin_tone_support": false,
-    "name": "clown face",
-    "slug": "clown_face",
-    "unicode_version": "3.0",
-    "emoji_version": "3.0"
-  },
-  {
-    "emoji": "👹",
-    "skin_tone_support": false,
-    "name": "ogre",
-    "slug": "ogre",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "👺",
-    "skin_tone_support": false,
-    "name": "goblin",
-    "slug": "goblin",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "👻",
-    "skin_tone_support": false,
-    "name": "ghost",
-    "slug": "ghost",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "👽",
-    "skin_tone_support": false,
-    "name": "alien",
-    "slug": "alien",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "👾",
-    "skin_tone_support": false,
-    "name": "alien monster",
-    "slug": "alien_monster",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "🤖",
-    "skin_tone_support": false,
-    "name": "robot",
-    "slug": "robot",
-    "unicode_version": "1.0",
-    "emoji_version": "1.0"
-  },
-  {
-    "emoji": "😺",
-    "skin_tone_support": false,
-    "name": "grinning cat",
-    "slug": "grinning_cat",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "😸",
-    "skin_tone_support": false,
-    "name": "grinning cat with smiling eyes",
-    "slug": "grinning_cat_with_smiling_eyes",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "😹",
-    "skin_tone_support": false,
-    "name": "cat with tears of joy",
-    "slug": "cat_with_tears_of_joy",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "😻",
-    "skin_tone_support": false,
-    "name": "smiling cat with heart-eyes",
-    "slug": "smiling_cat_with_heart_eyes",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "😼",
-    "skin_tone_support": false,
-    "name": "cat with wry smile",
-    "slug": "cat_with_wry_smile",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "😽",
-    "skin_tone_support": false,
-    "name": "kissing cat",
-    "slug": "kissing_cat",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "🙀",
-    "skin_tone_support": false,
-    "name": "weary cat",
-    "slug": "weary_cat",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "😿",
-    "skin_tone_support": false,
-    "name": "crying cat",
-    "slug": "crying_cat",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "😾",
-    "skin_tone_support": false,
-    "name": "pouting cat",
-    "slug": "pouting_cat",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
     "emoji": "🙈",
     "skin_tone_support": false,
     "name": "see-no-evil monkey",
@@ -1018,74 +792,10 @@ export default [
     "emoji_version": "0.6"
   },
   {
-    "emoji": "💌",
-    "skin_tone_support": false,
-    "name": "love letter",
-    "slug": "love_letter",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
     "emoji": "💘",
     "skin_tone_support": false,
     "name": "heart with arrow",
     "slug": "heart_with_arrow",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💝",
-    "skin_tone_support": false,
-    "name": "heart with ribbon",
-    "slug": "heart_with_ribbon",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💖",
-    "skin_tone_support": false,
-    "name": "sparkling heart",
-    "slug": "sparkling_heart",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💗",
-    "skin_tone_support": false,
-    "name": "growing heart",
-    "slug": "growing_heart",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💓",
-    "skin_tone_support": false,
-    "name": "beating heart",
-    "slug": "beating_heart",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💞",
-    "skin_tone_support": false,
-    "name": "revolving hearts",
-    "slug": "revolving_hearts",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💕",
-    "skin_tone_support": false,
-    "name": "two hearts",
-    "slug": "two_hearts",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💟",
-    "skin_tone_support": false,
-    "name": "heart decoration",
-    "slug": "heart_decoration",
     "unicode_version": "0.6",
     "emoji_version": "0.6"
   },
@@ -1128,182 +838,5 @@ export default [
     "slug": "red_heart",
     "unicode_version": "0.6",
     "emoji_version": "0.6"
-  },
-  {
-    "emoji": "🧡",
-    "skin_tone_support": false,
-    "name": "orange heart",
-    "slug": "orange_heart",
-    "unicode_version": "5.0",
-    "emoji_version": "5.0"
-  },
-  {
-    "emoji": "💛",
-    "skin_tone_support": false,
-    "name": "yellow heart",
-    "slug": "yellow_heart",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💚",
-    "skin_tone_support": false,
-    "name": "green heart",
-    "slug": "green_heart",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💙",
-    "skin_tone_support": false,
-    "name": "blue heart",
-    "slug": "blue_heart",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💜",
-    "skin_tone_support": false,
-    "name": "purple heart",
-    "slug": "purple_heart",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "🤎",
-    "skin_tone_support": false,
-    "name": "brown heart",
-    "slug": "brown_heart",
-    "unicode_version": "12.0",
-    "emoji_version": "12.0"
-  },
-  {
-    "emoji": "🖤",
-    "skin_tone_support": false,
-    "name": "black heart",
-    "slug": "black_heart",
-    "unicode_version": "3.0",
-    "emoji_version": "3.0"
-  },
-  {
-    "emoji": "🤍",
-    "skin_tone_support": false,
-    "name": "white heart",
-    "slug": "white_heart",
-    "unicode_version": "12.0",
-    "emoji_version": "12.0"
-  },
-  {
-    "emoji": "💯",
-    "skin_tone_support": false,
-    "name": "hundred points",
-    "slug": "hundred_points",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💢",
-    "skin_tone_support": false,
-    "name": "anger symbol",
-    "slug": "anger_symbol",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💥",
-    "skin_tone_support": false,
-    "name": "collision",
-    "slug": "collision",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💫",
-    "skin_tone_support": false,
-    "name": "dizzy",
-    "slug": "dizzy",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💦",
-    "skin_tone_support": false,
-    "name": "sweat droplets",
-    "slug": "sweat_droplets",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💨",
-    "skin_tone_support": false,
-    "name": "dashing away",
-    "slug": "dashing_away",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "🕳️",
-    "skin_tone_support": false,
-    "name": "hole",
-    "slug": "hole",
-    "unicode_version": "0.7",
-    "emoji_version": "0.7"
-  },
-  {
-    "emoji": "💣",
-    "skin_tone_support": false,
-    "name": "bomb",
-    "slug": "bomb",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "💬",
-    "skin_tone_support": false,
-    "name": "speech balloon",
-    "slug": "speech_balloon",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  {
-    "emoji": "👁️‍🗨️",
-    "skin_tone_support": false,
-    "name": "eye in speech bubble",
-    "slug": "eye_in_speech_bubble",
-    "unicode_version": "2.0",
-    "emoji_version": "2.0"
-  },
-  {
-    "emoji": "🗨️",
-    "skin_tone_support": false,
-    "name": "left speech bubble",
-    "slug": "left_speech_bubble",
-    "unicode_version": "2.0",
-    "emoji_version": "2.0"
-  },
-  {
-    "emoji": "🗯️",
-    "skin_tone_support": false,
-    "name": "right anger bubble",
-    "slug": "right_anger_bubble",
-    "unicode_version": "0.7",
-    "emoji_version": "0.7"
-  },
-  {
-    "emoji": "💭",
-    "skin_tone_support": false,
-    "name": "thought balloon",
-    "slug": "thought_balloon",
-    "unicode_version": "1.0",
-    "emoji_version": "1.0"
-  },
-  {
-    "emoji": "💤",
-    "skin_tone_support": false,
-    "name": "zzz",
-    "slug": "zzz",
-    "unicode_version": "0.6",
-    "emoji_version": "0.6"
-  },
-  ...people
+  }
 ]

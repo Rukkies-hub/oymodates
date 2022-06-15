@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native'
+import { View, Text, Image, Pressable, TouchableOpacity, UIManager, LayoutAnimation, Platform } from 'react-native'
 import color from '../style/color'
 
 import { AntDesign } from '@expo/vector-icons'
@@ -9,6 +9,11 @@ import Slider from '@react-native-community/slider'
 import { Audio } from 'expo-av'
 import useAuth from '../hooks/useAuth'
 
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) UIManager.setLayoutAnimationEnabledExperimental(true)
+
 const RecieverMessage = ({ messages, matchDetails }) => {
   const { userProfile, user } = useAuth()
 
@@ -16,6 +21,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
   const [status, setStatus] = useState()
   const [Value, SetValue] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [showTime, setShowTime] = useState(false)
 
   const playVoicenote = async voiceNote => {
     const { sound, status } = await Audio?.Sound?.createAsync({ uri: voiceNote })
@@ -63,7 +69,10 @@ const RecieverMessage = ({ messages, matchDetails }) => {
           maxWidth: '80%'
         }}
       >
-        <Pressable>
+        <Pressable onPress={() => {
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+          setShowTime(!showTime)
+        }}>
           {
             messages?.message &&
             <>
@@ -90,9 +99,14 @@ const RecieverMessage = ({ messages, matchDetails }) => {
               </View>
               {
                 messages?.timestamp &&
-                <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 10, textAlign: "left" }}>
-                  {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
-                </Text>
+                <>
+                  {
+                    showTime &&
+                    <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: "left" }}>
+                      {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                    </Text>
+                  }
+                </>
               }
             </>
           }
