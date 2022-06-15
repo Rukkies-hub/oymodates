@@ -65,60 +65,97 @@ const NewComment = (params) => {
   if (!loaded) return null
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 10,
-        borderTopWidth: .3,
-        borderTopColor: color.borderColor,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-        minHeight: 50,
-        overflow: 'hidden',
-        position: 'relative',
-        marginHorizontal: 10,
-        borderRadius: 12
-      }}
-    >
-      <TextInput
-        multiline
-        value={input}
-        onChangeText={setInput}
-        onSubmitEditing={sendComment}
-        placeholder='Write a comment...'
-        placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
-        onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+    <View>
+      <View
         style={{
-          fontSize: 18,
-          flex: 1,
-          width: '100%',
-          height,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingHorizontal: 10,
+          borderTopWidth: .3,
+          borderTopColor: color.borderColor,
+          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
           minHeight: 50,
-          maxHeight: 150,
-          fontFamily: 'text',
-          color: userProfile?.appMode == 'light' ? color.dark : color.white,
-          paddingRight: 40,
-          paddingVertical: 5
+          overflow: 'hidden',
+          position: 'relative',
+          marginHorizontal: 10,
+          borderRadius: 12
         }}
-      />
-
-      <TouchableOpacity
-        onPress={sendComment}
-        style={{
-          width: 50,
-          height: 50,
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
-          right: 0,
-          bottom: 0
-        }}>
-        <FontAwesome5
-          name='paper-plane'
-          color={userProfile?.appMode == 'light' ? color.lightText : color.white}
-          size={20}
+      >
+        <TextInput
+          multiline
+          value={input}
+          onChangeText={setInput}
+          onSubmitEditing={sendComment}
+          placeholder='Write a comment...'
+          placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
+          onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+          style={{
+            fontSize: 18,
+            flex: 1,
+            width: '100%',
+            height,
+            minHeight: 50,
+            maxHeight: 150,
+            fontFamily: 'text',
+            color: userProfile?.appMode == 'light' ? color.dark : color.white,
+            paddingRight: 40,
+            paddingVertical: 5
+          }}
         />
-      </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={sendComment}
+          style={{
+            width: 50,
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+            right: 0,
+            bottom: 0
+          }}>
+          <FontAwesome5
+            name='paper-plane'
+            color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+            size={20}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <View
+        style={{
+          paddingHorizontal: 10,
+          marginVertical: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <TouchableOpacity onPress={() => setInput(input + '🤣')}>
+          <Text style={{ fontSize: 30 }}>🤣</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '😭')}>
+          <Text style={{ fontSize: 30 }}>😭</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '🥺')}>
+          <Text style={{ fontSize: 30 }}>🥺</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '😏')}>
+          <Text style={{ fontSize: 30 }}>😏</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '🤨')}>
+          <Text style={{ fontSize: 30 }}>🤨</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '🙄')}>
+          <Text style={{ fontSize: 30 }}>🙄</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '😍')}>
+          <Text style={{ fontSize: 30 }}>😍</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '❤️')}>
+          <Text style={{ fontSize: 30 }}>❤️</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
