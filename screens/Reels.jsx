@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, SafeAreaView, FlatList, Dimensions, TouchableOpacity, Image } from 'react-native'
 
-import { arrayRemove, arrayUnion, collection, doc, onSnapshot, updateDoc } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, collection, doc, getDocs, limit, onSnapshot, query, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
 import color from '../style/color'
@@ -37,18 +37,22 @@ const Reels = () => {
   })
 
   const [reels, setReels] = useState([])
+  const [reelsLimit, setReelsLimit] = useState(3)
 
-  useEffect(() =>
-    onSnapshot(collection(db, 'reels'),
-      snapshot =>
-        setReels(
-          snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }))
-        )
+  const getReels = async () => {
+    const queryReels = await getDocs(query(collection(db, 'reels'), limit(reelsLimit)))
+
+    setReels(
+      queryReels?.docs?.map(doc => ({
+        id: doc?.id,
+        ...doc.data()
+      }))
     )
-    , [db])
+  }
+
+  useEffect(() => {
+    getReels()
+  }, [])
 
   const likeReel = async (item) => {
     let reels = item
@@ -223,6 +227,10 @@ const Reels = () => {
           scrollEnabled={true}
           style={{ flex: 1 }}
           onEndReachedThreshold={0.1}
+          onEndReached={() => {
+            setReelsLimit(reelsLimit + 3)
+            getReels()
+          }}
         />
       </View>
     </SafeAreaView>

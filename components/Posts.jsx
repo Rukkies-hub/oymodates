@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import {
   View,
   Text,
@@ -8,7 +8,8 @@ import {
   FlatList,
   useWindowDimensions,
   Dimensions,
-  Button
+  RefreshControl,
+  ActivityIndicator
 } from 'react-native'
 
 
@@ -19,7 +20,7 @@ import color from '../style/color'
 
 import { Fontisto, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 
-import { collection, onSnapshot } from 'firebase/firestore'
+import { collection, getDocs, limit, onSnapshot, query } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 
@@ -30,24 +31,39 @@ const { width, height } = Dimensions.get('window')
 import PostImage from './PostImage'
 import PostVideo from './PostVideo'
 
+const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout))
+
 const Posts = () => {
   const navigation = useNavigation()
   const { userProfile, user } = useAuth()
   const windowWidth = useWindowDimensions().width
 
   const [posts, setPosts] = useState([])
+  const [refreshing, setRefreshing] = useState(false)
+  const [postLimit, setPostLimit] = useState(3)
 
-  useEffect(() =>
-    onSnapshot(collection(db, 'posts'),
-      snapshot =>
-        setPosts(
-          snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }))
-        )
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    wait(2000).then(() => {
+      getPosts()
+      setRefreshing(false)
+    })
+  }, [])
+
+  const getPosts = async () => {
+    const queryPosts = await getDocs(query(collection(db, 'posts'), limit(postLimit)))
+
+    setPosts(
+      queryPosts?.docs?.map(doc => ({
+        id: doc?.id,
+        ...doc.data()
+      }))
     )
-    , [])
+  }
+
+  useEffect(() => {
+    getPosts()
+  }, [])
 
 
   const [loaded] = useFonts({
@@ -62,6 +78,43 @@ const Posts = () => {
       bounces={false}
       alwaysBounceHorizontal={false}
       alwaysBounceVertical={false}
+      initialNumToRender={0}
+      maxToRenderPerBatch={1}
+      onEndReached={() => {
+        setPostLimit(postLimit + 3)
+        getPosts()
+      }}
+      onEndReachedThreshold={0.1}
+      removeClippedSubviews
+      viewabilityConfig={{
+        itemVisiblePercentThreshold: 75
+      }}
+      ListFooterComponent={() => (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <ActivityIndicator size='large' color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+          <Text
+            style={{
+              color: userProfile?.appMode == 'light' ? color.dark : color.white,
+              fontFamily: 'text',
+              marginLeft: 10
+            }}
+          >
+            Loading Feeds....
+          </Text>
+        </View>
+      )}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
       keyExtractor={item => item.id}
       style={{
         flex: 1,
@@ -167,7 +220,7 @@ const Posts = () => {
               <Fontisto name="comment" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
             </TouchableOpacity>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{
                 width: 35,
                 height: 35,
@@ -177,7 +230,7 @@ const Posts = () => {
               }}
             >
               <AntDesign name="retweet" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
           <TouchableOpacity
