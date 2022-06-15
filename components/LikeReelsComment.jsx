@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import color from '../style/color'
 
-import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
@@ -43,6 +43,27 @@ const LikeReelsComment = (props) => {
       })
       await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
         likesCount: increment(1)
+      })
+    }
+
+    if (comment?.user?.id != userProfile?.id) {
+      const reel = await (await getDoc(doc(db, 'reels', comment?.post?.id))).data()
+
+      await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
+        action: 'reel',
+        activity: 'comment likes',
+        text: 'likes your comment',
+        notify: comment?.user,
+        id: comment?.id,
+        seen: false,
+        reel,
+        user: {
+          id: userProfile?.id,
+          username: userProfile?.username,
+          displayName: userProfile?.displayName,
+          photoURL: userProfile?.photoURL
+        },
+        timestamp: serverTimestamp()
       })
     }
   })

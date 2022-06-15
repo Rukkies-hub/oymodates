@@ -13,7 +13,7 @@ import {
   UIManager,
 } from 'react-native'
 
-import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, onSnapshot, serverTimestamp } from 'firebase/firestore'
 
 import { db } from '../hooks/firebase'
 

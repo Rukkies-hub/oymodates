@@ -62,8 +62,8 @@ const ReelsCommentSheet = () => {
       if (reelsProps?.user?.id != user?.uid)
         await addDoc(collection(db, 'users', reelsProps?.user?.id, 'notifications'), {
           action: 'reel',
-          activity: 'likes',
-          text: 'likes your post',
+          activity: 'comments',
+          text: 'commented on your post',
           notify: reelsProps?.user,
           id: reelsProps?.id,
           seen: false,
