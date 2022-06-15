@@ -251,7 +251,7 @@ const UserProfile = (params) => {
               marginLeft: 5
             }}
           >
-            Likes
+            {viewingUser?.likesCount == 1 ? 'Like' : 'Likes'}
           </Text>
         </View>
       </View>

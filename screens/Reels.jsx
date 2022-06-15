@@ -18,10 +18,13 @@ import { LinearGradient } from 'expo-linear-gradient'
 import useAuth from '../hooks/useAuth'
 import ReelsCommentSheet from '../components/ReelsCommentSheet'
 import LikeReels from '../components/LikeReels'
+import { useNavigation } from '@react-navigation/native'
 
 const Reels = () => {
   const { setBottomSheetIndex, userProfile, user, reelsProps, setReelsProps } = useAuth()
   const mediaRefs = useRef([])
+
+  const navigation = useNavigation()
 
   const onViewableItemsChanged = useRef(({ changed }) => {
     changed.forEach(element => {
@@ -135,6 +138,7 @@ const Reels = () => {
             }}
           >
             <TouchableOpacity
+              onPress={() => item?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: item?.user })}
               style={{
                 width: 50,
                 height: 50,

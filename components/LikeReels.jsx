@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { AntDesign, FontAwesome } from '@expo/vector-icons'
 import color from '../style/color'
 
-import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, increment, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, increment, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import useAuth from '../hooks/useAuth'
 import { db } from '../hooks/firebase'
 
@@ -30,6 +30,9 @@ const LikeReels = (props) => {
       await updateDoc(doc(db, 'reels', reel?.id), {
         likesCount: increment(-1)
       })
+      await updateDoc(doc(db, 'users', reel?.user?.id), {
+        likesCount: increment(-1)
+      })
     } else {
       await setDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid), {
         id: userProfile?.id,
@@ -40,6 +43,26 @@ const LikeReels = (props) => {
       await updateDoc(doc(db, 'reels', reel?.id), {
         likesCount: increment(1)
       })
+      await updateDoc(doc(db, 'users', reel?.user?.id), {
+        likesCount: increment(1)
+      })
+      if (reel?.user?.id != user?.uid)
+        await addDoc(collection(db, 'users', reel?.user?.id, 'notifications'), {
+          action: 'reel',
+          activity: 'likes',
+          text: 'likes your post',
+          notify: reel?.user,
+          id: reel?.id,
+          seen: false,
+          reel,
+          user: {
+            id: userProfile?.id,
+            username: userProfile?.username,
+            displayName: userProfile?.displayName,
+            photoURL: userProfile?.photoURL
+          },
+          timestamp: serverTimestamp()
+        })
     }
   })
 

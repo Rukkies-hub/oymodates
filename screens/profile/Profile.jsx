@@ -154,7 +154,7 @@ const Profile = () => {
               color: userProfile?.appMode == 'light' ? color.black : color.white
             }}
           >
-            {userProfile?.likesCount ? userProfile?.likesCount : '0'}
+            {userProfile?.likesCount  ? userProfile?.likesCount : '0'}
           </Text>
           <Text
             style={{
@@ -164,7 +164,7 @@ const Profile = () => {
               marginLeft: 5
             }}
           >
-            Likes
+            {userProfile?.likesCount == 1 ? 'Like' : 'Likes'}
           </Text>
         </View>
       </View>

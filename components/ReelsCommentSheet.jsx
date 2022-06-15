@@ -52,7 +52,7 @@ const ReelsCommentSheet = () => {
       {
         reelsProps &&
         <BottomSheet
-          snapPoints={['70%']}
+          snapPoints={['80%']}
           index={bottomSheetIndex}
           handleHeight={40}
           enablePanDownToClose={true}
@@ -70,31 +70,34 @@ const ReelsCommentSheet = () => {
               height: 40,
               marginHorizontal: 10,
               marginBottom: 10,
-              justifyContent: 'center',
-              alignItems: 'flex-end'
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center'
             }}
           >
+            <Text
+              style={{
+                fontFamily: 'text',
+                fontSize: 16,
+                color: userProfile?.appMode == 'light' ? color.dark : color.white
+              }}
+            >
+              Comments
+            </Text>
+
             <TouchableOpacity
               onPress={() => {
                 setBottomSheetIndex(-1)
                 setReelsProps(null)
               }}
               style={{
-                width: '100%',
-                height: '100%',
-                flexDirection: 'row',
+                width: 50,
+                height: 50,
                 justifyContent: 'center',
-                alignItems: 'flex-start'
+                alignItems: 'center'
               }}
             >
-              <View
-                style={{
-                  width: 50,
-                  height: 5,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.dark : color.white,
-                  borderRadius: 12
-                }}
-              />
+              <AntDesign name='close' size={20} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
             </TouchableOpacity>
           </View>
 
