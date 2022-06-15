@@ -487,14 +487,14 @@ export default [
     "unicode_version": "11.0",
     "emoji_version": "11.0"
   },
-  {
-    "emoji": "🪬",
-    "skin_tone_support": false,
-    "name": "hamsa",
-    "slug": "hamsa",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
-  },
+  // {
+  //   "emoji": "🪬",
+  //   "skin_tone_support": false,
+  //   "name": "hamsa",
+  //   "slug": "hamsa",
+  //   "unicode_version": "14.0",
+  //   "emoji_version": "14.0"
+  // },
   {
     "emoji": "🎮",
     "skin_tone_support": false,

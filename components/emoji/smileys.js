@@ -1,3 +1,5 @@
+import people from './people'
+
 export default [
   {
     "emoji": "😀",
@@ -151,14 +153,14 @@ export default [
     "unicode_version": "1.0",
     "emoji_version": "1.0"
   },
-  // {
-  //   "emoji": "☺️",
-  //   "skin_tone_support": false,
-  //   "name": "smiling face",
-  //   "slug": "smiling_face",
-  //   "unicode_version": "0.6",
-  //   "emoji_version": "0.6"
-  // },
+  {
+    "emoji": "☺️",
+    "skin_tone_support": false,
+    "name": "smiling face",
+    "slug": "smiling_face",
+    "unicode_version": "0.6",
+    "emoji_version": "0.6"
+  },
   {
     "emoji": "😚",
     "skin_tone_support": false,
@@ -1302,5 +1304,6 @@ export default [
     "slug": "zzz",
     "unicode_version": "0.6",
     "emoji_version": "0.6"
-  }
+  },
+  ...people
 ]

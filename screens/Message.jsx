@@ -12,7 +12,8 @@ import {
   Text,
   ActivityIndicator,
   SafeAreaView,
-  ImageBackground
+  ImageBackground,
+  ScrollView
 } from 'react-native'
 
 import color from '../style/color'
@@ -35,8 +36,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { useFonts } from 'expo-font'
 
-import EmojiPicker, { emojiFromUtf16 } from '../components/emojiPicker'
-import { emojis } from '../components/emojiPicker/data/emojis'
+import smileys from '../components/emoji/smileys'
+import nature from '../components/emoji/nature'
+import activities from '../components/emoji/activities'
+import flags from '../components/emoji/flags'
+import food from '../components/emoji/food'
+import objects from '../components/emoji/objects'
+import places from '../components/emoji/places'
+import symbols from '../components/emoji/symbols'
 
 if (
   Platform.OS === 'android' &&
@@ -71,6 +78,7 @@ const Message = () => {
   const [recording, setRecording] = useState()
   const [recordings, setRecordings] = useState([])
   const [recordingLoading, setRecordingLoading] = useState(false)
+  const [emojiActiveTab, setEmojiActiveTab] = useState('smileys')
 
   useEffect(() =>
     onSnapshot(query(collection(db,
@@ -378,17 +386,164 @@ const Message = () => {
 
       {
         expanded && (
-          <View style={{ minWidth: 250, flex: 1 }}>
-            {/* <EmojiPicker
-              colSize={9}
-              emojis={emojis}
-              recent={recent}
-              autoFocus={false}
-              loading={false}
-              darkMode={false}
-              onSelect={emoji => setInput(`${input} ${emoji.emoji}`)}
-              onChangeRecent={setRecent}
-            /> */}
+          <View style={{ minWidth: 200, flex: 1 }}>
+            <View
+              style={{
+                height: 40,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottomWidth: 1,
+                borderColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor
+              }}
+            >
+              <TouchableOpacity onPress={() => setEmojiActiveTab('smileys')} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 30 }}>{smileys[0].emoji}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setEmojiActiveTab('nature')} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 30 }}>{nature[0].emoji}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setEmojiActiveTab('activities')} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 30 }}>{activities[0].emoji}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setEmojiActiveTab('food')} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 30 }}>{food[0].emoji}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setEmojiActiveTab('objects')} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 30 }}>{objects[0].emoji}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setEmojiActiveTab('places')} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 30 }}>{places[0].emoji}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setEmojiActiveTab('symbols')} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 30 }}>{symbols[0].emoji}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setEmojiActiveTab('flags')} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 30 }}>{flags[0].emoji}</Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                flexWrap: 'wrap'
+              }}
+            >
+
+              <ScrollView
+                contentContainerStyle={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                  alignItems: 'flex-start',
+                  flexWrap: 'wrap'
+                }}
+              >
+                {
+                  emojiActiveTab == 'smileys' &&
+                  <>
+                    {
+                      smileys.map((emoji, index) => (
+                        <TouchableOpacity key={index} onPress={() => setInput(input + emoji.emoji)}>
+                          <Text style={{ fontSize: 40 }}>{emoji.emoji}</Text>
+                        </TouchableOpacity>
+                      ))
+                    }
+                  </>
+                }
+                {
+                  emojiActiveTab == 'nature' &&
+                  <>
+                    {
+                      nature.map((emoji, index) => (
+                        <TouchableOpacity key={index} onPress={() => setInput(input + emoji.emoji)}>
+                          <Text style={{ fontSize: 40 }}>{emoji.emoji}</Text>
+                        </TouchableOpacity>
+                      ))
+                    }
+                  </>
+                }
+                {
+                  emojiActiveTab == 'activities' &&
+                  <>
+                    {
+                      activities.map((emoji, index) => (
+                        <TouchableOpacity key={index} onPress={() => setInput(input + emoji.emoji)}>
+                          <Text style={{ fontSize: 40 }}>{emoji.emoji}</Text>
+                        </TouchableOpacity>
+                      ))
+                    }
+                  </>
+                }
+                {
+                  emojiActiveTab == 'flags' &&
+                  <>
+                    {
+                      flags.map((emoji, index) => (
+                        <TouchableOpacity key={index} onPress={() => setInput(input + emoji.emoji)}>
+                          <Text style={{ fontSize: 40 }}>{emoji.emoji}</Text>
+                        </TouchableOpacity>
+                      ))
+                    }
+                  </>
+                }
+                {
+                  emojiActiveTab == 'food' &&
+                  <>
+                    {
+                      food.map((emoji, index) => (
+                        <TouchableOpacity key={index} onPress={() => setInput(input + emoji.emoji)}>
+                          <Text style={{ fontSize: 40 }}>{emoji.emoji}</Text>
+                        </TouchableOpacity>
+                      ))
+                    }
+                  </>
+                }
+                {
+                  emojiActiveTab == 'objects' &&
+                  <>
+                    {
+                      objects.map((emoji, index) => (
+                        <TouchableOpacity key={index} onPress={() => setInput(input + emoji.emoji)}>
+                          <Text style={{ fontSize: 40 }}>{emoji.emoji}</Text>
+                        </TouchableOpacity>
+                      ))
+                    }
+                  </>
+                }
+                {
+                  emojiActiveTab == 'places' &&
+                  <>
+                    {
+                      places.map((emoji, index) => (
+                        <TouchableOpacity key={index} onPress={() => setInput(input + emoji.emoji)}>
+                          <Text style={{ fontSize: 40 }}>{emoji.emoji}</Text>
+                        </TouchableOpacity>
+                      ))
+                    }
+                  </>
+                }
+                {
+                  emojiActiveTab == 'symbols' &&
+                  <>
+                    {
+                      symbols.map((emoji, index) => (
+                        <TouchableOpacity key={index} onPress={() => setInput(input + emoji.emoji)}>
+                          <Text style={{ fontSize: 40 }}>{emoji.emoji}</Text>
+                        </TouchableOpacity>
+                      ))
+                    }
+                  </>
+                }
+              </ScrollView>
+            </View>
           </View>
         )
       }

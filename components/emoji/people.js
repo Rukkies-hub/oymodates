@@ -44,42 +44,42 @@ export default [
     "unicode_version": "1.0",
     "emoji_version": "1.0"
   },
-  {
-    "emoji": "🫱",
-    "skin_tone_support": true,
-    "skin_tone_support_unicode_version": "14.0",
-    "name": "rightwards hand",
-    "slug": "rightwards_hand",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
-  },
-  {
-    "emoji": "🫲",
-    "skin_tone_support": true,
-    "skin_tone_support_unicode_version": "14.0",
-    "name": "leftwards hand",
-    "slug": "leftwards_hand",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
-  },
-  {
-    "emoji": "🫳",
-    "skin_tone_support": true,
-    "skin_tone_support_unicode_version": "14.0",
-    "name": "palm down hand",
-    "slug": "palm_down_hand",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
-  },
-  {
-    "emoji": "🫴",
-    "skin_tone_support": true,
-    "skin_tone_support_unicode_version": "14.0",
-    "name": "palm up hand",
-    "slug": "palm_up_hand",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
-  },
+  // {
+  //   "emoji": "🫱",
+  //   "skin_tone_support": true,
+  //   "skin_tone_support_unicode_version": "14.0",
+  //   "name": "rightwards hand",
+  //   "slug": "rightwards_hand",
+  //   "unicode_version": "14.0",
+  //   "emoji_version": "14.0"
+  // },
+  // {
+  //   "emoji": "🫲",
+  //   "skin_tone_support": true,
+  //   "skin_tone_support_unicode_version": "14.0",
+  //   "name": "leftwards hand",
+  //   "slug": "leftwards_hand",
+  //   "unicode_version": "14.0",
+  //   "emoji_version": "14.0"
+  // },
+  // {
+  //   "emoji": "🫳",
+  //   "skin_tone_support": true,
+  //   "skin_tone_support_unicode_version": "14.0",
+  //   "name": "palm down hand",
+  //   "slug": "palm_down_hand",
+  //   "unicode_version": "14.0",
+  //   "emoji_version": "14.0"
+  // },
+  // {
+  //   "emoji": "🫴",
+  //   "skin_tone_support": true,
+  //   "skin_tone_support_unicode_version": "14.0",
+  //   "name": "palm up hand",
+  //   "slug": "palm_up_hand",
+  //   "unicode_version": "14.0",
+  //   "emoji_version": "14.0"
+  // },
   {
     "emoji": "👌",
     "skin_tone_support": true,
@@ -124,15 +124,6 @@ export default [
     "slug": "crossed_fingers",
     "unicode_version": "3.0",
     "emoji_version": "3.0"
-  },
-  {
-    "emoji": "🫰",
-    "skin_tone_support": true,
-    "skin_tone_support_unicode_version": "14.0",
-    "name": "hand with index finger and thumb crossed",
-    "slug": "hand_with_index_finger_and_thumb_crossed",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
   },
   {
     "emoji": "🤟",
@@ -510,14 +501,14 @@ export default [
     "unicode_version": "0.6",
     "emoji_version": "0.6"
   },
-  {
-    "emoji": "🫦",
-    "skin_tone_support": false,
-    "name": "biting lip",
-    "slug": "biting_lip",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
-  },
+  // {
+  //   "emoji": "🫦",
+  //   "skin_tone_support": false,
+  //   "name": "biting lip",
+  //   "slug": "biting_lip",
+  //   "unicode_version": "14.0",
+  //   "emoji_version": "14.0"
+  // },
   {
     "emoji": "👶",
     "skin_tone_support": true,
@@ -1724,15 +1715,15 @@ export default [
     "unicode_version": "3.0",
     "emoji_version": "3.0"
   },
-  {
-    "emoji": "🫃",
-    "skin_tone_support": true,
-    "skin_tone_support_unicode_version": "14.0",
-    "name": "pregnant man",
-    "slug": "pregnant_man",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
-  },
+  // {
+  //   "emoji": "🫃",
+  //   "skin_tone_support": true,
+  //   "skin_tone_support_unicode_version": "14.0",
+  //   "name": "pregnant man",
+  //   "slug": "pregnant_man",
+  //   "unicode_version": "14.0",
+  //   "emoji_version": "14.0"
+  // },
   {
     "emoji": "🫄",
     "skin_tone_support": true,
@@ -2051,14 +2042,14 @@ export default [
     "unicode_version": "5.0",
     "emoji_version": "5.0"
   },
-  {
-    "emoji": "🧌",
-    "skin_tone_support": false,
-    "name": "troll",
-    "slug": "troll",
-    "unicode_version": "14.0",
-    "emoji_version": "14.0"
-  },
+  // {
+  //   "emoji": "🧌",
+  //   "skin_tone_support": false,
+  //   "name": "troll",
+  //   "slug": "troll",
+  //   "unicode_version": "14.0",
+  //   "emoji_version": "14.0"
+  // },
   {
     "emoji": "💆",
     "skin_tone_support": true,
