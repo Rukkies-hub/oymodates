@@ -24,30 +24,30 @@ const LikeReelsComment = (props) => {
   }, [])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id, 'likes', user?.uid))
+    getDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.uid))
       .then(res => resolve(res.exists()))
   })
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id, 'likes', user?.uid))
-      await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
+      await deleteDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.uid))
+      await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
         likesCount: increment(-1)
       })
     } else {
-      await setDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id, 'likes', user?.uid), {
+      await setDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.uid), {
         id: userProfile?.id,
         photoURL: userProfile?.photoURL,
         displayName: userProfile?.displayName,
         username: userProfile?.username,
       })
-      await updateDoc(doc(db, 'reels', comment?.reel, 'comments', comment?.id), {
+      await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
         likesCount: increment(1)
       })
     }
 
     if (comment?.user?.id != userProfile?.id) {
-      const reel = await (await getDoc(doc(db, 'reels', comment?.post?.id))).data()
+      const reel = await (await getDoc(doc(db, 'reels', comment?.reel?.id))).data()
 
       await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
         action: 'reel',

@@ -14,7 +14,7 @@ const ReelsCommentReplies = (props) => {
   const [replies, setReplies] = useState([])
 
   useEffect(() =>
-    onSnapshot(collection(db, 'reels', comments?.reel, 'comments', comments?.id, 'replies'),
+    onSnapshot(collection(db, 'reels', comments?.reel?.id, 'comments', comments?.id, 'replies'),
       snapshot =>
         setReplies(
           snapshot?.docs?.map(doc => ({

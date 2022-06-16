@@ -43,8 +43,8 @@ const ReelsCommentSheet = () => {
     if (comment != '') {
       addDoc(collection(db, 'reels', reelsProps?.id, 'comments'), {
         comment,
-        reel: reelsProps?.id,
-        commentsCount: 0,
+        reel: reelsProps,
+        repliesCount: 0,
         likesCount: 0,
         user: {
           id: userProfile?.id,
@@ -56,7 +56,7 @@ const ReelsCommentSheet = () => {
       })
 
       await updateDoc(doc(db, 'reels', reelsProps?.id), {
-        commentsCount: increment(1)
+        repliesCount: increment(1)
       })
 
       if (reelsProps?.user?.id != user?.uid)
