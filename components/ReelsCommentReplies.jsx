@@ -8,6 +8,7 @@ import color from '../style/color'
 import LikeReelsReply from './LikeReelsReply'
 import useAuth from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
+import ReelsCommentReplyReply from './ReelsCommentReplyReply'
 
 const ReelsCommentReplies = (props) => {
   const { userProfile, setBottomSheetIndex, bottomSheetIndex } = useAuth()
@@ -125,7 +126,7 @@ const ReelsCommentReplies = (props) => {
                 }}
               >
                 <LikeReelsReply reply={reply} />
-                {/* <LikeReply reply={reply} /> */}
+                <ReelsCommentReplyReply reply={reply} />
               </View>
             </View>
           </View>
