@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -52,6 +52,12 @@ const ReelsCommentSheet = () => {
   const [expanded, setExpanded] = useState(false)
   const [showEmoji, setShowEmoji] = useState(false)
 
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', () => {
+      setReelsCommentType('comment')
+    })
+  }, [])
+
   const sendComment = async () => {
     if (comment != '') {
       addDoc(collection(db, 'reels', reelsProps?.id, 'comments'), {
@@ -101,6 +107,7 @@ const ReelsCommentSheet = () => {
         reply,
         reel: comment?.reel,
         comment: comment?.id,
+        reelComment: comment,
         likesCount: 0,
         repliesCount: 0,
         user: {

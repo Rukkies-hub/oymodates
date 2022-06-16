@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import { useFonts } from 'expo-font'
-import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
@@ -23,18 +23,18 @@ const LikeReelsReply = (props) => {
   }, [])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'reels', reply?.reel, 'comments', reply?.comment, 'replies', reply.id, 'likes', user?.uid))
+    getDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply.id, 'likes', user?.uid))
       .then(res => resolve(res.exists()))
   })
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'reels', reply?.reel, 'comments', reply?.comment, 'replies', reply.id, 'likes', user?.uid))
-      await updateDoc(doc(db, 'reels', reply?.reel, 'comments', reply?.comment, 'replies', reply.id), {
+      await deleteDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply.id, 'likes', user?.uid))
+      await updateDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply.id), {
         likesCount: increment(-1)
       })
     } else {
-      await setDoc(doc(db, 'reels', reply?.reel, 'comments', reply?.comment, 'replies', reply.id, 'likes', user?.uid), {
+      await setDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply.id, 'likes', user?.uid), {
         id: userProfile?.id,
         comment: reply?.comment,
         reply: reply.id,
@@ -42,7 +42,7 @@ const LikeReelsReply = (props) => {
         displayName: userProfile?.displayName,
         username: userProfile?.username,
       })
-      await updateDoc(doc(db, 'reels', reply?.reel, 'comments', reply?.comment, 'replies', reply.id), {
+      await updateDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply.id), {
         likesCount: increment(1)
       })
     }

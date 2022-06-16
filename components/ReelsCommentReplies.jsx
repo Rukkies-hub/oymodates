@@ -7,11 +7,14 @@ import { db } from '../hooks/firebase'
 import color from '../style/color'
 import LikeReelsReply from './LikeReelsReply'
 import useAuth from '../hooks/useAuth'
+import { useNavigation } from '@react-navigation/native'
 
 const ReelsCommentReplies = (props) => {
-  const { userProfile } = useAuth()
+  const { userProfile, setBottomSheetIndex, bottomSheetIndex } = useAuth()
   const comments = props.comment
   const [replies, setReplies] = useState([])
+
+  const navigation = useNavigation()
 
   useEffect(() =>
     onSnapshot(collection(db, 'reels', comments?.reel?.id, 'comments', comments?.id, 'replies'),
@@ -26,7 +29,8 @@ const ReelsCommentReplies = (props) => {
     , [])
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -78,13 +82,37 @@ const ReelsCommentReplies = (props) => {
                 >
                   {reply?.user?.username}
                 </Text>
-                <Text
+                <View
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center'
                   }}
                 >
-                  {reply?.reply}
-                </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setBottomSheetIndex(-1)
+                      reply?.reelComment?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: reply?.reelComment?.user })
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        fontFamily: 'boldText'
+                      }}
+                    >
+                      @{reply?.reelComment?.user?.username}
+                    </Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                      marginLeft: 10
+                    }}
+                  >
+                    {reply?.reply}
+                  </Text>
+                </View>
               </View>
               <View
                 style={{
@@ -96,7 +124,7 @@ const ReelsCommentReplies = (props) => {
                   alignItems: 'center',
                 }}
               >
-                {/* <LikeReelsReply reply={reply} /> */}
+                <LikeReelsReply reply={reply} />
                 {/* <LikeReply reply={reply} /> */}
               </View>
             </View>
