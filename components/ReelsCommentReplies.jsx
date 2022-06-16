@@ -59,8 +59,8 @@ const ReelsCommentReplies = (props) => {
             <Image
               source={{ uri: reply?.user?.photoURL }}
               style={{
-                width: 30,
-                height: 30,
+                width: 25,
+                height: 25,
                 borderRadius: 50,
               }}
             />
@@ -87,7 +87,8 @@ const ReelsCommentReplies = (props) => {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
-                    alignItems: 'center'
+                    alignItems: 'flex-start',
+                    flexWrap: 'wrap'
                   }}
                 >
                   <TouchableOpacity

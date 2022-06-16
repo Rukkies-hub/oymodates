@@ -8,35 +8,39 @@ import {
   LayoutAnimation,
   UIManager,
   Platform,
-  Keyboard
+  Keyboard,
+  ImageBackground,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback
 } from 'react-native'
+import useAuth from '../../hooks/useAuth'
 
-import BottomSheet from '@gorhom/bottom-sheet'
-import useAuth from '../hooks/useAuth'
+import * as NavigationBar from 'expo-navigation-bar'
+import color from '../../style/color'
+import { useNavigation } from '@react-navigation/native'
 
-import ReelsComments from '../components/ReelsComments'
+import ReelsComments from '../../components/ReelsComments'
 
 import { AntDesign, FontAwesome, FontAwesome5, Entypo, MaterialCommunityIcons } from '@expo/vector-icons'
-import color from '../style/color'
+
 import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { db } from '../hooks/firebase'
+import { db } from '../../hooks/firebase'
+
 import { useFonts } from 'expo-font'
 
 import { FlatGrid } from 'react-native-super-grid'
 
-import smileys from './emoji/smileys'
+import smileys from '../../components/emoji/smileys'
 
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
-const ReelsCommentSheet = () => {
+const ReelsComment = () => {
   const {
     user,
     userProfile,
-    bottomSheetIndex,
-    setBottomSheetIndex,
     reelsProps,
     setReelsProps,
     reelsCommentType,
@@ -45,6 +49,21 @@ const ReelsCommentSheet = () => {
     setReplyCommentProps,
     commentAutoFocus
   } = useAuth()
+
+  const navigation = useNavigation()
+
+  NavigationBar.setPositionAsync('absolute')
+  NavigationBar.setBackgroundColorAsync(color.transparent)
+  NavigationBar.setButtonStyleAsync('light')
+  NavigationBar.setVisibilityAsync('hidden')
+  NavigationBar.setBehaviorAsync('overlay-swipe')
+
+  navigation.addListener('beforeRemove', () => {
+    NavigationBar.setVisibilityAsync('visible')
+    NavigationBar.setPositionAsync('relative')
+    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
+    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
+  })
 
   const [comment, setComment] = useState('')
   const [reply, setReply] = useState('')
@@ -63,7 +82,7 @@ const ReelsCommentSheet = () => {
       addDoc(collection(db, 'reels', reelsProps?.id, 'comments'), {
         comment,
         reel: reelsProps,
-        repliesCount: 0,
+        commentsCount: 0,
         likesCount: 0,
         user: {
           id: userProfile?.id,
@@ -75,7 +94,7 @@ const ReelsCommentSheet = () => {
       })
 
       await updateDoc(doc(db, 'reels', reelsProps?.id), {
-        repliesCount: increment(1)
+        commentsCount: increment(1)
       })
 
       if (reelsProps?.user?.id != user?.uid)
@@ -190,39 +209,45 @@ const ReelsCommentSheet = () => {
   }
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
 
   return (
-    <>
-      {
-        reelsProps &&
-        <BottomSheet
-          snapPoints={['80%']}
-          index={bottomSheetIndex}
-          handleHeight={40}
-          enablePanDownToClose={true}
-          enableOverDrag
-          detached={true}
-          handleIndicatorStyle={{
-            display: 'none'
-          }}
-          backgroundStyle={{
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
-          }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ImageBackground
+          source={{ uri: reelsProps?.thumbnail }}
+          blurRadius={50}
+          style={{ flex: 1 }}
         >
           <View
             style={{
+              marginTop: 30,
               height: 40,
-              marginHorizontal: 10,
               marginBottom: 10,
               flexDirection: 'row',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',
+              marginHorizontal: 10
             }}
           >
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                width: 30,
+                height: 30,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Entypo name='chevron-left' size={24} color={color.white} />
+            </TouchableOpacity>
+
             <View
               style={{
                 flexDirection: 'row',
@@ -250,21 +275,6 @@ const ReelsCommentSheet = () => {
                 {reelsProps?.commentsCount == 1 ? 'Comment' : 'Comments'}
               </Text>
             </View>
-
-            <TouchableOpacity
-              onPress={() => {
-                setBottomSheetIndex(-1)
-                setReelsProps(null)
-              }}
-              style={{
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <AntDesign name='close' size={20} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
-            </TouchableOpacity>
           </View>
 
           <ReelsComments reel={reelsProps} />
@@ -408,10 +418,10 @@ const ReelsCommentSheet = () => {
               </View>
             )
           }
-        </BottomSheet>
-      }
-    </>
+        </ImageBackground>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   )
 }
 
-export default ReelsCommentSheet
+export default ReelsComment

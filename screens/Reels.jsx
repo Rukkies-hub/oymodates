@@ -16,7 +16,6 @@ import { useFonts } from 'expo-font'
 import { LinearGradient } from 'expo-linear-gradient'
 
 import useAuth from '../hooks/useAuth'
-import ReelsCommentSheet from '../components/ReelsCommentSheet'
 import LikeReels from '../components/LikeReels'
 import { useNavigation } from '@react-navigation/native'
 
@@ -174,8 +173,9 @@ const Reels = () => {
 
               <TouchableOpacity
                 onPress={() => {
-                  setBottomSheetIndex(0)
+                  // setBottomSheetIndex(0)
                   setReelsProps(item)
+                  navigation.navigate('ReelsComment')
                 }}
                 style={{
                   width: 40,
