@@ -22,9 +22,9 @@ const ReelsCommentReplySheet = (props) => {
 
   const sendCommentReply = async () => {
     if (reply != '')
-      await addDoc(collection(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'replies'), {
+      await addDoc(collection(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'replies'), {
         reply,
-        post: comment?.post,
+        reel: comment?.reel,
         comment: comment?.id,
         likesCount: 0,
         repliesCount: 0,
@@ -36,15 +36,15 @@ const ReelsCommentReplySheet = (props) => {
         },
         timestamp: serverTimestamp()
       }).then(async () => {
-        if (comment?.post?.user?.id != userProfile?.id)
-          await addDoc(collection(db, 'users', comment?.post?.user?.id, 'notifications'), {
-            action: 'post',
+        if (comment?.reel?.user?.id != userProfile?.id)
+          await addDoc(collection(db, 'users', comment?.reel?.user?.id, 'notifications'), {
+            action: 'reel',
             activity: 'reply',
             text: 'replied to a post you commented on',
-            notify: comment?.post?.user,
-            id: comment?.post?.id,
+            notify: comment?.reel?.user,
+            id: comment?.reel?.id,
             seen: false,
-            post: comment?.post,
+            reel: comment?.reel,
             user: {
               id: userProfile?.id,
               username: userProfile?.username,
@@ -55,20 +55,20 @@ const ReelsCommentReplySheet = (props) => {
           })
       })
 
-    await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
+    await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
       repliesCount: increment(1)
     })
     setReply('')
 
     if (comment?.user?.id != userProfile?.id) {
       await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
-        action: 'post',
+        action: 'reel',
         activity: 'comment likes',
         text: 'likes your comment',
         notify: comment?.user,
         id: comment?.id,
         seen: false,
-        post: comment?.post,
+        reel: comment?.reel,
         user: {
           id: userProfile?.id,
           username: userProfile?.username,
@@ -105,7 +105,7 @@ const ReelsCommentReplySheet = (props) => {
         ref={refCommentSheet}
         closeOnDragDown={true}
         closeOnPressMask={true}
-        height={200}
+        height={150}
         customStyles={{
           wrapper: {
             backgroundColor: color.faintBlack
@@ -150,7 +150,7 @@ const ReelsCommentReplySheet = (props) => {
               width: '100%',
               height,
               minHeight: 50,
-              maxHeight: 150,
+              maxHeight: 100,
               fontFamily: 'text',
               color: userProfile?.appMode == 'light' ? color.dark : color.white,
               paddingRight: 40,

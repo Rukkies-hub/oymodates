@@ -38,7 +38,8 @@ const ReelsCommentReplies = (props) => {
       }}
     >
       <FlatList
-        data={replies.splice(0, 1)}
+        // data={replies.splice(0, 1)}
+        data={replies}
         keyExtractor={item => item.id}
         style={{ flex: 1 }}
         renderItem={({ item: reply }) => (
@@ -95,7 +96,7 @@ const ReelsCommentReplies = (props) => {
                   alignItems: 'center',
                 }}
               >
-                <LikeReelsReply reply={reply} />
+                {/* <LikeReelsReply reply={reply} /> */}
                 {/* <LikeReply reply={reply} /> */}
               </View>
             </View>
