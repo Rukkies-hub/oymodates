@@ -55,17 +55,17 @@ const backgrounds = [
   },
 ]
 
-const MessageSettings = (props) => {
+const MessageSettings = props => {
   const { userProfile, setChatTheme } = useAuth()
   const refMessageSettingsSheet = useRef()
 
   const matchDetails = props?.matchDetails
 
-  const setChatBackground = async background => {
+  const setChatBackground = async background =>
     await updateDoc(doc(db, 'matches', matchDetails?.id), {
-      chatTheme: background?.id
+      chatTheme: background?.image
     })
-  }
+
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')

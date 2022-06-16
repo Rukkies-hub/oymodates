@@ -88,6 +88,7 @@ const ChatRow = ({ matchDetails }) => {
             {matchedUserInfo?.username}
           </Text>
           <Text
+            numberOfLines={1}
             style={{
               fontSize: 12,
               color: userProfile?.appMode == 'light' ? color.dark : color.white,

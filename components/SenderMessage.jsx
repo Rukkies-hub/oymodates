@@ -59,14 +59,9 @@ const SenderMessage = ({ messages, matchDetails }) => {
 
   return (
     <View style={{ flexDirection: "row-reverse", marginBottom: 10 }}>
-      <Image
-        style={{ width: 30, height: 30, borderRadius: 50 }}
-        source={{ uri: userProfile?.photoURL }}
-      />
       <View
         style={{
           alignSelf: "flex-end",
-          marginRight: 10,
           maxWidth: "80%"
         }}
       >

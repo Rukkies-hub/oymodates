@@ -10,8 +10,6 @@ import {
   Text
 } from 'react-native'
 
-import Header from '../../components/Header'
-
 import color from '../../style/color'
 
 import { useFonts } from 'expo-font'
@@ -30,18 +28,18 @@ const AddComment = params => {
   const post = params?.route?.params?.post
   const navigation = useNavigation()
 
-  NavigationBar.setPositionAsync('absolute')
-  NavigationBar.setBackgroundColorAsync(color.transparent)
-  NavigationBar.setButtonStyleAsync('light')
-  NavigationBar.setVisibilityAsync('hidden')
-  NavigationBar.setBehaviorAsync('overlay-swipe')
+  // NavigationBar.setPositionAsync('absolute')
+  // NavigationBar.setBackgroundColorAsync(color.transparent)
+  // NavigationBar.setButtonStyleAsync('light')
+  // NavigationBar.setVisibilityAsync('hidden')
+  // NavigationBar.setBehaviorAsync('overlay-swipe')
 
-  navigation.addListener('beforeRemove', () => {
-    NavigationBar.setVisibilityAsync('visible')
-    NavigationBar.setPositionAsync('relative')
-    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
-    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
-  })
+  // navigation.addListener('beforeRemove', () => {
+  //   NavigationBar.setVisibilityAsync('visible')
+  //   NavigationBar.setPositionAsync('relative')
+  //   NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
+  //   NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
+  // })
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')

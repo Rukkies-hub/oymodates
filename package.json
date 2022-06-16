@@ -76,6 +76,7 @@
     "react-native-screens": "~3.10.1",
     "react-native-simple-audio-player": "^1.0.2",
     "react-native-slider": "^0.11.0",
+    "react-native-snap-carousel": "^3.9.1",
     "react-native-super-grid": "^4.4.0",
     "react-native-tab-view": "^3.1.1",
     "react-native-track-player": "^2.2.0-rc3",

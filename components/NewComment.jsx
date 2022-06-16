@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -21,6 +21,9 @@ import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
 
 import smileys from '../components/emoji/smileys'
+import smileys1 from '../components/emoji/smileys1'
+import smileys2 from '../components/emoji/smileys2'
+import smileys3 from '../components/emoji/smileys3'
 
 import { FlatGrid } from 'react-native-super-grid'
 
@@ -39,7 +42,6 @@ const NewComment = (params) => {
   const [input, setInput] = useState('')
 
   const [expanded, setExpanded] = useState(false)
-  const [showEmoji, setShowEmoji] = useState(false)
 
   const sendComment = async () => {
     if (input != '')
@@ -132,8 +134,6 @@ const NewComment = (params) => {
             Keyboard.dismiss()
             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
             setExpanded(!expanded)
-
-            setTimeout(() => setShowEmoji(!showEmoji), 500)
           }}
           style={{
             width: 50,
@@ -203,28 +203,49 @@ const NewComment = (params) => {
 
       {
         expanded && (
-          <View style={{ minWidth: 200, maxHeight: 200 }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                flexWrap: 'wrap'
-              }}
+          <View style={{ minWidth: 150, maxHeight: 150 }}>
+            <ScrollView
+              horizontal
+              pagingEnabled
+              scrollEnabled
             >
-              {
-                showEmoji &&
-                <FlatGrid
-                  data={smileys}
-                  itemDimension={30}
-                  renderItem={({ item: emoji }) => (
-                    <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                      <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              }
-            </View>
+              <FlatGrid
+                data={smileys}
+                itemDimension={30}
+                renderItem={({ item: emoji }) => (
+                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+              <FlatGrid
+                data={smileys1}
+                itemDimension={30}
+                renderItem={({ item: emoji }) => (
+                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+              <FlatGrid
+                data={smileys2}
+                itemDimension={30}
+                renderItem={({ item: emoji }) => (
+                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+              <FlatGrid
+                data={smileys3}
+                itemDimension={30}
+                renderItem={({ item: emoji }) => (
+                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </ScrollView>
           </View>
         )
       }

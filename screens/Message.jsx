@@ -12,7 +12,9 @@ import {
   Text,
   ActivityIndicator,
   SafeAreaView,
-  Platform
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView
 } from 'react-native'
 
 import color from '../style/color'
@@ -37,6 +39,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
 
 import smileys from '../components/emoji/smileys'
+import smileys1 from '../components/emoji/smileys1'
+import smileys2 from '../components/emoji/smileys2'
+import smileys3 from '../components/emoji/smileys3'
 
 if (
   Platform.OS === 'android' &&
@@ -51,12 +56,17 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
 import { FlatGrid } from 'react-native-super-grid'
 
+import * as NavigationBar from 'expo-navigation-bar'
+
 const Message = () => {
   const navigation = useNavigation()
   const { user, userProfile, chatTheme } = useAuth()
 
   const { params } = useRoute()
   const { matchDetails } = params
+
+  NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
+  NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
 
   const storage = getStorage()
 
@@ -72,7 +82,6 @@ const Message = () => {
   const [recording, setRecording] = useState()
   const [recordings, setRecordings] = useState([])
   const [recordingLoading, setRecordingLoading] = useState(false)
-  const [showEmoji, setShowEmoji] = useState(false)
 
   useEffect(() =>
     onSnapshot(query(collection(db,
@@ -196,219 +205,246 @@ const Message = () => {
   if (!loaded) return null
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
-      }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
     >
-      <Header
-        showBack
-        showTitle
-        showPhone
-        showVideo
-        showMatchAvatar
-        matchDetails={matchDetails}
-        title={getMatchedUserInfo(matchDetails?.users, user?.uid).username}
-        matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL}
-        showChatMenu
-      />
-
-      <TouchableWithoutFeedback
-        onPress={Keyboard.dismiss}
-      >
-        <FlatList
-          inverted={-1}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView
           style={{
             flex: 1,
-            paddingHorizontal: 10
+            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
           }}
-          data={messages}
-          keyExtractor={item => item.id}
-          renderItem={({ item: message }) => (
-            message.userId === user?.uid ? (
-              <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} />
-            ) : (
-              <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} />
-            )
-          )}
-        />
-      </TouchableWithoutFeedback>
+        >
+          <Header
+            showBack
+            showTitle
+            showPhone
+            showVideo
+            showMatchAvatar
+            matchDetails={matchDetails}
+            title={getMatchedUserInfo(matchDetails?.users, user?.uid).username}
+            matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL}
+            showChatMenu
+          />
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingHorizontal: 10,
-          backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-          minHeight: 50,
-          overflow: 'hidden',
-          position: 'relative',
-          marginHorizontal: 10,
-          borderRadius: 12,
-          marginBottom: 15
-        }}
-      >
-        {
-          mediaVidiblity && <>
-            <TouchableOpacity
-              style={{
-                width: 40,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-              <MaterialCommunityIcons name='camera-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate('MessageImageGallery')}
-              style={{
-                width: 40,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-              <MaterialCommunityIcons name='image-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-            </TouchableOpacity>
-          </>
-        }
-        <TouchableOpacity
-          onPress={() => {
-            Keyboard.dismiss()
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-            setExpanded(!expanded)
-
-            setTimeout(() => setShowEmoji(!showEmoji), 500)
-          }}
-          style={{
-            width: 40,
-            height: 50,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-          <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-        </TouchableOpacity>
-
-        {
-          showRecording ?
-            <View
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+          >
+            <FlatList
+              inverted={-1}
               style={{
                 flex: 1,
-                width: '100%',
-                height: '100%',
-                maxHeight: 70,
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center'
+                paddingHorizontal: 10
               }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontFamily: 'text',
-                  color: userProfile?.appMode == 'light' ? color.lightText : color.white
-                }}
-              >
-                Recording...
-              </Text>
-            </View>
-            :
-            <TextInput
-              multiline
-              value={input}
-              onChangeText={setInput}
-              onSubmitEditing={sendMessage}
-              onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-              placeholder='Aa..'
-              placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
-              style={{
-                fontSize: 18,
-                flex: 1,
-                height: activeInput ? height : '100%',
-                maxHeight: 70,
-                fontFamily: 'text',
-                color: userProfile?.appMode == 'light' ? color.dark : color.white
-              }}
+              data={messages}
+              keyExtractor={item => item.id}
+              renderItem={({ item: message }) => (
+                message.userId === user?.uid ? (
+                  <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} />
+                ) : (
+                  <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} />
+                )
+              )}
             />
-        }
+          </TouchableWithoutFeedback>
 
-        {
-          showSend &&
-          <TouchableOpacity
-            onPress={sendMessage}
+          <View
             style={{
-              width: 50,
-              height: 50,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-            <FontAwesome5
-              name='paper-plane'
-              color={userProfile?.appMode == 'light' ? color.lightText : color.white}
-              size={20}
-            />
-          </TouchableOpacity>
-        }
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingHorizontal: 10,
+              backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+              minHeight: 50,
+              overflow: 'hidden',
+              position: 'relative',
+              marginHorizontal: 10,
+              borderRadius: 12,
+              marginBottom: 15
+            }}
+          >
+            {
+              mediaVidiblity && <>
+                <TouchableOpacity
+                  style={{
+                    width: 40,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                  <MaterialCommunityIcons name='camera-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+                </TouchableOpacity>
 
-        <TouchableOpacity
-          onLongPress={() => {
-            setShowRecording(true)
-            setShowSend(false)
-            startRecording()
-          }}
-          onPressOut={() => {
-            setShowRecording(false)
-            setShowSend(true)
-            stopRecording()
-          }}
-          style={{
-            width: 50,
-            height: 50,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-          {
-            recordingLoading ?
-              <ActivityIndicator size='small' color={userProfile?.appMode == 'light' ? color.lightText : color.white} /> :
-              <FontAwesome5
-                size={20}
-                name="microphone-alt"
-                color={userProfile?.appMode == 'light' ? color.lightText : color.white}
-              />
-          }
-        </TouchableOpacity>
-      </View>
-
-      {
-        expanded && (
-          <View style={{ minWidth: 200, maxHeight: 200, flex: 1 }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                flexWrap: 'wrap'
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('MessageImageGallery')}
+                  style={{
+                    width: 40,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                  <MaterialCommunityIcons name='image-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+                </TouchableOpacity>
+              </>
+            }
+            <TouchableOpacity
+              onPress={() => {
+                Keyboard.dismiss()
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+                setExpanded(!expanded)
               }}
-            >
-              {
-                showEmoji &&
-                <FlatGrid
-                  data={smileys}
-                  itemDimension={30}
-                  renderItem={({ item: emoji }) => (
-                    <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                      <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                    </TouchableOpacity>
-                  )}
+              style={{
+                width: 40,
+                height: 50,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+            </TouchableOpacity>
+
+            {
+              showRecording ?
+                <View
+                  style={{
+                    flex: 1,
+                    width: '100%',
+                    height: '100%',
+                    maxHeight: 70,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontFamily: 'text',
+                      color: userProfile?.appMode == 'light' ? color.lightText : color.white
+                    }}
+                  >
+                    Recording...
+                  </Text>
+                </View>
+                :
+                <TextInput
+                  multiline
+                  value={input}
+                  onChangeText={setInput}
+                  onSubmitEditing={sendMessage}
+                  onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+                  placeholder='Aa..'
+                  placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                  style={{
+                    fontSize: 18,
+                    flex: 1,
+                    height: activeInput ? height : '100%',
+                    maxHeight: 70,
+                    fontFamily: 'text',
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white
+                  }}
                 />
+            }
+
+            {
+              showSend &&
+              <TouchableOpacity
+                onPress={sendMessage}
+                style={{
+                  width: 50,
+                  height: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                <FontAwesome5
+                  name='paper-plane'
+                  color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                  size={20}
+                />
+              </TouchableOpacity>
+            }
+
+            <TouchableOpacity
+              onLongPress={() => {
+                setShowRecording(true)
+                setShowSend(false)
+                startRecording()
+              }}
+              onPressOut={() => {
+                setShowRecording(false)
+                setShowSend(true)
+                stopRecording()
+              }}
+              style={{
+                width: 50,
+                height: 50,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              {
+                recordingLoading ?
+                  <ActivityIndicator size='small' color={userProfile?.appMode == 'light' ? color.lightText : color.white} /> :
+                  <FontAwesome5
+                    size={20}
+                    name="microphone-alt"
+                    color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                  />
               }
-            </View>
+            </TouchableOpacity>
           </View>
-        )
-      }
-    </SafeAreaView >
+
+          {
+            expanded && (
+              <View style={{ minWidth: 150, maxHeight: 150, flex: 1 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  scrollEnabled
+
+                >
+                  <FlatGrid
+                    data={smileys}
+                    itemDimension={30}
+                    renderItem={({ item: emoji }) => (
+                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                  <FlatGrid
+                    data={smileys1}
+                    itemDimension={30}
+                    renderItem={({ item: emoji }) => (
+                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                  <FlatGrid
+                    data={smileys2}
+                    itemDimension={30}
+                    renderItem={({ item: emoji }) => (
+                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                  <FlatGrid
+                    data={smileys3}
+                    itemDimension={30}
+                    renderItem={({ item: emoji }) => (
+                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                </ScrollView>
+              </View>
+            )
+          }
+        </SafeAreaView >
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   )
 }
 
