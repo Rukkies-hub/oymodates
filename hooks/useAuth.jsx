@@ -67,7 +67,6 @@ export const AuthProvider = ({ children }) => {
   const [assetsList, setAssetsList] = useState([])
   const [address, setAddress] = useState(null)
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
-  const [bottomSheetIndex, setBottomSheetIndex] = useState(-1)
   const [reelsProps, setReelsProps] = useState(null)
   const [notifications, setNotificatios] = useState([])
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: 0 })
@@ -202,8 +201,6 @@ export const AuthProvider = ({ children }) => {
         mediaVidiblity,
         setMediaVidiblity,
         showReplyInput,
-        bottomSheetIndex,
-        setBottomSheetIndex,
         reelsProps,
         setReelsProps,
         notifications,

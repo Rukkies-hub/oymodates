@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const ViewReel = (props) => {
   const navigation = useNavigation()
-  const { userProfile, setBottomSheetIndex, setReelsProps } = useAuth()
+  const { userProfile, setReelsProps } = useAuth()
   const reel = props?.route?.params?.reel
 
   const ref = useRef(null)
@@ -150,7 +150,7 @@ const ViewReel = (props) => {
 
             <TouchableOpacity
               onPress={() => {
-                setBottomSheetIndex(0)
+                navigation.navigate('ReelsComment')
                 setReelsProps(reel)
               }}
               style={{

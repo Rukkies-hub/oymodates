@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native'
 import ReelsCommentReplyReply from './ReelsCommentReplyReply'
 
 const ReelsCommentReplies = (props) => {
-  const { userProfile, setBottomSheetIndex, bottomSheetIndex } = useAuth()
+  const { userProfile } = useAuth()
   const comments = props.comment
   const [replies, setReplies] = useState([])
 
@@ -93,7 +93,6 @@ const ReelsCommentReplies = (props) => {
                 >
                   <TouchableOpacity
                     onPress={() => {
-                      setBottomSheetIndex(-1)
                       reply?.reelComment?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: reply?.reelComment?.user })
                     }}
                   >

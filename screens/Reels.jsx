@@ -20,7 +20,7 @@ import LikeReels from '../components/LikeReels'
 import { useNavigation } from '@react-navigation/native'
 
 const Reels = () => {
-  const { setBottomSheetIndex, userProfile, user, reelsProps, setReelsProps } = useAuth()
+  const { userProfile, user, reelsProps, setReelsProps } = useAuth()
   const mediaRefs = useRef([])
 
   const navigation = useNavigation()
@@ -173,7 +173,6 @@ const Reels = () => {
 
               <TouchableOpacity
                 onPress={() => {
-                  // setBottomSheetIndex(0)
                   setReelsProps(item)
                   navigation.navigate('ReelsComment')
                 }}
