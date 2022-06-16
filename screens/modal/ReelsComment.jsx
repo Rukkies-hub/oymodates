@@ -21,7 +21,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import ReelsComments from '../../components/ReelsComments'
 
-import { AntDesign, FontAwesome, FontAwesome5, Entypo, MaterialCommunityIcons } from '@expo/vector-icons'
+import { FontAwesome5, Entypo, MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'

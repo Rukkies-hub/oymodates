@@ -51,7 +51,8 @@ const Header = ({
   showMessageImageGallerySelect,
   matchDetails,
   showNotification,
-  showChatMenu
+  showChatMenu,
+  backgroundColor
 }) => {
   const navigation = useNavigation()
   const { user, userProfile, madiaString, media, setMedia, notifications, setNotificatios } = useAuth()
@@ -157,7 +158,7 @@ const Header = ({
     >
       <View
         style={{
-          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+          backgroundColor: backgroundColor || userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
           height: 50,
           marginTop: 40,
           paddingHorizontal: 10,

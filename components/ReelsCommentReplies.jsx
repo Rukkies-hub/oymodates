@@ -43,8 +43,7 @@ const ReelsCommentReplies = (props) => {
       }}
     >
       <FlatList
-        // data={replies.splice(0, 1)}
-        data={replies}
+        data={replies.splice(0, 1)}
         keyExtractor={item => item.id}
         style={{ flex: 1 }}
         renderItem={({ item: reply }) => (

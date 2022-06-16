@@ -83,10 +83,10 @@ const StackNavigator = () => {
               <Stack.Screen name='NewMatch' component={NewMatch} options={{ headerShown: false }} />
               <Stack.Screen name='ViewAvarar' component={ViewAvarar} options={{ headerShown: false }} />
               <Stack.Screen name='ReelsComment' component={ReelsComment} options={{ headerShown: false }} />
+              <Stack.Screen name='AddComment' component={AddComment} options={{ headerShown: false }} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
-              <Stack.Screen name='AddComment' component={AddComment} options={{ headerShown: false }} />
               <Stack.Screen name='MessageImageGallery' component={MessageImageGallery} options={{ headerShown: false }} />
               <Stack.Screen name='UserProfile' component={UserProfile} options={{ headerShown: false }} />
               <Stack.Screen name='Passion' component={Passion} options={{ headerShown: false }} />

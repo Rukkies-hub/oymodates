@@ -1,5 +1,14 @@
 import React from 'react'
-import { View } from 'react-native'
+import {
+  View,
+  Platform,
+  Keyboard,
+  ImageBackground,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Text
+} from 'react-native'
 
 import Header from '../../components/Header'
 
@@ -11,9 +20,28 @@ import Comments from '../../components/Comments'
 import NewComment from '../../components/NewComment'
 import useAuth from '../../hooks/useAuth'
 
+import * as NavigationBar from 'expo-navigation-bar'
+import { useNavigation } from '@react-navigation/native'
+
+import { Entypo } from '@expo/vector-icons'
+
 const AddComment = params => {
   const { userProfile } = useAuth()
   const post = params?.route?.params?.post
+  const navigation = useNavigation()
+
+  NavigationBar.setPositionAsync('absolute')
+  NavigationBar.setBackgroundColorAsync(color.transparent)
+  NavigationBar.setButtonStyleAsync('light')
+  NavigationBar.setVisibilityAsync('hidden')
+  NavigationBar.setBehaviorAsync('overlay-swipe')
+
+  navigation.addListener('beforeRemove', () => {
+    NavigationBar.setVisibilityAsync('visible')
+    NavigationBar.setPositionAsync('relative')
+    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
+    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
+  })
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -22,18 +50,56 @@ const AddComment = params => {
   if (!loaded) return null
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
-      }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
     >
-      <Header showBack showTitle title='Comment' />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ImageBackground
+          source={{ uri: post?.mediaType == 'image' ? post?.media : userProfile?.photoURL }}
+          blurRadius={50}
+          style={{ flex: 1 }}
+        >
+          <View
+            style={{
+              marginTop: 30,
+              height: 40,
+              marginBottom: 10,
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              marginHorizontal: 10
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                width: 30,
+                height: 30,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Entypo name='chevron-left' size={24} color={color.white} />
+            </TouchableOpacity>
 
-      <Comments post={post} />
+            <Text
+              style={{
+                fontFamily: 'text',
+                fontSize: 16,
+                color: color.white
+              }}
+            >
+              Comment
+            </Text>
+          </View>
 
-      <NewComment post={post} />
-    </View>
+          <Comments post={post} />
+
+          <NewComment post={post} />
+        </ImageBackground>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   )
 }
 
