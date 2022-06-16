@@ -32,9 +32,22 @@ if (
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const ReelsCommentSheet = () => {
-  const { user, userProfile, bottomSheetIndex, setBottomSheetIndex, reelsProps, setReelsProps } = useAuth()
+  const {
+    user,
+    userProfile,
+    bottomSheetIndex,
+    setBottomSheetIndex,
+    reelsProps,
+    setReelsProps,
+    reelsCommentType,
+    setReelsCommentType,
+    replyCommentProps,
+    setReplyCommentProps,
+    commentAutoFocus
+  } = useAuth()
 
   const [comment, setComment] = useState('')
+  const [reply, setReply] = useState('')
   const [height, setHeight] = useState(40)
   const [expanded, setExpanded] = useState(false)
   const [showEmoji, setShowEmoji] = useState(false)
@@ -78,6 +91,69 @@ const ReelsCommentSheet = () => {
         })
       setComment('')
     }
+  }
+
+  const sendCommentReply = async () => {
+    let comment = replyCommentProps
+
+    if (reply != '')
+      await addDoc(collection(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'replies'), {
+        reply,
+        reel: comment?.reel,
+        comment: comment?.id,
+        likesCount: 0,
+        repliesCount: 0,
+        user: {
+          id: userProfile?.id,
+          displayName: userProfile?.displayName,
+          username: userProfile?.username,
+          photoURL: userProfile?.photoURL
+        },
+        timestamp: serverTimestamp()
+      }).then(async () => {
+        if (comment?.reel?.user?.id != userProfile?.id)
+          await addDoc(collection(db, 'users', comment?.reel?.user?.id, 'notifications'), {
+            action: 'reel',
+            activity: 'reply',
+            text: 'replied to a post you commented on',
+            notify: comment?.reel?.user,
+            id: comment?.reel?.id,
+            seen: false,
+            reel: comment?.reel,
+            user: {
+              id: userProfile?.id,
+              username: userProfile?.username,
+              displayName: userProfile?.displayName,
+              photoURL: userProfile?.photoURL
+            },
+            timestamp: serverTimestamp()
+          })
+      })
+
+    await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
+      repliesCount: increment(1)
+    })
+    setReply('')
+
+    if (comment?.user?.id != userProfile?.id)
+      await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
+        action: 'reel',
+        activity: 'comment likes',
+        text: 'likes your comment',
+        notify: comment?.user,
+        id: comment?.id,
+        seen: false,
+        reel: comment?.reel,
+        user: {
+          id: userProfile?.id,
+          username: userProfile?.username,
+          displayName: userProfile?.displayName,
+          photoURL: userProfile?.photoURL
+        },
+        timestamp: serverTimestamp()
+      })
+
+    setReelsCommentType('comment')
   }
 
   const [loaded] = useFonts({
@@ -177,12 +253,13 @@ const ReelsCommentSheet = () => {
           >
             <TextInput
               multiline
-              value={comment}
-              onChangeText={setComment}
+              value={reelsCommentType != 'reply' ? comment : reply}
+              onChangeText={reelsCommentType != 'reply' ? setComment : setReply}
               onSubmitEditing={sendComment}
-              placeholder='Write a comment...'
+              placeholder={reelsCommentType != 'reply' ? 'Write a comment...' : `Reply @${replyCommentProps?.user?.username}`}
               placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+              autoFocus={commentAutoFocus}
               style={{
                 fontSize: 18,
                 flex: 1,
@@ -218,7 +295,7 @@ const ReelsCommentSheet = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={sendComment}
+              onPress={reelsCommentType != 'reply' ? sendComment : sendCommentReply}
               style={{
                 width: 50,
                 height: 50,
@@ -245,28 +322,28 @@ const ReelsCommentSheet = () => {
               alignItems: 'center'
             }}
           >
-            <TouchableOpacity onPress={() => setComment(comment + '🤣')}>
+            <TouchableOpacity onPress={() => reelsCommentType != 'reply' ? setComment(comment + '🤣') : setReply(reply + '🤣')}>
               <Text style={{ fontSize: 30 }}>🤣</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setComment(comment + '😭')}>
+            <TouchableOpacity onPress={() => reelsCommentType != 'reply' ? setComment(comment + '😭') : setReply(reply + '😭')}>
               <Text style={{ fontSize: 30 }}>😭</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setComment(comment + '🥺')}>
+            <TouchableOpacity onPress={() => reelsCommentType != 'reply' ? setComment(comment + '🥺') : setReply(reply + '🥺')}>
               <Text style={{ fontSize: 30 }}>🥺</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setComment(comment + '😏')}>
+            <TouchableOpacity onPress={() => reelsCommentType != 'reply' ? setComment(comment + '😏') : setReply(reply + '😏')}>
               <Text style={{ fontSize: 30 }}>😏</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setComment(comment + '🤨')}>
+            <TouchableOpacity onPress={() => reelsCommentType != 'reply' ? setComment(comment + '🤨') : setReply(reply + '🤨')}>
               <Text style={{ fontSize: 30 }}>🤨</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setComment(comment + '🙄')}>
+            <TouchableOpacity onPress={() => reelsCommentType != 'reply' ? setComment(comment + '🙄') : setReply(reply + '🙄')}>
               <Text style={{ fontSize: 30 }}>🙄</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setComment(comment + '😍')}>
+            <TouchableOpacity onPress={() => reelsCommentType != 'reply' ? setComment(comment + '😍') : setReply(reply + '😍')}>
               <Text style={{ fontSize: 30 }}>😍</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setComment(comment + '❤️')}>
+            <TouchableOpacity onPress={() => reelsCommentType != 'reply' ? setComment(comment + '❤️') : setReply(reply + '❤️')}>
               <Text style={{ fontSize: 30 }}>❤️</Text>
             </TouchableOpacity>
           </View>
@@ -288,7 +365,7 @@ const ReelsCommentSheet = () => {
                       data={smileys}
                       itemDimension={30}
                       renderItem={({ item: emoji }) => (
-                        <TouchableOpacity onPress={() => setComment(comment + emoji.emoji)}>
+                        <TouchableOpacity onPress={() => reelsCommentType != 'reply' ? setComment(comment + emoji.emoji) : setReply(reply + emoji.emoji)}>
                           <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
                         </TouchableOpacity>
                       )}

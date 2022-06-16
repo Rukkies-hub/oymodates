@@ -76,7 +76,7 @@ const ReelsCommentReplies = (props) => {
                     fontSize: 13
                   }}
                 >
-                  {reply?.user?.displayName}
+                  {reply?.user?.username}
                 </Text>
                 <Text
                   style={{

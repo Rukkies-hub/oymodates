@@ -74,6 +74,9 @@ export const AuthProvider = ({ children }) => {
   const [likeDisable, setLikeDisable] = useState(false)
   const [chatTheme, setChatTheme] = useState(false)
   const [secureTextEntry, setSecureTextEntry] = useState(true)
+  const [reelsCommentType, setReelsCommentType] = useState('comment')
+  const [replyCommentProps, setReplyCommentProps] = useState(null)
+  const [commentAutoFocus, setCommentAutoFocus] = useState(false)
 
   const signInWighGoogle = async () => {
     setLoading(true)
@@ -219,7 +222,13 @@ export const AuthProvider = ({ children }) => {
         setSigninEmail,
         signinPassword,
         setSigninPassword,
-        paswordSignin
+        paswordSignin,
+        reelsCommentType,
+        setReelsCommentType,
+        replyCommentProps,
+        setReplyCommentProps,
+        commentAutoFocus,
+        setCommentAutoFocus
       }}
     >
       {!loadingInitial && children}

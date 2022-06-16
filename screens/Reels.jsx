@@ -108,15 +108,19 @@ const Reels = () => {
               marginLeft: 10
             }}
           >
-            <Text
-              style={{
-                color: color.white,
-                fontFamily: 'text',
-                fontSize: 16
-              }}
+            <TouchableOpacity
+              onPress={() => item?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: item?.user })}
             >
-              {item?.user?.displayName}
-            </Text>
+              <Text
+                style={{
+                  color: color.white,
+                  fontFamily: 'text',
+                  fontSize: 16
+                }}
+              >
+                @{item?.user?.username}
+              </Text>
+            </TouchableOpacity>
             <Text
               style={{
                 color: color.white,

@@ -12,7 +12,7 @@ import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from '
 import { db } from '../hooks/firebase'
 
 const ReelsCommentReplySheet = (props) => {
-  const { userProfile } = useAuth()
+  const { userProfile, setReelsCommentType, setReplyCommentProps, setCommentAutoFocus } = useAuth()
   const refCommentSheet = useRef()
 
   const comment = props?.comment
@@ -81,101 +81,26 @@ const ReelsCommentReplySheet = (props) => {
   }
 
   return (
-    <>
-      <TouchableOpacity
-        onPress={() => refCommentSheet.current.open()}
+    <TouchableOpacity
+      onPress={() => {
+        setReelsCommentType('reply')
+        setReplyCommentProps(comment)
+        setCommentAutoFocus(true)
+      }}
+      style={{
+        paddingHorizontal: 10,
+        paddingVertical: 2
+      }}
+    >
+      <Text
         style={{
-          paddingHorizontal: 10,
-          paddingVertical: 2
+          color: userProfile?.appMode == 'light' ? color.dark : color.white,
+          fontFamily: 'text'
         }}
       >
-        <Text
-          style={{
-            color: userProfile?.appMode == 'light' ? color.dark : color.white,
-            fontFamily: 'text'
-          }}
-        >
-          Reply
-        </Text>
-      </TouchableOpacity>
-
-      <RBSheet
-        openDuration={300}
-        closeDuration={300}
-        ref={refCommentSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={true}
-        height={150}
-        customStyles={{
-          wrapper: {
-            backgroundColor: color.faintBlack
-          },
-          container: {
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20
-          },
-          draggableIcon: {
-            backgroundColor: userProfile?.appMode == 'light' ? color.black : color.white
-          }
-        }}
-      >
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingHorizontal: 10,
-            borderTopWidth: .3,
-            borderTopColor: color.borderColor,
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-            minHeight: 50,
-            overflow: 'hidden',
-            position: 'relative',
-            marginHorizontal: 10,
-            borderRadius: 12
-          }}
-        >
-          <TextInput
-            multiline
-            value={reply}
-            onChangeText={setReply}
-            onSubmitEditing={() => sendCommentReply}
-            onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-            placeholder={`Reply @${comment?.user?.username}`}
-            placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
-            style={{
-              fontSize: 18,
-              flex: 1,
-              width: '100%',
-              height,
-              minHeight: 50,
-              maxHeight: 100,
-              fontFamily: 'text',
-              color: userProfile?.appMode == 'light' ? color.dark : color.white,
-              paddingRight: 40,
-              paddingVertical: 5
-            }}
-          />
-
-          <TouchableOpacity
-            onPress={sendCommentReply}
-            style={{
-              width: 40,
-              height: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginLeft: 10
-            }}>
-            <FontAwesome5
-              name='paper-plane'
-              color={userProfile?.appMode == 'light' ? color.lightText : color.white}
-              size={20}
-            />
-          </TouchableOpacity>
-        </View>
-      </RBSheet>
-    </>
+        Reply
+      </Text>
+    </TouchableOpacity>
   )
 }
 
