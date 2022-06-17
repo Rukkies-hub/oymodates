@@ -32,7 +32,7 @@ const ChatRow = ({ matchDetails }) => {
 
   useEffect(async () => {
     const querySnapshot = await getDocs(query(collection(db, 'matches', matchDetails.id, 'messages'),
-      where('userId', '!=', user?.uid), where('seen', '==', false)))
+      where('userId', '==', user?.uid), where('seen', '==', false)))
 
     setUnreadMessage(
       querySnapshot.docs.map(doc => ({
@@ -40,10 +40,6 @@ const ChatRow = ({ matchDetails }) => {
       }))
     )
   }, [matchDetails])
-
-  console.log('unreadMessage: ', unreadMessage.length)
-
-
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -73,10 +69,46 @@ const ChatRow = ({ matchDetails }) => {
           alignItems: 'center'
         }}
       >
-        <Image
-          style={{ width: 45, height: 45, borderRadius: 50 }}
-          source={{ uri: matchedUserInfo?.photoURL }}
-        />
+        <View
+          style={{
+            position: 'relative'
+          }}
+        >
+          <View
+            style={{
+              borderWidth: unreadMessage?.length > 0 ? 2 : 0,
+              borderColor: unreadMessage?.length > 0 ? color.red : null,
+              borderRadius: 100
+            }}
+          >
+            <Image
+              style={{ width: 45, height: 45, borderRadius: 50 }}
+              source={{ uri: matchedUserInfo?.photoURL }}
+            />
+          </View>
+          {
+            unreadMessage?.length > 0 &&
+            <View
+              style={{
+                backgroundColor: color.red,
+                paddingHorizontal: 5,
+                borderRadius: 50,
+                position: 'absolute',
+                right: 0,
+                bottom: 0
+              }}
+            >
+              <Text
+                style={{
+                  color: color.white,
+                  fontSize: 12
+                }}
+              >
+                {unreadMessage?.length}
+              </Text>
+            </View>
+          }
+        </View>
         <View style={{ marginLeft: 10, flex: 1 }}>
           <Text
             style={{
@@ -98,25 +130,6 @@ const ChatRow = ({ matchDetails }) => {
             {lastMessage || 'Say Hi!'}
           </Text>
         </View>
-        {
-          unreadMessage?.length > 0 &&
-          <View
-            style={{
-              backgroundColor: color.red,
-              paddingHorizontal: 5,
-              borderRadius: 50
-            }}
-          >
-            <Text
-              style={{
-                color: color.white,
-                fontSize: 12
-              }}
-            >
-              {unreadMessage?.length}
-            </Text>
-          </View>
-        }
       </View>
     </Pressable>
   )
