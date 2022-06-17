@@ -1,6 +1,22 @@
 import React, { useRef, useState } from 'react'
 
-import { View, Text, SafeAreaView, FlatList, Image, Pressable, Dimensions } from 'react-native'
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  Pressable,
+  Dimensions,
+  Keyboard,
+  LayoutAnimation,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback
+} from 'react-native'
 
 import Header from '../../components/Header'
 
@@ -12,44 +28,225 @@ const { width, height } = Dimensions.get('window')
 
 import AutoHeightImage from 'react-native-auto-height-image'
 
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons'
+import { FlatGrid } from 'react-native-super-grid'
+import smileys from '../../components/emoji/smileys'
+import smileys1 from '../../components/emoji/smileys1'
+import smileys2 from '../../components/emoji/smileys2'
+import smileys3 from '../../components/emoji/smileys3'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { db } from '../../hooks/firebase'
+import { Audio } from 'expo-av'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
+
+import * as NavigationBar from 'expo-navigation-bar'
+
+import uuid from 'uuid-random'
+
 const PreviewMessageImage = () => {
-  const { assetsList } = useAuth()
+  const { userProfile, user } = useAuth()
+
+  const { params } = useRoute()
+  const { matchDetails, media } = params
+  const navigation = useNavigation()
+
+  NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
+  NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
+
+  const storage = getStorage()
+
+  const [input, setInput] = useState('')
+  const [expanded, setExpanded] = useState(false)
+  const [height, setHeight] = useState(50)
+  const [sendLoading, setSendLoading] = useState(false)
+
+  const sendMessage = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.onload = () => resolve(xhr.response)
+
+      xhr.responseType = 'blob'
+      xhr.open('GET', media?.uri, true)
+      xhr.send(null)
+    })
+
+    setSendLoading(true)
+
+    const sourceRef = ref(storage, `messages/${user?.uid}/image/${uuid()}`)
+
+    uploadBytes(sourceRef, blob)
+      .then(snapshot => {
+        getDownloadURL(snapshot.ref)
+          .then(downloadURL => {
+            setExpanded(false)
+            if (input != '')
+              addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
+                userId: user?.uid,
+                username: userProfile.username,
+                photoURL: matchDetails.users[user?.uid].photoURL,
+                mediaLink: snapshot.ref._location.path,
+                mediaType: media?.type,
+                media: downloadURL,
+                caption: input,
+                seen: false,
+                timestamp: serverTimestamp(),
+              }).finally(() => {
+                setSendLoading(false)
+                setInput('')
+                navigation.goBack()
+              })
+          })
+      })
+  }
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: color.white
-      }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
     >
-      <Header showBack showTitle title='Preview image' />
+      <TouchableWithoutFeedback onPress={() => {
+        setExpanded(false)
+        Keyboard.dismiss
+      }}>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+          }}
+        >
+          <Header showBack showTitle title='Preview image' />
 
-      <FlatList
-        horizontal
-        data={assetsList}
-        bounces={false}
-        keyExtractor={(item, index) => index.toString()}
-        style={{
-          flex: 1
-        }}
-        renderItem={({ item: media }) => (
-          <Pressable
-            style={{
-              flex: 1
-            }}
-          >
+          {
+            media?.type == 'image' &&
             <AutoHeightImage
               source={{ uri: media?.uri }}
               width={width}
-              style={{
-                flex: 1
-              }}
-              resizeMode='cover'
+              style={{ flex: 1 }}
+              resizeMode='contain'
             />
-          </Pressable>
-        )}
-      />
-    </SafeAreaView>
+          }
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingHorizontal: 10,
+              backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+              minHeight: 50,
+              overflow: 'hidden',
+              position: 'relative',
+              marginHorizontal: 10,
+              borderRadius: 12,
+              marginBottom: 15
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                Keyboard.dismiss()
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+                setExpanded(!expanded)
+              }}
+              style={{
+                width: 40,
+                height: 50,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+            </TouchableOpacity>
+
+            <TextInput
+              multiline
+              value={input}
+              onChangeText={setInput}
+              onSubmitEditing={sendMessage}
+              onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+              placeholder='Aa..'
+              placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
+              style={{
+                fontSize: 18,
+                flex: 1,
+                height,
+                maxHeight: 70,
+                fontFamily: 'text',
+                color: userProfile?.appMode == 'light' ? color.dark : color.white
+              }}
+            />
+
+            <TouchableOpacity
+              onPress={sendMessage}
+              style={{
+                width: 50,
+                height: 50,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              {
+                sendLoading ?
+                  <ActivityIndicator color={userProfile?.appMode == 'light' ? color.lightText : color.white} size='small' /> :
+                  <FontAwesome5
+                    name='paper-plane'
+                    color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                    size={20}
+                  />
+              }
+            </TouchableOpacity>
+          </View>
+
+          {
+            expanded && (
+              <View style={{ minWidth: 150, maxHeight: 150, flex: 1 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  scrollEnabled
+
+                >
+                  <FlatGrid
+                    data={smileys}
+                    itemDimension={30}
+                    renderItem={({ item: emoji }) => (
+                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                  <FlatGrid
+                    data={smileys1}
+                    itemDimension={30}
+                    renderItem={({ item: emoji }) => (
+                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                  <FlatGrid
+                    data={smileys2}
+                    itemDimension={30}
+                    renderItem={({ item: emoji }) => (
+                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                  <FlatGrid
+                    data={smileys3}
+                    itemDimension={30}
+                    renderItem={({ item: emoji }) => (
+                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                </ScrollView>
+              </View>
+            )
+          }
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   )
 }
 

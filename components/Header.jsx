@@ -48,7 +48,6 @@ const Header = ({
   postDetails,
   showAdd,
   showCancelPost,
-  showMessageImageGallerySelect,
   matchDetails,
   showNotification,
   showChatMenu,
@@ -331,31 +330,6 @@ const Header = ({
                     </Text>
                   </>
               }
-            </TouchableOpacity>
-          }
-
-          {
-            showMessageImageGallerySelect &&
-            <TouchableOpacity
-              onPress={() => navigation.navigate('PreviewMessageImage')}
-              style={{
-                backgroundColor: color.red,
-                borderRadius: 4,
-                width: 80,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  color: color.white,
-                  fontSize: 16
-                }}
-              >
-                Done
-              </Text>
             </TouchableOpacity>
           }
 

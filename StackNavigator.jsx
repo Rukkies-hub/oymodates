@@ -13,7 +13,6 @@ import Add from './screens/Add'
 import AddReels from './screens/AddReels'
 import SaveReels from './screens/SaveReels'
 import AddComment from './screens/modal/AddComment'
-import MessageImageGallery from './screens/modal/MessageImageGallery'
 import PostCamera from './screens/PostCamera'
 import ViewPost from './screens/ViewPost'
 import UserProfile from './screens/modal/UserProfile'
@@ -65,7 +64,6 @@ const StackNavigator = () => {
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
-              <Stack.Screen name='MessageImageGallery' component={MessageImageGallery} options={{ headerShown: false }} />
               <Stack.Screen name='UserProfile' component={UserProfile} options={{ headerShown: false }} />
               <Stack.Screen name='Passion' component={Passion} options={{ headerShown: false }} />
               <Stack.Screen name='UserLocation' component={UserLocation} options={{ headerShown: false }} />

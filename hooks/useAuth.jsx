@@ -65,7 +65,6 @@ export const AuthProvider = ({ children }) => {
   const [media, setMedia] = useState('')
   const [pendingSwipes, setPendingSwipes] = useState([])
   const [profiles, setProfiles] = useState([])
-  const [assetsList, setAssetsList] = useState([])
   const [address, setAddress] = useState(null)
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
   const [reelsProps, setReelsProps] = useState(null)
@@ -197,8 +196,6 @@ export const AuthProvider = ({ children }) => {
         setPendingSwipes,
         profiles,
         setProfiles,
-        assetsList,
-        setAssetsList,
         address,
         setAddress,
         mediaVidiblity,

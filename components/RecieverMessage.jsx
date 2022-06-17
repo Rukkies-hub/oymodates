@@ -22,6 +22,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
   const [Value, SetValue] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [showTime, setShowTime] = useState(false)
+  const [numberOfLines, setNumberOfLines] = useState(10)
 
   const playVoicenote = async voiceNote => {
     const { sound, status } = await Audio?.Sound?.createAsync({ uri: voiceNote })
@@ -72,6 +73,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
         <Pressable onPress={() => {
           LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
           setShowTime(!showTime)
+          setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
         }}>
           {
             messages?.message &&
@@ -88,6 +90,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 }}
               >
                 <Text
+                  numberOfLines={numberOfLines}
                   style={{
                     color: color.dark,
                     fontSize: 16,

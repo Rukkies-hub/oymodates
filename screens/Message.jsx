@@ -48,7 +48,6 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
-import * as ImagePicker from 'expo-image-picker'
 import { Audio } from 'expo-av'
 
 import uuid from 'uuid-random'
@@ -57,6 +56,8 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { FlatGrid } from 'react-native-super-grid'
 
 import * as NavigationBar from 'expo-navigation-bar'
+
+import * as ImagePicker from 'expo-image-picker'
 
 const Message = () => {
   const navigation = useNavigation()
@@ -75,8 +76,6 @@ const Message = () => {
   const [expanded, setExpanded] = useState(false)
   const [height, setHeight] = useState(50)
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
-  const [activeInput, setActiveInput] = useState(false)
-  const [recent, setRecent] = useState([])
   const [showRecording, setShowRecording] = useState(false)
   const [showSend, setShowSend] = useState(true)
   const [recording, setRecording] = useState()
@@ -108,6 +107,18 @@ const Message = () => {
       setMediaVidiblity(true)
     })
     , [])
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      quality: 1,
+    })
+
+    if (!result.cancelled) {
+      navigation.navigate('PreviewMessageImage', { matchDetails, media: result })
+    }
+  }
 
   const sendMessage = () => {
     setExpanded(false)
@@ -209,7 +220,10 @@ const Message = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={() => {
+        setExpanded(false)
+        Keyboard.dismiss
+      }}>
         <SafeAreaView
           style={{
             flex: 1,
@@ -277,7 +291,7 @@ const Message = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('MessageImageGallery')}
+                  onPress={pickImage}
                   style={{
                     width: 40,
                     height: 50,
@@ -338,7 +352,7 @@ const Message = () => {
                   style={{
                     fontSize: 18,
                     flex: 1,
-                    height: activeInput ? height : '100%',
+                    height,
                     maxHeight: 70,
                     fontFamily: 'text',
                     color: userProfile?.appMode == 'light' ? color.dark : color.white
