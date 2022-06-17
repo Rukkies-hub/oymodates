@@ -74,6 +74,7 @@
     "react-native-reanimated": "2.3.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
+    "react-native-simple-accordion": "^1.17.0",
     "react-native-simple-audio-player": "^1.0.2",
     "react-native-slider": "^0.11.0",
     "react-native-snap-carousel": "^3.9.1",

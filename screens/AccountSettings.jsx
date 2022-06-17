@@ -20,23 +20,11 @@ const AccountSettings = () => {
     NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
   }, [])
 
-  const lightMode = () => {
-    updateDoc(doc(db, 'users', user?.uid), {
-      appMode: 'light'
-    })
-  }
+  const lightMode = () => updateDoc(doc(db, 'users', user?.uid), { appMode: 'light' })
 
-  const darkMode = () => {
-    updateDoc(doc(db, 'users', user?.uid), {
-      appMode: 'dark'
-    })
-  }
+  const darkMode = () => updateDoc(doc(db, 'users', user?.uid), { appMode: 'dark' })
 
-  const lightsOut = () => {
-    updateDoc(doc(db, 'users', user?.uid), {
-      appMode: 'lightsOut'
-    })
-  }
+  const lightsOut = () => updateDoc(doc(db, 'users', user?.uid), { appMode: 'lightsOut' })
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
