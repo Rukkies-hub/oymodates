@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }) => {
   const [school, setSchool] = useState('')
   const [city, setCity] = useState('')
   const [checked, setChecked] = useState('male')
+  const [screen, setScreen] = useState('default')
   const [about, setAbout] = useState('')
   const [passions, setPassions] = useState([])
   const [media, setMedia] = useState('')
@@ -138,6 +139,7 @@ export const AuthProvider = ({ children }) => {
         if (profile?.school) setSchool(profile?.school)
         if (profile?.city) setCity(profile?.city)
         if (profile?.gender) setChecked(profile?.gender)
+        if (profile?.screen) setScreen(profile?.screen)
         if (profile?.about) setAbout(profile?.about)
         if (profile?.passions) setPassions([...profile?.passions])
         if (profile?.address) setAddress(...profile?.address)
@@ -170,6 +172,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         loading,
+        logout,
         error,
         userProfile,
         image,
@@ -225,7 +228,22 @@ export const AuthProvider = ({ children }) => {
         replyCommentProps,
         setReplyCommentProps,
         commentAutoFocus,
-        setCommentAutoFocus
+        setCommentAutoFocus,
+        screen,
+        setScreen,
+        signInWighGoogle,
+        setUsername,
+        setDate,
+        setJob,
+        setCompany,
+        setSchool,
+        setCity,
+        setAbout,
+        setImage,
+        setError,
+        setUser,
+        setLoadingInitial,
+        setLoading
       }}
     >
       {!loadingInitial && children}

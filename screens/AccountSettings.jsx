@@ -79,7 +79,7 @@ const AccountSettings = () => {
               flexDirection: 'row'
             }}
           >
-            <Entypo name="light-down" size={24} color={color.red} />
+            <Entypo name='light-down' size={24} color={color.red} />
             <Text
               style={{
                 fontFamily: 'text',
@@ -104,7 +104,7 @@ const AccountSettings = () => {
               flexDirection: 'row'
             }}
           >
-            <MaterialCommunityIcons name="theme-light-dark" size={22} color={color.white} />
+            <MaterialCommunityIcons name='theme-light-dark' size={22} color={color.white} />
             <Text
               style={{
                 fontFamily: 'text',
@@ -129,7 +129,7 @@ const AccountSettings = () => {
               flexDirection: 'row'
             }}
           >
-            <Fontisto name="night-alt-cloudy" size={20} color={color.white} />
+            <Fontisto name='night-alt-cloudy' size={20} color={color.white} />
             <Text
               style={{
                 fontFamily: 'text',

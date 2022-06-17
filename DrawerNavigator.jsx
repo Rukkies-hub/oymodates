@@ -25,9 +25,8 @@ import { SimpleAccordion } from 'react-native-simple-accordion'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from './hooks/firebase'
 
-
 const DrawerNavigator = () => {
-  const { userProfile, logout, user } = useAuth()
+  const { userProfile, logout, user, screen, setScreen } = useAuth()
   const Drawer = createDrawerNavigator()
 
   const navigation = useNavigation()
@@ -103,7 +102,36 @@ const DrawerNavigator = () => {
 
           <DrawerItemList {...props} />
 
+          <TouchableOpacity
+            onPress={() => navigation.navigate('AccountSettings')}
+            style={{
+              backgroundColor: color.transparent,
+              marginHorizontal: 5,
+              height: 40,
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              borderRadius: 4,
+              paddingHorizontal: 10,
+              marginVertical: 10
+            }}
+          >
+            <Ionicons name='cog-outline' size={24} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+
+            <Text
+              style={{
+                color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                fontFamily: 'text',
+                marginLeft: 30
+              }}
+            >
+              Account Settings
+            </Text>
+          </TouchableOpacity>
+
           <SimpleAccordion
+            title={'Appearance'}
+            startCollapsed={true}
             arrowColor={userProfile?.appMode == 'light' ? color.dark : color.white}
             bannerStyle={{
               backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.black : color.dark,
@@ -151,7 +179,7 @@ const DrawerNavigator = () => {
                       marginRight: 2,
                       paddingHorizontal: 10
                     }}>
-                    <Entypo name="light-down" size={24} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+                    <Entypo name='light-down' size={24} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
                     <Text
                       style={{
                         fontFamily: 'text',
@@ -177,7 +205,7 @@ const DrawerNavigator = () => {
                       paddingHorizontal: 10
                     }}
                   >
-                    <MaterialCommunityIcons name="theme-light-dark" size={22} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+                    <MaterialCommunityIcons name='theme-light-dark' size={22} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
                     <Text
                       style={{
                         fontFamily: 'text',
@@ -205,7 +233,7 @@ const DrawerNavigator = () => {
                     marginTop: 5
                   }}
                 >
-                  <Fontisto name="night-alt-cloudy" size={20} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+                  <Fontisto name='night-alt-cloudy' size={20} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
                   <Text
                     style={{
                       fontFamily: 'text',
@@ -218,11 +246,10 @@ const DrawerNavigator = () => {
                 </TouchableOpacity>
               </View>
             }
-            title={'Appearance'}
           />
 
           <TouchableOpacity
-            onPress={logout}
+            onPress={() => logout()}
             style={{
               backgroundColor: color.red,
               marginHorizontal: 10,
@@ -231,7 +258,8 @@ const DrawerNavigator = () => {
               justifyContent: 'flex-start',
               alignItems: 'center',
               borderRadius: 4,
-              paddingHorizontal: 10
+              paddingHorizontal: 10,
+              marginTop: 10
             }}
           >
             <SimpleLineIcons name='logout' size={18} color={color.white} />
@@ -246,6 +274,7 @@ const DrawerNavigator = () => {
               Logout
             </Text>
           </TouchableOpacity>
+
         </DrawerContentScrollView>
       )}
       screenOptions={{
@@ -262,7 +291,7 @@ const DrawerNavigator = () => {
         },
         drawerAllowFontScaling: true,
         drawerPosition: 'right',
-        drawerType: 'slide',
+        drawerType: 'back',
         drawerStatusBarAnimation: 'slide'
       }}
     >

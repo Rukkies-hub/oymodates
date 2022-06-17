@@ -115,7 +115,7 @@ const ViewPost = (params) => {
                   uri: post?.media[0],
                 }}
                 useNativeControls={false}
-                resizeMode="cover"
+                resizeMode='cover'
                 isMuted={mute}
                 isLooping
                 onPlaybackStatusUpdate={status => setStatus(() => status)}
@@ -171,7 +171,7 @@ const ViewPost = (params) => {
               marginRight: 20
             }}
           >
-            <Fontisto name="comment" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+            <Fontisto name='comment' size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
           </Pressable>
 
           <Pressable
@@ -183,7 +183,7 @@ const ViewPost = (params) => {
               marginRight: 20
             }}
           >
-            <AntDesign name="retweet" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+            <AntDesign name='retweet' size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
           </Pressable>
         </View>
 

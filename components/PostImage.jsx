@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native'
 
 import AutoHeightImage from 'react-native-auto-height-image'
 
-import DoubleClick from "react-native-double-tap-without-opacity"
+import DoubleClick from 'react-native-double-tap-without-opacity'
 
 const { width } = Dimensions.get('window')
 

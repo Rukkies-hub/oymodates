@@ -28,19 +28,6 @@ const AddComment = params => {
   const post = params?.route?.params?.post
   const navigation = useNavigation()
 
-  // NavigationBar.setPositionAsync('absolute')
-  // NavigationBar.setBackgroundColorAsync(color.transparent)
-  // NavigationBar.setButtonStyleAsync('light')
-  // NavigationBar.setVisibilityAsync('hidden')
-  // NavigationBar.setBehaviorAsync('overlay-swipe')
-
-  // navigation.addListener('beforeRemove', () => {
-  //   NavigationBar.setVisibilityAsync('visible')
-  //   NavigationBar.setPositionAsync('relative')
-  //   NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
-  //   NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
-  // })
-
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
@@ -49,7 +36,7 @@ const AddComment = params => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

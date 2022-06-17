@@ -3,11 +3,11 @@ import { View, Text, Pressable, Image } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-import getMatchedUserInfo from "../lib/getMatchedUserInfo"
+import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 
-import { useNavigation } from "@react-navigation/native"
+import { useNavigation } from '@react-navigation/native'
 
-import { useFonts } from "expo-font"
+import { useFonts } from 'expo-font'
 import { db } from '../hooks/firebase'
 import { collection, getDocs, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 
@@ -16,7 +16,7 @@ const ChatRow = ({ matchDetails }) => {
   const navigation = useNavigation()
 
   const [matchedUserInfo, setMatchedUserInfo] = useState({})
-  const [lastMessage, setLastMessage] = useState("")
+  const [lastMessage, setLastMessage] = useState('')
   const [unreadMessage, setUnreadMessage] = useState([])
 
   useEffect(() =>
@@ -46,7 +46,7 @@ const ChatRow = ({ matchDetails }) => {
 
 
   const [loaded] = useFonts({
-    text: require("../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
@@ -54,15 +54,15 @@ const ChatRow = ({ matchDetails }) => {
   return (
     <Pressable
       onPress={() =>
-        navigation.navigate("Message", {
+        navigation.navigate('Message', {
           matchDetails
         })
       }
       style={{
         height: 65,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: 10
       }}
     >
@@ -81,7 +81,7 @@ const ChatRow = ({ matchDetails }) => {
           <Text
             style={{
               fontSize: 18,
-              fontFamily: "text",
+              fontFamily: 'text',
               color: userProfile?.appMode == 'light' ? color.dark : color.white
             }}
           >
@@ -92,10 +92,10 @@ const ChatRow = ({ matchDetails }) => {
             style={{
               fontSize: 12,
               color: userProfile?.appMode == 'light' ? color.dark : color.white,
-              fontFamily: "text"
+              fontFamily: 'text'
             }}
           >
-            {lastMessage || "Say Hi!"}
+            {lastMessage || 'Say Hi!'}
           </Text>
         </View>
         {

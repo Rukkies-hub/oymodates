@@ -25,7 +25,7 @@ import Likecomments from './Likecomments'
 import { useFonts } from 'expo-font'
 
 if (
-  Platform.OS === "android" &&
+  Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)

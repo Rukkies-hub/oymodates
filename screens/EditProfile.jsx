@@ -35,7 +35,7 @@ import { serverTimestamp, setDoc, doc, updateDoc } from 'firebase/firestore'
 
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 
-import { RadioButton } from "react-native-paper"
+import { RadioButton } from 'react-native-paper'
 
 import { SimpleLineIcons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons'
 
@@ -114,9 +114,7 @@ const EditProfile = () => {
                 snapshot => {
                   const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 },
-                error => {
-                  setUploadLoading(false)
-                },
+                error => setUploadLoading(false),
                 () => {
                   getDownloadURL(uploadTask.snapshot.ref)
                     .then((downloadURL) => {
@@ -124,16 +122,12 @@ const EditProfile = () => {
                       updateDoc(doc(db, 'users', user?.uid), {
                         photoURL: downloadURL,
                         photoLink: link
-                      }).finally(() => {
-                        setUploadLoading(false)
-                      })
+                      }).then(() => setUploadLoading(false))
                     })
                 }
               )
             })
-            .catch((error) => {
-              setUploadLoading(false)
-            })
+            .catch((error) => setUploadLoading(false))
         }
         else {
           setUploadLoading(true)
@@ -141,22 +135,20 @@ const EditProfile = () => {
             snapshot => {
               const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
             },
-            error => {
-              setUploadLoading(false)
-            },
+            error => setUploadLoading(false),
             () => {
               getDownloadURL(uploadTask.snapshot.ref)
                 .then((downloadURL) => {
                   const getLocation = async () => {
-                    if (Platform.OS === "android" && !Constants.isDevice) {
+                    if (Platform.OS === 'android' && !Constants.isDevice) {
                       setErrorMsg(
-                        "Oops, this will not work on Snack in an Android emulator. Try it on your device!"
+                        'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
                       )
                       return
                     }
                     let { status } = await Location.requestForegroundPermissionsAsync()
-                    if (status !== "granted") {
-                      setErrorMsg("Permission to access location was denied")
+                    if (status !== 'granted') {
+                      setErrorMsg('Permission to access location was denied')
                       return
                     }
 
@@ -169,9 +161,7 @@ const EditProfile = () => {
                   updateDoc(doc(db, 'users', user?.uid), {
                     photoURL: downloadURL,
                     photoLink: link
-                  }).finally(() => {
-                    setUploadLoading(false)
-                  })
+                  }).then(() => setUploadLoading(false))
                 })
             }
           )
@@ -248,15 +238,15 @@ const EditProfile = () => {
   }
 
   const getLocation = async () => {
-    if (Platform.OS === "android" && !Constants.isDevice) {
+    if (Platform.OS === 'android' && !Constants.isDevice) {
       setErrorMsg(
-        "Oops, this will not work on Snack in an Android emulator. Try it on your device!"
+        'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
       )
       return
     }
     let { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied")
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied')
       return
     }
 
@@ -323,7 +313,7 @@ const EditProfile = () => {
                 marginRight: 10
               }}
             >
-              <AntDesign name="setting" size={24} color={color.white} />
+              <AntDesign name='setting' size={24} color={color.white} />
             </TouchableOpacity>
             {
               userProfile?.displayName &&
@@ -488,21 +478,21 @@ const EditProfile = () => {
             <View>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
                 }}
               >
                 <RadioButton
-                  value="male"
+                  value='male'
                   color={color.red}
-                  status={checked === "male" ? "checked" : "unchecked"}
+                  status={checked === 'male' ? 'checked' : 'unchecked'}
                   uncheckedColor={userProfile?.appMode == 'light' ? color.dark : color.white}
                   onPress={maleGender}
                 />
                 <Text
                   style={{
-                    fontFamily: "text",
+                    fontFamily: 'text',
                     color: userProfile?.appMode == 'light' ? color.dark : color.white
                   }}
                 >
@@ -512,21 +502,21 @@ const EditProfile = () => {
 
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
                 }}
               >
                 <RadioButton
-                  value="female"
+                  value='female'
                   color={color.red}
                   uncheckedColor={userProfile?.appMode == 'light' ? color.dark : color.white}
-                  status={checked === "female" ? "checked" : "unchecked"}
+                  status={checked === 'female' ? 'checked' : 'unchecked'}
                   onPress={femaleGender}
                 />
                 <Text
                   style={{
-                    fontFamily: "text",
+                    fontFamily: 'text',
                     color: userProfile?.appMode == 'light' ? color.dark : color.white
                   }}
                 >
@@ -643,8 +633,8 @@ const EditProfile = () => {
                         style={{
                           color: userProfile?.appMode == 'light' ? color.lightText : color.white,
                           fontSize: 12,
-                          fontFamily: "text",
-                          textTransform: "capitalize"
+                          fontFamily: 'text',
+                          textTransform: 'capitalize'
                         }}
                       >
                         {passion}
@@ -697,7 +687,7 @@ const EditProfile = () => {
               height: 50
             }}
           >
-            <SimpleLineIcons name="logout" size={20} color={color.red} />
+            <SimpleLineIcons name='logout' size={20} color={color.red} />
             <Text
               style={{
                 fontFamily: 'text',

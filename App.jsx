@@ -11,17 +11,9 @@ import 'react-native-gesture-handler'
 
 LogBox.ignoreAllLogs()
 
-const MyTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: '#121212'
-  },
-}
-
 export default function App () {
   return (
-    <NavigationContainer theme={MyTheme}>
+    <NavigationContainer>
       <AuthProvider>
         <MenuProvider>
           <StackNavigator />

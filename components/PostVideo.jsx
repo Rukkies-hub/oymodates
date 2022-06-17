@@ -68,7 +68,7 @@ const PostVideo = (props) => {
       >
         {
           !status.isPlaying &&
-          <Feather name="play" size={60} color={color.white} />
+          <Feather name='play' size={60} color={color.white} />
         }
       </TouchableOpacity>
     </View>

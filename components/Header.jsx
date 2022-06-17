@@ -319,7 +319,7 @@ const Header = ({
                 loading ? <ActivityIndicator color={color.white} size='small' />
                   :
                   <>
-                    <Feather name="corner-left-up" size={20} color={loading == true ? color.red : color.white} />
+                    <Feather name='corner-left-up' size={20} color={loading == true ? color.red : color.white} />
                     <Text
                       style={{
                         fontFamily: 'text',
@@ -372,7 +372,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <SimpleLineIcons name="bell" size={20} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+              <SimpleLineIcons name='bell' size={20} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
               {
                 notificationCount?.length > 0 &&

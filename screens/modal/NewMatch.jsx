@@ -10,7 +10,7 @@ import { useFonts } from 'expo-font'
 
 import { Glitch } from 'rn-glitch-effect'
 
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const NewMatch = () => {
   const navigation = useNavigation()
@@ -19,8 +19,8 @@ const NewMatch = () => {
   const { userSwiped } = params
 
   const [loaded] = useFonts({
-    logo: require("../../assets/fonts/Pacifico/Pacifico-Regular.ttf"),
-    text: require("../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf")
+    logo: require('../../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
@@ -37,22 +37,22 @@ const NewMatch = () => {
         style={{
           flex: 1,
           padding: 20,
-          justifyContent: "space-between"
+          justifyContent: 'space-between'
         }}
       >
         <View
           style={{
-            alignItems: "center"
+            alignItems: 'center'
           }}
         >
           <Text
             style={{
               color: color.lightGreen,
-              textAlign: "center",
+              textAlign: 'center',
               marginTop: 300,
               fontSize: 30,
-              textTransform: "uppercase",
-              fontFamily: "text"
+              textTransform: 'uppercase',
+              fontFamily: 'text'
             }}
           >
             It's a
@@ -67,30 +67,30 @@ const NewMatch = () => {
             textStyle={{
               color: color.lightGreen,
               fontSize: 120,
-              fontFamily: "logo"
+              fontFamily: 'logo'
             }}
           />
         </View>
 
         <View
           style={{
-            alignItems: "center",
+            alignItems: 'center',
             marginTop: 100
           }}
         >
           <Text
             style={{
-              fontFamily: "text",
+              fontFamily: 'text',
               color: color.white,
               fontSize: 16
             }}
           >
             <Text
               style={{
-                textTransform: "capitalize"
+                textTransform: 'capitalize'
               }}
             >
-              {userSwiped?.username + " "}
+              {userSwiped?.username + ' '}
             </Text>
             likes you
           </Text>
@@ -100,58 +100,58 @@ const NewMatch = () => {
         <TouchableOpacity
           onPress={() => {
             navigation.goBack()
-            navigation.navigate("Chat")
+            navigation.navigate('Chat')
           }}
           style={{
             backgroundColor: color.white,
             borderRadius: 12,
             height: 50,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop: 20
           }}>
           <Text
             style={{
               color: color.dark,
               fontSize: 20,
-              fontFamily: "text",
+              fontFamily: 'text',
               color: color.lightText
             }}
           >
             Say hi to
             <Text
               style={{
-                textTransform: "capitalize"
+                textTransform: 'capitalize'
               }}
             >
-              {" " + userSwiped?.username}
+              {' ' + userSwiped?.username}
             </Text>
           </Text>
         </TouchableOpacity>
 
         <View
           style={{
-            alignItems: "center"
+            alignItems: 'center'
           }}
         >
           <TouchableOpacity
             onPress={() => {
               navigation.goBack()
-              navigation.navigate("Match")
+              navigation.navigate('Match')
             }}
             style={{
               height: 50,
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
               marginTop: 20
             }}
           >
             <Text
               style={{
                 color: color.white,
-                fontFamily: "text",
+                fontFamily: 'text',
                 fontSize: 16,
-                textTransform: "uppercase"
+                textTransform: 'uppercase'
               }}
             >
               Keep Swiping

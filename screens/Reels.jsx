@@ -183,7 +183,7 @@ const Reels = () => {
                   alignItems: 'center'
                 }}
               >
-                <FontAwesome name="comment" size={24} color={color.white} />
+                <FontAwesome name='comment' size={24} color={color.white} />
                 <Text
                   style={{
                     color: color.white,

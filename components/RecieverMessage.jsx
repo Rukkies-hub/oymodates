@@ -10,7 +10,7 @@ import { Audio } from 'expo-av'
 import useAuth from '../hooks/useAuth'
 
 if (
-  Platform.OS === "android" &&
+  Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
@@ -102,7 +102,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: "left" }}>
+                    <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
                       {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                     </Text>
                   }
@@ -157,11 +157,11 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             messages.voiceNote &&
             <View
               style={{
-                position: "relative",
+                position: 'relative',
                 width: 200,
                 height: 35,
                 borderRadius: 20,
-                overflow: "hidden",
+                overflow: 'hidden',
                 backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
                 left: -10,
                 flexDirection: 'row',
@@ -184,8 +184,8 @@ const RecieverMessage = ({ messages, matchDetails }) => {
               >
                 {
                   !isPlaying ?
-                    <AntDesign name="caretright" size={20} color={color.white} /> :
-                    <AntDesign name="pause" size={20} color={color.white} />
+                    <AntDesign name='caretright' size={20} color={color.white} /> :
+                    <AntDesign name='pause' size={20} color={color.white} />
                 }
               </TouchableOpacity>
               <Slider

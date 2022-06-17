@@ -223,7 +223,7 @@ const VideoCall = (props) => {
                 alignItems: 'center'
               }}
             >
-              <MaterialCommunityIcons name="phone-hangup" size={24} color={color.white} />
+              <MaterialCommunityIcons name='phone-hangup' size={24} color={color.white} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -235,7 +235,7 @@ const VideoCall = (props) => {
                 alignItems: 'center'
               }}
             >
-              <MaterialIcons name="pause" size={24} color={color.white} />
+              <MaterialIcons name='pause' size={24} color={color.white} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -247,7 +247,7 @@ const VideoCall = (props) => {
                 alignItems: 'center'
               }}
             >
-              <FontAwesome5 name="volume-mute" size={24} color={color.white} />
+              <FontAwesome5 name='volume-mute' size={24} color={color.white} />
             </TouchableOpacity>
           </View>
 

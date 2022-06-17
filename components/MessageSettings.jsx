@@ -84,7 +84,7 @@ const MessageSettings = props => {
           alignItems: 'center'
         }}
       >
-        <MaterialCommunityIcons name="dots-vertical" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+        <MaterialCommunityIcons name='dots-vertical' size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
       </TouchableOpacity>
 
       <RBSheet

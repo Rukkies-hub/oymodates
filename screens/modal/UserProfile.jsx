@@ -327,7 +327,7 @@ const UserProfile = (params) => {
           alignItems: 'center'
         }}
       >
-        <MaterialCommunityIcons name="cake" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+        <MaterialCommunityIcons name='cake' size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
         <View
           style={{
@@ -369,7 +369,7 @@ const UserProfile = (params) => {
           alignItems: 'center'
         }}
       >
-        <Fontisto name="date" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+        <Fontisto name='date' size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
         <View
           style={{
@@ -411,7 +411,7 @@ const UserProfile = (params) => {
           alignItems: 'center'
         }}
       >
-        <Feather name="briefcase" size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+        <Feather name='briefcase' size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
         <Text
           style={{
@@ -466,7 +466,7 @@ const UserProfile = (params) => {
                       borderRadius: 50
                     }}
                   >
-                    <AntDesign name="heart" size={18} color={color.white} />
+                    <AntDesign name='heart' size={18} color={color.white} />
                     <Text
                       style={{
                         fontFamily: 'boldText',

@@ -97,7 +97,7 @@ const Notifications = () => {
                   {
                     notification?.activity == 'likes' ?
                       <AntDesign name='heart' size={10} color={color.white} /> :
-                      <Fontisto name="comment" size={10} color={color.white} />
+                      <Fontisto name='comment' size={10} color={color.white} />
                   }
                 </View>
               </View>

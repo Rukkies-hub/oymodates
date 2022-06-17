@@ -11,7 +11,7 @@ import { Audio } from 'expo-av'
 import moment from 'moment'
 
 if (
-  Platform.OS === "android" &&
+  Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
@@ -58,11 +58,11 @@ const SenderMessage = ({ messages, matchDetails }) => {
   }, [sound])
 
   return (
-    <View style={{ flexDirection: "row-reverse", marginBottom: 10 }}>
+    <View style={{ flexDirection: 'row-reverse', marginBottom: 10 }}>
       <View
         style={{
-          alignSelf: "flex-end",
-          maxWidth: "80%"
+          alignSelf: 'flex-end',
+          maxWidth: '80%'
         }}
       >
         <Pressable onPress={() => {
@@ -82,7 +82,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                   borderBottomRightRadius: 12,
                 }}
               >
-                <Text style={{ color: color.white, fontSize: 16, textAlign: "left" }}>
+                <Text style={{ color: color.white, fontSize: 16, textAlign: 'left' }}>
                   {messages?.message}
                 </Text>
               </View>
@@ -91,7 +91,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: "right" }}>
+                    <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right' }}>
                       {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                     </Text>
                   }
@@ -103,20 +103,20 @@ const SenderMessage = ({ messages, matchDetails }) => {
             messages?.image &&
             <View
               style={{
-                position: "relative",
+                position: 'relative',
                 width: 300,
                 height: 300,
                 borderWidth: 2,
                 borderRadius: 20,
-                overflow: "hidden",
+                overflow: 'hidden',
                 borderColor: color.blue,
                 right: 6
               }}
             >
               <Image style={{
                 flex: 1,
-                width: "100%",
-                height: "100%"
+                width: '100%',
+                height: '100%'
               }}
                 source={{ uri: messages?.image }}
               />
@@ -124,15 +124,15 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 messages?.caption &&
                 <View
                   style={{
-                    width: "100%",
+                    width: '100%',
                     height: 30,
-                    position: "absolute",
+                    position: 'absolute',
                     bottom: 0,
                     left: 0,
                     backgroundColor: color.white,
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
                     paddingHorizontal: 10
                   }}
                 >
@@ -145,11 +145,11 @@ const SenderMessage = ({ messages, matchDetails }) => {
             messages.voiceNote &&
             <View
               style={{
-                position: "relative",
+                position: 'relative',
                 width: 200,
                 height: 35,
                 borderRadius: 20,
-                overflow: "hidden",
+                overflow: 'hidden',
                 backgroundColor: color.blue,
                 right: -10,
                 flexDirection: 'row',
@@ -181,8 +181,8 @@ const SenderMessage = ({ messages, matchDetails }) => {
               >
                 {
                   !isPlaying ?
-                    <AntDesign name="caretright" size={20} color={color.blue} /> :
-                    <AntDesign name="pause" size={20} color={color.blue} />
+                    <AntDesign name='caretright' size={20} color={color.blue} /> :
+                    <AntDesign name='pause' size={20} color={color.blue} />
                 }
               </TouchableOpacity>
             </View>

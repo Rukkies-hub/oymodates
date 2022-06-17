@@ -217,7 +217,7 @@ const Posts = () => {
                 marginRight: 20
               }}
             >
-              <Fontisto name="comment" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+              <Fontisto name='comment' size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
             </TouchableOpacity>
 
             {/* <TouchableOpacity
@@ -229,7 +229,7 @@ const Posts = () => {
                 marginRight: 20
               }}
             >
-              <AntDesign name="retweet" size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+              <AntDesign name='retweet' size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
             </TouchableOpacity> */}
           </View>
 

@@ -11,7 +11,6 @@ import useAuth from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
 
 import * as NavigationBar from 'expo-navigation-bar'
-import Bar from '../components/StatusBar'
 
 const Feeds = () => {
   const { user, profiles, setProfiles, userProfile } = useAuth()

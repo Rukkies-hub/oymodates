@@ -30,7 +30,7 @@ import ReelsCommentReplies from './ReelsCommentReplies'
 import ReelsCommentReplySheet from './ReelsCommentReplySheet'
 
 if (
-  Platform.OS === "android" &&
+  Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
 )
   UIManager.setLayoutAnimationEnabledExperimental(true)
