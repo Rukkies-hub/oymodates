@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 const Stack = createStackNavigator()
 
 import Index from './Index'
+import DrawerNavigator from './DrawerNavigator'
 import Login from './screens/Login'
 import EditProfile from './screens/EditProfile'
 import NewMatch from './screens/modal/NewMatch'
@@ -39,7 +40,8 @@ const StackNavigator = () => {
         user ? (
           <>
             <Stack.Group>
-              <Stack.Screen name='Index' component={Index} options={{ headerShown: false }} />
+              {/* <Stack.Screen name='Index' component={Index} options={{ headerShown: false }} /> */}
+              <Stack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
               <Stack.Screen name='Message' component={Message} options={{ headerShown: false }} />
               <Stack.Screen name='EditProfile' component={EditProfile} options={{ headerShown: false }} />
               <Stack.Screen name='Add' component={Add} options={{ headerShown: false }} />
