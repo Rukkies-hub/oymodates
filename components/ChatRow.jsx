@@ -27,12 +27,12 @@ const ChatRow = ({ matchDetails }) => {
     onSnapshot(query(collection(db, 'matches', matchDetails.id, 'messages'),
       orderBy('timestamp', 'desc')),
       limit(1),
-      snapshot => setLastMessage(snapshot.docs[0]?.data()?.message))
+      snapshot => setLastMessage(snapshot.docs[0]?.data()?.message || snapshot.docs[0]?.data()?.caption))
     , [matchDetails, db])
 
   useEffect(async () => {
     const querySnapshot = await getDocs(query(collection(db, 'matches', matchDetails.id, 'messages'),
-      where('userId', '==', user?.uid), where('seen', '==', false)))
+      where('userId', '!=', user?.uid), where('seen', '==', false)))
 
     setUnreadMessage(
       querySnapshot.docs.map(doc => ({

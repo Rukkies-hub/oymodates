@@ -74,7 +74,7 @@ const Profile = () => {
                   fontSize: 20
                 }}
               >
-                {userProfile?.username}
+                @{userProfile?.username}
               </Text>
             </View>
           }

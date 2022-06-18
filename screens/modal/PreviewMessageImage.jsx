@@ -37,7 +37,7 @@ import smileys3 from '../../components/emoji/smileys3'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
-import { Audio } from 'expo-av'
+import { Audio, Video } from 'expo-av'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
 import * as NavigationBar from 'expo-navigation-bar'
@@ -50,6 +50,9 @@ const PreviewMessageImage = () => {
   const { params } = useRoute()
   const { matchDetails, media } = params
   const navigation = useNavigation()
+  const video = useRef(null)
+
+  console.log(media)
 
   NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
   NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
@@ -60,6 +63,7 @@ const PreviewMessageImage = () => {
   const [expanded, setExpanded] = useState(false)
   const [height, setHeight] = useState(50)
   const [sendLoading, setSendLoading] = useState(false)
+  const [status, setStatus] = useState({})
 
   const sendMessage = async () => {
     const blob = await new Promise((resolve, reject) => {
@@ -73,29 +77,28 @@ const PreviewMessageImage = () => {
 
     setSendLoading(true)
 
-    const sourceRef = ref(storage, `messages/${user?.uid}/image/${uuid()}`)
+    const sourceRef = ref(storage, `messages/${user?.uid}/${media?.type == 'image' ? 'image' : 'video'}/${uuid()}`)
 
     uploadBytes(sourceRef, blob)
       .then(snapshot => {
         getDownloadURL(snapshot.ref)
           .then(downloadURL => {
             setExpanded(false)
-            if (input != '')
-              addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
-                userId: user?.uid,
-                username: userProfile.username,
-                photoURL: matchDetails.users[user?.uid].photoURL,
-                mediaLink: snapshot.ref._location.path,
-                mediaType: media?.type,
-                media: downloadURL,
-                caption: input,
-                seen: false,
-                timestamp: serverTimestamp(),
-              }).finally(() => {
-                setSendLoading(false)
-                setInput('')
-                navigation.goBack()
-              })
+            addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
+              userId: user?.uid,
+              username: userProfile.username,
+              photoURL: matchDetails.users[user?.uid].photoURL,
+              mediaLink: snapshot.ref._location.path,
+              mediaType: media?.type,
+              media: downloadURL,
+              caption: input,
+              seen: false,
+              timestamp: serverTimestamp(),
+            }).finally(() => {
+              setSendLoading(false)
+              setInput('')
+              navigation.goBack()
+            })
           })
       })
   }
@@ -125,6 +128,24 @@ const PreviewMessageImage = () => {
               style={{ flex: 1 }}
               resizeMode='contain'
             />
+          }
+
+          {
+            media?.type == 'video' &&
+            <Pressable
+              onPress={() => status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}
+              style={{ flex: 1 }}
+            >
+              <Video
+                ref={video}
+                source={{ uri: media?.uri }}
+                width={width}
+                style={{ flex: 1 }}
+                resizeMode='contain'
+                isLooping={true}
+                onPlaybackStatusUpdate={status => setStatus(() => status)}
+              />
+            </Pressable>
           }
 
           <View

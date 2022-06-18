@@ -27,6 +27,7 @@ import AllPostLikes from './screens/AllPostLikes'
 import ViewReel from './screens/ViewReel'
 import ViewAvarar from './screens/modal/ViewAvarar'
 import ReelsComment from './screens/modal/ReelsComment'
+import ViewVideo from './screens/modal/ViewVideo'
 
 import useAuth from './hooks/useAuth'
 
@@ -61,6 +62,7 @@ const StackNavigator = () => {
               <Stack.Screen name='ViewAvarar' component={ViewAvarar} options={{ headerShown: false }} />
               <Stack.Screen name='ReelsComment' component={ReelsComment} options={{ headerShown: false }} />
               <Stack.Screen name='AddComment' component={AddComment} options={{ headerShown: false }} />
+              <Stack.Screen name='ViewVideo' component={ViewVideo} options={{ headerShown: false }} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'modal' }}>

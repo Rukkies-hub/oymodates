@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, Pressable, Image, TouchableOpacity, UIManager, LayoutAnimation, Platform } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { View, Text, Pressable, Image, TouchableOpacity, UIManager, LayoutAnimation, Platform, ImageBackground } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
@@ -7,8 +7,10 @@ import { AntDesign } from '@expo/vector-icons'
 
 import Slider from '@react-native-community/slider'
 
-import { Audio } from 'expo-av'
+import { Audio, Video } from 'expo-av'
 import moment from 'moment'
+import { useNavigation } from '@react-navigation/native'
+import AutoHeightImage from 'react-native-auto-height-image'
 
 if (
   Platform.OS === 'android' &&
@@ -17,6 +19,9 @@ if (
 
 const SenderMessage = ({ messages, matchDetails }) => {
   const { userProfile, user } = useAuth()
+
+  const navigation = useNavigation()
+  const video = useRef(null)
 
   const [sound, setSound] = useState()
   const [status, setStatus] = useState()
@@ -90,7 +95,8 @@ const SenderMessage = ({ messages, matchDetails }) => {
                     color: color.white,
                     fontSize: 16,
                     textAlign: 'left'
-                  }}>
+                  }}
+                >
                   {messages?.message}
                 </Text>
               </View>
@@ -108,44 +114,121 @@ const SenderMessage = ({ messages, matchDetails }) => {
             </>
           }
           {
-            messages?.image &&
+            messages?.mediaType == 'image' &&
             <View
               style={{
-                position: 'relative',
-                width: 300,
-                height: 300,
-                borderWidth: 2,
-                borderRadius: 20,
-                overflow: 'hidden',
-                borderColor: color.blue,
-                right: 6
+                position: 'relative'
               }}
             >
-              <Image style={{
-                flex: 1,
-                width: '100%',
-                height: '100%'
-              }}
-                source={{ uri: messages?.image }}
-              />
+              <Pressable
+                onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvarar', { avatar: messages?.media }) : null}
+                style={{ flex: 1 }}
+              >
+                <AutoHeightImage
+                  source={{ uri: messages?.media }}
+                  width={300}
+                  resizeMode='cover'
+                  style={{
+                    flex: 1,
+                    borderRadius: 20
+                  }}
+                />
+              </Pressable>
               {
                 messages?.caption &&
-                <View
+                <>
+                  <View
+                    style={{
+                      width: '100%',
+                      height: 30,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start'
+                    }}
+                  >
+                    <Text
+                      numberOfLines={numberOfLines}
+                      style={{
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        fontSize: 16,
+                        textAlign: 'left'
+                      }}
+                    >
+                      {messages?.caption}
+                    </Text>
+                  </View>
+                  {
+                    messages?.timestamp &&
+                    <>
+                      {
+                        showTime &&
+                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right' }}>
+                          {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                        </Text>
+                      }
+                    </>
+                  }
+                </>
+              }
+            </View>
+          }
+          {
+            messages?.mediaType == 'video' &&
+            <View
+              style={{
+                position: 'relative'
+              }}
+            >
+              <Pressable
+                onPress={() => messages?.mediaType == 'video' ? navigation.navigate('ViewVideo', { video: messages?.media }) : null}
+                style={{ flex: 1 }}
+              >
+                <Video
+                  source={{ uri: messages?.media }}
+                  resizeMode='cover'
                   style={{
-                    width: '100%',
-                    height: 30,
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    backgroundColor: color.white,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    paddingHorizontal: 10
+                    flex: 1,
+                    minWidth: 300,
+                    minHeight: 300,
+                    borderRadius: 20
                   }}
-                >
-                  <Text>{messages?.caption}</Text>
-                </View>
+                />
+              </Pressable>
+              {
+                messages?.caption != '' &&
+                <>
+                  <View
+                    style={{
+                      width: '100%',
+                      height: 30,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start'
+                    }}
+                  >
+                    <Text
+                      numberOfLines={numberOfLines}
+                      style={{
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        fontSize: 16,
+                        textAlign: 'left'
+                      }}
+                    >
+                      {messages?.caption}
+                    </Text>
+                  </View>
+                  {
+                    messages?.timestamp &&
+                    <>
+                      {
+                        showTime &&
+                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right' }}>
+                          {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                        </Text>
+                      }
+                    </>
+                  }
+                </>
               }
             </View>
           }
@@ -196,8 +279,8 @@ const SenderMessage = ({ messages, matchDetails }) => {
             </View>
           }
         </Pressable>
-      </View>
-    </View>
+      </View >
+    </View >
   )
 }
 

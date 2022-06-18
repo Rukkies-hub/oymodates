@@ -180,7 +180,11 @@ const Posts = () => {
             </TouchableOpacity>
           </View>
 
-          <View>
+          <View
+            style={{
+              minHeight: 300
+            }}
+          >
             {
               post?.mediaType == 'image' ?
                 <View
