@@ -36,7 +36,6 @@ const ViewVideo = (props) => {
             borderRadius: 20
           }}
           isLooping
-          isPlaying
           onPlaybackStatusUpdate={status => setStatus(() => status)}
         />
       </Pressable>

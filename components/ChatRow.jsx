@@ -30,16 +30,16 @@ const ChatRow = ({ matchDetails }) => {
       snapshot => setLastMessage(snapshot.docs[0]?.data()?.message || snapshot.docs[0]?.data()?.caption))
     , [matchDetails, db])
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(query(collection(db, 'matches', matchDetails.id, 'messages'),
-      where('userId', '!=', user?.uid), where('seen', '==', false)))
+  // useEffect(async () => {
+  //   const querySnapshot = await getDocs(query(collection(db, 'matches', matchDetails.id, 'messages'),
+  //     where('userId', '!=', user?.uid), where('seen', '==', false)))
 
-    setUnreadMessage(
-      querySnapshot.docs.map(doc => ({
-        id: doc?.id
-      }))
-    )
-  }, [matchDetails])
+  //   setUnreadMessage(
+  //     querySnapshot.docs.map(doc => ({
+  //       id: doc?.id
+  //     }))
+  //   )
+  // }, [matchDetails])
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')

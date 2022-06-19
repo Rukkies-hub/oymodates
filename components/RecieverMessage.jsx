@@ -85,8 +85,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
               <View
                 style={{
                   backgroundColor: messages.message ? (userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.black : color.dark) : color.transparent,
-                  paddingVertical: 8,
-                  paddingHorizontal: 8,
+                  padding: 10,
                   borderTopLeftRadius: 0,
                   borderBottomLeftRadius: 12,
                   borderBottomRightRadius: 12,

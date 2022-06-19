@@ -76,6 +76,7 @@ export const AuthProvider = ({ children }) => {
   const [reelsCommentType, setReelsCommentType] = useState('comment')
   const [replyCommentProps, setReplyCommentProps] = useState(null)
   const [commentAutoFocus, setCommentAutoFocus] = useState(false)
+  const [messageReply, setMessageReply] = useState(null)
 
   const signInWighGoogle = async () => {
     setLoading(true)
@@ -240,7 +241,9 @@ export const AuthProvider = ({ children }) => {
         setError,
         setUser,
         setLoadingInitial,
-        setLoading
+        setLoading,
+        messageReply,
+        setMessageReply
       }}
     >
       {!loadingInitial && children}

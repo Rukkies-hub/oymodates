@@ -8,7 +8,6 @@ import { AntDesign } from '@expo/vector-icons'
 import Slider from '@react-native-community/slider'
 
 import { Audio, Video } from 'expo-av'
-import moment from 'moment'
 import { useNavigation } from '@react-navigation/native'
 import AutoHeightImage from 'react-native-auto-height-image'
 
@@ -71,35 +70,104 @@ const SenderMessage = ({ messages, matchDetails }) => {
           maxWidth: '80%'
         }}
       >
-        <Pressable onPress={() => {
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-          setShowTime(!showTime)
-          setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
-        }}>
+        <Pressable
+          onPress={() => {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+            setShowTime(!showTime)
+            setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
+          }}
+          onLongPress={() => navigation.navigate('MessageOptions', { messages })}
+        >
           {
             messages?.message &&
-            <>
-              <View
-                style={{
-                  backgroundColor: messages.message ? color.blue : color.transparent,
-                  paddingVertical: 8,
-                  paddingHorizontal: 8,
-                  borderTopLeftRadius: 12,
-                  borderBottomLeftRadius: 12,
-                  borderBottomRightRadius: 12,
-                }}
-              >
-                <Text
-                  numberOfLines={numberOfLines}
+            <View>
+              {
+                messages?.reply &&
+                <View
                   style={{
-                    color: color.white,
-                    fontSize: 16,
-                    textAlign: 'left'
+                    backgroundColor: messages.message ? color.blue : color.transparent,
+                    padding: messages?.reply ? 5 : 10,
+                    borderTopLeftRadius: 12,
+                    borderBottomLeftRadius: 12,
+                    borderBottomRightRadius: 12,
                   }}
                 >
-                  {messages?.message}
-                </Text>
-              </View>
+                  <TouchableOpacity
+                    onPress={() => console.log('reply: ', messages?.reply)}
+                    activeOpacity={0.7}
+                    style={{
+                      padding: 5,
+                      borderTopLeftRadius: 8,
+                      borderBottomLeftRadius: 8,
+                      borderBottomRightRadius: 8,
+                      backgroundColor: color.darkBlue,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    {
+                      messages?.reply?.mediaType == 'video' &&
+                      <Video
+                        source={{ uri: messages?.reply?.media }}
+                        resizeMode='cover'
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 8
+                        }}
+                      />
+                    }
+                    {
+                      messages?.reply?.mediaType == 'image' &&
+                      <Image
+                        source={{ uri: messages?.reply?.media }}
+                        resizeMode='cover'
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 8
+                        }}
+                      />
+                    }
+                    {
+                      messages?.reply?.caption != '' &&
+                      <Text
+                        numberOfLines={3}
+                        style={{
+                          color: color.white,
+                          marginLeft: messages?.reply?.media ? 10 : 0
+                        }}
+                      >
+                        {messages?.reply?.caption}
+                      </Text>
+                    }
+                    {
+                      messages?.reply?.message &&
+                      <Text
+                        numberOfLines={3}
+                        style={{
+                          color: color.white,
+                          marginLeft: messages?.reply?.media ? 10 : 0
+                        }}
+                      >
+                        {messages?.reply?.message}
+                      </Text>
+                    }
+                  </TouchableOpacity>
+                  <Text
+                    numberOfLines={numberOfLines}
+                    style={{
+                      color: color.white,
+                      fontSize: 16,
+                      textAlign: 'left'
+                    }}
+                  >
+                    {messages?.message}
+                  </Text>
+                </View>
+              }
               {
                 messages?.timestamp &&
                 <>
@@ -111,7 +179,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                   }
                 </>
               }
-            </>
+            </View>
           }
           {
             messages?.mediaType == 'image' &&
@@ -121,8 +189,9 @@ const SenderMessage = ({ messages, matchDetails }) => {
               }}
             >
               <Pressable
-                onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvarar', { avatar: messages?.media }) : null}
                 style={{ flex: 1 }}
+                onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvarar', { avatar: messages?.media }) : null}
+                onLongPress={() => navigation.navigate('MessageOptions', { messages })}
               >
                 <AutoHeightImage
                   source={{ uri: messages?.media }}
@@ -180,8 +249,9 @@ const SenderMessage = ({ messages, matchDetails }) => {
               }}
             >
               <Pressable
-                onPress={() => messages?.mediaType == 'video' ? navigation.navigate('ViewVideo', { video: messages?.media }) : null}
                 style={{ flex: 1 }}
+                onPress={() => messages?.mediaType == 'video' ? navigation.navigate('ViewVideo', { video: messages?.media }) : null}
+                onLongPress={() => navigation.navigate('MessageOptions', { messages })}
               >
                 <Video
                   source={{ uri: messages?.media }}
