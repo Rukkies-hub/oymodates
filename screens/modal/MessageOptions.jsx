@@ -5,16 +5,38 @@ import color from '../../style/color'
 import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
+import { deleteDoc, doc } from 'firebase/firestore'
+import { db } from '../../hooks/firebase'
+import { deleteObject, getStorage, ref } from 'firebase/storage'
 
 const MessageOptions = (props) => {
   const messages = props?.route?.params?.messages
+  const matchDetails = props?.route?.params?.matchDetails
   const {
     userProfile,
     setMessageReply
   } = useAuth()
   const navigation = useNavigation()
 
-  // console.log('messages: ', messages)
+  const storage = getStorage()
+
+  console.log('messages: ', messages)
+  console.log('matchDetails: ', matchDetails)
+
+  const deleteMessage = async () => {
+    if (messages?.mediaLink) {
+      const mediaRef = ref(storage, messages?.mediaLink)
+
+      deleteObject(mediaRef)
+        .then(async () => {
+          await deleteDoc(doc(db, 'matches', matchDetails?.id, 'messages', messages?.id))
+            .then(() => navigation.goBack())
+        })
+    } else {
+      navigation.goBack()
+      await deleteDoc(doc(db, 'matches', matchDetails?.id, 'messages', messages?.id))
+    }
+  }
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -106,26 +128,30 @@ const MessageOptions = (props) => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={{
-            height: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.dark : color.black,
-            borderRadius: 12,
-            marginTop: 10
-          }}
-        >
-          <Text
+        {
+          messages?.userId == userProfile?.id &&
+          <TouchableOpacity
+            onPress={deleteMessage}
+            activeOpacity={0.5}
             style={{
-              fontFamily: 'text',
-              color: color.red
+              height: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.dark : color.black,
+              borderRadius: 12,
+              marginTop: 10
             }}
           >
-            Delete message
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                fontFamily: 'text',
+                color: color.red
+              }}
+            >
+              Delete message
+            </Text>
+          </TouchableOpacity>
+        }
       </View>
     </View>
   )

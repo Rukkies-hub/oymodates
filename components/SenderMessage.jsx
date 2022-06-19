@@ -76,7 +76,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
             setShowTime(!showTime)
             setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
           }}
-          onLongPress={() => navigation.navigate('MessageOptions', { messages })}
+          onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
         >
           {
             messages?.message &&
@@ -213,7 +213,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
               <Pressable
                 style={{ flex: 1 }}
                 onPress={() => navigation.navigate('ViewAvarar', { avatar: messages?.media })}
-                onLongPress={() => navigation.navigate('MessageOptions', { messages })}
+                onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
                 <AutoHeightImage
                   source={{ uri: messages?.media }}
@@ -273,7 +273,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
               <Pressable
                 style={{ flex: 1 }}
                 onPress={() => navigation.navigate('ViewVideo', { video: messages?.media })}
-                onLongPress={() => navigation.navigate('MessageOptions', { messages })}
+                onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
                 <Video
                   source={{ uri: messages?.media }}
@@ -334,7 +334,6 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 borderRadius: 20,
                 overflow: 'hidden',
                 backgroundColor: color.blue,
-                right: -10,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',

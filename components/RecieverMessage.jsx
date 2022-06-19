@@ -80,7 +80,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             setShowTime(!showTime)
             setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
           }}
-          onLongPress={() => navigation.navigate('MessageOptions', { messages })}
+          onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
         >
           {
             messages?.message &&
@@ -217,6 +217,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
               <Pressable
                 onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvarar', { avatar: messages?.media }) : null}
                 style={{ flex: 1 }}
+                onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
                 <AutoHeightImage
                   source={{ uri: messages?.media }}
@@ -275,8 +276,9 @@ const RecieverMessage = ({ messages, matchDetails }) => {
               }}
             >
               <Pressable
-                onPress={() => messages?.mediaType == 'video' ? navigation.navigate('ViewVideo', { video: messages?.media }) : null}
                 style={{ flex: 1 }}
+                onPress={() => messages?.mediaType == 'video' ? navigation.navigate('ViewVideo', { video: messages?.media }) : null}
+                onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
                 <Video
                   source={{ uri: messages?.media }}
@@ -338,7 +340,6 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 borderRadius: 20,
                 overflow: 'hidden',
                 backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-                left: -10,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
