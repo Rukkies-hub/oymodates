@@ -74,35 +74,126 @@ const RecieverMessage = ({ messages, matchDetails }) => {
           maxWidth: '80%'
         }}
       >
-        <Pressable onPress={() => {
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-          setShowTime(!showTime)
-          setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
-        }}>
+        <Pressable
+          onPress={() => {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+            setShowTime(!showTime)
+            setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
+          }}
+          onLongPress={() => navigation.navigate('MessageOptions', { messages })}
+        >
           {
             messages?.message &&
-            <>
-              <View
-                style={{
-                  backgroundColor: messages.message ? (userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.black : color.dark) : color.transparent,
-                  padding: 10,
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 12,
-                  borderBottomRightRadius: 12,
-                  borderTopRightRadius: 12
-                }}
-              >
-                <Text
-                  numberOfLines={numberOfLines}
-                  style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                    fontSize: 16,
-                    textAlign: 'left'
-                  }}
-                >
-                  {messages?.message}
-                </Text>
-              </View>
+            <View>
+              {
+                messages?.reply ?
+                  <View
+                    style={{
+                      backgroundColor: messages.message ? (userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.black : color.dark) : color.transparent,
+                      padding: messages?.reply ? 5 : 10,
+                      borderTopRightRadius: 12,
+                      borderBottomRightRadius: 12,
+                      borderBottomLeftRadius: 12
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => console.log('reply: ', messages?.reply)}
+                      activeOpacity={0.7}
+                      style={{
+                        padding: 5,
+                        borderTopRightRadius: 8,
+                        borderBottomRightRadius: 8,
+                        borderBottomLeftRadius: 8,
+                        backgroundColor: messages.message ? (userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.black) : color.transparent,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'flex-start',
+                        overflow: 'hidden'
+                      }}
+                    >
+                      {
+                        messages?.reply?.mediaType == 'video' &&
+                        <Video
+                          source={{ uri: messages?.reply?.media }}
+                          resizeMode='cover'
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 8
+                          }}
+                        />
+                      }
+                      {
+                        messages?.reply?.mediaType == 'image' &&
+                        <Image
+                          source={{ uri: messages?.reply?.media }}
+                          resizeMode='cover'
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 8
+                          }}
+                        />
+                      }
+                      {
+                        messages?.reply?.caption != '' &&
+                        <Text
+                          numberOfLines={3}
+                          style={{
+                            color: color.white,
+                            marginLeft: messages?.reply?.media ? 10 : 0
+                          }}
+                        >
+                          {messages?.reply?.caption}
+                        </Text>
+                      }
+                      {
+                        messages?.reply?.message &&
+                        <Text
+                          numberOfLines={3}
+                          style={{
+                            color: color.white,
+                            marginLeft: messages?.reply?.media ? 10 : 0
+                          }}
+                        >
+                          {messages?.reply?.message}
+                        </Text>
+                      }
+                    </TouchableOpacity>
+                    <Text
+                      numberOfLines={numberOfLines}
+                      style={{
+                        color: color.white,
+                        fontSize: 16,
+                        textAlign: 'left'
+                      }}
+                    >
+                      {messages?.message}
+                    </Text>
+                  </View> :
+                  <View
+                    style={{
+                      backgroundColor: messages.message ? (userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.black : color.dark) : color.transparent,
+                      paddingVertical: 8,
+                      paddingHorizontal: 8,
+                      borderTopLeftRadius: 0,
+                      borderBottomLeftRadius: 12,
+                      borderBottomRightRadius: 12,
+                      borderTopRightRadius: 12
+                    }}
+                  >
+                    <Text
+                      numberOfLines={numberOfLines}
+                      style={{
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        fontSize: 16,
+                        textAlign: 'left'
+                      }}
+                    >
+                      {messages?.message}
+                    </Text>
+                  </View>
+              }
               {
                 messages?.timestamp &&
                 <>
@@ -114,7 +205,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                   }
                 </>
               }
-            </>
+            </View>
           }
           {
             messages?.mediaType == 'image' &&
