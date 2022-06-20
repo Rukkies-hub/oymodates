@@ -62,7 +62,10 @@ const Add = () => {
       quality: 1,
     })
 
-    if (!result.cancelled) setMedia(result.uri)
+    if (!result.cancelled) {
+      setMedia(result.uri)
+      setMediaType(result.type)
+    }
   }
 
   useEffect(() =>
@@ -79,15 +82,6 @@ const Add = () => {
       setMediaVidiblity(true)
     })
     , [])
-
-  let extention = madiaString.slice(-7)
-
-  useEffect(() => {
-    if (extention.includes('jpg' || 'png' || 'gif' || 'jpeg' || 'JPEG' || 'JPG' || 'PNG' || 'GIF'))
-      setMediaType('image')
-    else if (extention.includes('mp4'))
-      setMediaType('video')
-  }, [media])
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
