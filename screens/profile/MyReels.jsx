@@ -12,6 +12,7 @@ const { width, height } = Dimensions.get('window')
 import { AntDesign } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
+import { FlatGrid } from 'react-native-super-grid'
 
 const MyReels = () => {
   const { user } = useAuth()
@@ -49,15 +50,27 @@ const MyReels = () => {
             marginTop: 20
           }}
         >
-          {
-            reels.map((reel, index) => (
+          <FlatGrid
+            data={reels}
+            keyExtractor={item => item.id}
+            itemDimension={100}
+            showsVerticalScrollIndicator={false}
+            additionalRowStyle={{
+              padding: 0,
+              margin: 0,
+              marginLeft: -15
+            }}
+            itemContainerStyle={{
+              padding: 0,
+              margin: 5,
+              marginTop: -12
+            }}
+            renderItem={({ item: reel }) => (
               <Pressable
                 onPress={() => navigation.navigate('ViewReel', { reel })}
-                key={index}
                 style={{
-                  width: '30%',
-                  height: (width - 10) / 3,
-                  margin: 3
+                  width: '100%',
+                  height: width / 3
                 }}
               >
                 <AutoHeightImage
@@ -76,24 +89,25 @@ const MyReels = () => {
                     alignItems: 'center',
                     backgroundColor: color.faintBlack,
                     padding: 5,
-                    borderRadius: 50
+                    borderRadius: 50,
+                    minWidth: 45
                   }}
                 >
-                  <AntDesign name="heart" size={18} color={color.white} />
+                  <AntDesign name="heart" size={14} color={color.white} />
                   <Text
                     style={{
                       fontFamily: 'boldText',
                       marginLeft: 10,
                       color: color.white,
-                      fontSize: 18
+                      fontSize: 14
                     }}
                   >
                     {reel?.likesCount}
                   </Text>
                 </View>
               </Pressable>
-            ))
-          }
+            )}
+          />
         </View>
       }
     </ScrollView>

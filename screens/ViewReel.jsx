@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, TouchableOpacity, Dimensions, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Dimensions, Image, ImageBackground } from 'react-native'
 import color from '../style/color'
 import useAuth from '../hooks/useAuth'
 import Header from '../components/Header'
@@ -11,8 +11,10 @@ import LikeReels from '../components/LikeReels'
 
 const { width, height } = Dimensions.get('window')
 
-import { AntDesign, FontAwesome } from '@expo/vector-icons'
+import { AntDesign, FontAwesome, Entypo } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+
+import Bar from '../components/StatusBar'
 
 const ViewReel = (props) => {
   const navigation = useNavigation()
@@ -31,45 +33,60 @@ const ViewReel = (props) => {
     , [navigation])
 
   return (
-    <View
+    <ImageBackground
+      source={{ uri: reel?.thumbnail }}
+      resizeMode='cover'
+      blurRadius={50}
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+        justifyContent: 'center',
+        alignItems: 'center'
       }}
     >
-      <Header showBack showTitle title='View reel' showAratar />
+      <Bar color={'light'} />
 
-      <View
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
         style={{
-          position: 'relative',
-          flex: 1,
-          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+          position: 'absolute',
+          top: 60,
+          left: 0,
+          marginHorizontal: 30,
+          width: 50,
+          height: 50,
+          borderRadius: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: `${color.dark}89`,
+          zIndex: 1
         }}
       >
-        <TouchableOpacity
-          onPress={() => videoStatus.isPlaying ? ref.current.pauseAsync() : ref.current.playAsync()}
-          style={{
-            flex: 1,
-            backgroundColor: color.transparent,
-            position: 'absolute',
-            zIndex: 1,
-            width: '100%',
-            height: '100%',
-          }}
-        />
+        <Entypo name='chevron-left' size={24} color={color.white} />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => videoStatus.isPlaying ? ref.current.pauseAsync() : ref.current.playAsync()}
+        style={{
+          flex: 1,
+          width,
+          backgroundColor: color.transparent
+        }}
+      >
         <Video
           ref={ref}
-          style={{ flex: 1, backgroundColor: color.black }}
-          resizeMode={Video.RESIZE_MODE_COVER}
+          style={{ flex: 1, backgroundColor: color.transparent }}
+          resizeMode='contain'
           isLooping
           usePoster
           posterSource={{ uri: reel?.thumbnail }}
-          posterStyle={{ resizeMode: 'cover', height: '100%' }}
+          posterStyle={{ resizeMode: 'contain', height: '100%' }}
           shouldPlay={false}
           source={{ uri: reel?.media }}
           onPlaybackStatusUpdate={status => setVideoStatus(() => status)}
         />
-      </View>
+      </TouchableOpacity>
 
       <LinearGradient
         colors={['transparent', color.labelColor]}
@@ -174,7 +191,7 @@ const ViewReel = (props) => {
           </View>
         </View>
       </LinearGradient>
-    </View>
+    </ImageBackground>
   )
 }
 
