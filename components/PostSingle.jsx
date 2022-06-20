@@ -1,11 +1,13 @@
 import React, { forwardRef, useRef, useImperativeHandle, useEffect, useState } from 'react'
 
-import { View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, Dimensions, ImageBackground } from 'react-native'
 
 import { Video } from 'expo-av'
 import color from '../style/color'
 import { useNavigation } from '@react-navigation/native'
 import useAuth from '../hooks/useAuth'
+
+const { width } = Dimensions.get('window')
 
 export const PostSingle = forwardRef(({ item }, parentRef) => {
   const { userProfile } = useAuth()
@@ -62,37 +64,31 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
   }
 
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={() => videoStatus.isPlaying ? ref.current.pauseAsync() : ref.current.playAsync()}
       style={{
-        position: 'relative',
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+        width,
+        backgroundColor: color.transparent
       }}
     >
-      <TouchableOpacity
-        onPress={() => videoStatus.isPlaying ? ref.current.pauseAsync() : ref.current.playAsync()}
-        style={{
-          flex: 1,
-          backgroundColor: color.transparent,
-          position: 'absolute',
-          zIndex: 1,
-          width: '100%',
-          height: '100%',
-        }}
-      />
       <Video
         ref={ref}
-        style={{ flex: 1, backgroundColor: color.black }}
-        resizeMode={Video.RESIZE_MODE_COVER}
+        style={{ flex: 1, backgroundColor: color.transparent }}
+        resizeMode='contain'
         isLooping
         usePoster
         posterSource={{ uri: item?.thumbnail }}
-        posterStyle={{ resizeMode: 'cover', height: '100%' }}
+        posterStyle={{
+          resizeMode: 'contain',
+          height: '100%'
+        }}
         shouldPlay={false}
         source={{ uri: item?.media }}
         onPlaybackStatusUpdate={status => setVideoStatus(() => status)}
       />
-    </View>
+    </TouchableOpacity>
   )
 })
 

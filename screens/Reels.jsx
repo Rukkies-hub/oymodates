@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, SafeAreaView, FlatList, Dimensions, TouchableOpacity, Image } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, Dimensions, TouchableOpacity, Image, ImageBackground } from 'react-native'
 
 import { arrayRemove, arrayUnion, collection, doc, getDocs, limit, onSnapshot, query, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
@@ -84,12 +84,17 @@ const Reels = () => {
 
   const renderItem = ({ item, index }) => {
     return (
-      <View
+      <ImageBackground
+        source={{ uri: item?.thumbnail }}
+        resizeMode='cover'
+        blurRadius={50}
         style={{
           flex: 1,
           width,
           height: height - 109,
-          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
       >
         <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)} />
@@ -204,7 +209,7 @@ const Reels = () => {
             </View>
           </View>
         </LinearGradient>
-      </View>
+      </ImageBackground>
     )
   }
 

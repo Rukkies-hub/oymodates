@@ -224,8 +224,7 @@ const Match = () => {
                       minHeight: 60,
                       position: 'absolute',
                       bottom: 0,
-                      paddingHorizontal: 20,
-                      paddingVertical: 10
+                      padding: 20
                     }}
                   >
                     <View
@@ -252,19 +251,6 @@ const Match = () => {
                           }}>
                           {card?.username}
                         </Text>
-                        {
-                          card?.hideAge == true ? null : (
-                            <Text
-                              style={{
-                                fontSize: 30,
-                                color: color.white,
-                                marginBottom: 10,
-                                fontFamily: 'lightText'
-                              }}>
-                              {` ${card?.age}`}
-                            </Text>
-                          )
-                        }
                       </View>
 
                       <TouchableOpacity
@@ -296,7 +282,7 @@ const Match = () => {
                               fontFamily: 'lightText'
                             }}
                           >
-                            {` ${card?.job}`} at {card?.company}
+                            {` ${card?.job}`} {card?.job ? 'at' : null} {card?.company}
                           </Text>
                         </View> :
                         null
@@ -353,7 +339,8 @@ const Match = () => {
                           style={{
                             color: color.white,
                             fontSize: 18,
-                            fontFamily: 'lightText'
+                            fontFamily: 'lightText',
+                            marginTop: 10
                           }}
                         >
                           {card?.about}
@@ -409,70 +396,6 @@ const Match = () => {
                         </View> :
                         null
                     }
-
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-evenly",
-                        alignItems: "center",
-                        paddingTop: 20
-                      }}
-                    >
-                      <TouchableOpacity
-                        // onPress={rewindPasses}
-                        style={{
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: 50,
-                          width: 40,
-                          height: 40,
-                          borderWidth: 1,
-                          borderColor: color.lightGold
-                        }}>
-                        <MaterialCommunityIcons name="refresh" color={color.lightGold} size={30} />
-                      </TouchableOpacity>
-
-                      <TouchableOpacity
-                        onPress={() => swipeRef.current.swipeLeft()}
-                        style={{
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: 50,
-                          width: 55,
-                          height: 55,
-                          borderWidth: 1,
-                          borderColor: color.lightRed
-                        }}>
-                        <MaterialCommunityIcons name="close" color={color.lightRed} size={30} />
-                      </TouchableOpacity>
-
-                      <TouchableOpacity
-                        onPress={() => swipeRef.current.swipeRight()}
-                        style={{
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: 50,
-                          width: 55,
-                          height: 55,
-                          borderWidth: 1,
-                          borderColor: color.lightGreen
-                        }}>
-                        <MaterialCommunityIcons name="heart" color={color.lightGreen} size={30} />
-                      </TouchableOpacity>
-
-                      <TouchableOpacity
-                        style={{
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: 50,
-                          width: 40,
-                          height: 40,
-                          borderWidth: 1,
-                          borderColor: color.lightPurple
-                        }}>
-                        <MaterialCommunityIcons name="lightning-bolt" color={color.lightPurple} size={30} />
-                      </TouchableOpacity>
-                    </View>
                   </LinearGradient>
                 </View>
               )}

@@ -234,8 +234,8 @@ const Message = () => {
       <Header
         showBack
         showTitle
-        showPhone
-        showVideo
+        // showPhone
+        // showVideo
         showMatchAvatar
         matchDetails={matchDetails}
         title={`@${getMatchedUserInfo(matchDetails?.users, user?.uid).username}`}
