@@ -61,9 +61,16 @@ const Posts = () => {
     )
   }
 
-  useEffect(() => {
-    getPosts()
-  }, [])
+  useEffect(() => 
+    onSnapshot(collection(db, 'posts'), limit(postLimit), doc => {
+      setPosts(
+        doc?.docs?.map(doc => ({
+          id: doc?.id,
+          ...doc.data()
+        }))
+      )
+    })
+  , [])
 
 
   const [loaded] = useFonts({

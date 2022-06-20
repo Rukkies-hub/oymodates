@@ -39,7 +39,7 @@ const Reels = () => {
   })
 
   const [reels, setReels] = useState([])
-  const [reelsLimit, setReelsLimit] = useState(3)
+  const [reelsLimit, setReelsLimit] = useState(2)
 
   const getReels = async () => {
     const queryReels = await getDocs(query(collection(db, 'reels'), limit(reelsLimit)))
@@ -52,9 +52,16 @@ const Reels = () => {
     )
   }
 
-  useEffect(() => {
-    getReels()
-  }, [])
+  useEffect(() =>
+    onSnapshot(collection(db, 'reels'), limit(reelsLimit), doc => {
+      setReels(
+        doc?.docs?.map(doc => ({
+          id: doc?.id,
+          ...doc.data()
+        }))
+      )
+    })
+    , [])
 
   const likeReel = async (item) => {
     let reels = item

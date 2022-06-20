@@ -49,17 +49,24 @@ const MessageOptions = (props) => {
       intensity={100}
       style={{
         flex: 1,
-        // backgroundColor: userProfile?.appMode == 'light' ? color.lightBorderColor : color.borderColor,
         justifyContent: 'flex-end',
         alignItems: 'center'
       }}
     >
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{
+          flex: 1,
+          width: '100%'
+        }}
+      />
       <View
         style={{
           minWidth: Dimensions.get('window').width,
           backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.black : color.dark,
           padding: 20,
-          borderRadius: 20
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20
         }}
       >
         <TouchableOpacity

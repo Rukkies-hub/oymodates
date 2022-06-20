@@ -16,7 +16,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
-const RecieverMessage = ({ messages, matchDetails }) => {
+const RecieverMessage = ({ messages, matchDetails, chatThemeIndex }) => {
   const { userProfile, user } = useAuth()
 
   const navigation = useNavigation()

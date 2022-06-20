@@ -12,6 +12,8 @@ import { db } from '../hooks/firebase'
 
 const { width, height } = Dimensions.get('window')
 
+import { FlatGrid } from 'react-native-super-grid'
+
 const backgrounds = [
   {
     id: 1,
@@ -60,12 +62,15 @@ const MessageSettings = props => {
   const refMessageSettingsSheet = useRef()
 
   const matchDetails = props?.matchDetails
+  const iconColor = props?.iconColor
 
-  const setChatBackground = async background =>
+  const setChatBackground = async background => {
     await updateDoc(doc(db, 'matches', matchDetails?.id), {
-      chatTheme: background?.image
+      chatTheme: background?.image,
+      chatThemeIndex: background?.id,
     })
-
+    refMessageSettingsSheet.current.close()
+  }
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -84,7 +89,7 @@ const MessageSettings = props => {
           alignItems: 'center'
         }}
       >
-        <MaterialCommunityIcons name='dots-vertical' size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+        <MaterialCommunityIcons name='dots-vertical' size={24} color={iconColor ? iconColor : userProfile?.appMode == 'light' ? color.lightText : color.white} />
       </TouchableOpacity>
 
       <RBSheet
@@ -119,7 +124,7 @@ const MessageSettings = props => {
               fontFamily: 'text'
             }}
           >
-            Chat Theme
+            Theme
           </Text>
           <View
             style={{
@@ -130,15 +135,11 @@ const MessageSettings = props => {
               alignItems: 'flex-start'
             }}
           >
-            {
-              backgrounds.map((background, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => setChatBackground(background)}
-                  style={{
-                    margin: 5
-                  }}
-                >
+            <FlatGrid
+              data={backgrounds}
+              itemDimension={50}
+              renderItem={({ item: background }) => (
+                <TouchableOpacity onPress={() => setChatBackground(background)}>
                   <Image
                     source={{ uri: background.image }}
                     style={{
@@ -148,8 +149,8 @@ const MessageSettings = props => {
                     }}
                   />
                 </TouchableOpacity>
-              ))
-            }
+              )}
+            />
           </View>
         </View>
       </RBSheet>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import {
   View,
@@ -15,7 +15,8 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
-  Image
+  Image,
+  ImageBackground
 } from 'react-native'
 
 import color from '../style/color'
@@ -30,7 +31,7 @@ import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 
 import SenderMessage from '../components/SenderMessage'
 import RecieverMessage from '../components/RecieverMessage'
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, doc, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -59,17 +60,25 @@ import { FlatGrid } from 'react-native-super-grid'
 import * as NavigationBar from 'expo-navigation-bar'
 
 import * as ImagePicker from 'expo-image-picker'
-import AutoHeightImage from 'react-native-auto-height-image'
+
+import Bar from '../components/StatusBar'
 
 const Message = () => {
   const navigation = useNavigation()
-  const { user, userProfile, chatTheme, messageReply, setMessageReply } = useAuth()
+  const { user, userProfile, messageReply, setMessageReply } = useAuth()
 
   const { params } = useRoute()
   const { matchDetails } = params
 
-  NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
-  NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
+  useEffect(() => {
+    NavigationBar.setVisibilityAsync('hidden')
+    NavigationBar.setBehaviorAsync('overlay-swipe')
+  }, [])
+
+  navigation.addListener('blur', () => {
+    NavigationBar.setVisibilityAsync('visible')
+    NavigationBar.setBehaviorAsync('inset-swipe')
+  })
 
   const storage = getStorage()
 
@@ -83,16 +92,25 @@ const Message = () => {
   const [recording, setRecording] = useState()
   const [recordings, setRecordings] = useState([])
   const [recordingLoading, setRecordingLoading] = useState(false)
+  const [chatTheme, setChatTheme] = useState()
+  const [chatThemeIndex, setChatThemeIndex] = useState()
 
   useEffect(() =>
     onSnapshot(query(collection(db,
-      'matches', matchDetails.id, 'messages'),
+      'matches', matchDetails?.id, 'messages'),
       orderBy('timestamp', 'desc')),
       snapshot => setMessages(snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })))
     )
+    , [matchDetails, db])
+
+  useEffect(() =>
+    onSnapshot(doc(db, 'matches', matchDetails?.id), doc => {
+      setChatTheme(doc.data()?.chatTheme)
+      setChatThemeIndex(doc.data()?.chatThemeIndex)
+    })
     , [matchDetails, db])
 
   useEffect(() =>
@@ -228,12 +246,21 @@ const Message = () => {
         setExpanded(false)
         Keyboard.dismiss
       }}>
-        <SafeAreaView
+        <ImageBackground
+          source={{ uri: chatTheme ? chatTheme : null }}
+          blurRadius={40}
           style={{
             flex: 1,
             backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
           }}
         >
+          <Bar
+            color={
+              chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? 'light' :
+                chatThemeIndex == 4 ? 'dark' :
+                  'dark'
+            }
+          />
           <Header
             showBack
             showTitle
@@ -244,6 +271,12 @@ const Message = () => {
             title={`@${getMatchedUserInfo(matchDetails?.users, user?.uid).username}`}
             matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL}
             showChatMenu
+            backgroundColor={color.transparent}
+            iconColor={
+              chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? color.white :
+                chatThemeIndex == 4 ? color.dark :
+                  color.red
+            }
           />
 
           <TouchableWithoutFeedback
@@ -259,9 +292,9 @@ const Message = () => {
               keyExtractor={item => item.id}
               renderItem={({ item: message }) => (
                 message.userId === user?.uid ? (
-                  <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} />
+                  <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
                 ) : (
-                  <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} />
+                  <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
                 )
               )}
             />
@@ -559,7 +592,7 @@ const Message = () => {
               </View>
             )
           }
-        </SafeAreaView >
+        </ImageBackground >
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   )

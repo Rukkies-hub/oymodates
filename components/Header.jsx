@@ -51,7 +51,8 @@ const Header = ({
   matchDetails,
   showNotification,
   showChatMenu,
-  backgroundColor
+  backgroundColor,
+  iconColor
 }) => {
   const navigation = useNavigation()
   const { user, userProfile, madiaString, media, setMedia, notifications, setNotificatios } = useAuth()
@@ -157,7 +158,7 @@ const Header = ({
     >
       <View
         style={{
-          backgroundColor: backgroundColor || userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+          backgroundColor: backgroundColor ? backgroundColor : userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
           height: 50,
           marginTop: 40,
           paddingHorizontal: 10,
@@ -186,7 +187,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <Entypo name='chevron-left' size={24} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+              <Entypo name='chevron-left' size={24} color={iconColor ? iconColor : userProfile?.appMode == 'light' ? color.dark : color.white} />
             </TouchableOpacity>
           }
           {
@@ -222,7 +223,7 @@ const Header = ({
                 fontFamily: 'text',
                 fontSize: 18,
                 textTransform: 'capitalize',
-                color: userProfile?.appMode == 'light' ? color.dark : color.white
+                color: iconColor ? iconColor : userProfile?.appMode == 'light' ? color.dark : color.white
               }}
             >
               {title}
@@ -248,7 +249,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <Entypo name='phone' size={20} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+              <Entypo name='phone' size={20} color={iconColor ? iconColor : userProfile?.appMode == 'light' ? color.lightText : color.white} />
             </TouchableOpacity>
           }
 
@@ -263,13 +264,13 @@ const Header = ({
                 alignItems: 'center'
               }}
             >
-              <FontAwesome5 name='video' size={20} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+              <FontAwesome5 name='video' size={20} color={iconColor ? iconColor : userProfile?.appMode == 'light' ? color.lightText : color.white} />
             </TouchableOpacity>
           }
 
           {
             showChatMenu &&
-            <MessageSettings matchDetails={matchDetails} />
+            <MessageSettings matchDetails={matchDetails} iconColor={iconColor} />
           }
 
           {
