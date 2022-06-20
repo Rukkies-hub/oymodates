@@ -5,7 +5,7 @@ import color from '../../style/color'
 import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
-import { deleteDoc, doc } from 'firebase/firestore'
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import { deleteObject, getStorage, ref } from 'firebase/storage'
 
@@ -33,6 +33,13 @@ const MessageOptions = (props) => {
       navigation.goBack()
       await deleteDoc(doc(db, 'matches', matchDetails?.id, 'messages', messages?.id))
     }
+  }
+
+  const starMessage = async () => {
+    await updateDoc(doc(db, 'matches', matchDetails?.id, 'messages', messages?.id), {
+      star: [userProfile?.id]
+    })
+    navigation.goBack()
   }
 
   const [loaded] = useFonts({
@@ -112,6 +119,7 @@ const MessageOptions = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity
+          onPress={starMessage}
           activeOpacity={0.5}
           style={{
             height: 50,
