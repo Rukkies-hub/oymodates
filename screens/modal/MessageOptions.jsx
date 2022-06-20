@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, Dimensions, TouchableOpacity } from 'react-native'
 import color from '../../style/color'
 
@@ -19,9 +19,6 @@ const MessageOptions = (props) => {
   const navigation = useNavigation()
 
   const storage = getStorage()
-
-  console.log('messages: ', messages)
-  console.log('matchDetails: ', matchDetails)
 
   const deleteMessage = async () => {
     if (messages?.mediaLink) {

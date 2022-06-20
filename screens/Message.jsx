@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 
 import {
   View,
@@ -57,8 +57,6 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
 import { FlatGrid } from 'react-native-super-grid'
 
-import * as NavigationBar from 'expo-navigation-bar'
-
 import * as ImagePicker from 'expo-image-picker'
 
 import Bar from '../components/StatusBar'
@@ -69,16 +67,6 @@ const Message = () => {
 
   const { params } = useRoute()
   const { matchDetails } = params
-
-  useEffect(() => {
-    NavigationBar.setVisibilityAsync('hidden')
-    NavigationBar.setBehaviorAsync('overlay-swipe')
-  }, [])
-
-  navigation.addListener('blur', () => {
-    NavigationBar.setVisibilityAsync('visible')
-    NavigationBar.setBehaviorAsync('inset-swipe')
-  })
 
   const storage = getStorage()
 

@@ -140,7 +140,7 @@ const RecieverMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                         <Text
                           numberOfLines={3}
                           style={{
-                            color: color.white,
+                            color: userProfile?.appMode == 'light' ? color.dark : color.white,
                             marginLeft: messages?.reply?.media ? 10 : 0
                           }}
                         >
@@ -152,7 +152,7 @@ const RecieverMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                         <Text
                           numberOfLines={3}
                           style={{
-                            color: color.white,
+                            color: userProfile?.appMode == 'light' ? color.dark : color.white,
                             marginLeft: messages?.reply?.media ? 10 : 0
                           }}
                         >
@@ -163,7 +163,7 @@ const RecieverMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: color.white,
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -199,7 +199,16 @@ const RecieverMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
+                    <Text
+                      style={{
+                        color: chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? color.white :
+                          chatThemeIndex == 4 ? color.dark :
+                            userProfile?.appMode == 'light' ? color.dark :
+                              color.white,
+                        fontSize: 8,
+                        textAlign: 'left'
+                      }}
+                    >
                       {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                     </Text>
                   }
@@ -244,7 +253,10 @@ const RecieverMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        color: chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? color.white :
+                          chatThemeIndex == 4 ? color.dark :
+                            userProfile?.appMode == 'light' ? color.dark :
+                              color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -257,7 +269,16 @@ const RecieverMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
+                        <Text
+                          style={{
+                            color: chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? color.white :
+                              chatThemeIndex == 4 ? color.dark :
+                                userProfile?.appMode == 'light' ? color.dark :
+                                  color.white,
+                            fontSize: 8,
+                            textAlign: 'left'
+                          }}
+                        >
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }
@@ -306,7 +327,11 @@ const RecieverMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        // color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        color: chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? color.white :
+                          chatThemeIndex == 4 ? color.dark :
+                            userProfile?.appMode == 'light' ? color.dark :
+                              color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}

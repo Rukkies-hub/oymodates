@@ -26,7 +26,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from './hooks/firebase'
 
 const DrawerNavigator = () => {
-  const { userProfile, logout, user, screen, setScreen } = useAuth()
+  const { userProfile, user, screen, setScreen } = useAuth()
   const Drawer = createDrawerNavigator()
 
   const navigation = useNavigation()
@@ -247,34 +247,6 @@ const DrawerNavigator = () => {
               </View>
             }
           />
-
-          <TouchableOpacity
-            onPress={() => logout()}
-            style={{
-              backgroundColor: color.red,
-              marginHorizontal: 10,
-              height: 40,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              borderRadius: 4,
-              paddingHorizontal: 10,
-              marginTop: 10
-            }}
-          >
-            <SimpleLineIcons name='logout' size={18} color={color.white} />
-
-            <Text
-              style={{
-                color: color.white,
-                fontFamily: 'text',
-                marginLeft: 10
-              }}
-            >
-              Logout
-            </Text>
-          </TouchableOpacity>
-
         </DrawerContentScrollView>
       )}
       screenOptions={{

@@ -4,8 +4,11 @@ import color from '../../style/color'
 
 import AutoHeightImage from 'react-native-auto-height-image'
 
+import { useNavigation } from '@react-navigation/native'
+
 const ViewAvarar = (props) => {
   const avatar = props?.route?.params?.avatar
+  const navigation = useNavigation()
 
   return (
     <View
