@@ -58,6 +58,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { FlatGrid } from 'react-native-super-grid'
 
 import * as ImagePicker from 'expo-image-picker'
+import * as NavigationBar from 'expo-navigation-bar'
 
 import Bar from '../components/StatusBar'
 
@@ -224,364 +225,342 @@ const Message = () => {
   if (!loaded) return null
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+      }}
     >
-      <TouchableWithoutFeedback onPress={() => {
-        setExpanded(false)
-        Keyboard.dismiss
-      }}>
-        <ImageBackground
-          source={{ uri: chatTheme ? chatTheme : null }}
-          blurRadius={40}
+      <Header
+        showBack
+        showTitle
+        showPhone
+        showVideo
+        showMatchAvatar
+        matchDetails={matchDetails}
+        title={`@${getMatchedUserInfo(matchDetails?.users, user?.uid).username}`}
+        matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL}
+        showChatMenu
+        backgroundColor={color.transparent}
+      />
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <FlatList
+          inverted={-1}
           style={{
             flex: 1,
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+            paddingHorizontal: 10
           }}
-        >
-          <Bar
-            color={
-              chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? 'light' :
-                chatThemeIndex == 4 ? 'dark' :
-                  'dark'
-            }
-          />
-          <Header
-            showBack
-            showTitle
-            showPhone
-            showVideo
-            showMatchAvatar
-            matchDetails={matchDetails}
-            title={`@${getMatchedUserInfo(matchDetails?.users, user?.uid).username}`}
-            matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL}
-            showChatMenu
-            backgroundColor={color.transparent}
-            iconColor={
-              chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? color.white :
-                chatThemeIndex == 4 ? color.dark :
-                  color.red
-            }
-          />
+          data={messages}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={item => item.id}
+          renderItem={({ item: message }) => (
+            message.userId === user?.uid ? (
+              <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
+            ) : (
+              <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
+            )
+          )}
+        />
 
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-          >
-            <FlatList
-              inverted={-1}
-              style={{
-                flex: 1,
-                paddingHorizontal: 10
-              }}
-              data={messages}
-              keyExtractor={item => item.id}
-              renderItem={({ item: message }) => (
-                message.userId === user?.uid ? (
-                  <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
-                ) : (
-                  <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
-                )
-              )}
-            />
-          </TouchableWithoutFeedback>
-
-          <View>
-            {
-              messageReply &&
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginHorizontal: 10,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-                  marginTop: 10,
-                  borderTopLeftRadius: 12,
-                  borderTopRightRadius: 12,
-                  overflow: 'hidden',
-                  padding: 5
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'flex-start',
-                    backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.lightText,
-                    flex: 1,
-                    borderRadius: 12,
-                    overflow: 'hidden',
-                    padding: 5
-                  }}
-                >
-                  {
-                    messageReply?.mediaType == 'video' &&
-                    <Video
-                      source={{ uri: messageReply?.media }}
-                      resizeMode='cover'
-                      style={{
-                        width: 50,
-                        height: 50,
-                        borderRadius: 12
-                      }}
-                    />
-                  }
-                  {
-                    messageReply?.mediaType == 'image' &&
-                    <Image
-                      source={{ uri: messageReply?.media }}
-                      resizeMode='cover'
-                      style={{
-                        width: 50,
-                        height: 50,
-                        borderRadius: 12
-                      }}
-                    />
-                  }
-                  {
-                    messageReply?.caption != '' &&
-                    <Text
-                      numberOfLines={3}
-                      style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                        marginLeft: messageReply?.media ? 10 : 0
-                      }}
-                    >
-                      {messageReply?.caption}
-                    </Text>
-                  }
-                  {
-                    messageReply?.message &&
-                    <Text
-                      numberOfLines={3}
-                      style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                        marginLeft: messageReply?.media ? 10 : 0
-                      }}
-                    >
-                      {messageReply?.message}
-                    </Text>
-                  }
-                </View>
-                {
-                  messageReply &&
-                  <TouchableOpacity
-                    onPress={() => setMessageReply(null)}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderRadius: 12
-                    }}
-                  >
-                    <AntDesign name='close' size={24} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
-                  </TouchableOpacity>
-                }
-              </TouchableOpacity>
-            }
-            <View
+        <View>
+          {
+            messageReply &&
+            <TouchableOpacity
+              activeOpacity={0.7}
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                paddingHorizontal: 10,
-                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-                minHeight: 50,
-                overflow: 'hidden',
-                position: 'relative',
                 marginHorizontal: 10,
-                borderRadius: 12,
-                borderTopLeftRadius: messageReply ? 0 : 12,
-                borderTopRightRadius: messageReply ? 0 : 12,
-                marginBottom: 15
+                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                marginTop: 10,
+                borderTopLeftRadius: 12,
+                borderTopRightRadius: 12,
+                overflow: 'hidden',
+                padding: 5
               }}
             >
-              {
-                mediaVidiblity && <>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('MessageCamera', { matchDetails })}
-                    style={{
-                      width: 40,
-                      height: 50,
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}>
-                    <MaterialCommunityIcons name='camera-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    onPress={pickImage}
-                    style={{
-                      width: 40,
-                      height: 50,
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}>
-                    <MaterialCommunityIcons name='image-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-                  </TouchableOpacity>
-                </>
-              }
-              <TouchableOpacity
-                onPress={() => {
-                  Keyboard.dismiss()
-                  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-                  setExpanded(!expanded)
-                }}
+              <View
                 style={{
-                  width: 40,
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-              </TouchableOpacity>
-
-              {
-                showRecording ?
-                  <View
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                  backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.lightText,
+                  flex: 1,
+                  borderRadius: 12,
+                  overflow: 'hidden',
+                  padding: 5
+                }}
+              >
+                {
+                  messageReply?.mediaType == 'video' &&
+                  <Video
+                    source={{ uri: messageReply?.media }}
+                    resizeMode='cover'
                     style={{
-                      flex: 1,
-                      width: '100%',
-                      height: '100%',
-                      maxHeight: 70,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontFamily: 'text',
-                        color: userProfile?.appMode == 'light' ? color.lightText : color.white
-                      }}
-                    >
-                      Recording...
-                    </Text>
-                  </View>
-                  :
-                  <TextInput
-                    multiline
-                    value={input}
-                    onChangeText={setInput}
-                    onSubmitEditing={sendMessage}
-                    onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-                    placeholder='Aa..'
-                    placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
-                    style={{
-                      fontSize: 18,
-                      flex: 1,
-                      height,
-                      maxHeight: 70,
-                      fontFamily: 'text',
-                      color: userProfile?.appMode == 'light' ? color.dark : color.white
+                      width: 50,
+                      height: 50,
+                      borderRadius: 12
                     }}
                   />
-              }
-
+                }
+                {
+                  messageReply?.mediaType == 'image' &&
+                  <Image
+                    source={{ uri: messageReply?.media }}
+                    resizeMode='cover'
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 12
+                    }}
+                  />
+                }
+                {
+                  messageReply?.caption != '' &&
+                  <Text
+                    numberOfLines={3}
+                    style={{
+                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                      marginLeft: messageReply?.media ? 10 : 0
+                    }}
+                  >
+                    {messageReply?.caption}
+                  </Text>
+                }
+                {
+                  messageReply?.message &&
+                  <Text
+                    numberOfLines={3}
+                    style={{
+                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                      marginLeft: messageReply?.media ? 10 : 0
+                    }}
+                  >
+                    {messageReply?.message}
+                  </Text>
+                }
+              </View>
               {
-                showSend &&
+                messageReply &&
                 <TouchableOpacity
-                  onPress={sendMessage}
+                  onPress={() => setMessageReply(null)}
                   style={{
-                    width: 50,
+                    width: 40,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 12
+                  }}
+                >
+                  <AntDesign name='close' size={24} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+                </TouchableOpacity>
+              }
+            </TouchableOpacity>
+          }
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingHorizontal: 10,
+              backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+              minHeight: 50,
+              overflow: 'hidden',
+              position: 'relative',
+              marginHorizontal: 10,
+              borderRadius: 12,
+              borderTopLeftRadius: messageReply ? 0 : 12,
+              borderTopRightRadius: messageReply ? 0 : 12,
+              marginBottom: 15
+            }}
+          >
+            {
+              mediaVidiblity && <>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('MessageCamera', { matchDetails })}
+                  style={{
+                    width: 40,
                     height: 50,
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}>
-                  <FontAwesome5
-                    name='paper-plane'
-                    color={userProfile?.appMode == 'light' ? color.lightText : color.white}
-                    size={20}
-                  />
+                  <MaterialCommunityIcons name='camera-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
                 </TouchableOpacity>
-              }
 
+                <TouchableOpacity
+                  onPress={pickImage}
+                  style={{
+                    width: 40,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                  <MaterialCommunityIcons name='image-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+                </TouchableOpacity>
+              </>
+            }
+            <TouchableOpacity
+              onPress={() => {
+                Keyboard.dismiss()
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+                setExpanded(!expanded)
+              }}
+              style={{
+                width: 40,
+                height: 50,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+            </TouchableOpacity>
+
+            {
+              showRecording ?
+                <View
+                  style={{
+                    flex: 1,
+                    width: '100%',
+                    height: '100%',
+                    maxHeight: 70,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontFamily: 'text',
+                      color: userProfile?.appMode == 'light' ? color.lightText : color.white
+                    }}
+                  >
+                    Recording...
+                  </Text>
+                </View>
+                :
+                <TextInput
+                  multiline
+                  value={input}
+                  onChangeText={setInput}
+                  onSubmitEditing={sendMessage}
+                  onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+                  placeholder='Aa..'
+                  placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                  style={{
+                    fontSize: 18,
+                    flex: 1,
+                    height,
+                    maxHeight: 70,
+                    fontFamily: 'text',
+                    color: userProfile?.appMode == 'light' ? color.dark : color.white
+                  }}
+                />
+            }
+
+            {
+              showSend &&
               <TouchableOpacity
-                onLongPress={() => {
-                  setShowRecording(true)
-                  setShowSend(false)
-                  startRecording()
-                }}
-                onPressOut={() => {
-                  setShowRecording(false)
-                  setShowSend(true)
-                  stopRecording()
-                }}
+                onPress={sendMessage}
                 style={{
                   width: 50,
                   height: 50,
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}>
-                {
-                  recordingLoading ?
-                    <ActivityIndicator size='small' color={userProfile?.appMode == 'light' ? color.lightText : color.white} /> :
-                    <FontAwesome5
-                      size={20}
-                      name="microphone-alt"
-                      color={userProfile?.appMode == 'light' ? color.lightText : color.white}
-                    />
-                }
+                <FontAwesome5
+                  name='paper-plane'
+                  color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                  size={20}
+                />
               </TouchableOpacity>
-            </View>
+            }
+
+            <TouchableOpacity
+              onLongPress={() => {
+                setShowRecording(true)
+                setShowSend(false)
+                startRecording()
+              }}
+              onPressOut={() => {
+                setShowRecording(false)
+                setShowSend(true)
+                stopRecording()
+              }}
+              style={{
+                width: 50,
+                height: 50,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              {
+                recordingLoading ?
+                  <ActivityIndicator size='small' color={userProfile?.appMode == 'light' ? color.lightText : color.white} /> :
+                  <FontAwesome5
+                    size={20}
+                    name="microphone-alt"
+                    color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                  />
+              }
+            </TouchableOpacity>
           </View>
+        </View>
+      </KeyboardAvoidingView>
 
-          {
-            expanded && (
-              <View style={{ minWidth: 150, maxHeight: 150, flex: 1 }}>
-                <ScrollView
-                  horizontal
-                  pagingEnabled
-                  scrollEnabled
+      {
+        expanded && (
+          <View style={{ minWidth: 150, maxHeight: 150, flex: 1 }}>
+            <ScrollView
+              horizontal
+              pagingEnabled
+              scrollEnabled
 
-                >
-                  <FlatGrid
-                    data={smileys}
-                    itemDimension={30}
-                    renderItem={({ item: emoji }) => (
-                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                  <FlatGrid
-                    data={smileys1}
-                    itemDimension={30}
-                    renderItem={({ item: emoji }) => (
-                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                  <FlatGrid
-                    data={smileys2}
-                    itemDimension={30}
-                    renderItem={({ item: emoji }) => (
-                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                  <FlatGrid
-                    data={smileys3}
-                    itemDimension={30}
-                    renderItem={({ item: emoji }) => (
-                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                </ScrollView>
-              </View>
-            )
-          }
-        </ImageBackground >
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+            >
+              <FlatGrid
+                data={smileys}
+                itemDimension={30}
+                renderItem={({ item: emoji }) => (
+                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+              <FlatGrid
+                data={smileys1}
+                itemDimension={30}
+                renderItem={({ item: emoji }) => (
+                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+              <FlatGrid
+                data={smileys2}
+                itemDimension={30}
+                renderItem={({ item: emoji }) => (
+                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+              <FlatGrid
+                data={smileys3}
+                itemDimension={30}
+                renderItem={({ item: emoji }) => (
+                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </ScrollView>
+          </View>
+        )
+      }
+    </View>
   )
 }
 

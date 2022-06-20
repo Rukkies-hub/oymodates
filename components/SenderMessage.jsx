@@ -16,7 +16,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
-const SenderMessage = ({ messages, matchDetails, chatThemeIndex }) => {
+const SenderMessage = ({ messages, matchDetails }) => {
   const { userProfile, user } = useAuth()
 
   const navigation = useNavigation()
@@ -240,10 +240,7 @@ const SenderMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? color.white :
-                          chatThemeIndex == 4 ? color.dark :
-                            userProfile?.appMode == 'light' ? color.dark :
-                              color.white,
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -256,16 +253,7 @@ const SenderMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                     <>
                       {
                         showTime &&
-                        <Text
-                          style={{
-                            color: chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? color.white :
-                              chatThemeIndex == 4 ? color.dark :
-                                userProfile?.appMode == 'light' ? color.dark :
-                                  color.white,
-                            fontSize: 8,
-                            textAlign: 'right'
-                          }}
-                        >
+                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right' }}>
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }
@@ -313,11 +301,7 @@ const SenderMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color:
-                          chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? color.white :
-                            chatThemeIndex == 4 ? color.dark :
-                              userProfile?.appMode == 'light' ? color.dark :
-                                color.white,
+                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -330,15 +314,7 @@ const SenderMessage = ({ messages, matchDetails, chatThemeIndex }) => {
                     <>
                       {
                         showTime &&
-                          <Text
-                              style={{
-                                color: chatThemeIndex == 1 || 2 || 3 || 5 || 6 || 7 || 8 || 9 || 10 ? color.white :
-                                  chatThemeIndex == 4 ? color.dark :
-                                    userProfile?.appMode == 'light' ? color.dark :
-                                      color.white,
-                                fontSize: 8,
-                                textAlign: 'right'
-                              }}>
+                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right' }}>
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }

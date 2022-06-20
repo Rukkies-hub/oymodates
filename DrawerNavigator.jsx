@@ -263,7 +263,7 @@ const DrawerNavigator = () => {
         },
         drawerAllowFontScaling: true,
         drawerPosition: 'right',
-        drawerType: 'back',
+        drawerType: 'slide',
         drawerStatusBarAnimation: 'slide'
       }}
     >

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import {
   View,
@@ -67,6 +67,13 @@ const PreviewMessageImage = () => {
   const [sendLoading, setSendLoading] = useState(false)
   const [status, setStatus] = useState({})
 
+  useEffect(() =>
+    Keyboard.addListener('keyboardDidHide', () => {
+      setExpanded(false)
+      Keyboard.dismiss
+    })
+    , [])
+
   const sendMessage = async () => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
@@ -110,166 +117,161 @@ const PreviewMessageImage = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
-      <TouchableWithoutFeedback onPress={() => {
-        setExpanded(false)
-        Keyboard.dismiss
-      }}>
-        <SafeAreaView
-          style={{
-            flex: 1,
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
-          }}
-        >
-          <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
-          <Header showBack showTitle title='Preview image' />
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+        }}
+      >
+        <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
+        <Header showBack showTitle title='Preview image' />
 
-          {
-            media?.type == 'image' &&
-            <AutoHeightImage
+        {
+          media?.type == 'image' &&
+          <AutoHeightImage
+            source={{ uri: media?.uri }}
+            width={width}
+            style={{ flex: 1 }}
+            resizeMode='contain'
+          />
+        }
+
+        {
+          media?.type == 'video' &&
+          <Pressable
+            onPress={() => status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}
+            style={{ flex: 1 }}
+          >
+            <Video
+              ref={video}
               source={{ uri: media?.uri }}
               width={width}
               style={{ flex: 1 }}
               resizeMode='contain'
+              isLooping={true}
+              onPlaybackStatusUpdate={status => setStatus(() => status)}
             />
-          }
+          </Pressable>
+        }
 
-          {
-            media?.type == 'video' &&
-            <Pressable
-              onPress={() => status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}
-              style={{ flex: 1 }}
-            >
-              <Video
-                ref={video}
-                source={{ uri: media?.uri }}
-                width={width}
-                style={{ flex: 1 }}
-                resizeMode='contain'
-                isLooping={true}
-                onPlaybackStatusUpdate={status => setStatus(() => status)}
-              />
-            </Pressable>
-          }
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: 10,
-              backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-              minHeight: 50,
-              overflow: 'hidden',
-              position: 'relative',
-              marginHorizontal: 10,
-              borderRadius: 12,
-              marginBottom: 15
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: 10,
+            backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+            minHeight: 50,
+            overflow: 'hidden',
+            position: 'relative',
+            marginHorizontal: 10,
+            borderRadius: 12,
+            marginBottom: 15
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              Keyboard.dismiss()
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+              setExpanded(!expanded)
             }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                Keyboard.dismiss()
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-                setExpanded(!expanded)
-              }}
-              style={{
-                width: 40,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-              <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-            </TouchableOpacity>
+            style={{
+              width: 40,
+              height: 50,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+            <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+          </TouchableOpacity>
 
-            <TextInput
-              multiline
-              value={input}
-              onChangeText={setInput}
-              onSubmitEditing={sendMessage}
-              onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-              placeholder='Aa..'
-              placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
-              style={{
-                fontSize: 18,
-                flex: 1,
-                height,
-                maxHeight: 70,
-                fontFamily: 'text',
-                color: userProfile?.appMode == 'light' ? color.dark : color.white
-              }}
-            />
+          <TextInput
+            multiline
+            value={input}
+            onChangeText={setInput}
+            onSubmitEditing={sendMessage}
+            onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+            placeholder='Aa..'
+            placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
+            style={{
+              fontSize: 18,
+              flex: 1,
+              height,
+              maxHeight: 70,
+              fontFamily: 'text',
+              color: userProfile?.appMode == 'light' ? color.dark : color.white
+            }}
+          />
 
-            <TouchableOpacity
-              onPress={sendMessage}
-              style={{
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-              {
-                sendLoading ?
-                  <ActivityIndicator color={userProfile?.appMode == 'light' ? color.lightText : color.white} size='small' /> :
-                  <FontAwesome5
-                    name='paper-plane'
-                    color={userProfile?.appMode == 'light' ? color.lightText : color.white}
-                    size={20}
-                  />
-              }
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            onPress={sendMessage}
+            style={{
+              width: 50,
+              height: 50,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+            {
+              sendLoading ?
+                <ActivityIndicator color={userProfile?.appMode == 'light' ? color.lightText : color.white} size='small' /> :
+                <FontAwesome5
+                  name='paper-plane'
+                  color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                  size={20}
+                />
+            }
+          </TouchableOpacity>
+        </View>
 
-          {
-            expanded && (
-              <View style={{ minWidth: 150, maxHeight: 150, flex: 1 }}>
-                <ScrollView
-                  horizontal
-                  pagingEnabled
-                  scrollEnabled
+        {
+          expanded && (
+            <View style={{ minWidth: 150, maxHeight: 150, flex: 1 }}>
+              <ScrollView
+                horizontal
+                pagingEnabled
+                scrollEnabled
 
-                >
-                  <FlatGrid
-                    data={smileys}
-                    itemDimension={30}
-                    renderItem={({ item: emoji }) => (
-                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                  <FlatGrid
-                    data={smileys1}
-                    itemDimension={30}
-                    renderItem={({ item: emoji }) => (
-                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                  <FlatGrid
-                    data={smileys2}
-                    itemDimension={30}
-                    renderItem={({ item: emoji }) => (
-                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                  <FlatGrid
-                    data={smileys3}
-                    itemDimension={30}
-                    renderItem={({ item: emoji }) => (
-                      <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                        <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                </ScrollView>
-              </View>
-            )
-          }
-        </SafeAreaView>
-      </TouchableWithoutFeedback>
+              >
+                <FlatGrid
+                  data={smileys}
+                  itemDimension={30}
+                  renderItem={({ item: emoji }) => (
+                    <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                      <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+                <FlatGrid
+                  data={smileys1}
+                  itemDimension={30}
+                  renderItem={({ item: emoji }) => (
+                    <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                      <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+                <FlatGrid
+                  data={smileys2}
+                  itemDimension={30}
+                  renderItem={({ item: emoji }) => (
+                    <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                      <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+                <FlatGrid
+                  data={smileys3}
+                  itemDimension={30}
+                  renderItem={({ item: emoji }) => (
+                    <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
+                      <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+              </ScrollView>
+            </View>
+          )
+        }
+      </SafeAreaView>
     </KeyboardAvoidingView>
   )
 }
