@@ -44,6 +44,8 @@ import * as NavigationBar from 'expo-navigation-bar'
 
 import uuid from 'uuid-random'
 
+import Bar from '../../components/StatusBar'
+
 const PreviewMessageImage = () => {
   const { userProfile, user } = useAuth()
 
@@ -118,6 +120,7 @@ const PreviewMessageImage = () => {
             backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
           }}
         >
+          <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
           <Header showBack showTitle title='Preview image' />
 
           {

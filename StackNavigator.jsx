@@ -29,6 +29,7 @@ import ViewAvarar from './screens/modal/ViewAvarar'
 import ReelsComment from './screens/modal/ReelsComment'
 import ViewVideo from './screens/modal/ViewVideo'
 import MessageOptions from './screens/modal/MessageOptions'
+import MessageCamera from './screens/modal/MessageCamera'
 
 import useAuth from './hooks/useAuth'
 
@@ -60,6 +61,7 @@ const StackNavigator = () => {
               <Stack.Screen name='Notifications' component={Notifications} />
               <Stack.Screen name='AllPostLikes' component={AllPostLikes} />
               <Stack.Screen name='ViewReel' component={ViewReel} />
+              <Stack.Screen name='MessageCamera' component={MessageCamera} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>

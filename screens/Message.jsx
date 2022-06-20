@@ -123,9 +123,7 @@ const Message = () => {
       quality: 1,
     })
 
-    if (!result.cancelled) {
-      navigation.navigate('PreviewMessageImage', { matchDetails, media: result })
-    }
+    if (!result.cancelled) navigation.navigate('PreviewMessageImage', { matchDetails, media: result })
   }
 
   const sendMessage = () => {
@@ -404,6 +402,7 @@ const Message = () => {
               {
                 mediaVidiblity && <>
                   <TouchableOpacity
+                    onPress={() => navigation.navigate('MessageCamera', { matchDetails })}
                     style={{
                       width: 40,
                       height: 50,

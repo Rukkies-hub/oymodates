@@ -7,19 +7,24 @@ import { Audio } from 'expo-av'
 
 import { useIsFocused } from '@react-navigation/core'
 
-import color from '../style/color'
+import color from '../../style/color'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
-import { useNavigation } from '@react-navigation/native'
-import useAuth from '../hooks/useAuth'
-import Bar from '../components/StatusBar'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import useAuth from '../../hooks/useAuth'
+import Bar from '../../components/StatusBar'
 
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
-const PostCamera = () => {
+import * as NavigationBar from 'expo-navigation-bar'
+
+const MessageCamera = () => {
   const navigation = useNavigation()
   const { setMedia, madiaString } = useAuth()
+
+  const { params } = useRoute()
+  const { matchDetails } = params
 
   const [hasCameraPermission, setHasCameraPermission] = useState(false)
   const [hasAudioPermission, setHasAudioPermission] = useState(false)
@@ -53,8 +58,13 @@ const PostCamera = () => {
           const data = await videoRecordPromise
           const source = data?.uri
 
-          setMedia(source)
-          navigation.goBack()
+          navigation.navigate('PreviewMessageImage', {
+            matchDetails, media: {
+              uri: data.uri,
+              type: 'video'
+            }
+          })
+          console.log(data)
         }
       } catch (error) {
         console.warn('Oymo camera error: ', error)
@@ -68,14 +78,19 @@ const PostCamera = () => {
   const takePictire = async () => {
     if (cameraRef) {
       const data = await cameraRef?.takePictureAsync(null)
-      setMedia(data?.uri)
-      navigation.goBack()
+      navigation.navigate('PreviewMessageImage', {
+        matchDetails, media: {
+          uri: data.uri,
+          type: 'image'
+        }
+      })
     }
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <Bar color={'light'} />
+
       {
         isFocused ?
           <Camera
@@ -173,7 +188,6 @@ const PostCamera = () => {
           </Text>
         </TouchableOpacity>
       </View>
-
       <View
         style={{
           position: 'absolute',
@@ -206,8 +220,8 @@ const PostCamera = () => {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 
-export default PostCamera
+export default MessageCamera
