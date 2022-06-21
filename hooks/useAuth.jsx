@@ -36,6 +36,7 @@ const AuthContext = createContext({})
 const config = {
   iosClientId,
   androidClientId,
+  issuer: 'https://accounts.google.com',
   scopes: ['profile', 'email'],
   permissions: ['public_profile', 'email', 'gender', 'location']
 }
@@ -69,7 +70,6 @@ export const AuthProvider = ({ children }) => {
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: 0 })
   const [likeDisable, setLikeDisable] = useState(false)
   const [chatTheme, setChatTheme] = useState(false)
-  const [secureTextEntry, setSecureTextEntry] = useState(true)
   const [reelsCommentType, setReelsCommentType] = useState('comment')
   const [replyCommentProps, setReplyCommentProps] = useState(null)
   const [commentAutoFocus, setCommentAutoFocus] = useState(false)
@@ -205,8 +205,6 @@ export const AuthProvider = ({ children }) => {
         setLikeDisable,
         chatTheme,
         setChatTheme,
-        secureTextEntry,
-        setSecureTextEntry,
         reelsCommentType,
         setReelsCommentType,
         replyCommentProps,

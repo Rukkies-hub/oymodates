@@ -15,19 +15,8 @@ const Login = () => {
   const navigation = useNavigation()
   const {
     signInWighGoogle,
-    loading,
-    secureTextEntry,
-    setSecureTextEntry
+    loading
   } = useAuth()
-
-  useEffect(() => {
-    NavigationBar.setPositionAsync('absolute')
-    NavigationBar.setBackgroundColorAsync(color.transparent)
-
-    navigation.addListener('beforeRemove', () => {
-      NavigationBar.setPositionAsync('relative')
-    })
-  }, [])
 
   const [loaded] = useFonts({
     logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
