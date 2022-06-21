@@ -61,7 +61,7 @@ const Posts = () => {
     )
   }
 
-  useEffect(() => 
+  useEffect(() =>
     onSnapshot(collection(db, 'posts'), limit(postLimit), doc => {
       setPosts(
         doc?.docs?.map(doc => ({
@@ -70,7 +70,7 @@ const Posts = () => {
         }))
       )
     })
-  , [])
+    , [])
 
 
   const [loaded] = useFonts({
@@ -87,6 +87,7 @@ const Posts = () => {
       alwaysBounceVertical={false}
       initialNumToRender={0}
       maxToRenderPerBatch={1}
+      showsVerticalScrollIndicator={false}
       onEndReached={() => {
         setPostLimit(postLimit + 3)
         getPosts()

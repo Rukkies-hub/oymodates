@@ -200,7 +200,7 @@ const EditProfile = () => {
         age: moment().diff(moment(date, 'DD-MM-YYYY'), 'years'),
         ageDate: date,
         gender: 'male',
-        appMode: 'light',
+        appMode: 'lightsOut',
         timestamp: serverTimestamp()
       }).finally(() => {
         setUpdateLoading(false)

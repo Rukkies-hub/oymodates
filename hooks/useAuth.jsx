@@ -47,9 +47,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loadingInitial, setLoadingInitial] = useState(true)
   const [loading, setLoading] = useState(false)
-  const [authloading, setAuthLoading] = useState(false)
-  const [signinEmail, setSigninEmail] = useState('')
-  const [signinPassword, setSigninPassword] = useState('')
   const [userProfile, setUserProfile] = useState(null)
   const [date, setDate] = useState()
   const [job, setJob] = useState('')
@@ -94,10 +91,6 @@ export const AuthProvider = ({ children }) => {
         return Promise.reject()
       }).catch(error => setError(error))
       .finally(() => setLoading(false))
-  }
-
-  const paswordSignin = async () => {
-    signInWithEmailAndPassword(auth, signinEmail, signinPassword)
   }
 
   useEffect(() =>
@@ -214,13 +207,6 @@ export const AuthProvider = ({ children }) => {
         setChatTheme,
         secureTextEntry,
         setSecureTextEntry,
-        authloading,
-        setAuthLoading,
-        signinEmail,
-        setSigninEmail,
-        signinPassword,
-        setSigninPassword,
-        paswordSignin,
         reelsCommentType,
         setReelsCommentType,
         replyCommentProps,
