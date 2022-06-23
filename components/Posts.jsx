@@ -31,12 +31,13 @@ const { width, height } = Dimensions.get('window')
 import PostImage from './PostImage'
 import PostVideo from './PostVideo'
 
+import ChacheImage from './ChacheImage'
+
 const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout))
 
 const Posts = () => {
   const navigation = useNavigation()
   const { userProfile, user } = useAuth()
-  const windowWidth = useWindowDimensions().width
 
   const [posts, setPosts] = useState([])
   const [refreshing, setRefreshing] = useState(false)
@@ -156,8 +157,8 @@ const Posts = () => {
                 alignItems: 'center'
               }}
             >
-              <Image
-                source={{ uri: post?.user?.photoURL }}
+              <ChacheImage
+                url={post?.user?.photoURL}
                 style={{
                   width: 40,
                   height: 40,
@@ -200,7 +201,7 @@ const Posts = () => {
                     flex: 1,
                     alignSelf: 'center',
                     justifyContent: 'center',
-                    width: windowWidth,
+                    width,
                     position: 'relative',
                     backgroundColor: color.black
                   }}

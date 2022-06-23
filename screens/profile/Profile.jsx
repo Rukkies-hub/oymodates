@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, SafeAreaView, Image, TouchableOpacity, Pressable } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions, Pressable } from 'react-native'
 import color from '../../style/color'
 import Bar from '../../components/StatusBar'
 import Header from '../../components/Header'
