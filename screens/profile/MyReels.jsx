@@ -1,35 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, Text, Dimensions, Pressable, ScrollView } from 'react-native'
 
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
-
-import { db } from '../../hooks/firebase'
 import useAuth from '../../hooks/useAuth'
 import AutoHeightImage from 'react-native-auto-height-image'
 import color from '../../style/color'
 
-const { width, height } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 import { AntDesign } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
 import { FlatGrid } from 'react-native-super-grid'
 
 const MyReels = () => {
-  const { user, reels } = useAuth()
+  const { reels } = useAuth()
   const navigation = useNavigation()
-
-  // const [reels, setReels] = useState([])
-
-  // useEffect(() =>
-  //   onSnapshot(query(collection(db, 'reels'),
-  //     where('user.id', '==', user?.uid)),
-  //     snapshot => setReels(
-  //       snapshot.docs.map(doc => ({
-  //         id: doc?.id,
-  //         ...doc?.data()
-  //       }))
-  //     ))
-  //   , [user, db])
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),

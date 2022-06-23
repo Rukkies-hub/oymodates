@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
         setUser(user)
         getUserProfile(user)
         getPendingSwipes(user)
-        getReels(user)
+        getUserReels(user)
       }
       else setUser(null)
 
@@ -142,7 +142,7 @@ export const AuthProvider = ({ children }) => {
     return unsub
   }
 
-  const getReels = user => {
+  const getUserReels = user => {
     const unsub = onSnapshot(query(collection(db, 'reels'),
       where('user.id', '==', user?.uid)),
       snapshot => setReels(
