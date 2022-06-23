@@ -11,6 +11,8 @@ import { Audio, Video } from 'expo-av'
 import { useNavigation } from '@react-navigation/native'
 import AutoHeightImage from 'react-native-auto-height-image'
 
+import ChacheImage from './ChacheImage'
+
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -121,8 +123,8 @@ const SenderMessage = ({ messages, matchDetails }) => {
                       }
                       {
                         messages?.reply?.mediaType == 'image' &&
-                        <Image
-                          source={{ uri: messages?.reply?.media }}
+                        <ChacheImage
+                          url={messages?.reply?.media}
                           resizeMode='cover'
                           style={{
                             width: 50,
@@ -195,7 +197,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right' }}>
+                    <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right', marginRight: 10, marginBottom: 10 }}>
                       {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                     </Text>
                   }
@@ -207,7 +209,10 @@ const SenderMessage = ({ messages, matchDetails }) => {
             messages?.mediaType == 'image' &&
             <View
               style={{
-                position: 'relative'
+                position: 'relative',
+                backgroundColor: color.blue,
+                borderRadius: 20,
+                overflow: 'hidden'
               }}
             >
               <Pressable
@@ -230,11 +235,17 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 <>
                   <View
                     style={{
-                      width: '100%',
+                      flex: 1,
                       height: 30,
                       flexDirection: 'row',
                       justifyContent: 'flex-start',
-                      alignItems: 'flex-start'
+                      alignItems: 'flex-start',
+                      padding: 5,
+                      margin: 5,
+                      backgroundColor: color.darkBlue,
+                      borderRadius: 4,
+                      borderBottomLeftRadius: 20,
+                      borderBottomRightRadius: 20
                     }}
                   >
                     <Text
@@ -253,7 +264,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right' }}>
+                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right', marginRight: 10, marginBottom: 10 }}>
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }

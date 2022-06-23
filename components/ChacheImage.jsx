@@ -4,7 +4,7 @@ import shorthash from 'shorthash'
 import * as FileSystem from 'expo-file-system'
 
 const ChacheImage = (props) => {
-  const { url, style } = props
+  const { url, style, resizeMode } = props
   const [uri, setUri] = useState(null)
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const ChacheImage = (props) => {
     setUri(newImage.uri)
   }
 
-  return <Image style={style} source={{ uri: url }} />
+  return <Image style={style} source={{ uri: url }} resizeMode={resizeMode} />
 }
 
 export default ChacheImage

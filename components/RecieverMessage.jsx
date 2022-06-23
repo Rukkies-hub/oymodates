@@ -10,6 +10,7 @@ import { Audio, Video } from 'expo-av'
 import useAuth from '../hooks/useAuth'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { useNavigation } from '@react-navigation/native'
+import ChacheImage from './ChacheImage'
 
 if (
   Platform.OS === 'android' &&
@@ -63,9 +64,9 @@ const RecieverMessage = ({ messages, matchDetails }) => {
 
   return (
     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-      <Image
+      <ChacheImage
         style={{ width: 30, height: 30, borderRadius: 50 }}
-        source={{ uri: messages?.photoURL }}
+        url={messages?.photoURL}
       />
       <View
         style={{
@@ -125,8 +126,8 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                       }
                       {
                         messages?.reply?.mediaType == 'image' &&
-                        <Image
-                          source={{ uri: messages?.reply?.media }}
+                        <ChacheImage
+                          url={messages?.reply?.media}
                           resizeMode='cover'
                           style={{
                             width: 50,
@@ -211,7 +212,10 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             messages?.mediaType == 'image' &&
             <View
               style={{
-                position: 'relative'
+                position: 'relative',
+                backgroundColor: messages.mediaType == 'image' ? (userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.black : color.dark) : color.transparent,
+                borderRadius: 20,
+                overflow: 'hidden'
               }}
             >
               <Pressable
@@ -234,11 +238,17 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 <>
                   <View
                     style={{
-                      width: '100%',
+                      flex: 1,
                       height: 30,
                       flexDirection: 'row',
                       justifyContent: 'flex-start',
-                      alignItems: 'flex-start'
+                      alignItems: 'flex-start',
+                      padding: 5,
+                      margin: 5,
+                      backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+                      borderRadius: 4,
+                      borderBottomLeftRadius: 20,
+                      borderBottomRightRadius: 20
                     }}
                   >
                     <Text
@@ -257,7 +267,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
+                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left', marginLeft: 10, marginBottom: 10 }}>
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }

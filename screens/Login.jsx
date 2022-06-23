@@ -7,8 +7,6 @@ import color from '../style/color'
 import Bar from '../components/StatusBar'
 
 import { useFonts } from 'expo-font'
-
-import * as NavigationBar from 'expo-navigation-bar'
 import { useNavigation } from '@react-navigation/native'
 
 const Login = () => {

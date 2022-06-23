@@ -34,6 +34,8 @@ import * as Device from 'expo-device'
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 import MessageSettings from './MessageSettings'
 
+import ChacheImage from './ChacheImage'
+
 const Header = ({
   showAratar,
   showLogo,
@@ -206,8 +208,8 @@ const Header = ({
           }
           {
             showMatchAvatar &&
-            <Image
-              source={{ uri: matchAvatar }}
+            <ChacheImage
+              url={matchAvatar}
               style={{
                 width: 40,
                 height: 40,
@@ -452,8 +454,8 @@ const Header = ({
             >
               {
                 user?.photoURL ?
-                  <Image
-                    source={{ uri: userProfile?.photoURL || user?.photoURL }}
+                  <ChacheImage
+                    url={userProfile?.photoURL || user?.photoURL}
                     style={{
                       width: 40,
                       height: 40,

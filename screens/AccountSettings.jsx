@@ -10,15 +10,9 @@ import useAuth from '../hooks/useAuth'
 
 import { Entypo, MaterialCommunityIcons, Fontisto } from '@expo/vector-icons'
 
-import * as NavigationBar from 'expo-navigation-bar'
 
 const AccountSettings = () => {
   const { user, userProfile } = useAuth()
-
-  useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
-    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
-  }, [])
 
   const lightMode = () => updateDoc(doc(db, 'users', user?.uid), { appMode: 'light' })
 

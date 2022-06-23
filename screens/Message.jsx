@@ -58,9 +58,6 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { FlatGrid } from 'react-native-super-grid'
 
 import * as ImagePicker from 'expo-image-picker'
-import * as NavigationBar from 'expo-navigation-bar'
-
-import Bar from '../components/StatusBar'
 
 const Message = () => {
   const navigation = useNavigation()

@@ -18,7 +18,6 @@ import Comments from '../../components/Comments'
 import NewComment from '../../components/NewComment'
 import useAuth from '../../hooks/useAuth'
 
-import * as NavigationBar from 'expo-navigation-bar'
 import { useNavigation } from '@react-navigation/native'
 
 import { Entypo } from '@expo/vector-icons'

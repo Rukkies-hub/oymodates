@@ -23,18 +23,11 @@ import useAuth from '../hooks/useAuth'
 import uuid from 'uuid-random'
 import Bar from '../components/StatusBar'
 
-import * as NavigationBar from 'expo-navigation-bar'
-
 const SaveReels = (params) => {
   const { userProfile, user } = useAuth()
   const navigation = useNavigation()
   const source = params?.route?.params?.source
   const thumbnail = params?.route?.params?.thumbnail
-
-  useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
-    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
-  }, [])
 
   const storage = getStorage()
 

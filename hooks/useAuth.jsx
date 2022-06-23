@@ -72,7 +72,6 @@ export const AuthProvider = ({ children }) => {
   const [messageReply, setMessageReply] = useState(null)
 
   const signInWighGoogle = async () => {
-    alert(Constants.manifest.android.package)
     setLoading(true)
 
     await Google.logInAsync(config)

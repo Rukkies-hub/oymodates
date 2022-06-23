@@ -15,7 +15,6 @@ import {
 } from 'react-native'
 import useAuth from '../../hooks/useAuth'
 
-import * as NavigationBar from 'expo-navigation-bar'
 import color from '../../style/color'
 import { useNavigation } from '@react-navigation/native'
 

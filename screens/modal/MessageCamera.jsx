@@ -17,8 +17,6 @@ import Bar from '../../components/StatusBar'
 
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
-import * as NavigationBar from 'expo-navigation-bar'
-
 const MessageCamera = () => {
   const navigation = useNavigation()
   const { setMedia, madiaString } = useAuth()

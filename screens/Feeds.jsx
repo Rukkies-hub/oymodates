@@ -10,14 +10,9 @@ import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
 
-import * as NavigationBar from 'expo-navigation-bar'
-
 const Feeds = () => {
   const { user, profiles, setProfiles, userProfile } = useAuth()
   const navigation = useNavigation()
-
-  NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
-  NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
 
   useLayoutEffect(() =>
     onSnapshot(doc(db, 'users', user?.uid),

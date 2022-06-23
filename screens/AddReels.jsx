@@ -17,7 +17,6 @@ import * as MediaLibrary from 'expo-media-library'
 
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
-import * as NavigationBar from 'expo-navigation-bar'
 import Bar from '../components/StatusBar'
 
 import * as VideoThumbnails from 'expo-video-thumbnails'
@@ -38,11 +37,6 @@ const AddReels = () => {
   const [isCameraReady, setIsCameraReady] = useState(false)
 
   const isFocused = useIsFocused()
-
-  useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
-    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
-  }, [])
 
   useEffect(() => {
     (async () => {

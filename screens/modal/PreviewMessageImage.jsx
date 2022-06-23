@@ -40,7 +40,6 @@ import { db } from '../../hooks/firebase'
 import { Audio, Video } from 'expo-av'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
-import * as NavigationBar from 'expo-navigation-bar'
 
 import uuid from 'uuid-random'
 
@@ -53,11 +52,6 @@ const PreviewMessageImage = () => {
   const { matchDetails, media } = params
   const navigation = useNavigation()
   const video = useRef(null)
-
-  console.log(media)
-
-  NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black)
-  NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'light' ? 'dark' : 'light')
 
   const storage = getStorage()
 
