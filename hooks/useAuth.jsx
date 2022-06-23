@@ -3,33 +3,29 @@ import React, {
   useContext,
   useEffect,
   useState,
-  useRef
+  useRef,
+  useLayoutEffect
 } from 'react'
-
-import {
-  LayoutAnimation,
-  UIManager,
-} from 'react-native'
 
 import * as Google from 'expo-google-app-auth'
 
-import Constants from 'expo-constants'
-
 import {
-  FacebookAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithCredential,
-  signInWithEmailAndPassword,
   signOut
 } from 'firebase/auth'
 import { auth, db } from './firebase'
 
-import { collection, doc, getDoc, getDocs, onSnapshot, query, where } from 'firebase/firestore'
+import { collection, doc, onSnapshot } from 'firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
 import { iosClientId, androidClientId } from '@env'
+
+import * as Application from 'expo-application'
+
+import Constants from 'expo-constants'
 
 const AuthContext = createContext({})
 
@@ -93,6 +89,10 @@ export const AuthProvider = ({ children }) => {
       .finally(() => setLoading(false))
   }
 
+  useLayoutEffect(() => {
+    Constants.manifest.android.package = Application.applicationId
+  }, [])
+
   useEffect(() =>
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -153,11 +153,6 @@ export const AuthProvider = ({ children }) => {
       })
   }
 
-  const showReplyInput = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    setMediaVidiblity(!mediaVidiblity)
-  }
-
   let madiaString = JSON.stringify(media)
 
   return (
@@ -194,7 +189,6 @@ export const AuthProvider = ({ children }) => {
         setAddress,
         mediaVidiblity,
         setMediaVidiblity,
-        showReplyInput,
         reelsProps,
         setReelsProps,
         notifications,

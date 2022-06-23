@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/app-logo.png",
+        "backgroundImage": "./assets/app-logo.png",
         "backgroundColor": "#000000"
       },
       "package": "host.exp.exponent"

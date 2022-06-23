@@ -52,11 +52,6 @@ const Comments = (params) => {
     )
     , [])
 
-  const showReplyInput = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    setMediaVidiblity(!mediaVidiblity)
-  }
-
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })

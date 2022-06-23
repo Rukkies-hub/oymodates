@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 const Stack = createStackNavigator()
 
 import Index from './Index'
-import DrawerNavigator from './DrawerNavigator'
 import Login from './screens/Login'
 import EditProfile from './screens/EditProfile'
 import NewMatch from './screens/modal/NewMatch'
@@ -46,8 +45,7 @@ const StackNavigator = () => {
         user ? (
           <>
             <Stack.Group>
-              {/* <Stack.Screen name='Index' component={Index} /> */}
-              <Stack.Screen name='DrawerNavigator' component={DrawerNavigator} />
+              <Stack.Screen name='Index' component={Index} />
               <Stack.Screen name='Message' component={Message} />
               <Stack.Screen name='EditProfile' component={EditProfile} />
               <Stack.Screen name='Add' component={Add} />
@@ -60,7 +58,6 @@ const StackNavigator = () => {
               <Stack.Screen name='AccountSettings' component={AccountSettings} />
               <Stack.Screen name='Notifications' component={Notifications} />
               <Stack.Screen name='AllPostLikes' component={AllPostLikes} />
-              <Stack.Screen name='ViewReel' component={ViewReel} />
               <Stack.Screen name='MessageCamera' component={MessageCamera} />
             </Stack.Group>
 
@@ -74,6 +71,7 @@ const StackNavigator = () => {
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
+              <Stack.Screen name='ViewReel' component={ViewReel} />
               <Stack.Screen name='UserProfile' component={UserProfile} />
               <Stack.Screen name='Passion' component={Passion} />
               <Stack.Screen name='UserLocation' component={UserLocation} />

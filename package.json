@@ -25,6 +25,7 @@
     "@react-navigation/stack": "^6.2.1",
     "axios": "^0.27.2",
     "expo": "~44.0.0",
+    "expo-application": "~4.0.1",
     "expo-auth-session": "~3.5.0",
     "expo-av": "~10.2.0",
     "expo-blur": "~11.0.0",
