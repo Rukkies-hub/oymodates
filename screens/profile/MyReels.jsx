@@ -15,21 +15,21 @@ import { useNavigation } from '@react-navigation/native'
 import { FlatGrid } from 'react-native-super-grid'
 
 const MyReels = () => {
-  const { user } = useAuth()
+  const { user, reels } = useAuth()
   const navigation = useNavigation()
 
-  const [reels, setReels] = useState([])
+  // const [reels, setReels] = useState([])
 
-  useEffect(() =>
-    onSnapshot(query(collection(db, 'reels'),
-      where('user.id', '==', user?.uid)),
-      snapshot => setReels(
-        snapshot.docs.map(doc => ({
-          id: doc?.id,
-          ...doc?.data()
-        }))
-      ))
-    , [user, db])
+  // useEffect(() =>
+  //   onSnapshot(query(collection(db, 'reels'),
+  //     where('user.id', '==', user?.uid)),
+  //     snapshot => setReels(
+  //       snapshot.docs.map(doc => ({
+  //         id: doc?.id,
+  //         ...doc?.data()
+  //       }))
+  //     ))
+  //   , [user, db])
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),

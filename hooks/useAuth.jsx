@@ -3,7 +3,6 @@ import React, {
   useContext,
   useEffect,
   useState,
-  useRef,
   useLayoutEffect
 } from 'react'
 
@@ -17,7 +16,7 @@ import {
 } from 'firebase/auth'
 import { auth, db } from './firebase'
 
-import { collection, doc, onSnapshot } from 'firebase/firestore'
+import { collection, doc, onSnapshot, query, where } from 'firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -32,7 +31,6 @@ const AuthContext = createContext({})
 const config = {
   iosClientId,
   androidClientId,
-  issuer: 'https://accounts.google.com',
   scopes: ['profile', 'email'],
   permissions: ['public_profile', 'email', 'gender', 'location']
 }
@@ -70,8 +68,10 @@ export const AuthProvider = ({ children }) => {
   const [replyCommentProps, setReplyCommentProps] = useState(null)
   const [commentAutoFocus, setCommentAutoFocus] = useState(false)
   const [messageReply, setMessageReply] = useState(null)
+  const [reels, setReels] = useState([])
 
   const signInWighGoogle = async () => {
+    alert(Constants.manifest.android.package)
     setLoading(true)
 
     await Google.logInAsync(config)
@@ -99,6 +99,7 @@ export const AuthProvider = ({ children }) => {
         setUser(user)
         getUserProfile(user)
         getPendingSwipes(user)
+        getReels(user)
       }
       else setUser(null)
 
@@ -137,6 +138,19 @@ export const AuthProvider = ({ children }) => {
         if (profile?.passions) setPassions([...profile?.passions])
         if (profile?.address) setAddress(...profile?.address)
       })
+
+    return unsub
+  }
+
+  const getReels = user => {
+    const unsub = onSnapshot(query(collection(db, 'reels'),
+      where('user.id', '==', user?.uid)),
+      snapshot => setReels(
+        snapshot.docs.map(doc => ({
+          id: doc?.id,
+          ...doc?.data()
+        }))
+      ))
 
     return unsub
   }
@@ -221,7 +235,8 @@ export const AuthProvider = ({ children }) => {
         setLoadingInitial,
         setLoading,
         messageReply,
-        setMessageReply
+        setMessageReply,
+        reels
       }}
     >
       {!loadingInitial && children}

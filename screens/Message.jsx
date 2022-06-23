@@ -133,7 +133,7 @@ const Message = () => {
       addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
         timestamp: serverTimestamp(),
         userId: user?.uid,
-        username: userProfile.username,
+        username: userProfile?.username,
         photoURL: matchDetails.users[user?.uid].photoURL,
         message: input,
         reply: messageReply ? messageReply : null,
@@ -198,7 +198,7 @@ const Message = () => {
           .then(downloadURL => {
             addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
               userId: user?.uid,
-              username: userProfile.username,
+              username: userProfile?.username,
               photoURL: matchDetails.users[user?.uid].photoURL,
               voiceNote: downloadURL,
               mediaLink: snapshot.ref._location.path,

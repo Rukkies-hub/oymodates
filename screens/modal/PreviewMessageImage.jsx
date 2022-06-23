@@ -95,7 +95,7 @@ const PreviewMessageImage = () => {
             setExpanded(false)
             addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
               userId: user?.uid,
-              username: userProfile.username,
+              username: userProfile?.username,
               photoURL: matchDetails.users[user?.uid].photoURL,
               mediaLink: snapshot.ref._location.path,
               mediaType: media?.type,
