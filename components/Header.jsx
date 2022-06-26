@@ -78,7 +78,7 @@ const Header = ({
   const [notificationCount, setNotificationCount] = useState([])
 
   useEffect(() => {
-    (() => {
+    (async () => {
       const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')))
       setNotificatios(
         querySnapshot.docs.map(doc => ({
@@ -91,7 +91,7 @@ const Header = ({
   }, [userProfile, db])
 
   useEffect(() => {
-    (() => {
+    (async () => {
       const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)))
       setNotificationCount(
         querySnapshot.docs.map(doc => ({
