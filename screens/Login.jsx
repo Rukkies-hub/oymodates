@@ -1,12 +1,39 @@
-import { SafeAreaView, View, Text, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
+import {
+  View,
+  Text,
+  TextInput,
+  ImageBackground,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator
+} from 'react-native'
 import { useFonts } from 'expo-font'
 
 import color from '../style/color'
 
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 
+import { StatusBar } from 'expo-status-bar'
+import useAuth from '../hooks/useAuth'
+
 const Login = () => {
+  const {
+    signinEmail,
+    setSigninEmail,
+    signinPassword,
+    setSigninPassword,
+    securePasswordEntry,
+    setSecurePasswordEntry,
+    authType,
+    setAuthType,
+    signInWighGoogle,
+    authLoading,
+    googleAuthLoading,
+    signup,
+    signin,
+    recoverPassword
+  } = useAuth()
 
   const [loaded] = useFonts({
     logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
@@ -16,7 +43,10 @@ const Login = () => {
   if (!loaded) return null
 
   return (
-    <SafeAreaView
+    <ImageBackground
+      source={require('../assets/background.jpg')}
+      resizeMode='cover'
+      blurRadius={10}
       style={{
         backgroundColor: color.black,
         flex: 1,
@@ -24,6 +54,7 @@ const Login = () => {
         alignItems: 'center'
       }}
     >
+      <StatusBar style='light' />
       <Text
         style={{
           fontFamily: 'logo',
@@ -52,40 +83,61 @@ const Login = () => {
             overflow: 'hidden'
           }}
         >
-          <MaterialIcons name="alternate-email" size={24} color={color.white} style={{ marginHorizontal: 10 }} />
+          <MaterialIcons name='alternate-email' size={24} color={color.white} style={{ marginHorizontal: 10 }} />
           <TextInput
             placeholder='Email'
+            value={signinEmail}
+            onChangeText={setSigninEmail}
             placeholderTextColor={color.white}
             style={{
               flex: 1,
-              fontFamily: 'text'
+              fontFamily: 'text',
+              color: color.white
             }}
           />
         </View>
 
-        <View
-          style={{
-            height: 45,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: color.lightBorderColor,
-            marginHorizontal: 20,
-            borderRadius: 12,
-            marginTop: 20,
-            overflow: 'hidden'
-          }}
-        >
-          <Ionicons name="lock-open-outline" size={24} color={color.white} style={{ marginHorizontal: 10 }} />
-          <TextInput
-            placeholder='Email'
-            placeholderTextColor={color.white}
+        {
+          authType != 'forgotPassword' &&
+          <View
             style={{
-              flex: 1,
-              fontFamily: 'text'
+              height: 45,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: color.lightBorderColor,
+              marginHorizontal: 20,
+              borderRadius: 12,
+              marginTop: 20,
+              overflow: 'hidden'
             }}
-          />
-        </View>
+          >
+            <Ionicons name='lock-open-outline' size={24} color={color.white} style={{ marginHorizontal: 10 }} />
+            <TextInput
+              placeholder='Password'
+              value={signinPassword}
+              onChangeText={setSigninPassword}
+              placeholderTextColor={color.white}
+              secureTextEntry={securePasswordEntry}
+              style={{
+                flex: 1,
+                fontFamily: 'text',
+                color: color.white
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => setSecurePasswordEntry(!securePasswordEntry)}
+              style={{
+                width: 45,
+                height: 45,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Ionicons name={securePasswordEntry ? 'ios-eye-outline' : 'ios-eye-off-outline'} size={24} color={color.white} style={{ marginHorizontal: 10 }} />
+            </TouchableOpacity>
+          </View>
+        }
 
         <View
           style={{
@@ -97,6 +149,7 @@ const Login = () => {
           }}
         >
           <TouchableOpacity
+            onPress={() => authType == 'login' ? signin() : authType == 'signup' ? signup() : recoverPassword()}
             style={{
               flex: 1,
               height: 45,
@@ -106,18 +159,22 @@ const Login = () => {
               alignItems: 'center'
             }}
           >
-            <Text
-              style={{
-                fontFamily: 'text',
-                fontSize: 16,
-                color: color.white
-              }}
-            >
-              Login
-            </Text>
+            {
+              authLoading ? <ActivityIndicator size='small' color={color.white} /> :
+                <Text
+                  style={{
+                    fontFamily: 'text',
+                    fontSize: 16,
+                    color: color.white
+                  }}
+                >
+                  {authType == 'login' ? 'Login' : authType == 'signup' ? 'Sign Up' : 'Forgot Password'}
+                </Text>
+            }
           </TouchableOpacity>
 
           <TouchableOpacity
+            onPress={signInWighGoogle}
             style={{
               width: 45,
               height: 45,
@@ -128,13 +185,16 @@ const Login = () => {
               marginLeft: 20
             }}
           >
-            <Image
-              source={require('../assets/google.png')}
-              style={{
-                width: 25,
-                height: 25
-              }}
-            />
+            {
+              googleAuthLoading ? <ActivityIndicator size='small' color={color.red} />
+                : <Image
+                  source={require('../assets/google.png')}
+                  style={{
+                    width: 25,
+                    height: 25
+                  }}
+                />
+            }
           </TouchableOpacity>
         </View>
 
@@ -147,16 +207,18 @@ const Login = () => {
             marginHorizontal: 20
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setAuthType(authType == 'login' ? 'signup' : 'login')}
+          >
             <Text style={{ color: color.white, fontSize: 12 }}>Don't have an account?</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setAuthType(authType == 'forgotPassword' ? 'signin' : 'forgotPassword')}>
             <Text style={{ color: color.white, fontSize: 12 }}>Forgot your password?</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </ImageBackground>
   )
 }
 

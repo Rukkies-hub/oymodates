@@ -1,21 +1,16 @@
 import * as React from 'react'
+import { Text, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import Login from './screens/Login'
+import StackNavigator from './layout/StackNavigator'
+import { AuthProvider } from './hooks/useAuth'
 
 export default function App () {
-  const Stack = createNativeStackNavigator()
-
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false
-        }}
-      >
-        <Stack.Screen name='Login' component={Login} />
-      </Stack.Navigator>
+      <AuthProvider>
+        <StackNavigator />
+      </AuthProvider>
     </NavigationContainer>
   )
 }
