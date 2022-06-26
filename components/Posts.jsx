@@ -31,8 +31,6 @@ const { width, height } = Dimensions.get('window')
 import PostImage from './PostImage'
 import PostVideo from './PostVideo'
 
-import ChacheImage from './ChacheImage'
-
 const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout))
 
 const Posts = () => {
@@ -63,14 +61,16 @@ const Posts = () => {
   }
 
   useEffect(() =>
-    onSnapshot(collection(db, 'posts'), limit(postLimit), doc => {
-      setPosts(
-        doc?.docs?.map(doc => ({
-          id: doc?.id,
-          ...doc.data()
-        }))
-      )
-    })
+    (() => {
+      onSnapshot(collection(db, 'posts'), limit(postLimit), doc => {
+        setPosts(
+          doc?.docs?.map(doc => ({
+            id: doc?.id,
+            ...doc.data()
+          }))
+        )
+      })
+    })()
     , [])
 
 
@@ -157,8 +157,8 @@ const Posts = () => {
                 alignItems: 'center'
               }}
             >
-              <ChacheImage
-                url={post?.user?.photoURL}
+              <Image
+                source={{ uri: post?.user?.photoURL }}
                 style={{
                   width: 40,
                   height: 40,

@@ -45,15 +45,17 @@ const ReelsComments = (props) => {
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
 
   useEffect(() =>
-    onSnapshot(collection(db, 'reels', reel?.id, 'comments'),
-      snapshot =>
-        setComments(
-          snapshot?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        )
-    )
+    (() => {
+      onSnapshot(collection(db, 'reels', reel?.id, 'comments'),
+        snapshot =>
+          setComments(
+            snapshot?.docs?.map(doc => ({
+              id: doc?.id,
+              ...doc?.data()
+            }))
+          )
+      )
+    })()
     , [])
 
   const sendCommentReply = (comment) => {

@@ -18,15 +18,17 @@ const ReelsCommentReplies = (props) => {
   const navigation = useNavigation()
 
   useEffect(() =>
-    onSnapshot(collection(db, 'reels', comments?.reel?.id, 'comments', comments?.id, 'replies'),
-      snapshot =>
-        setReplies(
-          snapshot?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        )
-    )
+    (() => {
+      onSnapshot(collection(db, 'reels', comments?.reel?.id, 'comments', comments?.id, 'replies'),
+        snapshot =>
+          setReplies(
+            snapshot?.docs?.map(doc => ({
+              id: doc?.id,
+              ...doc?.data()
+            }))
+          )
+      )
+    })()
     , [])
 
   const [loaded] = useFonts({

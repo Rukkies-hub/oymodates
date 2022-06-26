@@ -26,10 +26,12 @@ const ViewReel = (props) => {
   const [videoStatus, setVideoStatus] = useState({})
 
   useEffect(() =>
-    navigation.addListener('blur', () => {
-      ref.current.stopAsync()
-      return () => unload()
-    })
+    (() => {
+      navigation.addListener('blur', () => {
+        ref.current.stopAsync()
+        return () => unload()
+      })
+    })()
     , [navigation])
 
   return (

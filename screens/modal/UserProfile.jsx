@@ -33,14 +33,16 @@ const UserProfile = (params) => {
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: viewingUser?.followersCount })
 
   useEffect(() =>
-    onSnapshot(query(collection(db, 'reels'),
-      where('user.id', '==', currentUser?.id)),
-      snapshot => setReels(
-        snapshot.docs.map(doc => ({
-          id: doc?.id,
-          ...doc?.data()
-        }))
-      ))
+    (() => {
+      onSnapshot(query(collection(db, 'reels'),
+        where('user.id', '==', currentUser?.id)),
+        snapshot => setReels(
+          snapshot.docs.map(doc => ({
+            id: doc?.id,
+            ...doc?.data()
+          }))
+        ))
+    })()
     , [currentUser, db])
 
   const getUserProfile = async () => {
@@ -51,12 +53,14 @@ const UserProfile = (params) => {
   useEffect(() => getUserProfile(user), [])
 
   useEffect(() => {
-    getLikesById(currentUser?.id, user?.uid).then(res => {
-      setCurrentLikesState({
-        ...currentLikesState,
-        state: res
+    (() => {
+      getLikesById(currentUser?.id, user?.uid).then(res => {
+        setCurrentLikesState({
+          ...currentLikesState,
+          state: res
+        })
       })
-    })
+    })()
   }, [currentUser])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {

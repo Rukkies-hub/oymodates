@@ -5,10 +5,11 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splashScreen.png",
       "resizeMode": "cover",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,38 +22,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundImage": "./assets/app-logo.png",
-        "backgroundColor": "#000000"
-      },
-      "package": "host.exp.exponent"
+        "foregroundImage": "./assets/app-logo.png",
+        "backgroundColor": "#FFFFFF"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-facebook",
-        {
-          "userTrackingPermission": false
-        }
-      ],
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/tinder-fill.png",
-          "color": "#ffffff",
-          "sounds": [
-            "./assets/newMessage.mp3",
-            "./assets/newMessage.mp3"
-          ]
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ]
-    ]
+    }
   }
 }

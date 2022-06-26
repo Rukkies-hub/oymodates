@@ -37,9 +37,9 @@ import smileys3 from '../../components/emoji/smileys3'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
-import { Audio, Video } from 'expo-av'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
+import { Audio, Video } from 'expo-av'
 
 import uuid from 'uuid-random'
 
@@ -62,10 +62,12 @@ const PreviewMessageImage = () => {
   const [status, setStatus] = useState({})
 
   useEffect(() =>
-    Keyboard.addListener('keyboardDidHide', () => {
-      setExpanded(false)
-      Keyboard.dismiss
-    })
+    (() => {
+      Keyboard.addListener('keyboardDidHide', () => {
+        setExpanded(false)
+        Keyboard.dismiss
+      })
+    })()
     , [])
 
   const sendMessage = async () => {
@@ -141,7 +143,7 @@ const PreviewMessageImage = () => {
               source={{ uri: media?.uri }}
               width={width}
               style={{ flex: 1 }}
-              resizeMode='contain'
+              resizeMode={Video.RESIZE_MODE_CONTAIN}
               isLooping={true}
               onPlaybackStatusUpdate={status => setStatus(() => status)}
             />

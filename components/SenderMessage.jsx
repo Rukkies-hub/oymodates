@@ -11,8 +11,6 @@ import { Audio, Video } from 'expo-av'
 import { useNavigation } from '@react-navigation/native'
 import AutoHeightImage from 'react-native-auto-height-image'
 
-import ChacheImage from './ChacheImage'
-
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -123,8 +121,8 @@ const SenderMessage = ({ messages, matchDetails }) => {
                       }
                       {
                         messages?.reply?.mediaType == 'image' &&
-                        <ChacheImage
-                          url={messages?.reply?.media}
+                        <Image
+                          source={{ uri: messages?.reply?.media }}
                           resizeMode='cover'
                           style={{
                             width: 50,

@@ -16,12 +16,14 @@ const LikeReels = (props) => {
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reel?.likesCount })
 
   useEffect(() =>
-    getLikesById(reel?.id, user?.uid).then(res => {
-      setCurrentLikesState({
-        ...currentLikesState,
-        state: res
+    (() => {
+      getLikesById(reel?.id, user?.uid).then(res => {
+        setCurrentLikesState({
+          ...currentLikesState,
+          state: res
+        })
       })
-    })
+    })()
     , [])
 
   const updateLike = () => new Promise(async (resolve, reject) => {

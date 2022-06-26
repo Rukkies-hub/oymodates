@@ -13,13 +13,15 @@ const Likecomments = (props) => {
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
 
   useEffect(() => {
-    getLikesById(comment.id, user?.uid)
-      .then(res => {
-        setCurrentLikesState({
-          ...currentLikesState,
-          state: res
+    (() => {
+      getLikesById(comment.id, user?.uid)
+        .then(res => {
+          setCurrentLikesState({
+            ...currentLikesState,
+            state: res
+          })
         })
-      })
+    })()
   }, [])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
@@ -47,7 +49,7 @@ const Likecomments = (props) => {
 
     if (comment?.user?.id != userProfile?.id) {
       const post = await (await getDoc(doc(db, 'posts', comment?.post?.id))).data()
-      
+
       await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
         action: 'post',
         activity: 'comment likes',

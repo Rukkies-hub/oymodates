@@ -22,6 +22,7 @@ const CommentReplies = (props) => {
   const [replies, setReplies] = useState([])
 
   useEffect(() =>
+  (() => {
     onSnapshot(collection(db, 'posts', comments?.post?.id, 'comments', comments?.id, 'replies'),
       snapshot =>
         setReplies(
@@ -31,6 +32,7 @@ const CommentReplies = (props) => {
           }))
         )
     )
+  })()
     , [])
 
   const [loaded] = useFonts({

@@ -24,10 +24,12 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
   }))
 
   useEffect(() =>
-    navigation.addListener('blur', () => {
-      ref.current.stopAsync()
-      return () => unload()
-    })
+    (() => {
+      navigation.addListener('blur', () => {
+        ref.current.stopAsync()
+        return () => unload()
+      })
+    })()
     , [navigation])
 
   useEffect(() => {

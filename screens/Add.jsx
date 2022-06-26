@@ -68,20 +68,20 @@ const Add = () => {
     }
   }
 
-  useEffect(() =>
+  useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
       setMediaVidiblity(false)
     })
-    , [])
+  }, [])
 
-  useEffect(() =>
+  useEffect(() => {
     Keyboard.addListener('keyboardDidHide', () => {
       setExpanded(false)
       LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
       setMediaVidiblity(true)
     })
-    , [])
+  }, [])
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')

@@ -58,9 +58,11 @@ const ReelsComment = () => {
   const [showEmoji, setShowEmoji] = useState(false)
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', () => {
-      setReelsCommentType('comment')
-    })
+    (() => {
+      Keyboard.addListener('keyboardDidHide', () => {
+        setReelsCommentType('comment')
+      })
+    })()
   }, [])
 
   const sendComment = async () => {

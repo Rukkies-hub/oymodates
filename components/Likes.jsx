@@ -22,18 +22,22 @@ const Likes = (params) => {
   const [likeDisable, setLikeDisable] = useState(false)
 
   useEffect(() => {
-    getLikesById(post?.id, user?.uid).then(res => {
-      setCurrentLikesState({
-        ...currentLikesState,
-        state: res
+    (() => {
+      getLikesById(post?.id, user?.uid).then(res => {
+        setCurrentLikesState({
+          ...currentLikesState,
+          state: res
+        })
       })
-    })
+    })()
   }, [])
 
   useEffect(() => {
-    return sound
-      ? () => sound.unloadAsync()
-      : undefined
+    (() => {
+      return sound
+        ? () => sound.unloadAsync()
+        : undefined
+    })()
   }, [sound])
 
   const playSound = async () => {

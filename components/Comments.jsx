@@ -41,15 +41,17 @@ const Comments = (params) => {
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
 
   useEffect(() =>
-    onSnapshot(collection(db, 'posts', post?.id, 'comments'),
-      snapshot =>
-        setComments(
-          snapshot?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        )
-    )
+    (() => {
+      onSnapshot(collection(db, 'posts', post?.id, 'comments'),
+        snapshot =>
+          setComments(
+            snapshot?.docs?.map(doc => ({
+              id: doc?.id,
+              ...doc?.data()
+            }))
+          )
+      )
+    })()
     , [])
 
   const [loaded] = useFonts({

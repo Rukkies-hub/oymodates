@@ -21,15 +21,17 @@ const CommentReplies = (props) => {
   const [replies, setReplies] = useState([])
 
   useEffect(() =>
-    onSnapshot(collection(db, 'posts', comments?.post?.id, 'comments', comments?.id, 'replies'),
-      snapshot =>
-        setReplies(
-          snapshot?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        )
-    )
+    (() => {
+      onSnapshot(collection(db, 'posts', comments?.post?.id, 'comments', comments?.id, 'replies'),
+        snapshot =>
+          setReplies(
+            snapshot?.docs?.map(doc => ({
+              id: doc?.id,
+              ...doc?.data()
+            }))
+          )
+      )
+    })()
     , [])
 
   const [loaded] = useFonts({

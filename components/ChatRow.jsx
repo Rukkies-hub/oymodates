@@ -19,16 +19,20 @@ const ChatRow = ({ matchDetails }) => {
   const [lastMessage, setLastMessage] = useState('')
   const [unreadMessage, setUnreadMessage] = useState([])
 
-  useEffect(() =>
-    setMatchedUserInfo(getMatchedUserInfo(matchDetails?.users, user?.uid))
-    , [matchDetails, user])
+  useEffect(() => {
+    (() => {
+      setMatchedUserInfo(getMatchedUserInfo(matchDetails?.users, user?.uid))
+    })()
+  }, [matchDetails, user])
 
-  useEffect(() =>
-    onSnapshot(query(collection(db, 'matches', matchDetails.id, 'messages'),
-      orderBy('timestamp', 'desc')),
-      limit(1),
-      snapshot => setLastMessage(snapshot.docs[0]?.data()?.message || snapshot.docs[0]?.data()?.caption))
-    , [matchDetails, db])
+  useEffect(() => {
+    (() => {
+      onSnapshot(query(collection(db, 'matches', matchDetails.id, 'messages'),
+        orderBy('timestamp', 'desc')),
+        limit(1),
+        snapshot => setLastMessage(snapshot.docs[0]?.data()?.message || snapshot.docs[0]?.data()?.caption))
+    })()
+  }, [matchDetails, db])
 
   // useEffect(async () => {
   //   const querySnapshot = await getDocs(query(collection(db, 'matches', matchDetails.id, 'messages'),

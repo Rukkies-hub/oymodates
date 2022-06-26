@@ -63,7 +63,7 @@ const VideoCall = (props) => {
     playSound()
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     return sound
       ? () => {
         sound.unloadAsync()

@@ -14,13 +14,15 @@ const LikeReelsComment = (props) => {
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
 
   useEffect(() => {
-    getLikesById(comment?.id, user?.uid)
-      .then(res => {
-        setCurrentLikesState({
-          ...currentLikesState,
-          state: res
+    (() => {
+      getLikesById(comment?.id, user?.uid)
+        .then(res => {
+          setCurrentLikesState({
+            ...currentLikesState,
+            state: res
+          })
         })
-      })
+    })()
   }, [])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {

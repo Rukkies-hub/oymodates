@@ -10,7 +10,6 @@ import { Audio, Video } from 'expo-av'
 import useAuth from '../hooks/useAuth'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { useNavigation } from '@react-navigation/native'
-import ChacheImage from './ChacheImage'
 
 if (
   Platform.OS === 'android' &&
@@ -64,9 +63,9 @@ const RecieverMessage = ({ messages, matchDetails }) => {
 
   return (
     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-      <ChacheImage
+      <Image
         style={{ width: 30, height: 30, borderRadius: 50 }}
-        url={messages?.photoURL}
+        source={{ uri: messages?.photoURL }}
       />
       <View
         style={{
@@ -126,8 +125,8 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                       }
                       {
                         messages?.reply?.mediaType == 'image' &&
-                        <ChacheImage
-                          url={messages?.reply?.media}
+                        <Image
+                          source={{ uri: messages?.reply?.media }}
                           resizeMode='cover'
                           style={{
                             width: 50,

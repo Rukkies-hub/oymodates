@@ -54,10 +54,10 @@ const MessageCamera = () => {
 
         if (videoRecordPromise) {
           const data = await videoRecordPromise
-          const source = data?.uri
 
           navigation.navigate('PreviewMessageImage', {
-            matchDetails, media: {
+            matchDetails,
+            media: {
               uri: data.uri,
               type: 'video'
             }

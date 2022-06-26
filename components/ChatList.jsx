@@ -12,16 +12,18 @@ const ChatList = () => {
   const { user, userProfile } = useAuth()
   const [matches, setMatches] = useState([])
 
-  useEffect(() =>
-    onSnapshot(query(collection(db, 'matches'),
-      where('usersMatched', 'array-contains', user?.uid)),
-      snapshot => setMatches(
-        snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc?.data()
-        }))
-      ))
-    , [user, db])
+  useEffect(() => {
+    (() => {
+      onSnapshot(query(collection(db, 'matches'),
+        where('usersMatched', 'array-contains', user?.uid)),
+        snapshot => setMatches(
+          snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc?.data()
+          }))
+        ))
+    })()
+  }, [user, db])
 
   return (
     matches.length > 0 ? (

@@ -21,14 +21,16 @@ const AllPostLikes = (props) => {
 
   const [allLikes, setAllLikes] = useState([])
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(collection(db, "posts", post?.id, 'likes'))
-    setAllLikes(
-      querySnapshot.docs.map(doc => ({
-        id: doc?.id,
-        ...doc?.data()
-      }))
-    )
+  useEffect(() => {
+    (async () => {
+      const querySnapshot = await getDocs(collection(db, "posts", post?.id, 'likes'))
+      setAllLikes(
+        querySnapshot.docs.map(doc => ({
+          id: doc?.id,
+          ...doc?.data()
+        }))
+      )
+    })()
   }, [post])
 
   console.log(allLikes)

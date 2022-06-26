@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Dimensions, Pressable, ScrollView } from 'react-native'
+import { View, Text, Dimensions, Pressable, ScrollView, Image } from 'react-native'
 
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 
@@ -14,8 +14,6 @@ import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
 import { FlatGrid } from 'react-native-super-grid'
 
-import CachAutoHeightImage from '../../components/CachAutoHeightImage'
-
 const MyReels = () => {
   const { user } = useAuth()
   const navigation = useNavigation()
@@ -23,14 +21,16 @@ const MyReels = () => {
   const [reels, setReels] = useState([])
 
   useEffect(() =>
-    onSnapshot(query(collection(db, 'reels'),
-      where('user.id', '==', user?.uid)),
-      snapshot => setReels(
-        snapshot.docs.map(doc => ({
-          id: doc?.id,
-          ...doc?.data()
-        }))
-      ))
+    (() => {
+      onSnapshot(query(collection(db, 'reels'),
+        where('user.id', '==', user?.uid)),
+        snapshot => setReels(
+          snapshot.docs.map(doc => ({
+            id: doc?.id,
+            ...doc?.data()
+          }))
+        ))
+    })()
     , [user, db])
 
   const [loaded] = useFonts({
@@ -75,8 +75,8 @@ const MyReels = () => {
                   height: width / 3
                 }}
               >
-                <CachAutoHeightImage
-                  url={reel?.thumbnail}
+                <Image
+                  source={{ uri: reel?.thumbnail }}
                   width={width / 3}
                   style={{ flex: 1 }}
                 />

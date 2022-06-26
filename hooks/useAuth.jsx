@@ -94,17 +94,19 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   useEffect(() =>
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        setUser(user)
-        getUserProfile(user)
-        getPendingSwipes(user)
-      }
-      else setUser(null)
+    (() => {
+      onAuthStateChanged(auth, user => {
+        if (user) {
+          setUser(user)
+          getUserProfile(user)
+          getPendingSwipes(user)
+        }
+        else setUser(null)
 
 
-      setLoadingInitial(false)
-    })
+        setLoadingInitial(false)
+      })
+    })()
     , [])
 
   const getPendingSwipes = (user) => {

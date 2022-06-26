@@ -7,7 +7,16 @@ import {
   ActivityIndicator
 } from 'react-native'
 
-import { FontAwesome, MaterialCommunityIcons, MaterialIcons, Entypo, AntDesign, FontAwesome5, Feather, SimpleLineIcons } from '@expo/vector-icons'
+import {
+  FontAwesome,
+  MaterialCommunityIcons,
+  MaterialIcons,
+  Entypo,
+  AntDesign,
+  FontAwesome5,
+  Feather,
+  SimpleLineIcons
+} from '@expo/vector-icons'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -21,9 +30,13 @@ import {
 import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
+
 import color from '../style/color'
+
 import { addDoc, collection, getDocs, onSnapshot, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
+
 import { db } from '../hooks/firebase'
+
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 
 let file
@@ -33,8 +46,6 @@ import * as Device from 'expo-device'
 
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 import MessageSettings from './MessageSettings'
-
-import ChacheImage from './ChacheImage'
 
 const Header = ({
   showAratar,
@@ -57,6 +68,7 @@ const Header = ({
   iconColor
 }) => {
   const navigation = useNavigation()
+
   const { user, userProfile, madiaString, media, setMedia, notifications, setNotificatios } = useAuth()
   const storage = getStorage()
   const videoCallUser = getMatchedUserInfo(matchDetails?.users, user?.uid)
@@ -65,26 +77,30 @@ const Header = ({
   const [mediaType, setMediaType] = useState('image')
   const [notificationCount, setNotificationCount] = useState([])
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')))
-    setNotificatios(
-      querySnapshot.docs.map(doc => ({
-        id: doc?.id,
-        notification: doc?.id,
-        ...doc?.data()
-      }))
-    )
+  useEffect(() => {
+    (() => {
+      const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')))
+      setNotificatios(
+        querySnapshot.docs.map(doc => ({
+          id: doc?.id,
+          notification: doc?.id,
+          ...doc?.data()
+        }))
+      )
+    })()
   }, [userProfile, db])
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)))
-    setNotificationCount(
-      querySnapshot.docs.map(doc => ({
-        id: doc?.id,
-        notification: doc?.id,
-        ...doc?.data()
-      }))
-    )
+  useEffect(() => {
+    (() => {
+      const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)))
+      setNotificationCount(
+        querySnapshot.docs.map(doc => ({
+          id: doc?.id,
+          notification: doc?.id,
+          ...doc?.data()
+        }))
+      )
+    })()
   }, [userProfile, db])
 
   const savePost = async () => {
@@ -139,10 +155,12 @@ const Header = ({
   let extention = madiaString.slice(-7)
 
   useEffect(() => {
-    if (extention.includes('jpg' || 'png' || 'gif' || 'jpeg' || 'JPEG' || 'JPG' || 'PNG' || 'GIF'))
-      setMediaType('image')
-    else if (extention.includes('mp4' || 'webm' || 'WEBM' || 'webM'))
-      setMediaType('video')
+    (() => {
+      if (extention.includes('jpg' || 'png' || 'gif' || 'jpeg' || 'JPEG' || 'JPG' || 'PNG' || 'GIF'))
+        setMediaType('image')
+      else if (extention.includes('mp4' || 'webm' || 'WEBM' || 'webM'))
+        setMediaType('video')
+    })()
   }, [media])
 
   const [loaded] = useFonts({
@@ -153,11 +171,7 @@ const Header = ({
   if (!loaded) return null
 
   return (
-    <View
-      style={{
-        width: '100%'
-      }}
-    >
+    <View>
       <View
         style={{
           backgroundColor: backgroundColor ? backgroundColor : userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
@@ -208,8 +222,8 @@ const Header = ({
           }
           {
             showMatchAvatar &&
-            <ChacheImage
-              url={matchAvatar}
+            <Image
+              source={{ uri: matchAvatar }}
               style={{
                 width: 40,
                 height: 40,
@@ -454,8 +468,8 @@ const Header = ({
             >
               {
                 user?.photoURL ?
-                  <ChacheImage
-                    url={userProfile?.photoURL || user?.photoURL}
+                  <Image
+                    source={{ uri: userProfile?.photoURL || user?.photoURL }}
                     style={{
                       width: 40,
                       height: 40,
@@ -472,6 +486,5 @@ const Header = ({
     </View>
   )
 }
-
 
 export default Header

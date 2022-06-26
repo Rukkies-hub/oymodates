@@ -21,10 +21,12 @@ const PostVideo = (props) => {
   const video = useRef(null)
 
   useEffect(() =>
-    navigation.addListener('blur', () => {
-      video.current.stopAsync()
-      return () => unload()
-    })
+    (() => {
+      navigation.addListener('blur', () => {
+        video.current.stopAsync()
+        return () => unload()
+      })
+    })()
     , [navigation])
 
   return (

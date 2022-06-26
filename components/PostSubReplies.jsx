@@ -12,15 +12,17 @@ const PostSubReplies = (props) => {
   const [replies, setReplies] = useState([])
 
   useEffect(() =>
-    onSnapshot(collection(db, 'posts', reply?.post?.id, 'comments', reply?.comment, 'replies', reply?.id, 'reply'),
-      snapshot =>
-        setReplies(
-          snapshot?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        )
-    )
+    (() => {
+      onSnapshot(collection(db, 'posts', reply?.post?.id, 'comments', reply?.comment, 'replies', reply?.id, 'reply'),
+        snapshot =>
+          setReplies(
+            snapshot?.docs?.map(doc => ({
+              id: doc?.id,
+              ...doc?.data()
+            }))
+          )
+      )
+    })()
     , [])
 
   return (

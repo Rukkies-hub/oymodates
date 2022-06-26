@@ -82,36 +82,44 @@ const Message = () => {
   const [chatThemeIndex, setChatThemeIndex] = useState()
 
   useEffect(() =>
-    onSnapshot(query(collection(db,
-      'matches', matchDetails?.id, 'messages'),
-      orderBy('timestamp', 'desc')),
-      snapshot => setMessages(snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })))
-    )
+    (() => {
+      onSnapshot(query(collection(db,
+        'matches', matchDetails?.id, 'messages'),
+        orderBy('timestamp', 'desc')),
+        snapshot => setMessages(snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })))
+      )
+    })()
     , [matchDetails, db])
 
   useEffect(() =>
-    onSnapshot(doc(db, 'matches', matchDetails?.id), doc => {
-      setChatTheme(doc.data()?.chatTheme)
-      setChatThemeIndex(doc.data()?.chatThemeIndex)
-    })
+    (() => {
+      onSnapshot(doc(db, 'matches', matchDetails?.id), doc => {
+        setChatTheme(doc.data()?.chatTheme)
+        setChatThemeIndex(doc.data()?.chatThemeIndex)
+      })
+    })()
     , [matchDetails, db])
 
   useEffect(() =>
-    Keyboard.addListener('keyboardDidShow', () => {
-      setExpanded(false)
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-      setMediaVidiblity(false)
-    })
+    (() => {
+      Keyboard.addListener('keyboardDidShow', () => {
+        setExpanded(false)
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        setMediaVidiblity(false)
+      })
+    })()
     , [])
 
   useEffect(() =>
-    Keyboard.addListener('keyboardDidHide', () => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-      setMediaVidiblity(true)
-    })
+    (() => {
+      Keyboard.addListener('keyboardDidHide', () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        setMediaVidiblity(true)
+      })
+    })()
     , [])
 
   const pickImage = async () => {
