@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useImperativeHandle, useEffect, useState } from 'react'
+import React, { forwardRef, useRef, useImperativeHandle, useEffect, useState, useLayoutEffect } from 'react'
 
 import { View, TouchableOpacity, Dimensions, ImageBackground } from 'react-native'
 
@@ -24,16 +24,18 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
   }))
 
   useEffect(() =>
-    (() => {
-      navigation.addListener('blur', () => {
-        ref.current.stopAsync()
-        return () => unload()
-      })
-    })()
+    navigation.addListener('blur', () => {
+      ref.current.stopAsync()
+      return () => unload()
+    })
     , [navigation])
 
   useEffect(() => {
     return () => unload()
+  }, [])
+
+  useLayoutEffect(() => {
+    ref.current.playAsync()
   }, [])
 
   const play = async () => {
@@ -44,7 +46,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
 
     try {
       await ref.current.playAsync()
-    } catch (e) { }
+    } catch (e) {}
   }
   const stop = async () => {
     if (ref.current == null) return

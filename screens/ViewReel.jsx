@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { View, Text, TouchableOpacity, Dimensions, Image, ImageBackground } from 'react-native'
 import color from '../style/color'
 import useAuth from '../hooks/useAuth'
@@ -12,12 +12,13 @@ import LikeReels from '../components/LikeReels'
 const { width, height } = Dimensions.get('window')
 
 import { AntDesign, FontAwesome, Entypo } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 import Bar from '../components/StatusBar'
 
 const ViewReel = (props) => {
   const navigation = useNavigation()
+  const focus = useIsFocused()
   const { userProfile, setReelsProps } = useAuth()
   const reel = props?.route?.params?.reel
 
@@ -25,13 +26,15 @@ const ViewReel = (props) => {
 
   const [videoStatus, setVideoStatus] = useState({})
 
+  useLayoutEffect(() => {
+    ref.current.playAsync()
+  }, [])
+
   useEffect(() =>
-    (() => {
-      navigation.addListener('blur', () => {
-        ref.current.stopAsync()
-        return () => unload()
-      })
-    })()
+    navigation.addListener('blur', () => {
+      ref.current.stopAsync()
+      return () => unload()
+    })
     , [navigation])
 
   return (
@@ -76,18 +79,21 @@ const ViewReel = (props) => {
           backgroundColor: color.transparent
         }}
       >
-        <Video
-          ref={ref}
-          style={{ flex: 1, backgroundColor: color.transparent }}
-          resizeMode='contain'
-          isLooping
-          usePoster
-          posterSource={{ uri: reel?.thumbnail }}
-          posterStyle={{ resizeMode: 'contain', height: '100%' }}
-          shouldPlay={false}
-          source={{ uri: reel?.media }}
-          onPlaybackStatusUpdate={status => setVideoStatus(() => status)}
-        />
+        {
+          focus &&
+          <Video
+            ref={ref}
+            style={{ flex: 1, backgroundColor: color.transparent }}
+            resizeMode='contain'
+            isLooping
+            usePoster
+            posterSource={{ uri: reel?.thumbnail }}
+            posterStyle={{ resizeMode: 'contain', height: '100%' }}
+            shouldPlay={false}
+            source={{ uri: reel?.media }}
+            onPlaybackStatusUpdate={status => setVideoStatus(() => status)}
+          />
+        }
       </TouchableOpacity>
 
       <LinearGradient

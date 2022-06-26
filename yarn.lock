@@ -3808,10 +3808,10 @@ expo-blur@~11.1.0:
   resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-11.1.0.tgz#21f9f0d28da1c326646c459813c9343b6da5e20f"
   integrity sha512-7ClB+fIYoFXaTyY4jAMBmJmgs3Dz0EWNbpgFCC4v/sSxldg5jSbMUXLXUttnRhKRmIzPB2gufcgoOWfNwA3q7g==
 
-expo-cache-image@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/expo-cache-image/-/expo-cache-image-1.0.3.tgz#bfc243a7b2ed94bb4b738eae2745532f12dfec27"
-  integrity sha512-upf1ZSjrgaWlvW+4JVweJxXBCuvN2XmWli2TInl/ZgDJHVdIhVLf6RdxnPkDkfwdPJQZCb80uTZVelUrNVAKSg==
+expo-cache-image@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/expo-cache-image/-/expo-cache-image-1.0.7.tgz#9b8bbe4ae31982188061a80314393ca84a6afce9"
+  integrity sha512-LcNAIEl/wqR8EqSoFU6Yk6KK3kipmwEaEQkrGRKz2pBYyZwVzfmg8nmwbKGqNq4uENv1Bhqv1i3YM+Kq4LzRTA==
   dependencies:
     expo "~45.0.0"
     expo-file-system "~14.0.0"

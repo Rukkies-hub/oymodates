@@ -25,7 +25,7 @@
     "expo-application": "~4.1.0",
     "expo-av": "~11.2.3",
     "expo-blur": "~11.1.0",
-    "expo-cache-image": "^1.0.3",
+    "expo-cache-image": "^1.0.7",
     "expo-camera": "~12.2.0",
     "expo-constants": "~13.1.1",
     "expo-dev-client": "~1.0.0",
