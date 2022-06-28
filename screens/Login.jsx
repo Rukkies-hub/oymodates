@@ -1,24 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   View,
   Text,
-  TextInput,
-  ImageBackground,
+  ActivityIndicator,
   TouchableOpacity,
-  Image,
-  ActivityIndicator
+  Dimensions,
+  ImageBackground,
+  TextInput,
+  Image
 } from 'react-native'
-import { useFonts } from 'expo-font'
+import useAuth from '../hooks/useAuth'
 
 import color from '../style/color'
 
+import Bar from '../components/StatusBar'
+
+import { useFonts } from 'expo-font'
+import { useNavigation } from '@react-navigation/native'
+
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 
-import { StatusBar } from 'expo-status-bar'
-import useAuth from '../hooks/useAuth'
-
 const Login = () => {
+  const navigation = useNavigation()
   const {
+    loading,
     signinEmail,
     setSigninEmail,
     signinPassword,
@@ -27,12 +32,12 @@ const Login = () => {
     setSecurePasswordEntry,
     authType,
     setAuthType,
-    signInWighGoogle,
     authLoading,
     googleAuthLoading,
     signup,
     signin,
-    recoverPassword
+    recoverPassword,
+    promptAsync
   } = useAuth()
 
   const [loaded] = useFonts({
@@ -48,13 +53,16 @@ const Login = () => {
       resizeMode='cover'
       blurRadius={10}
       style={{
-        backgroundColor: color.black,
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: color.white,
+        paddingHorizontal: 10,
+        width: Dimensions.get('window').width
       }}
     >
-      <StatusBar style='light' />
+      <Bar color='light' />
+
       <Text
         style={{
           fontFamily: 'logo',
@@ -174,7 +182,7 @@ const Login = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={signInWighGoogle}
+            onPress={() => promptAsync()}
             style={{
               width: 45,
               height: 45,
@@ -186,7 +194,7 @@ const Login = () => {
             }}
           >
             {
-              googleAuthLoading ? <ActivityIndicator size='small' color={color.red} />
+              loading ? <ActivityIndicator size='small' color={color.red} />
                 : <Image
                   source={require('../assets/google.png')}
                   style={{
