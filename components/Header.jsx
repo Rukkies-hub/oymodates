@@ -106,7 +106,7 @@ const Header = ({
   const savePost = async () => {
     if (postDetails.caption || postDetails.media) {
       setLoading(true)
-      
+
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
         xhr.onload = () => resolve(xhr.response)
@@ -461,8 +461,8 @@ const Header = ({
             <TouchableOpacity
               onPress={() => navigation.navigate('Profile')}
               style={{
-                width: 40,
-                height: 40,
+                minWidth: 40,
+                minHeight: 40,
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
@@ -476,7 +476,7 @@ const Header = ({
                       height: 40,
                       borderRadius: 50
                     }}
-                  /> : <SimpleLineIcons name="user" size={20} color={color.lightText} />
+                  /> : <SimpleLineIcons name='user' size={20} color={color.lightText} />
               }
             </TouchableOpacity>
           }

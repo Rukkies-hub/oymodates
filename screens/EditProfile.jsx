@@ -119,22 +119,6 @@ const EditProfile = () => {
                       }).then(() => setUploadLoading(false))
                     })
                 })
-              // uploadTask.on('state_changed',
-              //   snapshot => {
-              //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-              //   },
-              //   error => setUploadLoading(false),
-              //   () => {
-              //     getDownloadURL(uploadTask.snapshot.ref)
-              //       .then((downloadURL) => {
-              //         setImage(downloadURL)
-              //         updateDoc(doc(db, 'users', user?.uid), {
-              //           photoURL: downloadURL,
-              //           photoLink: link
-              //         }).then(() => setUploadLoading(false))
-              //       })
-              //   }
-              // )
             }).catch(() => setUploadLoading(false))
         } else {
           setUploadLoading(true)
@@ -149,40 +133,6 @@ const EditProfile = () => {
                   }).then(() => setUploadLoading(false))
                 })
             })
-          // uploadTask.on('state_changed',
-          //   snapshot => {
-          //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          //   },
-          //   error => setUploadLoading(false),
-          //   () => {
-          //     getDownloadURL(uploadTask.snapshot.ref)
-          //       .then((downloadURL) => {
-          //         const getLocation = async () => {
-          //           if (Platform.OS === 'android' && !Constants.isDevice) {
-          //             setErrorMsg(
-          //               'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
-          //             )
-          //             return
-          //           }
-          //           let { status } = await Location.requestForegroundPermissionsAsync()
-          //           if (status !== 'granted') {
-          //             setErrorMsg('Permission to access location was denied')
-          //             return
-          //           }
-
-          //           let location = await Location.getCurrentPositionAsync({})
-          //           const address = await Location.reverseGeocodeAsync(location.coords)
-          //           setLocation(location)
-          //           setAddress(...address)
-          //         }
-          //         setImage(downloadURL)
-          //         updateDoc(doc(db, 'users', user?.uid), {
-          //           photoURL: downloadURL,
-          //           photoLink: link
-          //         }).then(() => setUploadLoading(false))
-          //       })
-          //   }
-          // )
         }
       }
     }
@@ -200,9 +150,9 @@ const EditProfile = () => {
         school,
         city,
         about
-      }).finally(() => {
-        setUpdateLoading(false)
-      })
+      }).then(() => setUpdateLoading(false))
+        .catch(() => setUpdateLoading(false))
+
     else
       setDoc(doc(db, 'users', user?.uid), {
         id: user?.uid,
@@ -216,9 +166,8 @@ const EditProfile = () => {
         gender: '',
         appMode: 'light',
         timestamp: serverTimestamp()
-      }).finally(() => {
-        setUpdateLoading(false)
-      })
+      }).then(() => setUpdateLoading(false))
+        .catch(() => setUpdateLoading(false))
   }
 
   const maleGender = () => {
@@ -276,7 +225,8 @@ const EditProfile = () => {
   }
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf'),
   })
 
   if (!loaded) return null
@@ -294,17 +244,19 @@ const EditProfile = () => {
       <ScrollView style={{ flex: 1 }}>
         <View
           style={{
-            padding: 10,
-            position: 'relative'
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginHorizontal: 10,
+            marginVertical: 20
           }}
         >
           {
-            userProfile?.photoURL ?
+            userProfile?.photoURL || user?.photoURL ?
               <Image
                 style={{
-                  width: '100%',
-                  height: 400,
-                  borderRadius: 12
+                  width: 80,
+                  height: 80,
+                  borderRadius: 100
                 }}
                 source={{ uri: image ? image : userProfile?.photoURL || user?.photoURL }}
               /> :
@@ -321,54 +273,84 @@ const EditProfile = () => {
                 <SimpleLineIcons name="user" size={60} color={userProfile?.appMode == 'dark' ? color.white : color.lightText} />
               </View>
           }
+
           <View
             style={{
-              position: 'absolute',
-              flexDirection: 'row',
-              bottom: -10,
-              right: 20,
-              height: 50,
-              zIndex: 1
+              flex: 1,
+              paddingLeft: 20,
+              justifyContent: 'center'
             }}
           >
             {
-              userProfile &&
-              <TouchableOpacity
-                onPress={() => navigation.navigate('AccountSettings')}
+              userProfile?.username &&
+              <View
                 style={{
-                  width: 50,
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: color.red,
-                  borderRadius: 50,
-                  marginRight: 10
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center'
                 }}
               >
-                <AntDesign name='setting' size={24} color={color.white} />
-              </TouchableOpacity>
+                <Text
+                  style={{
+                    color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                    fontFamily: 'boldText',
+                    fontSize: 20
+                  }}
+                >
+                  @{userProfile?.username}
+                </Text>
+              </View>
             }
-            {
-              userProfile?.displayName &&
-              <TouchableOpacity
-                onPress={pickImage}
-                style={{
-                  width: 50,
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: color.red,
-                  borderRadius: 50
-                }}
-              >
-                {
-                  uploadLoading ?
-                    <ActivityIndicator size='large' color={color.white} /> :
-                    <AntDesign name='picture' size={24} color={color.white} />
-                }
-              </TouchableOpacity>
-            }
+            <Text
+              style={{
+                fontFamily: 'text',
+                fontSize: !userProfile?.username ? 18 : null,
+                color: userProfile?.appMode == 'dark' ? color.white : color.dark
+              }}
+            >
+              {userProfile?.displayName ? userProfile?.displayName : user?.displayName}
+            </Text>
           </View>
+
+          {
+            userProfile &&
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AccountSettings')}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+                borderRadius: 12,
+                marginRight: 10
+              }}
+            >
+              <AntDesign name='setting' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
+            </TouchableOpacity>
+          }
+
+          {
+            userProfile?.displayName &&
+            <TouchableOpacity
+              onPress={pickImage}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+                borderRadius: 12,
+                marginLeft: 10
+              }}
+            >
+              {
+                uploadLoading ?
+                  <ActivityIndicator size='large' color={userProfile?.appMode == 'dark' ? color.white : color.dark} /> :
+                  <AntDesign name='picture' size={24} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
+              }
+            </TouchableOpacity>
+          }
         </View>
 
         <View
@@ -393,21 +375,24 @@ const EditProfile = () => {
             }}
           />
 
-          <TextInput
-            value={displayName}
-            placeholder='Display name'
-            placeholderTextColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
-            onChangeText={setDisplayName}
-            style={{
-              backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
-              paddingHorizontal: 10,
-              borderRadius: 12,
-              height: 45,
-              fontFamily: 'text',
-              marginBottom: 20,
-              color: userProfile?.appMode == 'dark' ? color.white : color.dark
-            }}
-          />
+          {
+            !user?.displayName &&
+            <TextInput
+              value={displayName}
+              placeholder='Display name'
+              placeholderTextColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
+              onChangeText={setDisplayName}
+              style={{
+                backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+                paddingHorizontal: 10,
+                borderRadius: 12,
+                height: 45,
+                fontFamily: 'text',
+                marginBottom: 20,
+                color: userProfile?.appMode == 'dark' ? color.white : color.dark
+              }}
+            />
+          }
 
           <TextInput
             value={job}
@@ -473,71 +458,74 @@ const EditProfile = () => {
             }}
           />
 
-          <View
-            style={{
-              minHeight: 45,
-              marginTop: 20
-            }}
-          >
-            <Text
+          {
+            userProfile &&
+            <View
               style={{
-                color: userProfile?.appMode == 'dark' ? color.white : color.dark,
-                fontFamily: 'text'
+                minHeight: 45,
+                marginTop: 20
               }}
             >
-              Gender
-            </Text>
-
-            <View>
-              <View
+              <Text
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
+                  color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                  fontFamily: 'text'
                 }}
               >
-                <RadioButton
-                  value='male'
-                  color={color.red}
-                  status={checked === 'male' ? 'checked' : 'unchecked'}
-                  uncheckedColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
-                  onPress={maleGender}
-                />
-                <Text
-                  style={{
-                    fontFamily: 'text',
-                    color: userProfile?.appMode == 'dark' ? color.white : color.dark
-                  }}
-                >
-                  Male
-                </Text>
-              </View>
+                Gender
+              </Text>
 
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                }}
-              >
-                <RadioButton
-                  value='female'
-                  color={color.red}
-                  uncheckedColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
-                  status={checked === 'female' ? 'checked' : 'unchecked'}
-                  onPress={femaleGender}
-                />
-                <Text
+              <View>
+                <View
                   style={{
-                    fontFamily: 'text',
-                    color: userProfile?.appMode == 'dark' ? color.white : color.dark
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
                   }}
                 >
-                  Female
-                </Text>
+                  <RadioButton
+                    value='male'
+                    color={color.red}
+                    status={checked === 'male' ? 'checked' : 'unchecked'}
+                    uncheckedColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
+                    onPress={maleGender}
+                  />
+                  <Text
+                    style={{
+                      fontFamily: 'text',
+                      color: userProfile?.appMode == 'dark' ? color.white : color.dark
+                    }}
+                  >
+                    Male
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                  }}
+                >
+                  <RadioButton
+                    value='female'
+                    color={color.red}
+                    uncheckedColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
+                    status={checked === 'female' ? 'checked' : 'unchecked'}
+                    onPress={femaleGender}
+                  />
+                  <Text
+                    style={{
+                      fontFamily: 'text',
+                      color: userProfile?.appMode == 'dark' ? color.white : color.dark
+                    }}
+                  >
+                    Female
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
+          }
 
           <View
             style={{
