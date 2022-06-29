@@ -7,12 +7,12 @@ import React, {
   useLayoutEffect
 } from 'react'
 
-import * as Google from 'expo-google-app-auth'
+import * as Google from 'expo-auth-session/providers/google'
+import * as Facebook from 'expo-auth-session/providers/facebook'
+import { ResponseType } from 'expo-auth-session'
+import * as WebBrowser from 'expo-web-browser'
 
-// import * as Google from 'expo-auth-session/providers/google'
-// import * as WebBrowser from 'expo-web-browser'
-
-// WebBrowser.maybeCompleteAuthSession()
+WebBrowser.maybeCompleteAuthSession()
 
 import axios from 'axios'
 
@@ -22,7 +22,8 @@ import {
   onAuthStateChanged,
   signInWithCredential,
   signInWithEmailAndPassword,
-  signOut
+  signOut,
+  FacebookAuthProvider
 } from 'firebase/auth'
 
 import { auth, db } from './firebase'
@@ -31,7 +32,7 @@ import { collection, doc, onSnapshot } from 'firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
-import { iosClientId, androidClientId, webClientId } from '@env'
+import { iosClientId, androidClientId, webClientId, facebookClientId } from '@env'
 import { ToastAndroid } from 'react-native'
 
 const AuthContext = createContext({})
@@ -49,11 +50,11 @@ export const AuthProvider = ({ children }) => {
   const [loadingInitial, setLoadingInitial] = useState(true)
   const [loading, setLoading] = useState(false)
   const [userProfile, setUserProfile] = useState(null)
-  const [date, setDate] = useState()
   const [job, setJob] = useState('')
   const [company, setCompany] = useState('')
   const [image, setImage] = useState(null)
   const [username, setUsername] = useState('')
+  const [displayName, setDisplayName] = useState('')
   const [school, setSchool] = useState('')
   const [city, setCity] = useState('')
   const [checked, setChecked] = useState('male')
@@ -75,60 +76,30 @@ export const AuthProvider = ({ children }) => {
   const [commentAutoFocus, setCommentAutoFocus] = useState(false)
   const [messageReply, setMessageReply] = useState(null)
 
-  // const [request, response, promptAsync] = Google.useAuthRequest({
-  //   expoClientId: webClientId,
-  //   androidClientId,
-  //   iosClientId,
-  //   webClientId
-  // })
+  const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
+    clientId: webClientId
+  })
 
-  // useEffect(() => {
-  //   if (response?.type === 'success') {
-  //     const { authentication } = response
+  useEffect(() => {
+    if (googleResponse?.type === 'success') {
+      const { id_token } = googleResponse.params
+      const credential = GoogleAuthProvider.credential(id_token)
+      signInWithCredential(auth, credential)
+    }
+  }, [googleResponse])
 
-  //     signInWighGoogle(authentication.accessToken)
+  const [fbRequest, fbResponse, fbPromptAsync] = Facebook.useAuthRequest({
+    responseType: ResponseType.Token,
+    clientId: facebookClientId,
+  })
 
-  //     console.log(response)
-  //   }
-  // }, [response])
-
-  // const signInWighGoogle = async accessToken => {
-  //   try {
-  //     let req = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo',
-  //       { headers: { Authorization: `Bearer ${accessToken}` } })
-
-  //     // const credential = GoogleAuthProvider.credential(req?.data?.id, accessToken)
-
-  //     // await signInWithCredential(auth, credential)
-
-  //     console.log(req.data)
-  //   }
-  //   catch (error) {
-  //     console.log('GoogleUserReq error: ', error)
-  //   }
-  // }
-
-  const signInWighGoogle = async () => {
-    setLoading(true)
-    await Google.logInAsync({
-      iosClientId,
-      androidClientId,
-      scopes: ['profile', 'email'],
-      permissions: ['public_profile', 'email']
-    }).then(async loginResult => {
-      if (loginResult.type === 'success') {
-        const { idToken, accessToken } = loginResult
-        const credential = GoogleAuthProvider.credential(idToken, accessToken)
-
-        await signInWithCredential(auth, credential)
-      }
-
-      return Promise.reject()
-    }).catch(error => {
-      console.log(`${error.code} => ${error.message}`)
-      setError(error)
-    }).finally(() => setLoading(false))
-  }
+  useEffect(() => {
+    if (fbResponse?.type === 'success') {
+      const { access_token } = fbResponse.params
+      const credential = FacebookAuthProvider.credential(access_token)
+      signInWithCredential(auth, credential)
+    }
+  }, [fbResponse]);
 
   const signup = () => {
     if (signinEmail != '' || signinPassword != '') {
@@ -200,7 +171,6 @@ export const AuthProvider = ({ children }) => {
         let profile = doc.data()
         setUserProfile(profile)
 
-        if (profile?.ageDate) setDate(profile?.ageDate)
         if (profile?.job) setJob(profile?.job)
         if (profile?.company) setCompany(profile?.company)
         if (profile?.username) setUsername(profile?.username)
@@ -239,9 +209,10 @@ export const AuthProvider = ({ children }) => {
         error,
         userProfile,
         image,
-        date,
         job,
         username,
+        displayName,
+        setDisplayName,
         school,
         media,
         setMedia,
@@ -283,7 +254,6 @@ export const AuthProvider = ({ children }) => {
         screen,
         setScreen,
         setUsername,
-        setDate,
         setJob,
         setCompany,
         setSchool,
@@ -308,8 +278,8 @@ export const AuthProvider = ({ children }) => {
         signup,
         signin,
         recoverPassword,
-        // promptAsync,
-        signInWighGoogle
+        googlePromptAsync,
+        fbPromptAsync
       }}
     >
       {!loadingInitial && children}

@@ -33,29 +33,29 @@ import { db } from '../hooks/firebase'
 
 import { serverTimestamp, setDoc, doc, updateDoc } from 'firebase/firestore'
 
-import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 
 import { RadioButton } from 'react-native-paper'
 
 import { SimpleLineIcons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons'
 
-let link = `avatars/${new Date().toISOString()}`
-
 import Bar from '../components/StatusBar'
+
+import uuid from 'uuid-random'
 
 const EditProfile = () => {
   const {
     user,
     logout,
     userProfile,
-    date,
-    setDate,
     job,
     setJob,
     image,
     setImage,
     username,
     setUsername,
+    displayName,
+    setDisplayName,
     school,
     setSchool,
     company,
@@ -81,25 +81,23 @@ const EditProfile = () => {
   const [errorMsg, setErrorMsg] = useState(null)
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [9, 16],
       quality: 1,
     })
 
-    if (!result.cancelled) {
+    if (!result?.cancelled) {
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
         xhr.onload = () => resolve(xhr.response)
 
         xhr.responseType = 'blob'
-        xhr.open('GET', result.uri, true)
+        xhr.open('GET', result?.uri, true)
         xhr.send(null)
       })
 
-      const photoRef = ref(storage, link)
+      const photoRef = ref(storage, `avatars/${user?.uid}/${uuid()}`)
 
       const uploadTask = uploadBytesResumable(photoRef, blob)
 
@@ -110,61 +108,81 @@ const EditProfile = () => {
 
           deleteObject(desertRef)
             .then(() => {
-              uploadTask.on('state_changed',
-                snapshot => {
-                  const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                },
-                error => setUploadLoading(false),
-                () => {
-                  getDownloadURL(uploadTask.snapshot.ref)
-                    .then((downloadURL) => {
+              uploadBytes(photoRef, blob)
+                .then(snapshot => {
+                  getDownloadURL(snapshot.ref)
+                    .then(downloadURL => {
                       setImage(downloadURL)
                       updateDoc(doc(db, 'users', user?.uid), {
                         photoURL: downloadURL,
-                        photoLink: link
+                        photoLink: snapshot.ref._location.path
                       }).then(() => setUploadLoading(false))
                     })
-                }
-              )
-            })
-            .catch((error) => setUploadLoading(false))
-        }
-        else {
+                })
+              // uploadTask.on('state_changed',
+              //   snapshot => {
+              //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+              //   },
+              //   error => setUploadLoading(false),
+              //   () => {
+              //     getDownloadURL(uploadTask.snapshot.ref)
+              //       .then((downloadURL) => {
+              //         setImage(downloadURL)
+              //         updateDoc(doc(db, 'users', user?.uid), {
+              //           photoURL: downloadURL,
+              //           photoLink: link
+              //         }).then(() => setUploadLoading(false))
+              //       })
+              //   }
+              // )
+            }).catch(() => setUploadLoading(false))
+        } else {
           setUploadLoading(true)
-          uploadTask.on('state_changed',
-            snapshot => {
-              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            },
-            error => setUploadLoading(false),
-            () => {
-              getDownloadURL(uploadTask.snapshot.ref)
-                .then((downloadURL) => {
-                  const getLocation = async () => {
-                    if (Platform.OS === 'android' && !Constants.isDevice) {
-                      setErrorMsg(
-                        'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
-                      )
-                      return
-                    }
-                    let { status } = await Location.requestForegroundPermissionsAsync()
-                    if (status !== 'granted') {
-                      setErrorMsg('Permission to access location was denied')
-                      return
-                    }
-
-                    let location = await Location.getCurrentPositionAsync({})
-                    const address = await Location.reverseGeocodeAsync(location.coords)
-                    setLocation(location)
-                    setAddress(...address)
-                  }
+          uploadBytes(photoRef, blob)
+            .then(snapshot => {
+              getDownloadURL(snapshot.ref)
+                .then(downloadURL => {
                   setImage(downloadURL)
                   updateDoc(doc(db, 'users', user?.uid), {
                     photoURL: downloadURL,
-                    photoLink: link
+                    photoLink: snapshot.ref._location.path
                   }).then(() => setUploadLoading(false))
                 })
-            }
-          )
+            })
+          // uploadTask.on('state_changed',
+          //   snapshot => {
+          //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          //   },
+          //   error => setUploadLoading(false),
+          //   () => {
+          //     getDownloadURL(uploadTask.snapshot.ref)
+          //       .then((downloadURL) => {
+          //         const getLocation = async () => {
+          //           if (Platform.OS === 'android' && !Constants.isDevice) {
+          //             setErrorMsg(
+          //               'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
+          //             )
+          //             return
+          //           }
+          //           let { status } = await Location.requestForegroundPermissionsAsync()
+          //           if (status !== 'granted') {
+          //             setErrorMsg('Permission to access location was denied')
+          //             return
+          //           }
+
+          //           let location = await Location.getCurrentPositionAsync({})
+          //           const address = await Location.reverseGeocodeAsync(location.coords)
+          //           setLocation(location)
+          //           setAddress(...address)
+          //         }
+          //         setImage(downloadURL)
+          //         updateDoc(doc(db, 'users', user?.uid), {
+          //           photoURL: downloadURL,
+          //           photoLink: link
+          //         }).then(() => setUploadLoading(false))
+          //       })
+          //   }
+          // )
         }
       }
     }
@@ -175,15 +193,13 @@ const EditProfile = () => {
     if (userProfile)
       updateDoc(doc(db, 'users', user?.uid), {
         id: user?.uid,
-        displayName: user?.displayName,
+        displayName: user?.displayName ? user?.displayName : displayName,
         job,
         company,
         username,
         school,
         city,
-        about,
-        age: moment().diff(moment(date, 'DD-MM-YYYY'), 'years'),
-        ageDate: date
+        about
       }).finally(() => {
         setUpdateLoading(false)
       })
@@ -197,10 +213,8 @@ const EditProfile = () => {
         school,
         city,
         about,
-        age: moment().diff(moment(date, 'DD-MM-YYYY'), 'years'),
-        ageDate: date,
-        gender: 'male',
-        appMode: 'lightsOut',
+        gender: '',
+        appMode: 'light',
         timestamp: serverTimestamp()
       }).finally(() => {
         setUpdateLoading(false)
@@ -271,9 +285,10 @@ const EditProfile = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.white
       }}
     >
+      <Bar color='dark' />
       <Header showTitle showAratar showBack title='Edit Profile' />
 
       <ScrollView style={{ flex: 1 }}>
@@ -283,14 +298,29 @@ const EditProfile = () => {
             position: 'relative'
           }}
         >
-          <Image
-            style={{
-              width: '100%',
-              height: 400,
-              borderRadius: 12
-            }}
-            source={{ uri: image ? image : userProfile?.photoURL || user?.photoURL }}
-          />
+          {
+            userProfile?.photoURL ?
+              <Image
+                style={{
+                  width: '100%',
+                  height: 400,
+                  borderRadius: 12
+                }}
+                source={{ uri: image ? image : userProfile?.photoURL || user?.photoURL }}
+              /> :
+              <View
+                style={{
+                  width: '100%',
+                  height: 400,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.offWhite,
+                  borderRadius: 20
+                }}
+              >
+                <SimpleLineIcons name="user" size={60} color={userProfile?.appMode == 'dark' ? color.white : color.lightText} />
+              </View>
+          }
           <View
             style={{
               position: 'absolute',
@@ -301,20 +331,23 @@ const EditProfile = () => {
               zIndex: 1
             }}
           >
-            <TouchableOpacity
-              onPress={() => navigation.navigate('AccountSettings')}
-              style={{
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: color.red,
-                borderRadius: 50,
-                marginRight: 10
-              }}
-            >
-              <AntDesign name='setting' size={24} color={color.white} />
-            </TouchableOpacity>
+            {
+              userProfile &&
+              <TouchableOpacity
+                onPress={() => navigation.navigate('AccountSettings')}
+                style={{
+                  width: 50,
+                  height: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: color.red,
+                  borderRadius: 50,
+                  marginRight: 10
+                }}
+              >
+                <AntDesign name='setting' size={24} color={color.white} />
+              </TouchableOpacity>
+            }
             {
               userProfile?.displayName &&
               <TouchableOpacity
@@ -347,69 +380,48 @@ const EditProfile = () => {
           <TextInput
             value={username}
             placeholder='Username'
-            placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
+            placeholderTextColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
             onChangeText={setUsername}
             style={{
-              borderBottomWidth: .3,
-              borderBottomColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
+              backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+              paddingHorizontal: 10,
+              borderRadius: 12,
               height: 45,
               fontFamily: 'text',
               marginBottom: 20,
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark
             }}
           />
 
-          <DatePicker
+          <TextInput
+            value={displayName}
+            placeholder='Display name'
+            placeholderTextColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
+            onChangeText={setDisplayName}
             style={{
-              width: '100%',
+              backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+              paddingHorizontal: 10,
+              borderRadius: 12,
+              height: 45,
+              fontFamily: 'text',
+              marginBottom: 20,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark
             }}
-            date={date}
-            mode='date'
-            placeholder='Age'
-            format='DD/MM/YYYY'
-            confirmBtnText='Confirm'
-            cancelBtnText='Cancel'
-            placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
-            customStyles={{
-              dateIcon: {
-                position: 'absolute',
-                right: -5,
-                top: 4,
-                marginLeft: 0,
-              },
-              dateInput: {
-                borderColor: 'gray',
-                alignItems: 'flex-start',
-                borderWidth: 0,
-                borderBottomWidth: .3,
-                borderBottomColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
-                height: 45
-              },
-              placeholderText: {
-                fontSize: 14,
-                fontFamily: 'text',
-                color: userProfile?.appMode == 'light' ? color.dark : color.white
-              },
-              dateText: {
-                fontSize: 16,
-                color: userProfile?.appMode == 'light' ? color.dark : color.white
-              }
-            }}
-            onDateChange={setDate}
           />
 
           <TextInput
             value={job}
             onChangeText={setJob}
             placeholder='Enter your occupation'
-            placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
+            placeholderTextColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
             style={{
-              borderBottomWidth: .3,
-              borderBottomColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
+              backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+              paddingHorizontal: 10,
+              borderRadius: 12,
               height: 45,
               fontFamily: 'text',
-              marginTop: 20,
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              marginBottom: 20,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark
             }}
           />
 
@@ -417,14 +429,15 @@ const EditProfile = () => {
             value={company}
             onChangeText={setCompany}
             placeholder='Where do you work'
-            placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
+            placeholderTextColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
             style={{
-              borderBottomWidth: .3,
-              borderBottomColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
+              backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+              paddingHorizontal: 10,
+              borderRadius: 12,
               height: 45,
               fontFamily: 'text',
-              marginTop: 20,
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              marginBottom: 20,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark
             }}
           />
 
@@ -432,14 +445,15 @@ const EditProfile = () => {
             value={school}
             onChangeText={setSchool}
             placeholder='School'
-            placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
+            placeholderTextColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
             style={{
-              borderBottomWidth: .3,
-              borderBottomColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
+              backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+              paddingHorizontal: 10,
+              borderRadius: 12,
               height: 45,
               fontFamily: 'text',
-              marginTop: 20,
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              marginBottom: 20,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark
             }}
           />
 
@@ -447,28 +461,27 @@ const EditProfile = () => {
             value={city}
             onChangeText={setCity}
             placeholder='I live in (City)'
-            placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
+            placeholderTextColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
             style={{
-              borderBottomWidth: .3,
-              borderBottomColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
+              backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+              paddingHorizontal: 10,
+              borderRadius: 12,
               height: 45,
               fontFamily: 'text',
-              marginTop: 20,
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              marginBottom: 20,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark
             }}
           />
 
           <View
             style={{
-              borderBottomWidth: .3,
-              borderBottomColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
               minHeight: 45,
               marginTop: 20
             }}
           >
             <Text
               style={{
-                color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                color: userProfile?.appMode == 'dark' ? color.white : color.dark,
                 fontFamily: 'text'
               }}
             >
@@ -487,13 +500,13 @@ const EditProfile = () => {
                   value='male'
                   color={color.red}
                   status={checked === 'male' ? 'checked' : 'unchecked'}
-                  uncheckedColor={userProfile?.appMode == 'light' ? color.dark : color.white}
+                  uncheckedColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
                   onPress={maleGender}
                 />
                 <Text
                   style={{
                     fontFamily: 'text',
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white
+                    color: userProfile?.appMode == 'dark' ? color.white : color.dark
                   }}
                 >
                   Male
@@ -510,14 +523,14 @@ const EditProfile = () => {
                 <RadioButton
                   value='female'
                   color={color.red}
-                  uncheckedColor={userProfile?.appMode == 'light' ? color.dark : color.white}
+                  uncheckedColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
                   status={checked === 'female' ? 'checked' : 'unchecked'}
                   onPress={femaleGender}
                 />
                 <Text
                   style={{
                     fontFamily: 'text',
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white
+                    color: userProfile?.appMode == 'dark' ? color.white : color.dark
                   }}
                 >
                   Female
@@ -528,10 +541,9 @@ const EditProfile = () => {
 
           <View
             style={{
-              borderBottomWidth: .3,
-              borderBottomColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
               minHeight: 45,
               marginTop: 20,
+              marginBottom: 20,
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center'
@@ -541,7 +553,7 @@ const EditProfile = () => {
               <Text
                 style={{
                   fontFamily: 'text',
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white
+                  color: userProfile?.appMode == 'dark' ? color.white : color.dark
                 }}
               >
                 {address?.subregion}{address?.subregion ? ',' : null} {address?.country}
@@ -554,7 +566,7 @@ const EditProfile = () => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderRadius: 4,
+                borderRadius: 12,
                 paddingVertical: 10,
                 paddingHorizontal: 15,
                 marginLeft: 5
@@ -576,75 +588,75 @@ const EditProfile = () => {
             value={about}
             onChangeText={setAbout}
             placeholder='About me'
-            placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
             onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+            placeholderTextColor={userProfile?.appMode == 'dark' ? color.white : color.dark}
             style={{
-              borderBottomWidth: .3,
-              borderBottomColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
-              height,
-              minHeight: 45,
-              maxHeight: 100,
+              backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+              paddingHorizontal: 10,
+              borderRadius: 12,
+              height: 45,
               fontFamily: 'text',
-              marginTop: 20,
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              marginBottom: 20,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark
             }}
           />
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Passion')}
-            style={{
-              minHeight: 45,
-              marginTop: 20
-            }}
-          >
-            <Text
+          {
+            userProfile &&
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Passion')}
               style={{
-                fontFamily: 'text',
-                color: userProfile?.appMode == 'light' ? color.dark : color.white
+                minHeight: 45,
+                marginTop: 20
               }}
             >
-              Passions
-            </Text>
+              <Text
+                style={{
+                  fontFamily: 'text',
+                  color: userProfile?.appMode == 'dark' ? color.white : color.dark
+                }}
+              >
+                Passions
+              </Text>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                flexWrap: 'wrap'
-              }}
-            >
-              {
-                passions.map((passion, index) => {
-                  return (
-                    <View
-                      key={index}
-                      style={{
-                        paddingHorizontal: 10,
-                        paddingVertical: 5,
-                        borderWidth: 2,
-                        borderRadius: 50,
-                        borderColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
-                        marginBottom: 10,
-                        marginRight: 10
-                      }}
-                    >
-                      <Text
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                  flexWrap: 'wrap'
+                }}
+              >
+                {
+                  passions.map((passion, index) => {
+                    return (
+                      <View
+                        key={index}
                         style={{
-                          color: userProfile?.appMode == 'light' ? color.lightText : color.white,
-                          fontSize: 12,
-                          fontFamily: 'text',
-                          textTransform: 'capitalize'
+                          paddingHorizontal: 10,
+                          paddingVertical: 5,
+                          borderRadius: 50,
+                          marginBottom: 10,
+                          marginRight: 10
                         }}
                       >
-                        {passion}
-                      </Text>
-                    </View>
-                  )
-                })
-              }
-            </View>
-          </TouchableOpacity>
+                        <Text
+                          style={{
+                            color: userProfile?.appMode == 'dark' ? color.white : color.lightText,
+                            fontSize: 12,
+                            fontFamily: 'text',
+                            textTransform: 'capitalize'
+                          }}
+                        >
+                          {passion}
+                        </Text>
+                      </View>
+                    )
+                  })
+                }
+              </View>
+            </TouchableOpacity>
+          }
 
           <TouchableOpacity
             onPress={updateUserProfile}
@@ -654,7 +666,7 @@ const EditProfile = () => {
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: color.red,
-              borderRadius: 4,
+              borderRadius: 12,
               height: 50
             }}
           >
@@ -682,12 +694,11 @@ const EditProfile = () => {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
-              borderRadius: 4,
+              backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+              borderRadius: 12,
               height: 50
             }}
           >
-            <SimpleLineIcons name='logout' size={20} color={color.red} />
             <Text
               style={{
                 fontFamily: 'text',

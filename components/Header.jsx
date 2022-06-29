@@ -106,6 +106,7 @@ const Header = ({
   const savePost = async () => {
     if (postDetails.caption || postDetails.media) {
       setLoading(true)
+      
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
         xhr.onload = () => resolve(xhr.response)
@@ -174,7 +175,7 @@ const Header = ({
     <View>
       <View
         style={{
-          backgroundColor: backgroundColor ? backgroundColor : userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+          backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.white,
           height: 50,
           marginTop: 40,
           paddingHorizontal: 10,
@@ -203,7 +204,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <Entypo name='chevron-left' size={24} color={iconColor ? iconColor : userProfile?.appMode == 'light' ? color.dark : color.white} />
+              <Entypo name='chevron-left' size={24} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
             </TouchableOpacity>
           }
           {
@@ -239,7 +240,7 @@ const Header = ({
                 fontFamily: 'text',
                 fontSize: 18,
                 textTransform: 'capitalize',
-                color: iconColor ? iconColor : userProfile?.appMode == 'light' ? color.dark : color.white
+                color: userProfile?.appMode == 'dark' ? color.white : color.black
               }}
             >
               {title}
@@ -265,7 +266,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <Entypo name='phone' size={20} color={iconColor ? iconColor : userProfile?.appMode == 'light' ? color.lightText : color.white} />
+              <Entypo name='phone' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
             </TouchableOpacity>
           }
 
@@ -280,7 +281,7 @@ const Header = ({
                 alignItems: 'center'
               }}
             >
-              <FontAwesome5 name='video' size={20} color={iconColor ? iconColor : userProfile?.appMode == 'light' ? color.lightText : color.white} />
+              <FontAwesome5 name='video' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
             </TouchableOpacity>
           }
 
@@ -297,7 +298,7 @@ const Header = ({
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
+                borderColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
                 borderWidth: 1,
                 borderRadius: 4,
                 paddingVertical: 10,
@@ -307,7 +308,7 @@ const Header = ({
             >
               <Text
                 style={{
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                  color: userProfile?.appMode == 'dark' ? color.white : color.black,
                   fontFamily: 'text'
                 }}
               >
@@ -363,7 +364,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <SimpleLineIcons name='bell' size={20} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+              <SimpleLineIcons name='bell' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
 
               {
                 notificationCount?.length > 0 &&
@@ -404,7 +405,7 @@ const Header = ({
                   }
                 }}
               >
-                <FontAwesome name='plus-square-o' color={userProfile?.appMode == 'light' ? color.dark : color.white} size={26} />
+                <FontAwesome name='plus-square-o' color={userProfile?.appMode == 'dark' ? color.white : color.black} size={26} />
               </MenuTrigger>
 
               <MenuOptions
@@ -475,9 +476,7 @@ const Header = ({
                       height: 40,
                       borderRadius: 50
                     }}
-                  />
-                  :
-                  <AntDesign name='user' size={24} color={color.lightText} />
+                  /> : <SimpleLineIcons name="user" size={20} color={color.lightText} />
               }
             </TouchableOpacity>
           }

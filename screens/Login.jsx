@@ -31,12 +31,11 @@ const Login = () => {
     authType,
     setAuthType,
     authLoading,
-    googleAuthLoading,
     signup,
     signin,
     recoverPassword,
-    promptAsync,
-    signInWighGoogle
+    googlePromptAsync,
+    fbPromptAsync
   } = useAuth()
 
   const [loaded] = useFonts({
@@ -181,7 +180,7 @@ const Login = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={signInWighGoogle}
+            onPress={() => fbPromptAsync()}
             style={{
               width: 45,
               height: 45,
@@ -192,16 +191,35 @@ const Login = () => {
               marginLeft: 20
             }}
           >
-            {
-              loading ? <ActivityIndicator size='small' color={color.red} />
-                : <Image
-                  source={require('../assets/google.png')}
-                  style={{
-                    width: 25,
-                    height: 25
-                  }}
-                />
-            }
+            <Image
+              source={require('../assets/facebook.png')}
+              style={{
+                width: 25,
+                height: 25
+              }}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => googlePromptAsync()}
+            style={{
+              width: 45,
+              height: 45,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: color.white,
+              borderRadius: 12,
+              marginLeft: 20
+            }}
+          >
+            <Image
+              source={require('../assets/google.png')}
+              style={{
+                width: 25,
+                height: 25
+              }}
+            />
+
           </TouchableOpacity>
         </View>
 
