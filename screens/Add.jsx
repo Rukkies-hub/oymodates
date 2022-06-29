@@ -120,10 +120,11 @@ const Add = () => {
         >
           <View
             style={{
-              maxHeight: 300,
+              maxHeight: 400,
               overflow: 'hidden',
               paddingHorizontal: 10,
-              marginTop: 20
+              marginTop: 20,
+              flexDirection: 'row'
             }}
           >
             <TextInput
@@ -134,6 +135,7 @@ const Add = () => {
               placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               style={{
+                flex: 1,
                 height,
                 backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
                 maxHeight: 300,
@@ -144,10 +146,18 @@ const Add = () => {
                 color: userProfile?.appMode == 'light' ? color.dark : color.white
               }}
             />
+            <Image
+              style={{
+                aspectRatio: 9 / 16,
+                backgroundColor: color.black,
+                width: 60
+              }}
+              source={{ uri: media }}
+            />
           </View>
         </TouchableWithoutFeedback>
 
-        {
+        {/* {
           media != '' &&
           <View
             style={{
@@ -220,7 +230,7 @@ const Add = () => {
               }
             </View>
           </View>
-        }
+        } */}
       </ScrollView>
 
       <View

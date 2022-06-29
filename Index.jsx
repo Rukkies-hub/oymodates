@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Image, SafeAreaView } from 'react-native'
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 
 import { Ionicons, Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
+
+import * as NavigationBar from 'expo-navigation-bar'
 
 import Match from './screens/Match'
 import Chat from './screens/Chat'
@@ -21,19 +23,26 @@ const Index = () => {
   const Tab = createMaterialBottomTabNavigator()
   const { pendingSwipes, userProfile } = useAuth()
 
+  useEffect(() => {
+    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'dark' ? color.black : color.white)
+    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'dark' ? 'light' : 'dark')
+  }, [])
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.white
       }}
     >
       <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
+
       <Header showLogo showAdd showAratar showNotification />
+
       <Tab.Navigator
         initialRouteName='Feeds'
         barStyle={{
-          backgroundColor: userProfile?.appMode == 'light' ? colors.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+          backgroundColor: userProfile?.appMode == 'dark' ? colors.black : color.white,
           height: 54,
           elevation: 0
         }}
@@ -42,9 +51,7 @@ const Index = () => {
           name='Feeds'
           component={Feeds}
           options={{
-            tabBarIcon: () => (
-              <Feather name='home' size={20} color={userProfile?.appMode == 'light' ? colors.black : color.white} />
-            )
+            tabBarIcon: () => <Feather name='home' size={20} color={userProfile?.appMode == 'dark' ? colors.white : color.black} />
           }}
         />
 
@@ -52,9 +59,7 @@ const Index = () => {
           name='Match'
           component={Match}
           options={{
-            tabBarIcon: () => (
-              <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.appMode == 'light' ? colors.black : color.white} />
-            )
+            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.appMode == 'dark' ? colors.white : color.black} />
           }}
         />
 
@@ -62,15 +67,14 @@ const Index = () => {
           name='Reels'
           component={Reels}
           options={{
-            tabBarIcon: () => (
+            tabBarIcon: () =>
               <Image
-                source={userProfile?.appMode == 'light' ? require('./assets/video.png') : require('./assets/videoLight.png')}
+                source={userProfile?.appMode == 'dark' ? require('./assets/videoLight.png') : require('./assets/video.png')}
                 style={{
                   width: 20,
                   height: 20
                 }}
               />
-            )
           }}
         />
 
@@ -81,18 +85,14 @@ const Index = () => {
               component={Likes}
               options={{
                 tabBarBadge: pendingSwipes?.length,
-                tabBarIcon: () => (
-                  <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'light' ? colors.black : colors.white} />
-                )
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'dark' ? colors.white : colors.black} />
               }}
             /> :
             <Tab.Screen
               name='Likes'
               component={Likes}
               options={{
-                tabBarIcon: () => (
-                  <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'light' ? colors.black : colors.white} />
-                )
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'dark' ? colors.white : colors.black} />
               }}
             />
         }
@@ -100,9 +100,7 @@ const Index = () => {
           name='Chat'
           component={Chat}
           options={{
-            tabBarIcon: () => (
-              <Ionicons name='chatbubbles-outline' size={20} color={userProfile?.appMode == 'light' ? colors.black : colors.white} />
-            )
+            tabBarIcon: () => <Ionicons name='chatbubbles-outline' size={20} color={userProfile?.appMode == 'dark' ? colors.white : colors.black} />
           }}
         />
       </Tab.Navigator>

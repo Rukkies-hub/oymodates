@@ -81,208 +81,226 @@ const Posts = () => {
   if (!loaded) return null
 
   return (
-    <FlatList
-      data={posts}
-      bounces={false}
-      alwaysBounceHorizontal={false}
-      alwaysBounceVertical={false}
-      initialNumToRender={0}
-      maxToRenderPerBatch={1}
-      showsVerticalScrollIndicator={false}
-      onEndReached={() => {
-        setPostLimit(postLimit + 3)
-        getPosts()
-      }}
-      onEndReachedThreshold={0.1}
-      removeClippedSubviews
-      viewabilityConfig={{
-        itemVisiblePercentThreshold: 75
-      }}
-      ListFooterComponent={() => (
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <ActivityIndicator size='large' color={userProfile?.appMode == 'light' ? color.dark : color.white} />
-          <Text
-            style={{
-              color: userProfile?.appMode == 'light' ? color.dark : color.white,
-              fontFamily: 'text',
-              marginLeft: 10
-            }}
-          >
-            Loading Feeds....
-          </Text>
-        </View>
-      )}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-        />
-      }
-      keyExtractor={item => item.id}
-      style={{
-        flex: 1,
-        height: height - 109
-      }}
-      renderItem={({ item: post }) => (
-        <View
-          style={{
-            flex: 1,
-            marginBottom: 20,
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
-          }}
-        >
+    <>
+      {
+        posts.length < 1 ?
           <View
             style={{
-              padding: 10,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
+              flex: 1,
+              justifyContent: 'center',
               alignItems: 'center'
             }}
           >
-            <Pressable
-              onPress={() =>
-                post?.user?.id == user?.uid ?
-                  navigation.navigate('Profile') :
-                  navigation.navigate('UserProfile', { user: post?.user })
-              }
+            <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'flex-start',
+                justifyContent: 'center',
                 alignItems: 'center'
               }}
             >
-              <Image
-                source={{ uri: post?.user?.photoURL }}
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 50
-                }}
-              />
+              <ActivityIndicator size='large' color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
               <Text
                 style={{
+                  color: userProfile?.appMode == 'dark' ? color.white : color.dark,
                   fontFamily: 'text',
-                  marginLeft: 10,
-                  fontSize: 18,
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white
+                  marginLeft: 10
                 }}
               >
-                {post?.user?.username}
+                Loading Feeds....
               </Text>
-            </Pressable>
-
-            <TouchableOpacity
-              style={{
-                height: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <MaterialCommunityIcons name='dots-vertical' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={25} />
-            </TouchableOpacity>
-          </View>
-
-          <View
-            style={{
-              minHeight: 300
+            </View>
+          </View> :
+          <FlatList
+            data={posts}
+            bounces={false}
+            alwaysBounceHorizontal={false}
+            alwaysBounceVertical={false}
+            initialNumToRender={0}
+            maxToRenderPerBatch={1}
+            showsVerticalScrollIndicator={false}
+            onEndReached={() => {
+              setPostLimit(postLimit + 3)
+              getPosts()
             }}
-          >
-            {
-              post?.mediaType == 'image' ?
-                <View
-                  style={{
-                    flex: 1,
-                    alignSelf: 'center',
-                    justifyContent: 'center',
-                    width,
-                    position: 'relative',
-                    backgroundColor: color.black
-                  }}
-                >
-                  <PostImage post={post} />
-                </View> :
-                <PostVideo post={post} />
-            }
-          </View>
-
-          <View
-            style={{
-              padding: 10,
-              flexDirection: 'row'
+            onEndReachedThreshold={0.1}
+            removeClippedSubviews
+            viewabilityConfig={{
+              itemVisiblePercentThreshold: 75
             }}
-          >
-            <Likes post={post} />
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate('AddComment', { post })}
-              style={{
-                width: 35,
-                height: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 20
-              }}
-            >
-              <Fontisto name='comment' size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
-            </TouchableOpacity>
-
-            {/* <TouchableOpacity
-              style={{
-                width: 35,
-                height: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 20
-              }}
-            >
-              <AntDesign name='retweet' size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
-            </TouchableOpacity> */}
-          </View>
-
-          <TouchableOpacity
-            // onPress={() => navigation.navigate('ViewPost', { post })}
-            style={{
-              paddingHorizontal: 10,
-              maxHeight: 100,
-              justifyContent: 'flex-start',
-              alignItems: 'flex-start'
-            }}
-          >
-
-            {
-              post?.likesCount > 0 &&
-              <TouchableOpacity
-                onPress={() => navigation.navigate('AllPostLikes', { post })}
+            ListFooterComponent={() => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
               >
+                <ActivityIndicator size='large' color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                    fontSize: 14
+                    color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                    fontFamily: 'text',
+                    marginLeft: 10
                   }}
                 >
-                  {post?.likesCount} {post?.likesCount > 1 ? 'Likes' : 'Like'}
+                  Loading Feeds....
                 </Text>
-              </TouchableOpacity>
+              </View>
+            )}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
             }
-            <Text
-              style={{
-                color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                fontSize: 16
-              }}
-            >
-              {post?.caption}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    />
+            keyExtractor={item => item.id}
+            style={{
+              flex: 1,
+              height: height - 109
+            }}
+            renderItem={({ item: post }) => (
+              <View
+                style={{
+                  flex: 1,
+                  marginBottom: 20,
+                  backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.white
+                }}
+              >
+                <View
+                  style={{
+                    padding: 10,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Pressable
+                    onPress={() =>
+                      post?.user?.id == user?.uid ?
+                        navigation.navigate('Profile') :
+                        navigation.navigate('UserProfile', { user: post?.user })
+                    }
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Image
+                      source={{ uri: post?.user?.photoURL }}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 50
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontFamily: 'text',
+                        marginLeft: 10,
+                        fontSize: 18,
+                        color: userProfile?.appMode == 'dark' ? color.white : color.dark
+                      }}
+                    >
+                      {post?.user?.username}
+                    </Text>
+                  </Pressable>
+
+                  <TouchableOpacity
+                    style={{
+                      height: 40,
+                      height: 40,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <MaterialCommunityIcons name='dots-vertical' color={userProfile?.appMode == 'dark' ? color.white : color.lightText} size={25} />
+                  </TouchableOpacity>
+                </View>
+
+                <View
+                  style={{
+                    minHeight: 300
+                  }}
+                >
+                  {
+                    post?.mediaType == 'image' ?
+                      <View
+                        style={{
+                          flex: 1,
+                          alignSelf: 'center',
+                          justifyContent: 'center',
+                          width,
+                          position: 'relative',
+                          backgroundColor: color.black
+                        }}
+                      >
+                        <PostImage post={post} />
+                      </View> :
+                      <PostVideo post={post} />
+                  }
+                </View>
+
+                <View
+                  style={{
+                    padding: 10,
+                    flexDirection: 'row'
+                  }}
+                >
+                  <Likes post={post} />
+
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AddComment', { post })}
+                    style={{
+                      width: 35,
+                      height: 35,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginRight: 20
+                    }}
+                  >
+                    <Fontisto name='comment' size={24} color={userProfile?.appMode == 'dark' ? color.white : color.lightText} />
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity
+                  style={{
+                    paddingHorizontal: 10,
+                    maxHeight: 100,
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start'
+                  }}
+                >
+
+                  {
+                    post?.likesCount > 0 &&
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('AllPostLikes', { post })}
+                    >
+                      <Text
+                        style={{
+                          color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                          fontSize: 14
+                        }}
+                      >
+                        {post?.likesCount} {post?.likesCount > 1 ? 'Likes' : 'Like'}
+                      </Text>
+                    </TouchableOpacity>
+                  }
+                  <Text
+                    style={{
+                      color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                      fontSize: 16
+                    }}
+                  >
+                    {post?.caption}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+      }
+    </>
   )
 }
 
