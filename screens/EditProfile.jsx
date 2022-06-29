@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   View,
   Text,
@@ -10,9 +10,6 @@ import {
   Platform
 } from 'react-native'
 
-import Constants from 'expo-constants'
-import * as Location from 'expo-location'
-
 import Header from '../components/Header'
 
 import color from '../style/color'
@@ -21,11 +18,7 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 
-import DatePicker from 'react-native-datepicker'
-
 import * as ImagePicker from 'expo-image-picker'
-
-import moment from 'moment'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -33,11 +26,11 @@ import { db } from '../hooks/firebase'
 
 import { serverTimestamp, setDoc, doc, updateDoc } from 'firebase/firestore'
 
-import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 
 import { RadioButton } from 'react-native-paper'
 
-import { SimpleLineIcons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons'
+import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
 
 import Bar from '../components/StatusBar'
 
@@ -67,8 +60,6 @@ const EditProfile = () => {
     about,
     setAbout,
     passions,
-    address,
-    setAddress
   } = useAuth()
   const storage = getStorage()
   const navigation = useNavigation()
@@ -76,9 +67,6 @@ const EditProfile = () => {
   const [height, setHeight] = useState(50)
   const [uploadLoading, setUploadLoading] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
-
-  const [location, setLocation] = useState(null)
-  const [errorMsg, setErrorMsg] = useState(null)
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -97,7 +85,9 @@ const EditProfile = () => {
         xhr.send(null)
       })
 
-      const photoRef = ref(storage, `avatars/${user?.uid}/${uuid()}`)
+      const link = `avatars/${user?.uid}/${uuid()}`
+
+      const photoRef = ref(storage, link)
 
       const uploadTask = uploadBytesResumable(photoRef, blob)
 
@@ -108,31 +98,42 @@ const EditProfile = () => {
 
           deleteObject(desertRef)
             .then(() => {
-              uploadBytes(photoRef, blob)
-                .then(snapshot => {
-                  getDownloadURL(snapshot.ref)
+              uploadTask.on('state_changed',
+                snapshot => {
+                  const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                },
+                error => setUploadLoading(false),
+                () => {
+                  getDownloadURL(uploadTask.snapshot.ref)
                     .then(downloadURL => {
                       setImage(downloadURL)
                       updateDoc(doc(db, 'users', user?.uid), {
                         photoURL: downloadURL,
-                        photoLink: snapshot.ref._location.path
-                      }).then(() => setUploadLoading(false))
+                        photoLink: link
+                      }).finally(async () => setUploadLoading(false))
                     })
-                })
-            }).catch(() => setUploadLoading(false))
+                }
+              )
+            })
+            .catch(() => setUploadLoading(false))
         } else {
           setUploadLoading(true)
-          uploadBytes(photoRef, blob)
-            .then(snapshot => {
-              getDownloadURL(snapshot.ref)
+          uploadTask.on('state_changed',
+            snapshot => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            },
+            error => setUploadLoading(false),
+            () => {
+              getDownloadURL(uploadTask.snapshot.ref)
                 .then(downloadURL => {
                   setImage(downloadURL)
                   updateDoc(doc(db, 'users', user?.uid), {
                     photoURL: downloadURL,
-                    photoLink: snapshot.ref._location.path
-                  }).then(() => setUploadLoading(false))
+                    photoLink: link
+                  }).finally(() => setUploadLoading(false))
                 })
-            })
+            }
+          )
         }
       }
     }
@@ -156,7 +157,7 @@ const EditProfile = () => {
     else
       setDoc(doc(db, 'users', user?.uid), {
         id: user?.uid,
-        displayName: user?.displayName,
+        displayName: user?.displayName ? user?.displayName : displayName,
         job,
         company,
         username,
@@ -198,30 +199,6 @@ const EditProfile = () => {
       }).finally(() => {
         setChecked('female')
       })
-  }
-
-  const getLocation = async () => {
-    if (Platform.OS === 'android' && !Constants.isDevice) {
-      setErrorMsg(
-        'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
-      )
-      return
-    }
-    let { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      setErrorMsg('Permission to access location was denied')
-      return
-    }
-
-    let location = await Location.getCurrentPositionAsync({})
-    const address = await Location.reverseGeocodeAsync(location.coords)
-    setLocation(location)
-    setAddress(...address)
-
-    await updateDoc(doc(db, 'users', user?.uid), {
-      address,
-      location
-    })
   }
 
   const [loaded] = useFonts({
@@ -281,26 +258,25 @@ const EditProfile = () => {
               justifyContent: 'center'
             }}
           >
-            {
-              userProfile?.username &&
-              <View
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center'
+              }}
+            >
+              <Text
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center'
+                  color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                  fontFamily: 'boldText',
+                  fontSize: 20
                 }}
               >
-                <Text
-                  style={{
-                    color: userProfile?.appMode == 'dark' ? color.white : color.dark,
-                    fontFamily: 'boldText',
-                    fontSize: 20
-                  }}
-                >
-                  @{userProfile?.username}
-                </Text>
-              </View>
-            }
+                @{userProfile?.username ? userProfile?.username : 'username'}
+              </Text>
+            </View>
+
             <Text
               style={{
                 fontFamily: 'text',
@@ -311,24 +287,6 @@ const EditProfile = () => {
               {userProfile?.displayName ? userProfile?.displayName : user?.displayName}
             </Text>
           </View>
-
-          {
-            userProfile &&
-            <TouchableOpacity
-              onPress={() => navigation.navigate('AccountSettings')}
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
-                borderRadius: 12,
-                marginRight: 10
-              }}
-            >
-              <AntDesign name='setting' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
-            </TouchableOpacity>
-          }
 
           {
             userProfile?.displayName &&
@@ -346,9 +304,27 @@ const EditProfile = () => {
             >
               {
                 uploadLoading ?
-                  <ActivityIndicator size='large' color={userProfile?.appMode == 'dark' ? color.white : color.dark} /> :
+                  <ActivityIndicator size='small' color={userProfile?.appMode == 'dark' ? color.white : color.dark} /> :
                   <AntDesign name='picture' size={24} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
               }
+            </TouchableOpacity>
+          }
+
+          {
+            userProfile &&
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AccountSettings')}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+                borderRadius: 12,
+                marginLeft: 10
+              }}
+            >
+              <AntDesign name='setting' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
             </TouchableOpacity>
           }
         </View>
@@ -527,50 +503,6 @@ const EditProfile = () => {
             </View>
           }
 
-          <View
-            style={{
-              minHeight: 45,
-              marginTop: 20,
-              marginBottom: 20,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}
-          >
-            <View>
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  color: userProfile?.appMode == 'dark' ? color.white : color.dark
-                }}
-              >
-                {address?.subregion}{address?.subregion ? ',' : null} {address?.country}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={getLocation}
-              style={{
-                backgroundColor: color.red,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 12,
-                paddingVertical: 10,
-                paddingHorizontal: 15,
-                marginLeft: 5
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  color: color.white
-                }}
-              >
-                Get Location
-              </Text>
-            </TouchableOpacity>
-          </View>
-
           <TextInput
             multiline
             value={about}
@@ -623,7 +555,8 @@ const EditProfile = () => {
                         style={{
                           paddingHorizontal: 10,
                           paddingVertical: 5,
-                          borderRadius: 50,
+                          backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+                          borderRadius: 100,
                           marginBottom: 10,
                           marginRight: 10
                         }}

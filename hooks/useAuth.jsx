@@ -64,7 +64,6 @@ export const AuthProvider = ({ children }) => {
   const [media, setMedia] = useState('')
   const [pendingSwipes, setPendingSwipes] = useState([])
   const [profiles, setProfiles] = useState([])
-  const [address, setAddress] = useState(null)
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
   const [reelsProps, setReelsProps] = useState(null)
   const [notifications, setNotificatios] = useState([])
@@ -180,7 +179,6 @@ export const AuthProvider = ({ children }) => {
         if (profile?.screen) setScreen(profile?.screen)
         if (profile?.about) setAbout(profile?.about)
         if (profile?.passions) setPassions([...profile?.passions])
-        if (profile?.address) setAddress(...profile?.address)
       })
 
     return unsub
@@ -231,8 +229,6 @@ export const AuthProvider = ({ children }) => {
         setPendingSwipes,
         profiles,
         setProfiles,
-        address,
-        setAddress,
         mediaVidiblity,
         setMediaVidiblity,
         reelsProps,
