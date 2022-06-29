@@ -7,17 +7,21 @@ import React, {
   useLayoutEffect
 } from 'react'
 
-import * as Google from 'expo-auth-session/providers/google'
-import * as WebBrowser from 'expo-web-browser'
+import * as Google from 'expo-google-app-auth'
 
-WebBrowser.maybeCompleteAuthSession()
+// import * as Google from 'expo-auth-session/providers/google'
+// import * as WebBrowser from 'expo-web-browser'
+
+// WebBrowser.maybeCompleteAuthSession()
 
 import axios from 'axios'
 
 import {
+  createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithCredential,
+  signInWithEmailAndPassword,
   signOut
 } from 'firebase/auth'
 
@@ -28,6 +32,7 @@ import { collection, doc, onSnapshot } from 'firebase/firestore'
 import { useNavigation } from '@react-navigation/native'
 
 import { iosClientId, androidClientId, webClientId } from '@env'
+import { ToastAndroid } from 'react-native'
 
 const AuthContext = createContext({})
 
@@ -70,54 +75,59 @@ export const AuthProvider = ({ children }) => {
   const [commentAutoFocus, setCommentAutoFocus] = useState(false)
   const [messageReply, setMessageReply] = useState(null)
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: webClientId,
-    androidClientId,
-    iosClientId,
-    webClientId
-  })
+  // const [request, response, promptAsync] = Google.useAuthRequest({
+  //   expoClientId: webClientId,
+  //   androidClientId,
+  //   iosClientId,
+  //   webClientId
+  // })
 
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const { authentication } = response
+  // useEffect(() => {
+  //   if (response?.type === 'success') {
+  //     const { authentication } = response
 
-      signInWighGoogle(authentication.accessToken)
+  //     signInWighGoogle(authentication.accessToken)
 
-      console.log(response)
-    }
-  }, [response])
+  //     console.log(response)
+  //   }
+  // }, [response])
 
-  const signInWighGoogle = async accessToken => {
-    try {
-      let req = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo',
-        { headers: { Authorization: `Bearer ${accessToken}` } })
+  // const signInWighGoogle = async accessToken => {
+  //   try {
+  //     let req = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo',
+  //       { headers: { Authorization: `Bearer ${accessToken}` } })
 
-      // const credential = GoogleAuthProvider.credential(req?.data?.id, accessToken)
+  //     // const credential = GoogleAuthProvider.credential(req?.data?.id, accessToken)
 
-      // await signInWithCredential(auth, credential)
+  //     // await signInWithCredential(auth, credential)
 
-      console.log(req.data)
-    }
-    catch (error) {
-      console.log('GoogleUserReq error: ', error)
-    }
+  //     console.log(req.data)
+  //   }
+  //   catch (error) {
+  //     console.log('GoogleUserReq error: ', error)
+  //   }
+  // }
 
+  const signInWighGoogle = async () => {
+    setLoading(true)
+    await Google.logInAsync({
+      iosClientId,
+      androidClientId,
+      scopes: ['profile', 'email'],
+      permissions: ['public_profile', 'email']
+    }).then(async loginResult => {
+      if (loginResult.type === 'success') {
+        const { idToken, accessToken } = loginResult
+        const credential = GoogleAuthProvider.credential(idToken, accessToken)
 
-    // setLoading(true)
-    // await Google.signInAsync(config)
-    //   .then(async loginResult => {
-    //     if (loginResult.type === 'success') {
-    //       const { idToken, accessToken } = loginResult
-    //       const credential = GoogleAuthProvider.credential(idToken, accessToken)
+        await signInWithCredential(auth, credential)
+      }
 
-    //       await signInWithCredential(auth, credential)
-    //     }
-
-    //     return Promise.reject()
-    //   }).catch(error => {
-    //     console.log(error.message)
-    //     setError(error)
-    //   }).finally(() => setLoading(false))
+      return Promise.reject()
+    }).catch(error => {
+      console.log(`${error.code} => ${error.message}`)
+      setError(error)
+    }).finally(() => setLoading(false))
   }
 
   const signup = () => {
@@ -130,8 +140,8 @@ export const AuthProvider = ({ children }) => {
         }).catch(error => {
           ToastAndroid.showWithGravity(
             'Sign up Error. Seems like you already have an account',
-            ToastAndroid.SHORT,
-            ToastAndroid.BOTTOM
+            ToastAndroid.LONG,
+            ToastAndroid.TOP
           )
         }).finally(() => setAuthLoading(false))
     }
@@ -147,8 +157,8 @@ export const AuthProvider = ({ children }) => {
         }).catch(error => {
           ToastAndroid.showWithGravity(
             'Signin Error. Seems like you don`t have an account',
-            ToastAndroid.SHORT,
-            ToastAndroid.BOTTOM
+            ToastAndroid.LONG,
+            ToastAndroid.TOP
           )
         }).finally(() => setAuthLoading(false))
     }
@@ -298,7 +308,8 @@ export const AuthProvider = ({ children }) => {
         signup,
         signin,
         recoverPassword,
-        promptAsync
+        // promptAsync,
+        signInWighGoogle
       }}
     >
       {!loadingInitial && children}

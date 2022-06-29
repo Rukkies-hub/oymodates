@@ -19,16 +19,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "googleServicesFile": "GoogleService-Info.plist"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "host.exp.exponent",
-      "googleServicesFile": "./google-services.json"
+      "package": "host.exp.exponent"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -16,12 +16,10 @@ import color from '../style/color'
 import Bar from '../components/StatusBar'
 
 import { useFonts } from 'expo-font'
-import { useNavigation } from '@react-navigation/native'
 
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 
 const Login = () => {
-  const navigation = useNavigation()
   const {
     loading,
     signinEmail,
@@ -37,7 +35,8 @@ const Login = () => {
     signup,
     signin,
     recoverPassword,
-    promptAsync
+    promptAsync,
+    signInWighGoogle
   } = useAuth()
 
   const [loaded] = useFonts({
@@ -182,7 +181,7 @@ const Login = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => promptAsync()}
+            onPress={signInWighGoogle}
             style={{
               width: 45,
               height: 45,
