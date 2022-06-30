@@ -97,7 +97,7 @@ const Comments = (params) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                  backgroundColor: color.lightBorderColor,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -105,7 +105,7 @@ const Comments = (params) => {
               >
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                    color: color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -114,7 +114,7 @@ const Comments = (params) => {
                 </Text>
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white
+                    color: color.white
                   }}
                 >
                   {comment?.comment}

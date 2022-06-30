@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { View, useWindowDimensions, TouchableOpacity, Dimensions } from 'react-native'
+import { View, TouchableOpacity, Dimensions } from 'react-native'
 
 import color from '../style/color'
 
@@ -7,27 +7,22 @@ import { Video } from 'expo-av'
 
 import { Feather } from '@expo/vector-icons'
 
-const { width, height } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 import { useNavigation } from '@react-navigation/native'
 
 const PostVideo = (props) => {
   const navigation = useNavigation()
   const post = props?.post
-  const windowWidth = useWindowDimensions().width
 
   const [status, setStatus] = useState({})
 
   const video = useRef(null)
 
-  useEffect(() =>
-    (() => {
-      navigation.addListener('blur', () => {
-        video?.current?.stopAsync()
-        return () => unload()
-      })
-    })()
-    , [navigation])
+  navigation.addListener('blur', () => {
+    video?.current?.stopAsync()
+    return () => unload()
+  })
 
   return (
     <View
@@ -35,7 +30,7 @@ const PostVideo = (props) => {
         flex: 1,
         alignSelf: 'center',
         justifyContent: 'center',
-        width: windowWidth,
+        width,
         position: 'relative',
         backgroundColor: color.black
       }}
@@ -47,7 +42,7 @@ const PostVideo = (props) => {
           flex: 1,
           alignSelf: 'center',
           justifyContent: 'center',
-          width: windowWidth,
+          width,
           aspectRatio: 1,
         }}
         source={{

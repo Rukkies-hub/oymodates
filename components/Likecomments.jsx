@@ -100,7 +100,7 @@ const Likecomments = (props) => {
           currentLikesState.counter > 0 &&
           <Text
             style={{
-              color: currentLikesState.state ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.white,
+              color: color.white,
               fontFamily: 'text',
               marginRight: 3
             }}
@@ -112,7 +112,7 @@ const Likecomments = (props) => {
         }
         <Text
           style={{
-            color: currentLikesState.state ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.white,
+            color: color.white,
             fontFamily: 'text'
           }}
         >

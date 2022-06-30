@@ -91,7 +91,7 @@ const PostCommentReplySheet = (props) => {
       >
         <Text
           style={{
-            color: userProfile?.appMode == 'light' ? color.dark : color.white,
+            color: color.white,
             fontFamily: 'text'
           }}
         >
