@@ -88,7 +88,7 @@ const Header = ({
         }))
       )
     })()
-  }, [userProfile, db])
+  }, [])
 
   useEffect(() => {
     (async () => {
@@ -101,7 +101,7 @@ const Header = ({
         }))
       )
     })()
-  }, [userProfile, db])
+  }, [])
 
   const savePost = async () => {
     if (postDetails.caption || postDetails.media) {

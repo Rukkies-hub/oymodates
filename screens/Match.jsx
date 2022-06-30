@@ -161,20 +161,16 @@ const Match = () => {
                   title: 'NOPE',
                   style: {
                     label: {
-                      textAlign: 'right',
+                      textAlign: 'center',
                       color: color.red,
-                      fontFamily: 'text'
-                    }
-                  }
-                },
-
-                bottom: {
-                  title: 'NOPE',
-                  style: {
-                    label: {
-                      textAlign: 'right',
-                      color: color.red,
-                      fontFamily: 'text'
+                      fontFamily: 'text',
+                      borderWidth: 4,
+                      borderRadius: 20,
+                      borderColor: color.red,
+                      position: 'absolute',
+                      top: 0,
+                      right: 20,
+                      width: 150
                     }
                   }
                 },
@@ -183,9 +179,16 @@ const Match = () => {
                   title: 'MATCH',
                   style: {
                     label: {
-                      textAlign: 'left',
+                      textAlign: 'center',
                       color: color.lightGreen,
-                      fontFamily: 'text'
+                      fontFamily: 'text',
+                      borderWidth: 4,
+                      borderRadius: 20,
+                      borderColor: color.lightGreen,
+                      position: 'absolute',
+                      top: 0,
+                      left: 20,
+                      width: 160
                     }
                   }
                 }

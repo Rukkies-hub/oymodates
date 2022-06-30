@@ -30,127 +30,47 @@ const Profile = () => {
       <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
       <Header showBack showTitle title='Profile' showAratar />
 
-      <ScrollView style={{ flex: 1 }}>
-        <View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginHorizontal: 10,
-              marginVertical: 20
-            }}
-          >
-            {
-              userProfile?.photoURL || user?.photoURL ?
-                <Image
-                  source={{ uri: userProfile?.photoURL ? userProfile?.photoURL : user?.photoURL }}
-                  style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 100
-                  }}
-                /> :
-                <View
-                  style={{
-                    width: '100%',
-                    height: 400,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.offWhite,
-                    borderRadius: 20
-                  }}
-                >
-                  <SimpleLineIcons name="user" size={60} color={userProfile?.appMode == 'dark' ? color.white : color.lightText} />
-                </View>
-            }
-
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginHorizontal: 10,
+          marginVertical: 20
+        }}
+      >
+        {
+          userProfile?.photoURL || user?.photoURL ?
+            <Image
+              source={{ uri: userProfile?.photoURL ? userProfile?.photoURL : user?.photoURL }}
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 100
+              }}
+            /> :
             <View
               style={{
-                flex: 1,
-                paddingLeft: 20,
-                justifyContent: 'center'
-              }}
-            >
-              {
-                userProfile?.username &&
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: userProfile?.appMode == 'dark' ? color.white : color.dark,
-                      fontFamily: 'boldText',
-                      fontSize: 20
-                    }}
-                  >
-                    @{userProfile?.username}
-                  </Text>
-                </View>
-              }
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  color: userProfile?.appMode == 'dark' ? color.white : color.lightText
-                }}
-              >
-                {userProfile?.displayName}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('EditProfile')}
-              style={{
-                flexDirection: 'row',
+                width: '100%',
+                height: 400,
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderRadius: 12,
-                height: 40,
-                width: 40,
+                backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.offWhite,
+                borderRadius: 20
               }}
             >
-              <FontAwesome name="edit" size={20} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
-            </TouchableOpacity>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              marginHorizontal: 10
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginRight: 20
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'boldText',
-                  fontSize: 18,
-                  color: userProfile?.appMode == 'dark' ? color.white : color.black
-                }}
-              >
-                {userProfile?.followersCount ? userProfile?.followersCount : '0'}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  fontSize: 16,
-                  color: userProfile?.appMode == 'dark' ? color.white : color.lightText,
-                  marginLeft: 5
-                }}
-              >
-                Followers
-              </Text>
+              <SimpleLineIcons name="user" size={60} color={userProfile?.appMode == 'dark' ? color.white : color.lightText} />
             </View>
+        }
+
+        <View
+          style={{
+            flex: 1,
+            paddingLeft: 20,
+            justifyContent: 'center'
+          }}
+        >
+          {
+            userProfile?.username &&
             <View
               style={{
                 flexDirection: 'row',
@@ -160,158 +80,232 @@ const Profile = () => {
             >
               <Text
                 style={{
+                  color: userProfile?.appMode == 'dark' ? color.white : color.dark,
                   fontFamily: 'boldText',
-                  fontSize: 18,
-                  color: userProfile?.appMode == 'dark' ? color.white : color.black
+                  fontSize: 20
                 }}
               >
-                {userProfile?.likesCount ? userProfile?.likesCount : '0'}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  fontSize: 16,
-                  color: userProfile?.appMode == 'dark' ? color.white : color.lightText,
-                  marginLeft: 5
-                }}
-              >
-                {userProfile?.likesCount == 1 ? 'Like' : 'Likes'}
-              </Text>
-            </View>
-          </View>
-
-          {
-            userProfile?.about &&
-            <View
-              style={{
-                marginHorizontal: 10,
-                marginTop: 20
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  fontSize: 16,
-                  color: userProfile?.appMode == 'dark' ? color.white : color.dark
-                }}
-              >
-                {userProfile?.about}
+                @{userProfile?.username}
               </Text>
             </View>
           }
-
-          <View
+          <Text
             style={{
-              marginHorizontal: 10,
-              marginTop: 10,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center'
+              fontFamily: 'text',
+              color: userProfile?.appMode == 'dark' ? color.white : color.lightText
             }}
           >
-            <Feather name='home' size={14} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginLeft: 10
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  fontSize: 16,
-                  color: userProfile?.appMode == 'dark' ? color.white : color.dark,
-                  marginLeft: 5
-                }}
-              >
-                Lives in
-              </Text>
-              <Text
-                style={{
-                  fontFamily: 'boldText',
-                  fontSize: 16,
-                  color: userProfile?.appMode == 'dark' ? color.white : color.dark,
-                  marginLeft: 5
-                }}
-              >
-                {userProfile?.city}
-              </Text>
-            </View>
-          </View>
-
-          <View
-            style={{
-              marginHorizontal: 10,
-              marginTop: 10,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center'
-            }}
-          >
-            <Fontisto name="date" size={14} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginLeft: 10
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'text',
-                  fontSize: 16,
-                  color: userProfile?.appMode == 'dark' ? color.white : color.dark,
-                  marginLeft: 5
-                }}
-              >
-                Joined
-              </Text>
-              <Text
-                style={{
-                  fontFamily: 'boldText',
-                  fontSize: 16,
-                  color: userProfile?.appMode == 'dark' ? color.white : color.dark,
-                  marginLeft: 5
-                }}
-              >
-                {userProfile?.timestamp?.toDate().toDateString()}
-              </Text>
-            </View>
-          </View>
-
-          <View
-            style={{
-              marginHorizontal: 10,
-              marginTop: 10,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center'
-            }}
-          >
-            <Feather name="briefcase" size={14} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
-
-            <Text
-              style={{
-                fontFamily: 'text',
-                fontSize: 16,
-                color: userProfile?.appMode == 'dark' ? color.white : color.dark,
-                marginLeft: 10
-              }}
-            >
-              {userProfile?.job} at {userProfile?.company}
-            </Text>
-          </View>
-
-          <View>
-            <MyReels />
-          </View>
+            {userProfile?.displayName}
+          </Text>
         </View>
-      </ScrollView>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('EditProfile')}
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 12,
+            height: 40,
+            width: 40,
+          }}
+        >
+          <FontAwesome name="edit" size={20} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
+        </TouchableOpacity>
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          marginHorizontal: 10
+        }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginRight: 20
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 18,
+              color: userProfile?.appMode == 'dark' ? color.white : color.black
+            }}
+          >
+            {userProfile?.followersCount ? userProfile?.followersCount : '0'}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode == 'dark' ? color.white : color.lightText,
+              marginLeft: 5
+            }}
+          >
+            Followers
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 18,
+              color: userProfile?.appMode == 'dark' ? color.white : color.black
+            }}
+          >
+            {userProfile?.likesCount ? userProfile?.likesCount : '0'}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode == 'dark' ? color.white : color.lightText,
+              marginLeft: 5
+            }}
+          >
+            {userProfile?.likesCount == 1 ? 'Like' : 'Likes'}
+          </Text>
+        </View>
+      </View>
+
+      {
+        userProfile?.about &&
+        <View
+          style={{
+            marginHorizontal: 10,
+            marginTop: 20
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark
+            }}
+          >
+            {userProfile?.about}
+          </Text>
+        </View>
+      }
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <Feather name='home' size={14} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginLeft: 10
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+              marginLeft: 5
+            }}
+          >
+            Lives in
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 16,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+              marginLeft: 5
+            }}
+          >
+            {userProfile?.city}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <Fontisto name="date" size={14} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginLeft: 10
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: 16,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+              marginLeft: 5
+            }}
+          >
+            Joined
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'boldText',
+              fontSize: 16,
+              color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+              marginLeft: 5
+            }}
+          >
+            {userProfile?.timestamp?.toDate().toDateString()}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
+        }}
+      >
+        <Feather name="briefcase" size={14} color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
+
+        <Text
+          style={{
+            fontFamily: 'text',
+            fontSize: 16,
+            color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+            marginLeft: 10
+          }}
+        >
+          {userProfile?.job} at {userProfile?.company}
+        </Text>
+      </View>
+
+      <MyReels />
     </SafeAreaView>
   )
 }
