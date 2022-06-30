@@ -146,10 +146,15 @@ const ReelsComment = () => {
           })
       })
 
+    setReply('')
+
     await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
       repliesCount: increment(1)
     })
-    setReply('')
+
+    await updateDoc(doc(db, 'reels', reelsProps?.id), {
+      commentsCount: increment(1)
+    })
 
     if (comment?.user?.id != userProfile?.id)
       await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {

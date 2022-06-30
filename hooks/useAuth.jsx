@@ -71,6 +71,7 @@ export const AuthProvider = ({ children }) => {
   const [likeDisable, setLikeDisable] = useState(false)
   const [chatTheme, setChatTheme] = useState(false)
   const [reelsCommentType, setReelsCommentType] = useState('comment')
+  const [postCommentType, setPostCommentType] = useState('comment')
   const [replyCommentProps, setReplyCommentProps] = useState(null)
   const [commentAutoFocus, setCommentAutoFocus] = useState(false)
   const [messageReply, setMessageReply] = useState(null)
@@ -243,6 +244,8 @@ export const AuthProvider = ({ children }) => {
         setChatTheme,
         reelsCommentType,
         setReelsCommentType,
+        postCommentType,
+        setPostCommentType,
         replyCommentProps,
         setReplyCommentProps,
         commentAutoFocus,

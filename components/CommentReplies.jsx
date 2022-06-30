@@ -22,17 +22,17 @@ const CommentReplies = (props) => {
   const [replies, setReplies] = useState([])
 
   useEffect(() =>
-  (() => {
-    onSnapshot(collection(db, 'posts', comments?.post?.id, 'comments', comments?.id, 'replies'),
-      snapshot =>
-        setReplies(
-          snapshot?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        )
-    )
-  })()
+    (() => {
+      onSnapshot(collection(db, 'posts', comments?.post?.id, 'comments', comments?.id, 'replies'),
+        snapshot =>
+          setReplies(
+            snapshot?.docs?.map(doc => ({
+              id: doc?.id,
+              ...doc?.data()
+            }))
+          )
+      )
+    })()
     , [])
 
   const [loaded] = useFonts({
@@ -48,7 +48,7 @@ const CommentReplies = (props) => {
       }}
     >
       <FlatList
-        data={replies.splice(0, 1)}
+        data={replies.length > 1 ? replies.splice(0, 1) : replies}
         keyExtractor={item => item.id}
         style={{ flex: 1 }}
         renderItem={({ item: reply }) => (

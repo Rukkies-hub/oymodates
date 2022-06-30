@@ -27,12 +27,15 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
-const NewComment = (params) => {
-  const { userProfile } = useAuth()
-  const post = params?.post
+const NewComment = ({ post }) => {
+  const { userProfile, postCommentType, replyCommentProps, setPostCommentType } = useAuth()
 
   const [height, setHeight] = useState(50)
   const [input, setInput] = useState('')
+
+  Keyboard.addListener('keyboardDidHide', () => {
+    setPostCommentType('comment')
+  })
 
   const sendComment = async () => {
     if (input != '')
@@ -75,6 +78,72 @@ const NewComment = (params) => {
     setInput('')
   }
 
+  const sendCommentReply = async comment => {
+    if (input != '')
+      await addDoc(collection(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'replies'), {
+        reply: input,
+        post: comment?.post,
+        comment: comment?.id,
+        likesCount: 0,
+        repliesCount: 0,
+        user: {
+          id: userProfile?.id,
+          displayName: userProfile?.displayName,
+          username: userProfile?.username,
+          photoURL: userProfile?.photoURL
+        },
+        timestamp: serverTimestamp()
+      }).then(async () => {
+        if (comment?.post?.user?.id != userProfile?.id)
+          await addDoc(collection(db, 'users', comment?.post?.user?.id, 'notifications'), {
+            action: 'post',
+            activity: 'reply',
+            text: 'replied to a post you commented on',
+            notify: comment?.post?.user,
+            id: comment?.post?.id,
+            seen: false,
+            post: comment?.post,
+            user: {
+              id: userProfile?.id,
+              username: userProfile?.username,
+              displayName: userProfile?.displayName,
+              photoURL: userProfile?.photoURL
+            },
+            timestamp: serverTimestamp()
+          })
+      })
+
+    setInput('')
+
+    await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
+      repliesCount: increment(1)
+    })
+
+    await updateDoc(doc(db, 'posts', post?.id), {
+      commentsCount: increment(1)
+    })
+
+    if (comment?.user?.id != userProfile?.id)
+      await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
+        action: 'post',
+        activity: 'comment likes',
+        text: 'likes your comment',
+        notify: comment?.user,
+        id: comment?.id,
+        seen: false,
+        post: comment?.post,
+        user: {
+          id: userProfile?.id,
+          username: userProfile?.username,
+          displayName: userProfile?.displayName,
+          photoURL: userProfile?.photoURL
+        },
+        timestamp: serverTimestamp()
+      })
+
+    setPostCommentType('comment')
+  }
+
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
@@ -90,7 +159,7 @@ const NewComment = (params) => {
           paddingHorizontal: 10,
           borderTopWidth: .3,
           borderTopColor: color.borderColor,
-          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+          backgroundColor: color.white,
           minHeight: 50,
           overflow: 'hidden',
           position: 'relative',
@@ -103,24 +172,23 @@ const NewComment = (params) => {
           value={input}
           onChangeText={setInput}
           onSubmitEditing={sendComment}
-          placeholder='Write a comment...'
-          placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
+          placeholder={postCommentType == 'comment' ? 'Write a comment...' : `reply @${replyCommentProps?.user?.username}`}
+          placeholderTextColor={color.lightText}
           onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
           style={{
             fontSize: 18,
             flex: 1,
-            width: '100%',
             height,
             minHeight: 50,
             maxHeight: 150,
             fontFamily: 'text',
-            color: userProfile?.appMode == 'light' ? color.dark : color.white,
+            color: color.dark,
             paddingRight: 40 + 50,
             paddingVertical: 5
           }}
         />
         <TouchableOpacity
-          onPress={sendComment}
+          onPress={() => postCommentType == 'comment' ? sendComment() : sendCommentReply(replyCommentProps)}
           style={{
             width: 50,
             height: 50,

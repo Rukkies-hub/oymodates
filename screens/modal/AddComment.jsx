@@ -57,7 +57,7 @@ const AddComment = params => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ImageBackground
           source={{ uri: post?.mediaType == 'image' ? post?.media : userProfile?.photoURL }}
-          blurRadius={50}
+          blurRadius={100}
           style={{ flex: 1 }}
         >
           <View
