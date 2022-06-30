@@ -27,9 +27,8 @@ import { db } from '../../hooks/firebase'
 
 import { useFonts } from 'expo-font'
 
-import { FlatGrid } from 'react-native-super-grid'
-
-import smileys from '../../components/emoji/smileys'
+import * as NavigationBar from 'expo-navigation-bar'
+import Bar from '../../components/StatusBar'
 
 if (
   Platform.OS === 'android' &&
@@ -54,8 +53,11 @@ const ReelsComment = () => {
   const [comment, setComment] = useState('')
   const [reply, setReply] = useState('')
   const [height, setHeight] = useState(40)
-  const [expanded, setExpanded] = useState(false)
-  const [showEmoji, setShowEmoji] = useState(false)
+
+  useEffect(() => {
+    NavigationBar.setVisibilityAsync('hidden')
+    NavigationBar.setBehaviorAsync('overlay-swipe')
+  }, [])
 
   useEffect(() => {
     (() => {
@@ -207,6 +209,7 @@ const ReelsComment = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
     >
+      <Bar color='light' />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ImageBackground
           source={{ uri: reelsProps?.thumbnail }}
@@ -247,7 +250,7 @@ const ReelsComment = () => {
                 style={{
                   fontFamily: 'text',
                   fontSize: 16,
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white
+                  color: color.white
                 }}
               >
                 {reelsProps?.commentsCount || '0'}
@@ -256,7 +259,7 @@ const ReelsComment = () => {
                 style={{
                   fontFamily: 'text',
                   fontSize: 16,
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                  color: color.white,
                   marginLeft: 10
                 }}
               >
@@ -304,26 +307,6 @@ const ReelsComment = () => {
                 paddingVertical: 5
               }}
             />
-
-            <TouchableOpacity
-              onPress={() => {
-                Keyboard.dismiss()
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-                setExpanded(!expanded)
-
-                setTimeout(() => setShowEmoji(!showEmoji), 500)
-              }}
-              style={{
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                right: 50,
-                bottom: 0
-              }}>
-              <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
-            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={reelsCommentType == 'comment' ? sendComment : reelsCommentType == 'reply' ? sendCommentReply : sendCommentReplyReply}
@@ -378,34 +361,6 @@ const ReelsComment = () => {
               <Text style={{ fontSize: 30 }}>❤️</Text>
             </TouchableOpacity>
           </View>
-
-          {
-            expanded && (
-              <View style={{ minWidth: 200, maxHeight: 200 }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                    flexWrap: 'wrap'
-                  }}
-                >
-                  {
-                    showEmoji &&
-                    <FlatGrid
-                      data={smileys}
-                      itemDimension={30}
-                      renderItem={({ item: emoji }) => (
-                        <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? setComment(comment + emoji.emoji) : reelsCommentType == 'reply' ? setReply(reply + emoji.emoji) : setReply(reply + emoji.emoji)}>
-                          <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                        </TouchableOpacity>
-                      )}
-                    />
-                  }
-                </View>
-              </View>
-            )
-          }
         </ImageBackground>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

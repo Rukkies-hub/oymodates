@@ -331,48 +331,6 @@ const UserProfile = (params) => {
           alignItems: 'center'
         }}
       >
-        <MaterialCommunityIcons name='cake' size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            marginLeft: 10
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'text',
-              fontSize: 16,
-              color: userProfile?.appMode == 'light' ? color.dark : color.white,
-              marginLeft: 5
-            }}
-          >
-            Birthday
-          </Text>
-          <Text
-            style={{
-              fontFamily: 'boldText',
-              fontSize: 16,
-              color: userProfile?.appMode == 'light' ? color.dark : color.white,
-              marginLeft: 5
-            }}
-          >
-            {viewingUser?.ageDate}
-          </Text>
-        </View>
-      </View>
-
-      <View
-        style={{
-          marginHorizontal: 10,
-          marginTop: 10,
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'center'
-        }}
-      >
         <Fontisto name='date' size={14} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
 
         <View
