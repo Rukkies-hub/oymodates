@@ -69,7 +69,7 @@ const MessageSettings = props => {
       chatTheme: background?.image,
       chatThemeIndex: background?.id,
     })
-    refMessageSettingsSheet.current.close()
+    refMessageSettingsSheet?.current?.close()
   }
 
   const [loaded] = useFonts({
@@ -81,7 +81,7 @@ const MessageSettings = props => {
   return (
     <>
       <TouchableOpacity
-        onPress={() => refMessageSettingsSheet.current.open()}
+        onPress={() => refMessageSettingsSheet?.current?.open()}
         style={{
           width: 40,
           height: 40,

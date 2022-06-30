@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { View, Text, TouchableOpacity, Dimensions, Image, ImageBackground } from 'react-native'
 import color from '../style/color'
 import useAuth from '../hooks/useAuth'
-import Header from '../components/Header'
 
 import { Video } from 'expo-av'
 
@@ -11,10 +10,12 @@ import LikeReels from '../components/LikeReels'
 
 const { width, height } = Dimensions.get('window')
 
-import { AntDesign, FontAwesome, Entypo } from '@expo/vector-icons'
+import { FontAwesome, Entypo } from '@expo/vector-icons'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 import Bar from '../components/StatusBar'
+
+import * as NavigationBar from 'expo-navigation-bar'
 
 const ViewReel = (props) => {
   const navigation = useNavigation()
@@ -26,13 +27,22 @@ const ViewReel = (props) => {
 
   const [videoStatus, setVideoStatus] = useState({})
 
+  if (focus) {
+    NavigationBar.setVisibilityAsync('hidden')
+    NavigationBar.setBehaviorAsync('overlay-swipe')
+  }
+
+  navigation.addListener('blur', () => {
+    NavigationBar.setVisibilityAsync('visible')
+  })
+
   useLayoutEffect(() => {
-    ref.current.playAsync()
+    ref?.current?.playAsync()
   }, [])
 
   useEffect(() =>
     navigation.addListener('blur', () => {
-      ref.current.stopAsync()
+      ref?.current?.stopAsync()
       return () => unload()
     })
     , [navigation])
@@ -72,7 +82,7 @@ const ViewReel = (props) => {
 
       <TouchableOpacity
         activeOpacity={1}
-        onPress={() => videoStatus.isPlaying ? ref.current.pauseAsync() : ref.current.playAsync()}
+        onPress={() => videoStatus.isPlaying ? ref?.current?.pauseAsync() : ref?.current?.playAsync()}
         style={{
           flex: 1,
           width,

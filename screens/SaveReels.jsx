@@ -156,7 +156,7 @@ const SaveReels = (params) => {
             flex: 1,
             borderColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
             borderWidth: 1,
-            borderRadius: 4,
+            borderRadius: 12,
             paddingVertical: 10,
             paddingHorizontal: 20,
             marginRight: 5
@@ -181,7 +181,7 @@ const SaveReels = (params) => {
             alignItems: 'center',
             flex: 1,
             backgroundColor: color.red,
-            borderRadius: 4,
+            borderRadius: 12,
             paddingVertical: 10,
             paddingHorizontal: 20,
             marginLeft: 5

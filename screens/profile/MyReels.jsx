@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Dimensions, Pressable, ScrollView, Image } from 'react-native'
+import { View, Text, Pressable, Image, FlatList } from 'react-native'
 
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 
 import { db } from '../../hooks/firebase'
 import useAuth from '../../hooks/useAuth'
-import AutoHeightImage from 'react-native-auto-height-image'
 import color from '../../style/color'
 
-const { width, height } = Dimensions.get('window')
-import { AntDesign } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
-import { FlatGrid } from 'react-native-super-grid'
+
 
 const MyReels = () => {
-  const { user } = useAuth()
+  const { user, userProfile } = useAuth()
   const navigation = useNavigation()
 
   const [reels, setReels] = useState([])
@@ -41,78 +38,119 @@ const MyReels = () => {
   if (!loaded) return null
 
   return (
-    <ScrollView>
-      {
-        reels?.length > 0 &&
-        <View
+    <FlatList
+      data={reels}
+      keyExtractor={item => item.id}
+      showsVerticalScrollIndicator={false}
+      style={{
+        flex: 1,
+        marginHorizontal: 10,
+        marginTop: 20
+      }}
+      renderItem={({ item: reel }) => (
+        <Pressable
+          onPress={() => navigation.navigate('ViewReel', { reel })}
           style={{
+            padding: 5,
             flexDirection: 'row',
             justifyContent: 'flex-start',
-            flexWrap: 'wrap',
-            marginTop: 20
+            alignItems: 'flex-start',
+            marginBottom: 20
           }}
         >
-          <FlatGrid
-            data={reels}
-            keyExtractor={item => item.id}
-            itemDimension={100}
-            showsVerticalScrollIndicator={false}
-            additionalRowStyle={{
-              padding: 0,
-              margin: 0,
-              marginLeft: -15
+          <Image
+            source={{ uri: reel?.thumbnail }}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 12,
+              marginRight: 10
             }}
-            itemContainerStyle={{
-              padding: 0,
-              margin: 5,
-              marginTop: -12
+          />
+
+          <View
+            style={{
+              flex: 1,
             }}
-            renderItem={({ item: reel }) => (
-              <Pressable
-                onPress={() => navigation.navigate('ViewReel', { reel })}
+          >
+            <Text
+              numberOfLines={1}
+              style={{
+                color: userProfile?.appMode == 'dark' ? color.white : color.black,
+                fontSize: 18
+              }}
+            >
+              {reel?.description}
+            </Text>
+
+            <Text
+              style={{
+                color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                fontSize: 13
+              }}
+            >
+              Video - {reel?.user?.username}
+            </Text>
+            <View
+              style={{
+                marginTop: 10,
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-end'
+              }}
+            >
+              <View
                 style={{
-                  width: '100%',
-                  height: width / 3
+                  flexDirection: 'row'
                 }}
               >
-                <Image
-                  source={{ uri: reel?.thumbnail }}
-                  width={width / 3}
-                  style={{ flex: 1 }}
-                />
-                <View
+                <Text
                   style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    margin: 10,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    backgroundColor: color.faintBlack,
-                    padding: 5,
-                    borderRadius: 50,
-                    minWidth: 45
+                    marginRight: 5,
+                    fontFamily: 'text',
+                    color: userProfile?.appMode == 'dark' ? color.white : color.dark
                   }}
                 >
-                  <AntDesign name="heart" size={14} color={color.white} />
-                  <Text
-                    style={{
-                      fontFamily: 'boldText',
-                      marginLeft: 10,
-                      color: color.white,
-                      fontSize: 14
-                    }}
-                  >
-                    {reel?.likesCount}
-                  </Text>
-                </View>
-              </Pressable>
-            )}
-          />
-        </View>
-      }
-    </ScrollView>
+                  {reel?.likesCount}
+                </Text>
+                <Text
+                  style={{
+                    color: userProfile?.appMode == 'dark' ? color.white : color.lightText,
+                    fontFamily: 'text'
+                  }}
+                >
+                  {reel?.likesCount == 1 ? 'Like' : 'Likes' }
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginLeft: 10
+                }}
+              >
+                <Text
+                  style={{
+                    marginRight: 5,
+                    fontFamily: 'text',
+                    color: userProfile?.appMode == 'dark' ? color.white : color.dark
+                  }}
+                >
+                  {reel?.commentsCount}
+                </Text>
+                <Text
+                  style={{
+                    color: userProfile?.appMode == 'dark' ? color.white : color.lightText,
+                    fontFamily: 'text'
+                  }}
+                >
+                  {reel?.commentsCount == 1 ? 'Comment' : 'Comments'}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </Pressable>
+      )}
+    />
   )
 }
 

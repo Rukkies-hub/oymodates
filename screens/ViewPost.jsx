@@ -123,7 +123,7 @@ const ViewPost = (params) => {
 
               <TouchableOpacity
                 onPress={() =>
-                  status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+                  status.isPlaying ? video?.current?.pauseAsync() : video?.current?.playAsync()
                 }
                 style={{
                   position: 'absolute',

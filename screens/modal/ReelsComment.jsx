@@ -16,7 +16,7 @@ import {
 import useAuth from '../../hooks/useAuth'
 
 import color from '../../style/color'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 
 import ReelsComments from '../../components/ReelsComments'
 
@@ -49,23 +49,24 @@ const ReelsComment = () => {
   } = useAuth()
 
   const navigation = useNavigation()
+  const isFocused = useIsFocused()
 
   const [comment, setComment] = useState('')
   const [reply, setReply] = useState('')
   const [height, setHeight] = useState(40)
 
-  useEffect(() => {
+  if (isFocused) {
     NavigationBar.setVisibilityAsync('hidden')
     NavigationBar.setBehaviorAsync('overlay-swipe')
-  }, [])
+  }
 
-  useEffect(() => {
-    (() => {
-      Keyboard.addListener('keyboardDidHide', () => {
-        setReelsCommentType('comment')
-      })
-    })()
-  }, [])
+  navigation.addListener('blur', () => {
+    NavigationBar.setVisibilityAsync('visible')
+  })
+
+  Keyboard.addListener('keyboardDidHide', () => {
+    setReelsCommentType('comment')
+  })
 
   const sendComment = async () => {
     if (comment != '') {

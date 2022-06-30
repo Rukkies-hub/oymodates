@@ -23,7 +23,7 @@ const PostVideo = (props) => {
   useEffect(() =>
     (() => {
       navigation.addListener('blur', () => {
-        video.current.stopAsync()
+        video?.current?.stopAsync()
         return () => unload()
       })
     })()
@@ -59,7 +59,7 @@ const PostVideo = (props) => {
       />
 
       <TouchableOpacity
-        onPress={() => status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}
+        onPress={() => status.isPlaying ? video?.current?.pauseAsync() : video?.current?.playAsync()}
         style={{
           position: 'absolute',
           width: '100%',

@@ -25,7 +25,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
 
   useEffect(() =>
     navigation.addListener('blur', () => {
-      ref.current.stopAsync()
+      ref?.current?.stopAsync()
       return () => unload()
     })
     , [navigation])
@@ -34,43 +34,39 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
     return () => unload()
   }, [])
 
-  useLayoutEffect(() => {
-    ref.current.playAsync()
-  }, [])
-
   const play = async () => {
-    if (ref.current == null) return
+    if (ref?.current == null) return
 
-    const status = await ref.current.getStatusAsync()
+    const status = await ref?.current?.getStatusAsync()
     if (status?.isPlaying) return
 
     try {
-      await ref.current.playAsync()
+      await ref?.current?.playAsync()
     } catch (e) {}
   }
   const stop = async () => {
-    if (ref.current == null) return
+    if (ref?.current == null) return
 
-    const status = await ref.current.getStatusAsync()
+    const status = await ref?.current?.getStatusAsync()
     if (!status?.isPlaying) return
 
     try {
-      await ref.current.stopAsync()
+      await ref?.current?.stopAsync()
     } catch (e) { }
   }
 
   const unload = async () => {
-    if (ref.current == null) return
+    if (ref?.current == null) return
 
     try {
-      await ref.current.unloadAsync()
+      await ref?.current?.unloadAsync()
     } catch (e) { }
   }
 
   return (
     <TouchableOpacity
       activeOpacity={1}
-      onPress={() => videoStatus.isPlaying ? ref.current.pauseAsync() : ref.current.playAsync()}
+      onPress={() => videoStatus.isPlaying ? ref?.current?.pauseAsync() : ref?.current?.playAsync()}
       style={{
         flex: 1,
         width,

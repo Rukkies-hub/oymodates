@@ -135,7 +135,7 @@ const PreviewMessageImage = () => {
         {
           media?.type == 'video' &&
           <Pressable
-            onPress={() => status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}
+            onPress={() => status.isPlaying ? video?.current?.pauseAsync() : video?.current?.playAsync()}
             style={{ flex: 1 }}
           >
             <Video

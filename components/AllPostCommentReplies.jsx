@@ -35,7 +35,7 @@ const AllPostCommentReplies = (props) => {
   return (
     <>
       <TouchableOpacity
-        onPress={() => refCommentSheet.current.open()}
+        onPress={() => refCommentSheet?.current?.open()}
         style={{
           flexDirection: 'row',
           justifyContent: 'flex-start',

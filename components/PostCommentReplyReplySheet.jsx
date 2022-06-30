@@ -83,7 +83,7 @@ const PostCommentReplyReplySheet = (props) => {
   return (
     <>
       <TouchableOpacity
-        onPress={() => refCommentSheet.current.open()}
+        onPress={() => refCommentSheet?.current?.open()}
         style={{
           paddingHorizontal: 10,
           paddingVertical: 2
