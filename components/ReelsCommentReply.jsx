@@ -4,7 +4,7 @@ import { Text, TouchableOpacity } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-const ReelsCommentReplySheet = (props) => {
+const ReelsCommentReply = (props) => {
   const { userProfile, setReelsCommentType, setReplyCommentProps, setCommentAutoFocus } = useAuth()
 
   const comment = props?.comment
@@ -23,7 +23,7 @@ const ReelsCommentReplySheet = (props) => {
     >
       <Text
         style={{
-          color: userProfile?.appMode == 'light' ? color.dark : color.white,
+          color: color.white,
           fontFamily: 'text'
         }}
       >
@@ -33,4 +33,4 @@ const ReelsCommentReplySheet = (props) => {
   )
 }
 
-export default ReelsCommentReplySheet
+export default ReelsCommentReply

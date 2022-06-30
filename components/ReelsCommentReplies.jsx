@@ -45,7 +45,7 @@ const ReelsCommentReplies = (props) => {
       }}
     >
       <FlatList
-        data={replies.splice(0, 1)}
+        data={replies.length > 1 ? replies.splice(0, 1) : replies}
         keyExtractor={item => item.id}
         style={{ flex: 1 }}
         renderItem={({ item: reply }) => (
@@ -69,7 +69,7 @@ const ReelsCommentReplies = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                  backgroundColor: color.lightBorderColor,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -77,7 +77,7 @@ const ReelsCommentReplies = (props) => {
               >
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                    color: color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -99,7 +99,7 @@ const ReelsCommentReplies = (props) => {
                   >
                     <Text
                       style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        color: color.white,
                         fontFamily: 'boldText'
                       }}
                     >
@@ -108,8 +108,8 @@ const ReelsCommentReplies = (props) => {
                   </TouchableOpacity>
                   <Text
                     style={{
-                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
-                      marginLeft: 10
+                      color: color.white,
+                      marginLeft: 5
                     }}
                   >
                     {reply?.reply}

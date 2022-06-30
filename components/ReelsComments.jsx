@@ -21,19 +21,16 @@ import color from '../style/color'
 
 import useAuth from '../hooks/useAuth'
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-
 import uuid from 'uuid-random'
 import { useFonts } from 'expo-font'
 import LikeReelsComment from './LikeReelsComment'
 import ReelsCommentReplies from './ReelsCommentReplies'
-import ReelsCommentReplySheet from './ReelsCommentReplySheet'
+import ReelsCommentReply from './ReelsCommentReply'
 
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
-)
-  UIManager.setLayoutAnimationEnabledExperimental(true)
+) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const ReelsComments = (props) => {
   const { userProfile, user } = useAuth()
@@ -42,7 +39,6 @@ const ReelsComments = (props) => {
   const [comments, setComments] = useState([])
   const [height, setHeight] = useState(40)
   const [input, setInput] = useState('')
-  const [mediaVidiblity, setMediaVidiblity] = useState(false)
 
   useEffect(() =>
     (() => {
@@ -121,7 +117,7 @@ const ReelsComments = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                  backgroundColor: color.lightBorderColor,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -129,7 +125,7 @@ const ReelsComments = (props) => {
               >
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                    color: color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -138,7 +134,7 @@ const ReelsComments = (props) => {
                 </Text>
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                    color: color.white,
                     fontSize: 14
                   }}
                 >
@@ -162,7 +158,7 @@ const ReelsComments = (props) => {
                 >
                   <LikeReelsComment comment={comment} />
 
-                  <ReelsCommentReplySheet comment={comment} />
+                  <ReelsCommentReply comment={comment} />
                 </View>
 
                 <ReelsCommentReplies comment={comment} />

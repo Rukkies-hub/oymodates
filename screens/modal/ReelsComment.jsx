@@ -45,7 +45,6 @@ const ReelsComment = () => {
     setReelsCommentType,
     replyCommentProps,
     setReplyCommentProps,
-    commentAutoFocus
   } = useAuth()
 
   const navigation = useNavigation()
@@ -211,6 +210,7 @@ const ReelsComment = () => {
       style={{ flex: 1 }}
     >
       <Bar color='light' />
+      
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ImageBackground
           source={{ uri: reelsProps?.thumbnail }}
@@ -278,7 +278,7 @@ const ReelsComment = () => {
               paddingHorizontal: 10,
               borderTopWidth: .3,
               borderTopColor: color.borderColor,
-              backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+              backgroundColor: color.white,
               minHeight: 50,
               overflow: 'hidden',
               position: 'relative',
@@ -294,7 +294,6 @@ const ReelsComment = () => {
               placeholder={reelsCommentType == 'comment' ? 'Write a comment...' : reelsCommentType == 'reply' ? `Reply @${replyCommentProps?.user?.username}` : `Reply @${replyCommentProps?.user?.username}`}
               placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-              autoFocus={commentAutoFocus}
               style={{
                 fontSize: 18,
                 flex: 1,

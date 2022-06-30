@@ -80,7 +80,7 @@ const LikeReelsReply = (props) => {
         currentLikesState.counter > 0 &&
         <Text
           style={{
-            color: currentLikesState.state ? color.red : userProfile?.appMode == 'light' ? color.dark : color.white,
+            color: currentLikesState.state ? color.red : color.white,
             fontFamily: 'text',
             marginRight: 3
           }}
@@ -92,7 +92,7 @@ const LikeReelsReply = (props) => {
       }
       <Text
         style={{
-          color: currentLikesState.state ? color.red : userProfile?.appMode == 'light' ? color.dark : color.white,
+          color: currentLikesState.state ? color.red : color.white,
           fontFamily: 'text'
         }}
       >
