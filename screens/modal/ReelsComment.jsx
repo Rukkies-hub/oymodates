@@ -197,10 +197,17 @@ const ReelsComment = () => {
         timestamp: serverTimestamp()
       })
 
+    setReply('')
+
+    setReelsCommentType('comment')
+
     await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.comment, 'replies', comment?.id), {
       repliesCount: increment(1)
     })
-    setReply('')
+
+    await updateDoc(doc(db, 'reels', reelsProps?.id), {
+      commentsCount: increment(1)
+    })
   }
 
   const [loaded] = useFonts({
@@ -215,7 +222,7 @@ const ReelsComment = () => {
       style={{ flex: 1 }}
     >
       <Bar color='light' />
-      
+
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ImageBackground
           source={{ uri: reelsProps?.thumbnail }}

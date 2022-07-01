@@ -38,6 +38,7 @@ const NewComment = ({ post }) => {
   })
 
   const sendComment = async () => {
+    setInput('')
     if (input != '')
       addDoc(collection(db, 'posts', post?.id, 'comments'), {
         comment: input,
@@ -74,11 +75,12 @@ const NewComment = ({ post }) => {
     await updateDoc(doc(db, 'posts', post?.id), {
       commentsCount: increment(1)
     })
-
-    setInput('')
   }
 
   const sendCommentReply = async comment => {
+    setInput('')
+    setPostCommentType('comment')
+
     if (input != '')
       await addDoc(collection(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'replies'), {
         reply: input,
@@ -86,6 +88,7 @@ const NewComment = ({ post }) => {
         comment: comment?.id,
         likesCount: 0,
         repliesCount: 0,
+        postReply: comment,
         user: {
           id: userProfile?.id,
           displayName: userProfile?.displayName,
@@ -113,8 +116,6 @@ const NewComment = ({ post }) => {
           })
       })
 
-    setInput('')
-
     await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
       repliesCount: increment(1)
     })
@@ -140,8 +141,38 @@ const NewComment = ({ post }) => {
         },
         timestamp: serverTimestamp()
       })
+  }
 
+  const sendCommentReplyReply = async comment => {
     setPostCommentType('comment')
+    setInput('')
+
+    if (input != '')
+      await addDoc(collection(db, 'posts', comment?.post?.id, 'comments', comment?.comment, 'replies'), {
+        reply: input,
+        post: comment?.post,
+        comment: comment?.comment,
+        reelReply: comment,
+        likesCount: 0,
+        repliesCount: 0,
+        postReply: comment,
+        user: {
+          id: userProfile?.id,
+          displayName: userProfile?.displayName,
+          username: userProfile?.username,
+          photoURL: userProfile?.photoURL
+        },
+        timestamp: serverTimestamp()
+      })
+
+    await updateDoc(doc(db, 'reels', comment?.post?.id, 'comments', comment?.comment, 'replies', comment?.id), {
+      repliesCount: increment(1)
+    })
+
+    await updateDoc(doc(db, 'posts', post?.id), {
+      commentsCount: increment(1)
+    })
+
   }
 
   const [loaded] = useFonts({
@@ -188,7 +219,7 @@ const NewComment = ({ post }) => {
           }}
         />
         <TouchableOpacity
-          onPress={() => postCommentType == 'comment' ? sendComment() : sendCommentReply(replyCommentProps)}
+          onPress={() => postCommentType == 'comment' ? sendComment() : postCommentType == 'reply' ? sendCommentReply(replyCommentProps) : sendCommentReplyReply(replyCommentProps)}
           style={{
             width: 50,
             height: 50,

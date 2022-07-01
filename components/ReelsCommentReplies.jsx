@@ -10,9 +10,8 @@ import useAuth from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
 import ReelsCommentReplyReply from './ReelsCommentReplyReply'
 
-const ReelsCommentReplies = (props) => {
+const ReelsCommentReplies = ({ comment: comments }) => {
   const { userProfile } = useAuth()
-  const comments = props.comment
   const [replies, setReplies] = useState([])
 
   const navigation = useNavigation()

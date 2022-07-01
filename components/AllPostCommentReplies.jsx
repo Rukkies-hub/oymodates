@@ -7,7 +7,7 @@ import color from '../style/color'
 
 import { Octicons } from '@expo/vector-icons'
 
-import PostCommentReplyReplySheet from './PostCommentReplyReplySheet'
+import PostCommentReplyReply from './PostCommentReplyReply'
 import LikeReply from './LikeReply'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
@@ -138,7 +138,7 @@ const AllPostCommentReplies = (props) => {
                     }}
                   >
                     <LikeReply reply={reply} />
-                    <PostCommentReplyReplySheet comment={reply} />
+                    <PostCommentReplyReply comment={reply} />
                   </View>
                 </View>
                 <PostSubReplies reply={reply} />

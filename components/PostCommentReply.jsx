@@ -4,7 +4,7 @@ import { Text, TouchableOpacity } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-const PostCommentReplySheet = ({ comment }) => {
+const PostCommentReply = ({ comment }) => {
   const {
     setPostCommentType,
     setReplyCommentProps
@@ -15,6 +15,7 @@ const PostCommentReplySheet = ({ comment }) => {
       onPress={() => {
         setPostCommentType('reply')
         setReplyCommentProps(comment)
+        console.log(comment)
       }}
       style={{
         paddingHorizontal: 10,
@@ -33,4 +34,4 @@ const PostCommentReplySheet = ({ comment }) => {
   )
 }
 
-export default PostCommentReplySheet
+export default PostCommentReply

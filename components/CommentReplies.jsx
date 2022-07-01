@@ -12,7 +12,7 @@ import { useFonts } from 'expo-font'
 import { Octicons } from '@expo/vector-icons'
 import LikeReply from './LikeReply'
 import useAuth from '../hooks/useAuth'
-import PostCommentReplyReplySheet from './PostCommentReplyReplySheet'
+import PostCommentReplyReply from './PostCommentReplyReply'
 import AllPostCommentReplies from './AllPostCommentReplies'
 
 const CommentReplies = (props) => {
@@ -36,7 +36,8 @@ const CommentReplies = (props) => {
     , [])
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -72,7 +73,7 @@ const CommentReplies = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                  backgroundColor: color.lightBorderColor,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -80,20 +81,42 @@ const CommentReplies = (props) => {
               >
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                    color: color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
                 >
-                  {reply?.user?.displayName}
+                  @{reply?.user?.username}
                 </Text>
-                <Text
+                <View
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white
+                    flexDirection: 'row'
                   }}
                 >
-                  {reply?.reply}
-                </Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start'
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: color.white,
+                        fontFamily: 'boldText',
+                        marginRight: 5
+                      }}
+                    >
+                      {reply?.postReply?.user?.username}
+                    </Text>
+                    <Text
+                      style={{
+                        color: color.white
+                      }}
+                    >
+                      {reply?.reply}
+                    </Text>
+                  </View>
+                </View>
               </View>
               <View
                 style={{
@@ -106,7 +129,7 @@ const CommentReplies = (props) => {
                 }}
               >
                 <LikeReply reply={reply} />
-                <PostCommentReplyReplySheet comment={reply} />
+                <PostCommentReplyReply comment={reply} />
               </View>
               {
                 replies?.length > 1 &&

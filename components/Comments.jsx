@@ -31,14 +31,10 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
 import CommentReplies from './CommentReplies'
-import PostCommentReplySheet from './PostCommentReplySheet'
+import PostCommentReply from './PostCommentReply'
 
-const Comments = (params) => {
-  const { userProfile, user } = useAuth()
-  const post = params?.post
-
+const Comments = ({ post }) => {
   const [comments, setComments] = useState([])
-  const [mediaVidiblity, setMediaVidiblity] = useState(false)
 
   useEffect(() =>
     (() => {
@@ -138,7 +134,7 @@ const Comments = (params) => {
                 >
                   <Likecomments comment={comment} />
 
-                  <PostCommentReplySheet comment={comment} />
+                  <PostCommentReply comment={comment} />
                 </View>
 
                 <CommentReplies comment={comment} />

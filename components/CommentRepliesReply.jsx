@@ -12,7 +12,7 @@ import { useFonts } from 'expo-font'
 import { Octicons } from '@expo/vector-icons'
 import LikeReply from './LikeReply'
 import useAuth from '../hooks/useAuth'
-import PostCommentReplyReplySheet from './PostCommentReplyReplySheet'
+import PostCommentReplyReply from './PostCommentReplyReply'
 
 const CommentReplies = (props) => {
   const comments = props.comment
@@ -105,7 +105,7 @@ const CommentReplies = (props) => {
                 }}
               >
                 <LikeReply reply={reply} />
-                <PostCommentReplyReplySheet comment={reply} />
+                <PostCommentReplyReply comment={reply} />
               </View>
             </View>
           </View>
