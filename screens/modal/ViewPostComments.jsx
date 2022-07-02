@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Image, ScrollView, Platform, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native'
+import { View, Text, Image, ScrollView } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
@@ -26,10 +26,6 @@ const ViewPostComments = () => {
     setShowExpand(true)
   })
 
-  Keyboard.addListener('keyboardDidHide', () => {
-    Keyboard.dismiss
-  })
-
   useEffect(() => {
     setReplyCommentProps(comment)
   }, [])
@@ -46,8 +42,7 @@ const ViewPostComments = () => {
   }, [comment])
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <View
       style={{
         flex: 1,
         backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.white
@@ -137,7 +132,7 @@ const ViewPostComments = () => {
       </ScrollView>
 
       <CommentsScreenNewComment defaultType={route.name == 'ViewPostComments' ? 'reply' : 'comment'} post={comment?.post} />
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 

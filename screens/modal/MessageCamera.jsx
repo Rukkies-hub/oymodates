@@ -62,7 +62,6 @@ const MessageCamera = () => {
               type: 'video'
             }
           })
-          console.log(data)
         }
       } catch (error) {
         console.warn('Oymo camera error: ', error)
