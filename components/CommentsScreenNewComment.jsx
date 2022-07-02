@@ -27,19 +27,22 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
-const NewComment = ({ post }) => {
+const CommentsScreenNewComment = ({ post }) => {
   const { userProfile, postCommentType, replyCommentProps, setPostCommentType } = useAuth()
+
+
+  console.log(post)
 
   const [height, setHeight] = useState(50)
   const [input, setInput] = useState('')
 
-  Keyboard.addListener('keyboardDidHide', () => {
-    setPostCommentType('comment')
-  })
-
   useEffect(() => {
-    setPostCommentType('comment')
+    setPostCommentType('reply')
   }, [])
+
+  Keyboard.addListener('keyboardDidHide', () => {
+    setPostCommentType('reply')
+  })
 
   const sendComment = async () => {
     setInput('')
@@ -83,7 +86,7 @@ const NewComment = ({ post }) => {
 
   const sendCommentReply = async comment => {
     setInput('')
-    setPostCommentType('comment')
+    setPostCommentType('reply')
 
     if (input != '')
       await addDoc(collection(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'replies'), {
@@ -148,7 +151,7 @@ const NewComment = ({ post }) => {
   }
 
   const sendCommentReplyReply = async comment => {
-    setPostCommentType('comment')
+    setPostCommentType('reply')
     setInput('')
 
     if (input != '')
@@ -192,9 +195,7 @@ const NewComment = ({ post }) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: 10,
-          borderTopWidth: .3,
-          borderTopColor: color.borderColor,
-          backgroundColor: color.white,
+          backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
           minHeight: 50,
           overflow: 'hidden',
           position: 'relative',
@@ -279,4 +280,4 @@ const NewComment = ({ post }) => {
   )
 }
 
-export default NewComment
+export default CommentsScreenNewComment

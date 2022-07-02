@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
 
-import { collection, onSnapshot } from 'firebase/firestore'
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
 
 import { db } from '../hooks/firebase'
 
@@ -14,16 +14,18 @@ import LikeReply from './LikeReply'
 import useAuth from '../hooks/useAuth'
 import PostCommentReplyReply from './PostCommentReplyReply'
 import AllPostCommentReplies from './AllPostCommentReplies'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
-const CommentReplies = (props) => {
-  const comments = props.comment
-  const { userProfile } = useAuth()
+const CommentReplies = ({ comment, textColor, backgroundColor, showAll }) => {
+  const { userProfile, showExpand, setShowExpand } = useAuth()
+  const navigation = useNavigation()
+  const route = useRoute()
 
   const [replies, setReplies] = useState([])
 
   useEffect(() =>
     (() => {
-      onSnapshot(collection(db, 'posts', comments?.post?.id, 'comments', comments?.id, 'replies'),
+      onSnapshot(query(collection(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'replies'), orderBy('timestamp', 'asc')),
         snapshot =>
           setReplies(
             snapshot?.docs?.map(doc => ({
@@ -49,7 +51,7 @@ const CommentReplies = (props) => {
       }}
     >
       <FlatList
-        data={replies.length > 1 ? replies.splice(0, 1) : replies}
+        data={showAll ? replies : replies.length > 1 ? replies.splice(0, 1) : replies}
         keyExtractor={item => item.id}
         style={{ flex: 1 }}
         renderItem={({ item: reply }) => (
@@ -73,7 +75,7 @@ const CommentReplies = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: color.lightBorderColor,
+                  backgroundColor: backgroundColor || color.lightBorderColor,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -81,7 +83,7 @@ const CommentReplies = (props) => {
               >
                 <Text
                   style={{
-                    color: color.white,
+                    color: textColor || color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -101,16 +103,16 @@ const CommentReplies = (props) => {
                   >
                     <Text
                       style={{
-                        color: color.white,
+                        color: textColor || color.white,
                         fontFamily: 'boldText',
                         marginRight: 5
                       }}
                     >
-                      {reply?.postReply?.user?.username}
+                      @{reply?.postReply?.user?.username}
                     </Text>
                     <Text
                       style={{
-                        color: color.white
+                        color: textColor || color.white
                       }}
                     >
                       {reply?.reply}
@@ -128,12 +130,33 @@ const CommentReplies = (props) => {
                   alignItems: 'center',
                 }}
               >
-                <LikeReply reply={reply} />
-                <PostCommentReplyReply comment={reply} />
+                <LikeReply textColor={route.name == 'AddComment' ? color.white : userProfile?.appMode == 'dark' ? color.white : color.dark} reply={reply} />
+                <PostCommentReplyReply textColor={route.name == 'AddComment' ? color.white : userProfile?.appMode == 'dark' ? color.white : color.dark} comment={reply} />
               </View>
+
               {
-                replies?.length > 1 &&
-                <AllPostCommentReplies reply={reply} replies={replies} />
+                showExpand &&
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ViewPostComments', { comment })}
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    marginTop: 10
+                  }}
+                >
+                  <Octicons name='reply' size={18} color={color.white} />
+                  <Text
+                    style={{
+                      fontFamily: 'text',
+                      marginLeft: 5,
+                      fontSize: 14,
+                      color: textColor || color.white
+                    }}
+                  >
+                    {1 + replies?.length} Replies
+                  </Text>
+                </TouchableOpacity>
               }
             </View>
           </View>

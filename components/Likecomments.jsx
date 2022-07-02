@@ -6,15 +6,14 @@ import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-const Likecomments = (props) => {
+const Likecomments = ({ comment, textColor }) => {
   const { user, userProfile } = useAuth()
-  const comment = props.comment
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
 
   useEffect(() => {
     (() => {
-      getLikesById(comment.id, user?.uid)
+      getLikesById(comment?.id, user?.uid)
         .then(res => {
           setCurrentLikesState({
             ...currentLikesState,
@@ -100,7 +99,7 @@ const Likecomments = (props) => {
           currentLikesState.counter > 0 &&
           <Text
             style={{
-              color: color.white,
+              color: textColor || color.white,
               fontFamily: 'text',
               marginRight: 3
             }}
@@ -112,7 +111,7 @@ const Likecomments = (props) => {
         }
         <Text
           style={{
-            color: color.white,
+            color: textColor || color.white,
             fontFamily: 'text'
           }}
         >

@@ -4,7 +4,7 @@ import { Text, TouchableOpacity } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-const PostCommentReply = ({ comment }) => {
+const PostCommentReply = ({ comment, textColor }) => {
   const {
     setPostCommentType,
     setReplyCommentProps
@@ -15,7 +15,6 @@ const PostCommentReply = ({ comment }) => {
       onPress={() => {
         setPostCommentType('reply')
         setReplyCommentProps(comment)
-        console.log(comment)
       }}
       style={{
         paddingHorizontal: 10,
@@ -24,7 +23,7 @@ const PostCommentReply = ({ comment }) => {
     >
       <Text
         style={{
-          color: color.white,
+          color: textColor || color.white,
           fontFamily: 'text'
         }}
       >

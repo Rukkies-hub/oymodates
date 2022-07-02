@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }) => {
   const [replyCommentProps, setReplyCommentProps] = useState(null)
   const [commentAutoFocus, setCommentAutoFocus] = useState(false)
   const [messageReply, setMessageReply] = useState(null)
+  const [showExpand, setShowExpand] = useState(true)
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -278,7 +279,9 @@ export const AuthProvider = ({ children }) => {
         signin,
         recoverPassword,
         googlePromptAsync,
-        fbPromptAsync
+        fbPromptAsync,
+        showExpand,
+        setShowExpand
       }}
     >
       {!loadingInitial && children}

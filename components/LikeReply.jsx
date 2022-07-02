@@ -8,9 +8,8 @@ import { addDoc, collection, deleteDoc, doc, getDoc, increment, serverTimestamp,
 import { db } from '../hooks/firebase'
 import color from '../style/color'
 
-const LikeReply = (props) => {
+const LikeReply = ({ reply, textColor }) => {
   const { user, userProfile } = useAuth()
-  const reply = props?.reply
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reply?.likesCount })
 
@@ -102,7 +101,7 @@ const LikeReply = (props) => {
           currentLikesState.counter > 0 &&
           <Text
             style={{
-              color: currentLikesState.state ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.white,
+              color: textColor || currentLikesState.state ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.white,
               fontFamily: 'text',
               marginRight: 3
             }}
@@ -114,7 +113,7 @@ const LikeReply = (props) => {
         }
         <Text
           style={{
-            color: currentLikesState.state ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.white,
+            color: textColor || currentLikesState.state ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.white,
             fontFamily: 'text'
           }}
         >

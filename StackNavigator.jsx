@@ -1,5 +1,6 @@
 import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 
 const Stack = createStackNavigator()
 
@@ -29,6 +30,7 @@ import ReelsComment from './screens/modal/ReelsComment'
 import ViewVideo from './screens/modal/ViewVideo'
 import MessageOptions from './screens/modal/MessageOptions'
 import MessageCamera from './screens/modal/MessageCamera'
+import ViewPostComments from './screens/modal/ViewPostComments'
 
 import useAuth from './hooks/useAuth'
 
@@ -38,7 +40,14 @@ const StackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false
+        headerShown: false,
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        keyboardHandlingEnabled: true,
+        headerMode: 'float',
+        animationEnabled: true,
+        animationTypeForReplace: 'pop',
+        ...TransitionPresets.SlideFromRightIOS
       }}
     >
       {
@@ -76,6 +85,7 @@ const StackNavigator = () => {
               <Stack.Screen name='Passion' component={Passion} />
               <Stack.Screen name='UserLocation' component={UserLocation} />
               <Stack.Screen name='PreviewMessageImage' component={PreviewMessageImage} />
+              <Stack.Screen name='ViewPostComments' component={ViewPostComments} />
             </Stack.Group>
           </>
         ) : (
