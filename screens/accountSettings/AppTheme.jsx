@@ -51,19 +51,33 @@ const AppTheme = () => {
           onPress={lightMode}
           style={{
             flex: 1,
-            height: 100,
-            justifyContent: 'center',
+            height: 50,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
             alignItems: 'center',
-            backgroundColor: color.offWhite,
+            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.white,
             borderRadius: 12,
-            marginRight: 5
+            marginRight: 5,
+            overflow: 'hidden'
           }}
         >
-          <Entypo name='light-down' size={30} color={color.dark} />
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: userProfile?.theme == 'light' ? color.red : color.dark,
+              marginRight: 10,
+              borderRadius: 12
+            }}
+          >
+            <Entypo name='light-down' size={30} color={color.white} />
+          </View>
           <Text
             style={{
               fontFamily: 'text',
-              color: color.dark,
+              color: userProfile?.theme == 'dark' ? color.white : color.dark,
               fontSize: 18
             }}
           >
@@ -75,19 +89,32 @@ const AppTheme = () => {
           onPress={darkMode}
           style={{
             flex: 1,
-            height: 100,
-            justifyContent: 'center',
+            height: 50,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
             alignItems: 'center',
-            backgroundColor: color.dark,
+            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.white,
             borderRadius: 12,
             marginLeft: 5
           }}
         >
-          <MaterialCommunityIcons name='theme-light-dark' size={30} color={color.white} />
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: userProfile?.theme == 'dark' ? color.red : color.dark,
+              marginRight: 10,
+              borderRadius: 12
+            }}
+          >
+            <MaterialCommunityIcons name='theme-light-dark' size={30} color={color.white} />
+          </View>
           <Text
             style={{
               fontFamily: 'text',
-              color: color.white,
+              color: userProfile?.theme == 'dark' ? color.white : color.dark,
               fontSize: 18
             }}
           >

@@ -73,7 +73,7 @@ const Login = () => {
         width: Dimensions.get('window').width
       }}
     >
-      <Bar color='light' />
+      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
       <Text
         style={{

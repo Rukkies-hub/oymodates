@@ -49,6 +49,7 @@ const ViewPostComments = () => {
       }}
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+      
       <Header showBack showTitle title={`${comment?.post?.commentsCount} Comments`} />
 
       <ScrollView

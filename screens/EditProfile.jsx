@@ -215,7 +215,8 @@ const EditProfile = () => {
         backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
-      <Bar color='dark' />
+      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+
       <Header showTitle showAratar showBack title='Edit Profile' />
 
       <ScrollView style={{ flex: 1 }}>

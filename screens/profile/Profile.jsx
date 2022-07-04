@@ -27,7 +27,8 @@ const Profile = () => {
         backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
-      <Bar color={userProfile?.theme == 'light' ? 'dark' : 'light'} />
+      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+      
       <Header showBack showTitle title='Profile' showAratar />
 
       <View

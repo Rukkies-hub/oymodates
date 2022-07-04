@@ -49,6 +49,7 @@ const ViewReelsComments = () => {
       }}
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+
       <Header showBack showTitle title={`${comment?.reel?.commentsCount} Comments`} />
 
       <ScrollView

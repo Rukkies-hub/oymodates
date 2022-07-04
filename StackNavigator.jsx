@@ -4,7 +4,8 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 
 const Stack = createStackNavigator()
 
-import Index from './Index'
+import BottomNavigation from './layouts/BottomNavigation'
+import TopNavigation from './layouts/TopNavigation'
 import Login from './screens/Login'
 import EditProfile from './screens/EditProfile'
 import NewMatch from './screens/modal/NewMatch'
@@ -36,7 +37,7 @@ import ViewReelsComments from './screens/modal/ViewReelsComments'
 import useAuth from './hooks/useAuth'
 
 const StackNavigator = () => {
-  const { user, appAuth } = useAuth()
+  const { user, userProfile } = useAuth()
 
   return (
     <Stack.Navigator
@@ -55,7 +56,11 @@ const StackNavigator = () => {
         user ? (
           <>
             <Stack.Group>
-              <Stack.Screen name='Index' component={Index} />
+              {
+                userProfile?.layout == 'top' ?
+                  <Stack.Screen name='Index' component={TopNavigation} /> :
+                  <Stack.Screen name='Index' component={BottomNavigation} />
+              }
               <Stack.Screen name='Message' component={Message} />
               <Stack.Screen name='EditProfile' component={EditProfile} />
               <Stack.Screen name='Add' component={Add} />

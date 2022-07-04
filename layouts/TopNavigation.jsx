@@ -1,26 +1,29 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView } from 'react-native'
 
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 import { Ionicons, Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
 
 import * as NavigationBar from 'expo-navigation-bar'
 
-import Match from './screens/Match'
-import Chat from './screens/Chat'
-import Feeds from './screens/Feeds'
-import Likes from './screens/Likes'
-import Reels from './screens/Reels'
+import Match from '../screens/Match'
+import Chat from '../screens/Chat'
+import Feeds from '../screens/Feeds'
+import Likes from '../screens/Likes'
+import Reels from '../screens/Reels'
 
-import colors from './style/color'
-import useAuth from './hooks/useAuth'
-import Bar from './components/StatusBar'
-import Header from './components/Header'
-import color from './style/color'
+import colors from '../style/color'
+import useAuth from '../hooks/useAuth'
+import Bar from '../components/StatusBar'
+import Header from '../components/Header'
+import color from '../style/color'
 
-const Index = () => {
-  const Tab = createMaterialBottomTabNavigator()
+const TopNavigation = () => {
+  const [swipeEnabled, setSwipeEnabled] = useState(true)
+
+  const Tab = createMaterialTopTabNavigator()
+
   const { pendingSwipes, userProfile } = useAuth()
 
   useEffect(() => {
@@ -35,7 +38,7 @@ const Index = () => {
         backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
-      <Bar color={userProfile?.theme == 'light' ? 'dark' : 'light'} />
+      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
       <Header showLogo showAdd showAratar showNotification />
 
@@ -45,6 +48,16 @@ const Index = () => {
           backgroundColor: userProfile?.theme == 'dark' ? colors.black : color.white,
           height: 54,
           elevation: 0
+        }}
+        keyboardDismissMode='auto'
+        screenOptions={{
+          tabBarShowLabel: false,
+          lazy: true,
+          tabBarStyle: {
+            backgroundColor: userProfile?.theme == 'dark' ? colors.black : color.white,
+            height: 50,
+            elevation: 0
+          }
         }}
       >
         <Tab.Screen
@@ -59,7 +72,8 @@ const Index = () => {
           name='Match'
           component={Match}
           options={{
-            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />
+            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />,
+            swipeEnabled: false
           }}
         />
 
@@ -69,7 +83,7 @@ const Index = () => {
           options={{
             tabBarIcon: () =>
               <Image
-                source={userProfile?.theme == 'dark' ? require('./assets/videoLight.png') : require('./assets/video.png')}
+                source={userProfile?.appMode == 'dark' ? require('../assets/videoLight.png') : require('../assets/video.png')}
                 style={{
                   width: 20,
                   height: 20
@@ -85,7 +99,7 @@ const Index = () => {
               component={Likes}
               options={{
                 tabBarBadge: pendingSwipes?.length,
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? colors.white : colors.black} />
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'dark' ? colors.white : colors.black} />
               }}
             /> :
             <Tab.Screen
@@ -108,4 +122,4 @@ const Index = () => {
   )
 }
 
-export default Index
+export default TopNavigation

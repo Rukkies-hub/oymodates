@@ -135,7 +135,8 @@ const AddReels = () => {
         flex: 1
       }}
     >
-      <Bar color={'light'} />
+      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+      
       {
         isFocused ?
           <Camera

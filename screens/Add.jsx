@@ -97,7 +97,8 @@ const Add = () => {
         position: 'relative'
       }}
     >
-      <Bar color={userProfile?.theme == 'light' ? 'dark' : 'light'} />
+      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+
       <Header
         showBack
         showTitle

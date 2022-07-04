@@ -119,7 +119,8 @@ const PreviewMessageImage = () => {
           backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
         }}
       >
-        <Bar color={userProfile?.theme == 'light' ? 'dark' : 'light'} />
+        <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+        
         <Header showBack showTitle title='Preview image' />
 
         {
