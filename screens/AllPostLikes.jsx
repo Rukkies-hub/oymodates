@@ -76,7 +76,7 @@ const AllPostLikes = (props) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
       }}
     >
       <Header showBack showTitle title='All likes' />
@@ -132,7 +132,7 @@ const AllPostLikes = (props) => {
               </View>
               <Text
                 style={{
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                  color: userProfile?.theme == 'light' ? color.dark : color.white,
                   fontFamily: 'text',
                   fontSize: 16,
                   marginLeft: 12

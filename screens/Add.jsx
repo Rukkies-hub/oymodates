@@ -93,11 +93,11 @@ const Add = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
         position: 'relative'
       }}
     >
-      <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
+      <Bar color={userProfile?.theme == 'light' ? 'dark' : 'light'} />
       <Header
         showBack
         showTitle
@@ -132,18 +132,18 @@ const Add = () => {
               value={input}
               onChangeText={setInput}
               placeholder="What's on your mind..."
-              placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
+              placeholderTextColor={userProfile?.theme == 'light' ? color.dark : color.white}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               style={{
                 flex: 1,
                 height,
-                backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.lightText : color.dark,
                 maxHeight: 300,
                 fontSize: 18,
                 paddingVertical: 10,
                 borderRadius: 12,
                 paddingHorizontal: 10,
-                color: userProfile?.appMode == 'light' ? color.dark : color.white
+                color: userProfile?.theme == 'light' ? color.dark : color.white
               }}
             />
             <Image
@@ -237,7 +237,7 @@ const Add = () => {
         style={{
           width: '100%',
           borderTopWidth: .3,
-          borderTopColor: userProfile?.appMode == 'light' ? color.borderColor : userProfile?.appMode == 'dark' ? color.transparent : color.transparent,
+          borderTopColor: userProfile?.theme == 'light' ? color.borderColor : userProfile?.theme == 'dark' ? color.transparent : color.transparent,
           flexDirection: 'row',
           justifyContent: 'space-between'
         }}
@@ -253,10 +253,10 @@ const Add = () => {
             paddingHorizontal: 10
           }}
         >
-          <EvilIcons name='image' size={24} color={userProfile?.appMode == 'light' ? color.black : color.white} />
+          <EvilIcons name='image' size={24} color={userProfile?.theme == 'light' ? color.black : color.white} />
           <Text
             style={{
-              color: userProfile?.appMode == 'light' ? color.dark : color.white,
+              color: userProfile?.theme == 'light' ? color.dark : color.white,
               fontFamily: 'text',
               marginLeft: 10
             }}
@@ -276,10 +276,10 @@ const Add = () => {
             paddingHorizontal: 10
           }}
         >
-          <EvilIcons name='camera' size={24} color={userProfile?.appMode == 'light' ? color.black : color.white} />
+          <EvilIcons name='camera' size={24} color={userProfile?.theme == 'light' ? color.black : color.white} />
           <Text
             style={{
-              color: userProfile?.appMode == 'light' ? color.dark : color.white,
+              color: userProfile?.theme == 'light' ? color.dark : color.white,
               fontFamily: 'text',
               marginLeft: 10
             }}

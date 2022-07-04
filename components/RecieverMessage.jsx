@@ -89,7 +89,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 messages?.reply ?
                   <View
                     style={{
-                      backgroundColor: messages.message ? (userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.black : color.dark) : color.transparent,
+                      backgroundColor: messages.message ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
                       padding: messages?.reply ? 5 : 10,
                       borderTopRightRadius: 12,
                       borderBottomRightRadius: 12,
@@ -104,7 +104,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                         borderTopRightRadius: 8,
                         borderBottomRightRadius: 8,
                         borderBottomLeftRadius: 8,
-                        backgroundColor: messages.message ? (userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.lightText : color.black) : color.transparent,
+                        backgroundColor: messages.message ? (userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.lightText : color.black) : color.transparent,
                         flexDirection: 'row',
                         justifyContent: 'flex-start',
                         alignItems: 'flex-start',
@@ -173,7 +173,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                   </View> :
                   <View
                     style={{
-                      backgroundColor: messages.message ? (userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.black : color.dark) : color.transparent,
+                      backgroundColor: messages.message ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
                       paddingVertical: 8,
                       paddingHorizontal: 8,
                       borderTopLeftRadius: 0,
@@ -185,7 +185,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        color: userProfile?.theme == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -199,7 +199,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
+                    <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
                       {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                     </Text>
                   }
@@ -212,7 +212,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             <View
               style={{
                 position: 'relative',
-                backgroundColor: messages.mediaType == 'image' ? (userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.black : color.dark) : color.transparent,
+                backgroundColor: messages.mediaType == 'image' ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
                 borderRadius: 20,
                 overflow: 'hidden'
               }}
@@ -244,7 +244,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                       alignItems: 'flex-start',
                       padding: 5,
                       margin: 5,
-                      backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+                      backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
                       borderRadius: 4,
                       borderBottomLeftRadius: 20,
                       borderBottomRightRadius: 20
@@ -253,7 +253,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        color: userProfile?.theme == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -266,7 +266,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left', marginLeft: 10, marginBottom: 10 }}>
+                        <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left', marginLeft: 10, marginBottom: 10 }}>
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }
@@ -315,7 +315,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        color: userProfile?.theme == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -328,7 +328,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
+                        <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }
@@ -348,7 +348,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 height: 35,
                 borderRadius: 20,
                 overflow: 'hidden',
-                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',

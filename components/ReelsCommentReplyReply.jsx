@@ -3,17 +3,14 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-const ReelsCommentReplyReply = (props) => {
+const ReelsCommentReplyReply = ({ reply, textColor }) => {
   const { userProfile, setReelsCommentType, setReplyCommentProps, setCommentAutoFocus } = useAuth()
-
-  const reply = props?.reply
 
   return (
     <TouchableOpacity
       onPress={() => {
         setReelsCommentType('replyReply')
         setReplyCommentProps(reply)
-        setCommentAutoFocus(true)
       }}
       style={{
         paddingHorizontal: 10,
@@ -22,7 +19,7 @@ const ReelsCommentReplyReply = (props) => {
     >
       <Text
         style={{
-          color: color.white,
+          color: textColor || color.white,
           fontFamily: 'text'
         }}
       >

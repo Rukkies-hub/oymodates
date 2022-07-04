@@ -38,7 +38,7 @@ const Notifications = () => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
         flex: 1
       }}
     >
@@ -64,7 +64,7 @@ const Notifications = () => {
                 paddingHorizontal: 10,
                 paddingVertical: 10,
                 borderRadius: 12,
-                backgroundColor: notification?.seen == false ? (userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark) : color.transparent
+                backgroundColor: notification?.seen == false ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark) : color.transparent
               }}
             >
               <View
@@ -113,7 +113,7 @@ const Notifications = () => {
                 >
                   <Text
                     style={{
-                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                      color: userProfile?.theme == 'light' ? color.dark : color.white,
                       fontFamily: 'text',
                       fontSize: 14
                     }}
@@ -122,7 +122,7 @@ const Notifications = () => {
                   </Text>
                   <Text
                     style={{
-                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                      color: userProfile?.theme == 'light' ? color.dark : color.white,
                       marginLeft: 6,
                       fontSize: 14
                     }}

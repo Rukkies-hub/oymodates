@@ -54,7 +54,7 @@ const ViewReel = (props) => {
       blurRadius={50}
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
         justifyContent: 'center',
         alignItems: 'center'
       }}

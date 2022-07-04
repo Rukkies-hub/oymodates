@@ -89,7 +89,7 @@ const MessageSettings = props => {
           alignItems: 'center'
         }}
       >
-        <MaterialCommunityIcons name='dots-vertical' size={24} color={iconColor ? iconColor : userProfile?.appMode == 'light' ? color.lightText : color.white} />
+        <MaterialCommunityIcons name='dots-vertical' size={24} color={iconColor ? iconColor : userProfile?.theme == 'light' ? color.lightText : color.white} />
       </TouchableOpacity>
 
       <RBSheet
@@ -104,12 +104,12 @@ const MessageSettings = props => {
             backgroundColor: color.faintBlack
           },
           container: {
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+            backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20
           },
           draggableIcon: {
-            backgroundColor: userProfile?.appMode == 'light' ? color.black : color.white
+            backgroundColor: userProfile?.theme == 'light' ? color.black : color.white
           }
         }}
       >
@@ -120,7 +120,7 @@ const MessageSettings = props => {
         >
           <Text
             style={{
-              color: userProfile?.appMode == 'light' ? color.dark : color.white,
+              color: userProfile?.theme == 'light' ? color.dark : color.white,
               fontFamily: 'text'
             }}
           >

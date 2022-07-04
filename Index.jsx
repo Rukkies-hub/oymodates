@@ -24,25 +24,25 @@ const Index = () => {
   const { pendingSwipes, userProfile } = useAuth()
 
   useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(userProfile?.appMode == 'dark' ? color.black : color.white)
-    NavigationBar.setButtonStyleAsync(userProfile?.appMode == 'dark' ? 'light' : 'dark')
+    NavigationBar.setBackgroundColorAsync(userProfile?.theme == 'dark' ? color.black : color.white)
+    NavigationBar.setButtonStyleAsync(userProfile?.theme == 'dark' ? 'light' : 'dark')
   }, [])
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.white
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
-      <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
+      <Bar color={userProfile?.theme == 'light' ? 'dark' : 'light'} />
 
       <Header showLogo showAdd showAratar showNotification />
 
       <Tab.Navigator
         initialRouteName='Feeds'
         barStyle={{
-          backgroundColor: userProfile?.appMode == 'dark' ? colors.black : color.white,
+          backgroundColor: userProfile?.theme == 'dark' ? colors.black : color.white,
           height: 54,
           elevation: 0
         }}
@@ -51,7 +51,7 @@ const Index = () => {
           name='Feeds'
           component={Feeds}
           options={{
-            tabBarIcon: () => <Feather name='home' size={20} color={userProfile?.appMode == 'dark' ? colors.white : color.black} />
+            tabBarIcon: () => <Feather name='home' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />
           }}
         />
 
@@ -59,7 +59,7 @@ const Index = () => {
           name='Match'
           component={Match}
           options={{
-            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.appMode == 'dark' ? colors.white : color.black} />
+            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />
           }}
         />
 
@@ -69,7 +69,7 @@ const Index = () => {
           options={{
             tabBarIcon: () =>
               <Image
-                source={userProfile?.appMode == 'dark' ? require('./assets/videoLight.png') : require('./assets/video.png')}
+                source={userProfile?.theme == 'dark' ? require('./assets/videoLight.png') : require('./assets/video.png')}
                 style={{
                   width: 20,
                   height: 20
@@ -85,14 +85,14 @@ const Index = () => {
               component={Likes}
               options={{
                 tabBarBadge: pendingSwipes?.length,
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'dark' ? colors.white : colors.black} />
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? colors.white : colors.black} />
               }}
             /> :
             <Tab.Screen
               name='Likes'
               component={Likes}
               options={{
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'dark' ? colors.white : colors.black} />
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? colors.white : colors.black} />
               }}
             />
         }
@@ -100,7 +100,7 @@ const Index = () => {
           name='Chat'
           component={Chat}
           options={{
-            tabBarIcon: () => <Ionicons name='chatbubbles-outline' size={20} color={userProfile?.appMode == 'dark' ? colors.white : colors.black} />
+            tabBarIcon: () => <Ionicons name='chatbubbles-outline' size={20} color={userProfile?.theme == 'dark' ? colors.white : colors.black} />
           }}
         />
       </Tab.Navigator>

@@ -94,7 +94,7 @@ const Reels = () => {
           flex: 1,
           width,
           height: height - 109,
-          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+          backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
           justifyContent: 'center',
           alignItems: 'center'
         }}

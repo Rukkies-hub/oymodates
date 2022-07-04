@@ -13,7 +13,7 @@ import CommentReplies from '../../components/CommentReplies'
 import Header from '../../components/Header'
 import CommentsScreenNewComment from '../../components/CommentsScreenNewComment'
 
-const ViewPostComments = () => {
+const ViewReelsComments = () => {
   const { userProfile, showExpand, setShowExpand, setReplyCommentProps } = useAuth()
   const navigation = useNavigation()
   const route = useRoute()
@@ -36,7 +36,7 @@ const ViewPostComments = () => {
 
   useEffect(() => {
     (async () => {
-      const x = await (await getDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id))).data()
+      const x = await (await getDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id))).data()
       setScrrenComment(x)
     })()
   }, [comment])
@@ -49,7 +49,7 @@ const ViewPostComments = () => {
       }}
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
-      <Header showBack showTitle title={`${comment?.post?.commentsCount} Comments`} />
+      <Header showBack showTitle title={`${comment?.reel?.commentsCount} Comments`} />
 
       <ScrollView
         style={{
@@ -122,18 +122,18 @@ const ViewPostComments = () => {
               >
                 <Likecomments textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={scrrenComment} />
 
-                <PostCommentReply textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={scrrenComment} />
+                {/* <PostCommentReply textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={scrrenComment} /> */}
               </View>
 
-              <CommentReplies showAll={true} backgroundColor={userProfile?.theme == 'dark' ? color.dark : color.offWhite} textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
+              {/* <CommentReplies showAll={true} backgroundColor={userProfile?.theme == 'dark' ? color.dark : color.offWhite} textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} /> */}
             </View>
           </View>
         </View>
       </ScrollView>
 
-      <CommentsScreenNewComment defaultType={route.name == 'ViewPostComments' ? 'reply' : 'comment'} post={comment?.post} />
+      {/* <CommentsScreenNewComment defaultType={route.name == 'ViewReelsComments' ? 'reply' : 'comment'} post={comment?.post} /> */}
     </View>
   )
 }
 
-export default ViewPostComments
+export default ViewReelsComments

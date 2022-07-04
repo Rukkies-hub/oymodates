@@ -233,7 +233,7 @@ const Message = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
       }}
     >
       <Header
@@ -281,7 +281,7 @@ const Message = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginHorizontal: 10,
-                backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark,
                 marginTop: 10,
                 borderTopLeftRadius: 12,
                 borderTopRightRadius: 12,
@@ -294,7 +294,7 @@ const Message = () => {
                   flexDirection: 'row',
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.lightText,
+                  backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.lightText,
                   flex: 1,
                   borderRadius: 12,
                   overflow: 'hidden',
@@ -330,7 +330,7 @@ const Message = () => {
                   <Text
                     numberOfLines={3}
                     style={{
-                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                      color: userProfile?.theme == 'light' ? color.dark : color.white,
                       marginLeft: messageReply?.media ? 10 : 0
                     }}
                   >
@@ -342,7 +342,7 @@ const Message = () => {
                   <Text
                     numberOfLines={3}
                     style={{
-                      color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                      color: userProfile?.theme == 'light' ? color.dark : color.white,
                       marginLeft: messageReply?.media ? 10 : 0
                     }}
                   >
@@ -362,7 +362,7 @@ const Message = () => {
                     borderRadius: 12
                   }}
                 >
-                  <AntDesign name='close' size={24} color={userProfile?.appMode == 'light' ? color.dark : color.white} />
+                  <AntDesign name='close' size={24} color={userProfile?.theme == 'light' ? color.dark : color.white} />
                 </TouchableOpacity>
               }
             </TouchableOpacity>
@@ -373,7 +373,7 @@ const Message = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
               paddingHorizontal: 10,
-              backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+              backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark,
               minHeight: 50,
               overflow: 'hidden',
               position: 'relative',
@@ -394,7 +394,7 @@ const Message = () => {
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}>
-                  <MaterialCommunityIcons name='camera-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+                  <MaterialCommunityIcons name='camera-outline' color={userProfile?.theme == 'light' ? color.lightText : color.white} size={26} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -405,7 +405,7 @@ const Message = () => {
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}>
-                  <MaterialCommunityIcons name='image-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+                  <MaterialCommunityIcons name='image-outline' color={userProfile?.theme == 'light' ? color.lightText : color.white} size={26} />
                 </TouchableOpacity>
               </>
             }
@@ -421,7 +421,7 @@ const Message = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}>
-              <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+              <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.theme == 'light' ? color.lightText : color.white} size={26} />
             </TouchableOpacity>
 
             {
@@ -441,7 +441,7 @@ const Message = () => {
                     style={{
                       fontSize: 18,
                       fontFamily: 'text',
-                      color: userProfile?.appMode == 'light' ? color.lightText : color.white
+                      color: userProfile?.theme == 'light' ? color.lightText : color.white
                     }}
                   >
                     Recording...
@@ -455,14 +455,14 @@ const Message = () => {
                   onSubmitEditing={sendMessage}
                   onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                   placeholder='Aa..'
-                  placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                  placeholderTextColor={userProfile?.theme == 'light' ? color.lightText : color.white}
                   style={{
                     fontSize: 18,
                     flex: 1,
                     height,
                     maxHeight: 70,
                     fontFamily: 'text',
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white
+                    color: userProfile?.theme == 'light' ? color.dark : color.white
                   }}
                 />
             }
@@ -479,7 +479,7 @@ const Message = () => {
                 }}>
                 <FontAwesome5
                   name='paper-plane'
-                  color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                  color={userProfile?.theme == 'light' ? color.lightText : color.white}
                   size={20}
                 />
               </TouchableOpacity>
@@ -504,11 +504,11 @@ const Message = () => {
               }}>
               {
                 recordingLoading ?
-                  <ActivityIndicator size='small' color={userProfile?.appMode == 'light' ? color.lightText : color.white} /> :
+                  <ActivityIndicator size='small' color={userProfile?.theme == 'light' ? color.lightText : color.white} /> :
                   <FontAwesome5
                     size={20}
                     name="microphone-alt"
-                    color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                    color={userProfile?.theme == 'light' ? color.lightText : color.white}
                   />
               }
             </TouchableOpacity>

@@ -132,7 +132,7 @@ const Match = () => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
         flex: 1
       }}
     >
@@ -198,7 +198,7 @@ const Match = () => {
                 <View
                   key={card.id}
                   style={{
-                    backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+                    backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
                     height: 698,
                     marginTop: -30,
                     width: '100%',
@@ -408,7 +408,7 @@ const Match = () => {
               <View
                 style={{
                   flex: 1,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+                  backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}
@@ -421,7 +421,7 @@ const Match = () => {
                   }}
                 >
                   {
-                    userProfile?.appMode == 'light' &&
+                    userProfile?.theme == 'light' &&
                     <Image
                       source={require('../assets/rader.gif')}
                       style={{
@@ -442,7 +442,7 @@ const Match = () => {
                 <Text
                   style={{
                     fontFamily: 'text',
-                    color: userProfile?.appMode == 'light' ? color.lightText : color.white,
+                    color: userProfile?.theme == 'light' ? color.lightText : color.white,
                     marginTop: 50
                   }}
                 >

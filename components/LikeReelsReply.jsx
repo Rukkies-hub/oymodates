@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Text, TouchableOpacity } from 'react-native'
 import { useFonts } from 'expo-font'
-import { addDoc, collection, deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
+import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-const LikeReelsReply = (props) => {
+const LikeReelsReply = ({ reply, textColor }) => {
   const { user, userProfile } = useAuth()
-  const reply = props?.reply
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reply?.likesCount })
 
@@ -80,7 +79,7 @@ const LikeReelsReply = (props) => {
         currentLikesState.counter > 0 &&
         <Text
           style={{
-            color: currentLikesState.state ? color.red : color.white,
+            color: textColor || currentLikesState.state ? color.red : color.white,
             fontFamily: 'text',
             marginRight: 3
           }}
@@ -92,7 +91,7 @@ const LikeReelsReply = (props) => {
       }
       <Text
         style={{
-          color: currentLikesState.state ? color.red : color.white,
+          color: textColor || currentLikesState.state ? color.red : color.white,
           fontFamily: 'text'
         }}
       >

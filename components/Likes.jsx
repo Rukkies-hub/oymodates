@@ -114,7 +114,7 @@ const Likes = (params) => {
         marginRight: 20
       }}
     >
-      <AntDesign name={currentLikesState.state ? 'heart' : 'hearto'} size={24} color={currentLikesState.state ? color.red : userProfile?.appMode == 'light' ? color.lightText : color.white} />
+      <AntDesign name={currentLikesState.state ? 'heart' : 'hearto'} size={24} color={currentLikesState.state ? color.red : userProfile?.theme == 'light' ? color.lightText : color.white} />
     </TouchableOpacity>
   )
 }

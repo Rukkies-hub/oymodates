@@ -195,7 +195,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right', marginRight: 10, marginBottom: 10 }}>
+                    <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right', marginRight: 10, marginBottom: 10 }}>
                       {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                     </Text>
                   }
@@ -249,7 +249,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        color: userProfile?.theme == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -262,7 +262,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right', marginRight: 10, marginBottom: 10 }}>
+                        <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right', marginRight: 10, marginBottom: 10 }}>
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }
@@ -310,7 +310,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        color: userProfile?.theme == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -323,7 +323,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.appMode == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right' }}>
+                        <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right' }}>
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }

@@ -116,10 +116,10 @@ const PreviewMessageImage = () => {
       <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+          backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
         }}
       >
-        <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
+        <Bar color={userProfile?.theme == 'light' ? 'dark' : 'light'} />
         <Header showBack showTitle title='Preview image' />
 
         {
@@ -156,7 +156,7 @@ const PreviewMessageImage = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingHorizontal: 10,
-            backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+            backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark,
             minHeight: 50,
             overflow: 'hidden',
             position: 'relative',
@@ -177,7 +177,7 @@ const PreviewMessageImage = () => {
               justifyContent: 'center',
               alignItems: 'center'
             }}>
-            <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.appMode == 'light' ? color.lightText : color.white} size={26} />
+            <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.theme == 'light' ? color.lightText : color.white} size={26} />
           </TouchableOpacity>
 
           <TextInput
@@ -187,14 +187,14 @@ const PreviewMessageImage = () => {
             onSubmitEditing={sendMessage}
             onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
             placeholder='Aa..'
-            placeholderTextColor={userProfile?.appMode == 'light' ? color.lightText : color.white}
+            placeholderTextColor={userProfile?.theme == 'light' ? color.lightText : color.white}
             style={{
               fontSize: 18,
               flex: 1,
               height,
               maxHeight: 70,
               fontFamily: 'text',
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              color: userProfile?.theme == 'light' ? color.dark : color.white
             }}
           />
 
@@ -208,10 +208,10 @@ const PreviewMessageImage = () => {
             }}>
             {
               sendLoading ?
-                <ActivityIndicator color={userProfile?.appMode == 'light' ? color.lightText : color.white} size='small' /> :
+                <ActivityIndicator color={userProfile?.theme == 'light' ? color.lightText : color.white} size='small' /> :
                 <FontAwesome5
                   name='paper-plane'
-                  color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                  color={userProfile?.theme == 'light' ? color.lightText : color.white}
                   size={20}
                 />
             }

@@ -195,7 +195,7 @@ const CommentsScreenNewComment = ({ post }) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: 10,
-          backgroundColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+          backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
           minHeight: 50,
           overflow: 'hidden',
           position: 'relative',
@@ -236,7 +236,7 @@ const CommentsScreenNewComment = ({ post }) => {
           }}>
           <FontAwesome5
             name='paper-plane'
-            color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+            color={userProfile?.theme == 'light' ? color.lightText : color.white}
             size={20}
           />
         </TouchableOpacity>

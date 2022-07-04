@@ -76,7 +76,7 @@ const MyReels = () => {
             <Text
               numberOfLines={1}
               style={{
-                color: userProfile?.appMode == 'dark' ? color.white : color.black,
+                color: userProfile?.theme == 'dark' ? color.white : color.black,
                 fontSize: 18
               }}
             >
@@ -85,7 +85,7 @@ const MyReels = () => {
 
             <Text
               style={{
-                color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                color: userProfile?.theme == 'dark' ? color.white : color.dark,
                 fontSize: 13
               }}
             >
@@ -108,14 +108,14 @@ const MyReels = () => {
                   style={{
                     marginRight: 5,
                     fontFamily: 'text',
-                    color: userProfile?.appMode == 'dark' ? color.white : color.dark
+                    color: userProfile?.theme == 'dark' ? color.white : color.dark
                   }}
                 >
                   {reel?.likesCount}
                 </Text>
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'dark' ? color.white : color.lightText,
+                    color: userProfile?.theme == 'dark' ? color.white : color.lightText,
                     fontFamily: 'text'
                   }}
                 >
@@ -132,14 +132,14 @@ const MyReels = () => {
                   style={{
                     marginRight: 5,
                     fontFamily: 'text',
-                    color: userProfile?.appMode == 'dark' ? color.white : color.dark
+                    color: userProfile?.theme == 'dark' ? color.white : color.dark
                   }}
                 >
                   {reel?.commentsCount}
                 </Text>
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'dark' ? color.white : color.lightText,
+                    color: userProfile?.theme == 'dark' ? color.white : color.lightText,
                     fontFamily: 'text'
                   }}
                 >

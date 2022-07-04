@@ -110,7 +110,7 @@ const Passion = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.white
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
       <Header showBack showTitle title='Select Passion' />
@@ -120,7 +120,7 @@ const Passion = () => {
           fontSize: 16,
           marginVertical: 20,
           marginHorizontal: 10,
-          color: userProfile?.appMode == 'dark' ? color.white : color.lightText
+          color: userProfile?.theme == 'dark' ? color.white : color.lightText
         }}
       >
         Select passions that you'd like to share with the people you connect with. Choose a minimum of 3.
@@ -137,7 +137,7 @@ const Passion = () => {
         <Text
           style={{
             fontSize: 20,
-            color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+            color: userProfile?.theme == 'dark' ? color.white : color.dark,
             fontFamily: "text"
           }}
         >
@@ -148,7 +148,7 @@ const Passion = () => {
           <Text
             style={{
               fontFamily: 'text',
-              color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+              color: userProfile?.theme == 'dark' ? color.white : color.dark,
               fontSize: 20
             }}
           >
@@ -196,14 +196,14 @@ const Passion = () => {
                       paddingVertical: 5,
                       borderWidth: 2,
                       borderRadius: 50,
-                      borderColor: passions?.includes(passion) ? color.red : userProfile?.appMode == 'dark' ? color.lightBorderColor : color.borderColor,
+                      borderColor: passions?.includes(passion) ? color.red : userProfile?.theme == 'dark' ? color.lightBorderColor : color.borderColor,
                       marginBottom: 10,
                       marginRight: 10
                     }}
                   >
                     <Text
                       style={{
-                        color: passions?.includes(passion) ? color.red : userProfile?.appMode == 'dark' ? color.white : color.lightText,
+                        color: passions?.includes(passion) ? color.red : userProfile?.theme == 'dark' ? color.white : color.lightText,
                         fontSize: 12,
                         fontFamily: "text",
                         textTransform: "capitalize"
@@ -222,7 +222,7 @@ const Passion = () => {
           disabled={passions?.length < 3}
           onPress={updateIntrests}
           style={{
-            backgroundColor: passions?.length >= 3 ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.lightText,
+            backgroundColor: passions?.length >= 3 ? color.red : userProfile?.theme == 'dark' ? color.dark : color.lightText,
             height: 50,
             borderRadius: 12,
             justifyContent: "center",

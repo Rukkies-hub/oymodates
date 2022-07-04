@@ -102,10 +102,10 @@ const SaveReels = (params) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
       }}
     >
-      <Bar color={userProfile?.appMode == 'light' ? 'dark' : 'light'} />
+      <Bar color={userProfile?.theme == 'light' ? 'dark' : 'light'} />
 
       <Header showBack showTitle title='Save reel' />
 
@@ -121,12 +121,12 @@ const SaveReels = (params) => {
           multiline
           maxLength={150}
           placeholder="What's on your mind..."
-          placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
+          placeholderTextColor={userProfile?.theme == 'light' ? color.dark : color.white}
           style={{
             paddingVertical: 10,
             marginRight: 20,
             flex: 1,
-            color: userProfile?.appMode == 'light' ? color.dark : color.white
+            color: userProfile?.theme == 'light' ? color.dark : color.white
           }}
         />
         <Image
@@ -154,7 +154,7 @@ const SaveReels = (params) => {
             justifyContent: 'center',
             alignItems: 'center',
             flex: 1,
-            borderColor: userProfile?.appMode == 'light' ? color.borderColor : color.lightBorderColor,
+            borderColor: userProfile?.theme == 'light' ? color.borderColor : color.lightBorderColor,
             borderWidth: 1,
             borderRadius: 12,
             paddingVertical: 10,
@@ -165,7 +165,7 @@ const SaveReels = (params) => {
           <Text
             style={{
               fontFamily: 'text',
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              color: userProfile?.theme == 'light' ? color.dark : color.white
             }}
           >
             Cancel

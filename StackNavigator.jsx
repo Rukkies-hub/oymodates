@@ -21,7 +21,7 @@ import UserLocation from './screens/modal/UserLocation'
 import PreviewMessageImage from './screens/modal/PreviewMessageImage'
 import Profile from './screens/profile/Profile'
 import VideoCall from './screens/VideoCall'
-import AccountSettings from './screens/AccountSettings'
+import AccountSettings from './screens/accountSettings/AccountSettings'
 import Notifications from './screens/Notifications'
 import AllPostLikes from './screens/AllPostLikes'
 import ViewReel from './screens/ViewReel'
@@ -31,6 +31,7 @@ import ViewVideo from './screens/modal/ViewVideo'
 import MessageOptions from './screens/modal/MessageOptions'
 import MessageCamera from './screens/modal/MessageCamera'
 import ViewPostComments from './screens/modal/ViewPostComments'
+import ViewReelsComments from './screens/modal/ViewReelsComments'
 
 import useAuth from './hooks/useAuth'
 
@@ -86,6 +87,7 @@ const StackNavigator = () => {
               <Stack.Screen name='UserLocation' component={UserLocation} />
               <Stack.Screen name='PreviewMessageImage' component={PreviewMessageImage} />
               <Stack.Screen name='ViewPostComments' component={ViewPostComments} />
+              <Stack.Screen name='ViewReelsComments' component={ViewReelsComments} />
             </Stack.Group>
           </>
         ) : (

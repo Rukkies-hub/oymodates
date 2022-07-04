@@ -31,7 +31,7 @@ const ViewPost = (params) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
       }}
     >
       <Header showBack showTitle title='View Post' />
@@ -73,7 +73,7 @@ const ViewPost = (params) => {
                 fontFamily: 'text',
                 marginLeft: 10,
                 fontSize: 14,
-                color: userProfile?.appMode == 'light' ? color.dark : color.white
+                color: userProfile?.theme == 'light' ? color.dark : color.white
               }}
             >
               {post?.user?.username}
@@ -109,7 +109,7 @@ const ViewPost = (params) => {
                   width: windowWidth,
                   height: 522,
                   minHeight: 300,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.black : color.white
+                  backgroundColor: userProfile?.theme == 'light' ? color.black : color.white
                 }}
                 source={{
                   uri: post?.media[0],
@@ -171,7 +171,7 @@ const ViewPost = (params) => {
               marginRight: 20
             }}
           >
-            <Fontisto name='comment' size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+            <Fontisto name='comment' size={24} color={userProfile?.theme == 'light' ? color.lightText : color.white} />
           </Pressable>
 
           <Pressable
@@ -183,7 +183,7 @@ const ViewPost = (params) => {
               marginRight: 20
             }}
           >
-            <AntDesign name='retweet' size={24} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+            <AntDesign name='retweet' size={24} color={userProfile?.theme == 'light' ? color.lightText : color.white} />
           </Pressable>
         </View>
 
@@ -202,7 +202,7 @@ const ViewPost = (params) => {
             >
               <Text
                 style={{
-                  color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                  color: userProfile?.theme == 'light' ? color.dark : color.white,
                   fontSize: 14
                 }}
               >
@@ -212,7 +212,7 @@ const ViewPost = (params) => {
           }
           <Text
             style={{
-              color: userProfile?.appMode == 'light' ? color.dark : color.white,
+              color: userProfile?.theme == 'light' ? color.dark : color.white,
               fontSize: 16
             }}
           >

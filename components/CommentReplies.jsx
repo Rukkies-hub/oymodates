@@ -130,8 +130,8 @@ const CommentReplies = ({ comment, textColor, backgroundColor, showAll }) => {
                   alignItems: 'center',
                 }}
               >
-                <LikeReply textColor={route.name == 'AddComment' ? color.white : userProfile?.appMode == 'dark' ? color.white : color.dark} reply={reply} />
-                <PostCommentReplyReply textColor={route.name == 'AddComment' ? color.white : userProfile?.appMode == 'dark' ? color.white : color.dark} comment={reply} />
+                <LikeReply textColor={route.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} />
+                <PostCommentReplyReply textColor={route.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} comment={reply} />
               </View>
 
               {

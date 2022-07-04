@@ -43,13 +43,13 @@ const AllPostCommentReplies = (props) => {
           marginTop: 10
         }}
       >
-        <Octicons name='reply' size={18} color={userProfile?.appMode == 'light' ? color.lightText : color.white} />
+        <Octicons name='reply' size={18} color={userProfile?.theme == 'light' ? color.lightText : color.white} />
         <Text
           style={{
             fontFamily: 'text',
             marginLeft: 5,
             fontSize: 14,
-            color: userProfile?.appMode == 'light' ? color.lightText : color.white
+            color: userProfile?.theme == 'light' ? color.lightText : color.white
           }}
         >
           {1 + replies?.length} Replies
@@ -68,12 +68,12 @@ const AllPostCommentReplies = (props) => {
             backgroundColor: color.faintBlack
           },
           container: {
-            backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.dark : color.black,
+            backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20
           },
           draggableIcon: {
-            backgroundColor: userProfile?.appMode == 'light' ? color.black : color.white
+            backgroundColor: userProfile?.theme == 'light' ? color.black : color.white
           }
         }}
       >
@@ -103,7 +103,7 @@ const AllPostCommentReplies = (props) => {
                   <View
                     style={{
                       marginLeft: 10,
-                      backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                      backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark,
                       borderRadius: 12,
                       paddingHorizontal: 10,
                       paddingVertical: 4,
@@ -111,7 +111,7 @@ const AllPostCommentReplies = (props) => {
                   >
                     <Text
                       style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                        color: userProfile?.theme == 'light' ? color.dark : color.white,
                         fontFamily: 'text',
                         fontSize: 13
                       }}
@@ -120,7 +120,7 @@ const AllPostCommentReplies = (props) => {
                     </Text>
                     <Text
                       style={{
-                        color: userProfile?.appMode == 'light' ? color.dark : color.white
+                        color: userProfile?.theme == 'light' ? color.dark : color.white
                       }}
                     >
                       {reply?.reply}

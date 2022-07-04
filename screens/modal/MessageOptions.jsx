@@ -67,7 +67,7 @@ const MessageOptions = (props) => {
       <View
         style={{
           minWidth: Dimensions.get('window').width,
-          backgroundColor: userProfile?.appMode == 'light' ? color.white : userProfile?.appMode == 'dark' ? color.black : color.dark,
+          backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.black : color.dark,
           padding: 20,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20
@@ -83,14 +83,14 @@ const MessageOptions = (props) => {
             height: 50,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.dark : color.black,
+            backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.dark : color.black,
             borderRadius: 12
           }}
         >
           <Text
             style={{
               fontFamily: 'text',
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              color: userProfile?.theme == 'light' ? color.dark : color.white
             }}
           >
             Reply
@@ -103,7 +103,7 @@ const MessageOptions = (props) => {
             height: 50,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.dark : color.black,
+            backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.dark : color.black,
             borderRadius: 12,
             marginTop: 10
           }}
@@ -111,7 +111,7 @@ const MessageOptions = (props) => {
           <Text
             style={{
               fontFamily: 'text',
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              color: userProfile?.theme == 'light' ? color.dark : color.white
             }}
           >
             React to message
@@ -125,7 +125,7 @@ const MessageOptions = (props) => {
             height: 50,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.dark : color.black,
+            backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.dark : color.black,
             borderRadius: 12,
             marginTop: 10
           }}
@@ -133,7 +133,7 @@ const MessageOptions = (props) => {
           <Text
             style={{
               fontFamily: 'text',
-              color: userProfile?.appMode == 'light' ? color.dark : color.white
+              color: userProfile?.theme == 'light' ? color.dark : color.white
             }}
           >
             Star message
@@ -149,7 +149,7 @@ const MessageOptions = (props) => {
               height: 50,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.dark : color.black,
+              backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.dark : color.black,
               borderRadius: 12,
               marginTop: 10
             }}

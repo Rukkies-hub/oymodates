@@ -175,7 +175,7 @@ const Header = ({
     <View>
       <View
         style={{
-          backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.white,
+          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
           height: 50,
           marginTop: 40,
           paddingHorizontal: 10,
@@ -204,7 +204,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <Entypo name='chevron-left' size={24} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
+              <Entypo name='chevron-left' size={24} color={userProfile?.theme == 'dark' ? color.white : color.black} />
             </TouchableOpacity>
           }
           {
@@ -215,7 +215,7 @@ const Header = ({
                 fontSize: 30,
                 margin: 0,
                 marginTop: -10,
-                color: userProfile?.appMode == 'light' ? color.black : color.white
+                color: userProfile?.theme == 'light' ? color.black : color.white
               }}
             >
               Oymo
@@ -240,7 +240,7 @@ const Header = ({
                 fontFamily: 'text',
                 fontSize: 18,
                 textTransform: 'capitalize',
-                color: userProfile?.appMode == 'dark' ? color.white : color.black
+                color: userProfile?.theme == 'dark' ? color.white : color.black
               }}
             >
               {title}
@@ -266,7 +266,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <Entypo name='phone' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
+              <Entypo name='phone' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
             </TouchableOpacity>
           }
 
@@ -281,7 +281,7 @@ const Header = ({
                 alignItems: 'center'
               }}
             >
-              <FontAwesome5 name='video' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
+              <FontAwesome5 name='video' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
             </TouchableOpacity>
           }
 
@@ -298,7 +298,7 @@ const Header = ({
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderColor: userProfile?.appMode == 'dark' ? color.dark : color.offWhite,
+                borderColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
                 borderWidth: 1,
                 borderRadius: 4,
                 paddingVertical: 10,
@@ -308,7 +308,7 @@ const Header = ({
             >
               <Text
                 style={{
-                  color: userProfile?.appMode == 'dark' ? color.white : color.black,
+                  color: userProfile?.theme == 'dark' ? color.white : color.black,
                   fontFamily: 'text'
                 }}
               >
@@ -364,7 +364,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <SimpleLineIcons name='bell' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
+              <SimpleLineIcons name='bell' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
 
               {
                 notificationCount?.length > 0 &&
@@ -405,7 +405,7 @@ const Header = ({
                   }
                 }}
               >
-                <FontAwesome name='plus-square-o' color={userProfile?.appMode == 'dark' ? color.white : color.black} size={26} />
+                <FontAwesome name='plus-square-o' color={userProfile?.theme == 'dark' ? color.white : color.black} size={26} />
               </MenuTrigger>
 
               <MenuOptions

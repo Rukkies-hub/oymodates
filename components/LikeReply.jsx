@@ -101,7 +101,7 @@ const LikeReply = ({ reply, textColor }) => {
           currentLikesState.counter > 0 &&
           <Text
             style={{
-              color: textColor || currentLikesState.state ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.white,
+              color: textColor || currentLikesState.state ? color.red : userProfile?.theme == 'dark' ? color.dark : color.white,
               fontFamily: 'text',
               marginRight: 3
             }}
@@ -113,7 +113,7 @@ const LikeReply = ({ reply, textColor }) => {
         }
         <Text
           style={{
-            color: textColor || currentLikesState.state ? color.red : userProfile?.appMode == 'dark' ? color.dark : color.white,
+            color: textColor || currentLikesState.state ? color.red : userProfile?.theme == 'dark' ? color.dark : color.white,
             fontFamily: 'text'
           }}
         >

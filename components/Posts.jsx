@@ -98,10 +98,10 @@ const Posts = () => {
                 alignItems: 'center'
               }}
             >
-              <ActivityIndicator size='large' color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
+              <ActivityIndicator size='large' color={userProfile?.theme == 'dark' ? color.white : color.dark} />
               <Text
                 style={{
-                  color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                  color: userProfile?.theme == 'dark' ? color.white : color.dark,
                   fontFamily: 'text',
                   marginLeft: 10
                 }}
@@ -135,10 +135,10 @@ const Posts = () => {
                   alignItems: 'center'
                 }}
               >
-                <ActivityIndicator size='large' color={userProfile?.appMode == 'dark' ? color.white : color.dark} />
+                <ActivityIndicator size='large' color={userProfile?.theme == 'dark' ? color.white : color.dark} />
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                    color: userProfile?.theme == 'dark' ? color.white : color.dark,
                     fontFamily: 'text',
                     marginLeft: 10
                   }}
@@ -163,7 +163,7 @@ const Posts = () => {
                 style={{
                   flex: 1,
                   marginBottom: 20,
-                  backgroundColor: userProfile?.appMode == 'dark' ? color.black : color.white
+                  backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
                 }}
               >
                 <View
@@ -199,7 +199,7 @@ const Posts = () => {
                         fontFamily: 'text',
                         marginLeft: 10,
                         fontSize: 18,
-                        color: userProfile?.appMode == 'dark' ? color.white : color.dark
+                        color: userProfile?.theme == 'dark' ? color.white : color.dark
                       }}
                     >
                       {post?.user?.username}
@@ -214,7 +214,7 @@ const Posts = () => {
                       alignItems: 'center'
                     }}
                   >
-                    <MaterialCommunityIcons name='dots-vertical' color={userProfile?.appMode == 'dark' ? color.white : color.lightText} size={25} />
+                    <MaterialCommunityIcons name='dots-vertical' color={userProfile?.theme == 'dark' ? color.white : color.lightText} size={25} />
                   </TouchableOpacity>
                 </View>
 
@@ -259,7 +259,7 @@ const Posts = () => {
                       marginRight: 20
                     }}
                   >
-                    <Fontisto name='comment' size={24} color={userProfile?.appMode == 'dark' ? color.white : color.lightText} />
+                    <Fontisto name='comment' size={24} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
                   </TouchableOpacity>
                 </View>
 
@@ -279,7 +279,7 @@ const Posts = () => {
                     >
                       <Text
                         style={{
-                          color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                          color: userProfile?.theme == 'dark' ? color.white : color.dark,
                           fontSize: 14
                         }}
                       >
@@ -289,7 +289,7 @@ const Posts = () => {
                   }
                   <Text
                     style={{
-                      color: userProfile?.appMode == 'dark' ? color.white : color.dark,
+                      color: userProfile?.theme == 'dark' ? color.white : color.dark,
                       fontSize: 16
                     }}
                   >

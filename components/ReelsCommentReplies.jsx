@@ -2,23 +2,25 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
 
 import { useFonts } from 'expo-font'
-import { collection, onSnapshot } from 'firebase/firestore'
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import color from '../style/color'
 import LikeReelsReply from './LikeReelsReply'
 import useAuth from '../hooks/useAuth'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import ReelsCommentReplyReply from './ReelsCommentReplyReply'
+import { Octicons } from '@expo/vector-icons'
 
-const ReelsCommentReplies = ({ comment: comments }) => {
-  const { userProfile } = useAuth()
+const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll }) => {
+  const { userProfile, showExpand, setShowExpand } = useAuth()
   const [replies, setReplies] = useState([])
 
   const navigation = useNavigation()
+  const route = useRoute()
 
   useEffect(() =>
     (() => {
-      onSnapshot(collection(db, 'reels', comments?.reel?.id, 'comments', comments?.id, 'replies'),
+      onSnapshot(query(collection(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'replies'), orderBy('timestamp', 'asc')),
         snapshot =>
           setReplies(
             snapshot?.docs?.map(doc => ({
@@ -44,7 +46,7 @@ const ReelsCommentReplies = ({ comment: comments }) => {
       }}
     >
       <FlatList
-        data={replies.length > 1 ? replies.splice(0, 1) : replies}
+        data={showAll ? replies : replies.length > 1 ? replies.splice(0, 1) : replies}
         keyExtractor={item => item.id}
         style={{ flex: 1 }}
         renderItem={({ item: reply }) => (
@@ -68,7 +70,7 @@ const ReelsCommentReplies = ({ comment: comments }) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: color.lightBorderColor,
+                  backgroundColor: backgroundColor || color.lightBorderColor,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -76,7 +78,7 @@ const ReelsCommentReplies = ({ comment: comments }) => {
               >
                 <Text
                   style={{
-                    color: color.white,
+                    color: textColor || color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -91,28 +93,29 @@ const ReelsCommentReplies = ({ comment: comments }) => {
                     flexWrap: 'wrap'
                   }}
                 >
-                  <TouchableOpacity
-                    onPress={() => {
-                      reply?.reelComment?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: reply?.reelComment?.user })
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     <Text
                       style={{
-                        color: color.white,
-                        fontFamily: 'boldText'
+                        color: textColor || color.white,
+                        fontFamily: 'boldText',
+                        marginRight: 5
                       }}
                     >
                       @{reply?.reelComment?.user?.username}
                     </Text>
-                  </TouchableOpacity>
-                  <Text
-                    style={{
-                      color: color.white,
-                      marginLeft: 5
-                    }}
-                  >
-                    {reply?.reply}
-                  </Text>
+                    <Text
+                      style={{
+                        color: textColor || color.white
+                      }}
+                    >
+                      {reply?.reply}
+                    </Text>
+                  </View>
                 </View>
               </View>
               <View
@@ -125,9 +128,34 @@ const ReelsCommentReplies = ({ comment: comments }) => {
                   alignItems: 'center',
                 }}
               >
-                <LikeReelsReply reply={reply} />
-                <ReelsCommentReplyReply reply={reply} />
+                <LikeReelsReply textColor={route.name == 'ReelsComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} />
+                <ReelsCommentReplyReply textColor={route.name == 'ReelsComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} />
               </View>
+
+              {
+                showExpand &&
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ViewReelsComments', { comment })}
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    marginTop: 10
+                  }}
+                >
+                  <Octicons name='reply' size={18} color={color.white} />
+                  <Text
+                    style={{
+                      fontFamily: 'text',
+                      marginLeft: 5,
+                      fontSize: 14,
+                      color: textColor || color.white
+                    }}
+                  >
+                    {1 + replies?.length} Replies
+                  </Text>
+                </TouchableOpacity>
+              }
             </View>
           </View>
         )}

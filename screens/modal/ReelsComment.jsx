@@ -304,7 +304,7 @@ const ReelsComment = () => {
               onChangeText={reelsCommentType == 'comment' ? setComment : reelsCommentType == 'reply' ? setReply : setReply}
               onSubmitEditing={sendComment}
               placeholder={reelsCommentType == 'comment' ? 'Write a comment...' : reelsCommentType == 'reply' ? `Reply @${replyCommentProps?.user?.username}` : `Reply @${replyCommentProps?.user?.username}`}
-              placeholderTextColor={userProfile?.appMode == 'light' ? color.dark : color.white}
+              placeholderTextColor={userProfile?.theme == 'light' ? color.dark : color.white}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               style={{
                 fontSize: 18,
@@ -314,7 +314,7 @@ const ReelsComment = () => {
                 minHeight: 50,
                 maxHeight: 150,
                 fontFamily: 'text',
-                color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                color: userProfile?.theme == 'light' ? color.dark : color.white,
                 paddingRight: 40 + 50,
                 paddingVertical: 5
               }}
@@ -333,7 +333,7 @@ const ReelsComment = () => {
               }}>
               <FontAwesome5
                 name='paper-plane'
-                color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+                color={userProfile?.theme == 'light' ? color.lightText : color.white}
                 size={20}
               />
             </TouchableOpacity>

@@ -235,7 +235,7 @@ const NewComment = ({ post }) => {
           }}>
           <FontAwesome5
             name='paper-plane'
-            color={userProfile?.appMode == 'light' ? color.lightText : color.white}
+            color={userProfile?.theme == 'light' ? color.lightText : color.white}
             size={20}
           />
         </TouchableOpacity>

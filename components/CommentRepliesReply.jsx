@@ -71,7 +71,7 @@ const CommentReplies = (props) => {
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: userProfile?.appMode == 'light' ? color.offWhite : userProfile?.appMode == 'dark' ? color.lightText : color.dark,
+                  backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -79,7 +79,7 @@ const CommentReplies = (props) => {
               >
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white,
+                    color: userProfile?.theme == 'light' ? color.dark : color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -88,7 +88,7 @@ const CommentReplies = (props) => {
                 </Text>
                 <Text
                   style={{
-                    color: userProfile?.appMode == 'light' ? color.dark : color.white
+                    color: userProfile?.theme == 'light' ? color.dark : color.white
                   }}
                 >
                   {reply?.reply}
