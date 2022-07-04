@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Dimensions, Platform } from 'react-native'
 import color from '../../style/color'
 
 import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 
 import AutoHeightImage from 'react-native-auto-height-image'
@@ -15,10 +15,20 @@ const { width } = Dimensions.get('window')
 
 const AppLayout = () => {
   const { user, userProfile } = useAuth()
+  const [layout, setLayout] = useState()
 
   const bottomLayout = () => updateDoc(doc(db, 'users', user?.uid), { layout: 'bottom' })
 
   const topLayout = () => updateDoc(doc(db, 'users', user?.uid), { layout: 'top' })
+
+  useEffect(() => {
+    (() => {
+      onSnapshot(doc(db, 'users', user?.uid),
+        doc => {
+          setLayout(doc.data())
+        })
+    })()
+  }, [])
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -58,7 +68,7 @@ const AppLayout = () => {
           }}
         >
           {
-            userProfile?.layout == 'bottom' &&
+            layout?.layout == 'bottom' &&
             <View
               style={{
                 position: 'absolute',
@@ -94,7 +104,7 @@ const AppLayout = () => {
           }}
         >
           {
-            userProfile?.layout == 'top' &&
+            layout?.layout == 'top' &&
             <View
               style={{
                 position: 'absolute',
