@@ -27,7 +27,6 @@ import { db } from '../../hooks/firebase'
 
 import { useFonts } from 'expo-font'
 
-import * as NavigationBar from 'expo-navigation-bar'
 import Bar from '../../components/StatusBar'
 
 if (
@@ -53,15 +52,6 @@ const ReelsComment = () => {
   const [comment, setComment] = useState('')
   const [reply, setReply] = useState('')
   const [height, setHeight] = useState(40)
-
-  if (isFocused) {
-    NavigationBar.setVisibilityAsync('hidden')
-    NavigationBar.setBehaviorAsync('overlay-swipe')
-  }
-
-  navigation.addListener('blur', () => {
-    NavigationBar.setVisibilityAsync('visible')
-  })
 
   Keyboard.addListener('keyboardDidHide', () => {
     setReelsCommentType('comment')

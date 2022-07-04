@@ -22,8 +22,6 @@ import { useNavigation, useIsFocused } from '@react-navigation/native'
 
 import { Entypo } from '@expo/vector-icons'
 
-import * as NavigationBar from 'expo-navigation-bar'
-
 import Bar from '../../components/StatusBar'
 
 const AddComment = params => {
@@ -31,15 +29,6 @@ const AddComment = params => {
   const post = params?.route?.params?.post
   const navigation = useNavigation()
   const isFocused = useIsFocused()
-
-  if (isFocused) {
-    NavigationBar.setVisibilityAsync('hidden')
-    NavigationBar.setBehaviorAsync('overlay-swipe')
-  }
-
-  navigation.addListener('blur', () => {
-    NavigationBar.setVisibilityAsync('visible')
-  })
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')

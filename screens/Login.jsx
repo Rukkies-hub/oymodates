@@ -19,7 +19,6 @@ import { useFonts } from 'expo-font'
 
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 
-import * as NavigationBar from 'expo-navigation-bar'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 const Login = () => {
@@ -42,15 +41,6 @@ const Login = () => {
 
   const isFocused = useIsFocused()
   const navigation = useNavigation()
-
-  if (isFocused) {
-    NavigationBar.setVisibilityAsync('hidden')
-    NavigationBar.setBehaviorAsync('overlay-swipe')
-  }
-
-  navigation.addListener('blur', () => {
-    NavigationBar.setVisibilityAsync('visible')
-  })
 
   const [loaded] = useFonts({
     logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),

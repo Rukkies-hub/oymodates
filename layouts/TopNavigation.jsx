@@ -88,7 +88,8 @@ const TopNavigation = () => {
                   width: 20,
                   height: 20
                 }}
-              />
+              />,
+            swipeEnabled: false
           }}
         />
 
