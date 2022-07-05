@@ -130,13 +130,13 @@ const AddReels = () => {
   }
 
   return (
-    <SafeAreaView
+    <View
       style={{
         flex: 1
       }}
     >
-      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
-      
+      <Bar color='light' />
+
       {
         isFocused ?
           <Camera
@@ -150,8 +150,7 @@ const AddReels = () => {
               backgroundColor: color.black,
               aspectRatio: 9 / 16
             }}
-          />
-          : null
+          /> : null
       }
 
       <TouchableOpacity
@@ -295,7 +294,7 @@ const AddReels = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 
