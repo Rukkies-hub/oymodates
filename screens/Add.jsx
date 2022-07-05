@@ -286,7 +286,7 @@ const Add = () => {
                   }}
                 />
                 {
-                  media ?
+                  media && !background ?
                     <Image
                       style={{
                         aspectRatio: 9 / 16,
@@ -786,7 +786,7 @@ const Add = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  setMedia(null)
+                  setBackground(null)
                   pickImage()
                 }}
                 style={{
