@@ -7,7 +7,13 @@ import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
 import MyReels from './MyReels'
-import { FontAwesome, Feather, Fontisto, SimpleLineIcons } from '@expo/vector-icons'
+import MyPosts from './MyPosts'
+import { FontAwesome, Feather, Fontisto, SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons'
+
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+
+const Tab = createMaterialTopTabNavigator()
+
 
 const Profile = () => {
   const navigation = useNavigation()
@@ -28,7 +34,7 @@ const Profile = () => {
       }}
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
-      
+
       <Header showBack showTitle title='Profile' showAratar />
 
       <View
@@ -287,6 +293,7 @@ const Profile = () => {
         style={{
           marginHorizontal: 10,
           marginTop: 10,
+          marginBottom: 20,
           flexDirection: 'row',
           justifyContent: 'flex-start',
           alignItems: 'center'
@@ -306,7 +313,46 @@ const Profile = () => {
         </Text>
       </View>
 
-      <MyReels />
+      <Tab.Navigator
+        initialRouteName='MyReels'
+        barStyle={{
+          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+          height: 54,
+          elevation: 0
+        }}
+        keyboardDismissMode='auto'
+        screenOptions={{
+          tabBarShowLabel: false,
+          lazy: true,
+          tabBarStyle: {
+            backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+            height: 50,
+            elevation: 0
+          }
+        }}
+      >
+        <Tab.Screen
+          name="MyReels"
+          component={MyReels}
+          options={{
+            tabBarIcon: () =>
+              <Image
+                source={userProfile?.appMode == 'dark' ? require('../../assets/videoLight.png') : require('../../assets/video.png')}
+                style={{
+                  width: 20,
+                  height: 20
+                }}
+              />
+          }}
+        />
+        <Tab.Screen
+          name="MyPosts"
+          component={MyPosts}
+          options={{
+            tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />
+          }}
+        />
+      </Tab.Navigator>
     </SafeAreaView>
   )
 }

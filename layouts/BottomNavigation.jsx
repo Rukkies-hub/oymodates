@@ -51,7 +51,7 @@ const BottomNavigation = () => {
           name='Feeds'
           component={Feeds}
           options={{
-            tabBarIcon: () => <Feather name='home' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />
+            tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />
           }}
         />
 

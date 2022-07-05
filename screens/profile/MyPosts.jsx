@@ -9,19 +9,20 @@ import color from '../../style/color'
 
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
+import { Video } from 'expo-av'
 
 
-const MyReels = () => {
+const MyPosts = () => {
   const { user, userProfile } = useAuth()
   const navigation = useNavigation()
 
-  const [reels, setReels] = useState([])
+  const [posts, setPosts] = useState([])
 
   useEffect(() =>
     (() => {
-      onSnapshot(query(collection(db, 'reels'),
+      onSnapshot(query(collection(db, 'posts'),
         where('user.id', '==', user?.uid)),
-        snapshot => setReels(
+        snapshot => setPosts(
           snapshot.docs.map(doc => ({
             id: doc?.id,
             ...doc?.data()
@@ -39,7 +40,7 @@ const MyReels = () => {
 
   return (
     <FlatList
-      data={reels}
+      data={posts}
       keyExtractor={item => item.id}
       showsVerticalScrollIndicator={false}
       style={{
@@ -48,9 +49,9 @@ const MyReels = () => {
         paddingTop: 10,
         backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
-      renderItem={({ item: reel }) => (
+      renderItem={({ item: post }) => (
         <Pressable
-          onPress={() => navigation.navigate('ViewReel', { reel })}
+          onPress={() => navigation.navigate('ViewPost', { post })}
           style={{
             padding: 5,
             flexDirection: 'row',
@@ -59,15 +60,27 @@ const MyReels = () => {
             marginBottom: 20
           }}
         >
-          <Image
-            source={{ uri: reel?.thumbnail }}
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 12,
-              marginRight: 10
-            }}
-          />
+          {
+            post?.mediaType != 'video' ?
+              <Image
+                source={{ uri: post?.media }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 12,
+                  marginRight: 10
+                }}
+              /> :
+              <Video
+                source={{ uri: post?.media }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 12,
+                  marginRight: 10
+                }}
+              />
+          }
 
           <View
             style={{
@@ -81,7 +94,7 @@ const MyReels = () => {
                 fontSize: 18
               }}
             >
-              {reel?.description}
+              {post?.caption}
             </Text>
 
             <Text
@@ -90,7 +103,7 @@ const MyReels = () => {
                 fontSize: 13
               }}
             >
-              Video - {reel?.user?.username}
+              Video - {post?.user?.username}
             </Text>
             <View
               style={{
@@ -112,7 +125,7 @@ const MyReels = () => {
                     color: userProfile?.theme == 'dark' ? color.white : color.dark
                   }}
                 >
-                  {reel?.likesCount}
+                  {post?.likesCount}
                 </Text>
                 <Text
                   style={{
@@ -120,7 +133,7 @@ const MyReels = () => {
                     fontFamily: 'text'
                   }}
                 >
-                  {reel?.likesCount == 1 ? 'Like' : 'Likes' }
+                  {post?.likesCount == 1 ? 'Like' : 'Likes'}
                 </Text>
               </View>
               <View
@@ -136,7 +149,7 @@ const MyReels = () => {
                     color: userProfile?.theme == 'dark' ? color.white : color.dark
                   }}
                 >
-                  {reel?.commentsCount}
+                  {post?.commentsCount}
                 </Text>
                 <Text
                   style={{
@@ -144,7 +157,7 @@ const MyReels = () => {
                     fontFamily: 'text'
                   }}
                 >
-                  {reel?.commentsCount == 1 ? 'Comment' : 'Comments'}
+                  {post?.commentsCount == 1 ? 'Comment' : 'Comments'}
                 </Text>
               </View>
             </View>
@@ -155,4 +168,4 @@ const MyReels = () => {
   )
 }
 
-export default MyReels
+export default MyPosts
