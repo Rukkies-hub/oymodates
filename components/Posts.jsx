@@ -221,7 +221,7 @@ const Posts = () => {
 
                 <View
                   style={{
-                    minHeight: 300
+                    minHeight: 200
                   }}
                 >
                   {
@@ -288,14 +288,17 @@ const Posts = () => {
                       </Text>
                     </TouchableOpacity>
                   }
-                  <Text
-                    style={{
-                      color: userProfile?.theme == 'dark' ? color.white : color.dark,
-                      fontSize: 16
-                    }}
-                  >
-                    {post?.caption}
-                  </Text>
+                  {
+                    post?.postType != 'poster' &&
+                    <Text
+                      style={{
+                        color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                        fontSize: 16
+                      }}
+                    >
+                      {post?.caption}
+                    </Text>
+                  }
                 </TouchableOpacity>
               </View>
             )}

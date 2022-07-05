@@ -336,6 +336,7 @@ const Add = () => {
                             multiline
                             value={input}
                             onChangeText={setInput}
+                            maxLength={200}
                             placeholder="What's on your mind..."
                             placeholderTextColor={backgroundTextColor || color.black}
                             onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
@@ -344,9 +345,10 @@ const Add = () => {
                               height,
                               position: 'absolute',
                               alignSelf: 'center',
-                              bottom: '50%',
+                              bottom: `40%`,
                               maxHeight: 300,
-                              fontSize: 18,
+                              minWidth: width,
+                              fontSize: input?.length <= 30 ? 30 : 18,
                               paddingVertical: 10,
                               borderRadius: 12,
                               paddingHorizontal: 10,
