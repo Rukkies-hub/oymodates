@@ -33,16 +33,11 @@ import { useFonts } from 'expo-font'
 
 import color from '../style/color'
 
-import { addDoc, collection, getDocs, onSnapshot, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
+import { addDoc, collection, getDocs, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
 
 import { db } from '../hooks/firebase'
 
-import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
-
-let file
-let link = `posts/${new Date().toISOString()}`
-
-import * as Device from 'expo-device'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 import MessageSettings from './MessageSettings'
@@ -57,10 +52,8 @@ const Header = ({
   matchAvatar,
   showPhone,
   showVideo,
-  showPost,
   postDetails,
   showAdd,
-  showCancelPost,
   matchDetails,
   showNotification,
   showChatMenu,
@@ -70,11 +63,8 @@ const Header = ({
   const navigation = useNavigation()
 
   const { user, userProfile, madiaString, media, setMedia, notifications, setNotificatios } = useAuth()
-  const storage = getStorage()
   const videoCallUser = getMatchedUserInfo(matchDetails?.users, user?.uid)
 
-  const [loading, setLoading] = useState(false)
-  const [mediaType, setMediaType] = useState('image')
   const [notificationCount, setNotificationCount] = useState([])
 
   useEffect(() => {
@@ -102,67 +92,6 @@ const Header = ({
       )
     })()
   }, [])
-
-  const savePost = async () => {
-    if (postDetails.caption || postDetails.media) {
-      setLoading(true)
-
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest()
-        xhr.onload = () => resolve(xhr.response)
-
-        xhr.responseType = 'blob'
-        xhr.open('GET', postDetails.media, true)
-        xhr.send(null)
-      })
-
-      const mediaRef = ref(storage, `posts/${new Date().toISOString()}`)
-
-      uploadBytes(mediaRef, blob)
-        .then(snapshot => {
-          getDownloadURL(snapshot.ref)
-            .then(downloadURL => {
-              setLoading(true)
-              addDoc(collection(db, 'posts'), {
-                user: {
-                  id: userProfile?.id,
-                  displayName: userProfile?.displayName,
-                  username: userProfile?.username,
-                  photoURL: userProfile?.photoURL
-                },
-                likesCount: 0,
-                commentsCount: 0,
-                media: downloadURL,
-                mediaLink: snapshot.ref._location.path,
-                mediaType,
-                caption: postDetails.caption,
-                timestamp: serverTimestamp()
-              }).finally(() => {
-                setLoading(false)
-                cancelPost()
-              })
-            })
-        })
-    }
-  }
-
-  const cancelPost = async () => {
-    postDetails = new Object()
-    setMedia('')
-    setLoading(false)
-    navigation.goBack()
-  }
-
-  let extention = madiaString.slice(-7)
-
-  useEffect(() => {
-    (() => {
-      if (extention.includes('jpg' || 'png' || 'gif' || 'jpeg' || 'JPEG' || 'JPG' || 'PNG' || 'GIF'))
-        setMediaType('image')
-      else if (extention.includes('mp4' || 'webm' || 'WEBM' || 'webM'))
-        setMediaType('video')
-    })()
-  }, [media])
 
   const [loaded] = useFonts({
     logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
@@ -288,67 +217,6 @@ const Header = ({
           {
             showChatMenu &&
             <MessageSettings matchDetails={matchDetails} iconColor={iconColor} />
-          }
-
-          {
-            showCancelPost &&
-            <TouchableOpacity
-              onPress={cancelPost}
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
-                borderWidth: 1,
-                borderRadius: 4,
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                marginRight: 5
-              }}
-            >
-              <Text
-                style={{
-                  color: userProfile?.theme == 'dark' ? color.white : color.black,
-                  fontFamily: 'text'
-                }}
-              >
-                Cancel
-              </Text>
-            </TouchableOpacity>
-          }
-
-          {
-            showPost &&
-            <TouchableOpacity
-              onPress={savePost}
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: loading == true ? color.faintRed : color.red,
-                borderRadius: 4,
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                marginLeft: 5
-              }}
-            >
-              {
-                loading ? <ActivityIndicator color={color.white} size='small' />
-                  :
-                  <>
-                    <Feather name='corner-left-up' size={20} color={loading == true ? color.red : color.white} />
-                    <Text
-                      style={{
-                        fontFamily: 'text',
-                        marginLeft: 10,
-                        color: loading == true ? color.red : color.white
-                      }}
-                    >
-                      Post
-                    </Text>
-                  </>
-              }
-            </TouchableOpacity>
           }
 
           {

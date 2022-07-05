@@ -12,7 +12,8 @@ import {
   LayoutAnimation,
   UIManager,
   useWindowDimensions,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native'
 
 import Header from '../components/Header'
@@ -42,8 +43,15 @@ import { Video } from 'expo-av'
 
 import Bar from '../components/StatusBar'
 
+import * as VideoThumbnails from 'expo-video-thumbnails'
+
+import uuid from 'uuid-random'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { db } from '../hooks/firebase'
+
 const Add = () => {
-  const { user, media, setMedia, madiaString, userProfile } = useAuth()
+  const { user, madiaString, userProfile } = useAuth()
   const navigation = useNavigation()
   const video = useRef(null)
   const windowWidth = useWindowDimensions().width
@@ -52,8 +60,14 @@ const Add = () => {
   const [height, setHeight] = useState(50)
   const [expanded, setExpanded] = useState(false)
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
-  const [mediaType, setMediaType] = useState('image')
   const [status, setStatus] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [media, setMedia] = useState(null)
+  const [thumbnail, setThumbnail] = useState(null)
+  const [mediaType, setMediaType] = useState()
+  const [mediaSize, setMediaSize] = useState()
+
+  const storage = getStorage()
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -65,6 +79,101 @@ const Add = () => {
     if (!result.cancelled) {
       setMedia(result.uri)
       setMediaType(result.type)
+
+      setMediaSize({ width: result.width, height: result.height })
+
+      if (result.type == 'video') {
+        try {
+          const { uri } = await VideoThumbnails.getThumbnailAsync(result.uri, { time: 3000 })
+          setThumbnail(uri)
+        } catch (e) {
+          console.warn(e)
+        }
+      }
+    }
+  }
+
+  const savePost = async () => {
+    setLoading(true)
+    const mediaBlob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.onload = () => resolve(xhr.response)
+
+      xhr.responseType = 'blob'
+      xhr.open('GET', media, true)
+      xhr.send(null)
+    })
+
+    const thumbnailBlob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.onload = () => resolve(xhr.response)
+
+      xhr.responseType = 'blob'
+      xhr.open('GET', thumbnail, true)
+      xhr.send(null)
+    })
+
+    const mediaRef = ref(storage, `posts/${user?.uid}/media/${uuid()}`)
+
+    const thumbnailRef = ref(storage, `posts/${user?.uid}/thumbnail/${uuid()}`)
+
+    if (mediaType == 'video') {
+      navigation.goBack()
+      uploadBytes(mediaRef, mediaBlob)
+        .then(snapshot => {
+          getDownloadURL(snapshot.ref)
+            .then(downloadURL => {
+              uploadBytes(thumbnailRef, thumbnailBlob)
+                .then(thumbnailSnapshot => {
+                  getDownloadURL(thumbnailSnapshot.ref)
+                    .then(thumbnailDownloadURL => {
+                      addDoc(collection(db, 'posts'), {
+                        user: {
+                          id: userProfile?.id,
+                          displayName: userProfile?.displayName,
+                          username: userProfile?.username,
+                          photoURL: userProfile?.photoURL
+                        },
+                        likesCount: 0,
+                        commentsCount: 0,
+                        mediaType,
+                        mediaSize,
+                        media: downloadURL,
+                        mediaLink: snapshot.ref._location.path,
+                        thumbnail: thumbnailDownloadURL,
+                        thumbnailLink: thumbnailSnapshot.ref._location.path,
+                        caption: input,
+                        timestamp: serverTimestamp()
+                      }).finally(() => setLoading(false))
+                    })
+                })
+            })
+        })
+    } else {
+      navigation.goBack()
+      uploadBytes(mediaRef, mediaBlob)
+        .then(snapshot => {
+          getDownloadURL(snapshot.ref)
+            .then(downloadURL => {
+              setLoading(true)
+              addDoc(collection(db, 'posts'), {
+                user: {
+                  id: userProfile?.id,
+                  displayName: userProfile?.displayName,
+                  username: userProfile?.username,
+                  photoURL: userProfile?.photoURL
+                },
+                likesCount: 0,
+                commentsCount: 0,
+                mediaType,
+                mediaSize,
+                media: downloadURL,
+                mediaLink: snapshot.ref._location.path,
+                caption: input,
+                timestamp: serverTimestamp()
+              }).finally(() => setLoading(false))
+            })
+        })
     }
   }
 
@@ -102,8 +211,6 @@ const Add = () => {
       <Header
         showBack
         showTitle
-        showPost
-        showCancelPost
         postDetails={{
           media,
           caption: input
@@ -119,174 +226,161 @@ const Add = () => {
             setMediaVidiblity(true)
           }}
         >
-          <View
-            style={{
-              maxHeight: 400,
-              overflow: 'hidden',
-              paddingHorizontal: 10,
-              marginTop: 20,
-              flexDirection: 'row'
-            }}
-          >
-            <TextInput
-              multiline
-              value={input}
-              onChangeText={setInput}
-              placeholder="What's on your mind..."
-              placeholderTextColor={userProfile?.theme == 'light' ? color.dark : color.white}
-              onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-              style={{
-                flex: 1,
-                height,
-                backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.lightText : color.dark,
-                maxHeight: 300,
-                fontSize: 18,
-                paddingVertical: 10,
-                borderRadius: 12,
-                paddingHorizontal: 10,
-                color: userProfile?.theme == 'light' ? color.dark : color.white
-              }}
-            />
-            <Image
-              style={{
-                aspectRatio: 9 / 16,
-                backgroundColor: color.black,
-                width: 60
-              }}
-              source={{ uri: media }}
-            />
-          </View>
-        </TouchableWithoutFeedback>
-
-        {/* {
-          media != '' &&
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 10,
-              marginBottom: 150
-            }}
-          >
+          <View>
             <View
               style={{
-                width: '100%'
+                maxHeight: 400,
+                overflow: 'hidden',
+                paddingHorizontal: 10,
+                marginTop: 20,
+                flexDirection: 'row'
               }}
             >
+              <TextInput
+                multiline
+                value={input}
+                onChangeText={setInput}
+                placeholder="What's on your mind..."
+                placeholderTextColor={userProfile?.theme == 'light' ? color.dark : color.white}
+                onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+                style={{
+                  flex: 1,
+                  height,
+                  backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.lightText : color.dark,
+                  maxHeight: 300,
+                  fontSize: 18,
+                  paddingVertical: 10,
+                  borderRadius: 12,
+                  paddingHorizontal: 10,
+                  color: userProfile?.theme == 'light' ? color.dark : color.white
+                }}
+              />
               {
-                mediaType == 'image' ?
-                  <AutoHeightImage
-                    source={{ uri: media }}
-                    width={Dimensions.get('window').width}
-                    style={{ flex: 1 }}
-                    resizeMode='cover'
-                  /> :
-                  <View
+                media ?
+                  <Image
                     style={{
-                      flex: 1,
-                      alignSelf: 'center',
-                      justifyContent: 'center',
-                      width: windowWidth,
-                      position: 'relative'
+                      aspectRatio: 9 / 16,
+                      backgroundColor: color.black,
+                      width: 60
                     }}
-                  >
-                    <Video
-                      ref={video}
+                    source={{ uri: media }}
+                  /> :
+                  thumbnail ?
+                    <Image
                       style={{
-                        flex: 1,
-                        alignSelf: 'center',
-                        justifyContent: 'center',
-                        width: windowWidth,
-                        aspectRatio: 1,
-                        width: "100%"
+                        aspectRatio: 9 / 16,
+                        backgroundColor: color.black,
+                        width: 60
                       }}
-                      source={{
-                        uri: media,
-                      }}
-                      useNativeControls={false}
-                      resizeMode='contain'
-                      usePoster={true}
-                      isLooping
-                      onPlaybackStatusUpdate={status => setStatus(() => status)}
-                    />
-
-                    <TouchableOpacity
-                      onPress={() =>
-                        status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-                      }
-                      style={{
-                        position: 'absolute',
-                        width: '100%',
-                        height: '100%',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      {
-                        !status.isPlaying &&
-                        <Feather name="play" size={60} color={color.white} />
-                      }
-                    </TouchableOpacity>
-                  </View>
+                      source={{ uri: thumbnail }}
+                    /> : null
               }
             </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingHorizontal: 10,
+                marginTop: 10
+              }}
+            >
+              <TouchableOpacity
+                onPress={pickImage}
+                style={{
+                  flex: 1,
+                  height: 45,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                  borderRadius: 4,
+                  marginRight: 5
+                }}
+              >
+                <EvilIcons name='image' size={24} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate('PostCamera')}
+                style={{
+                  flex: 1,
+                  height: 45,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                  borderRadius: 4,
+                  marginLeft: 5
+                }}
+              >
+                <EvilIcons name='camera' size={24} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+              </TouchableOpacity>
+            </View>
           </View>
-        } */}
+        </TouchableWithoutFeedback>
       </ScrollView>
 
       <View
         style={{
-          width: '100%',
-          borderTopWidth: .3,
-          borderTopColor: userProfile?.theme == 'light' ? color.borderColor : userProfile?.theme == 'dark' ? color.transparent : color.transparent,
           flexDirection: 'row',
-          justifyContent: 'space-between'
+          margin: 10
         }}
       >
         <TouchableOpacity
-          onPress={pickImage}
+          onPress={() => navigation.goBack()}
           style={{
-            width: '50%',
-            height: 50,
+            flex: 1,
+            height: 45,
             flexDirection: 'row',
-            justifyContent: 'flex-start',
+            justifyContent: 'center',
             alignItems: 'center',
-            paddingHorizontal: 10
+            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            borderRadius: 4,
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            marginRight: 5
           }}
         >
-          <EvilIcons name='image' size={24} color={userProfile?.theme == 'light' ? color.black : color.white} />
           <Text
             style={{
-              color: userProfile?.theme == 'light' ? color.dark : color.white,
               fontFamily: 'text',
-              marginLeft: 10
+              color: userProfile?.theme == 'light' ? color.dark : color.white
             }}
           >
-            Photo/Video
+            Cancel
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('PostCamera')}
+          onPress={savePost}
           style={{
-            width: '50%',
-            height: 50,
+            flex: 1,
+            height: 45,
             flexDirection: 'row',
-            justifyContent: 'flex-start',
+            justifyContent: 'center',
             alignItems: 'center',
-            paddingHorizontal: 10
+            backgroundColor: color.red,
+            borderRadius: 4,
+            paddingVertical: 10,
+            paddingHorizontal: 20
           }}
         >
-          <EvilIcons name='camera' size={24} color={userProfile?.theme == 'light' ? color.black : color.white} />
-          <Text
-            style={{
-              color: userProfile?.theme == 'light' ? color.dark : color.white,
-              fontFamily: 'text',
-              marginLeft: 10
-            }}
-          >
-            Camera
-          </Text>
+          {
+            loading ? <ActivityIndicator color={color.white} size='small' />
+              :
+              <>
+                <Feather name='corner-left-up' size={20} color={loading == true ? color.red : color.white} />
+                <Text
+                  style={{
+                    fontFamily: 'text',
+                    marginLeft: 10,
+                    color: loading == true ? color.red : color.white
+                  }}
+                >
+                  Post
+                </Text>
+              </>
+          }
         </TouchableOpacity>
       </View>
     </View>

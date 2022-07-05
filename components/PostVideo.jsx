@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { View, TouchableOpacity, Dimensions } from 'react-native'
+import { View, TouchableOpacity, Dimensions, ImageBackground } from 'react-native'
 
 import color from '../style/color'
 
@@ -35,23 +35,37 @@ const PostVideo = (props) => {
         backgroundColor: color.black
       }}
     >
-      <Video
-        isLooping
-        ref={video}
+      <ImageBackground
+        source={{ uri: post?.thumbnail ? post?.thumbnail : null }}
+        blurRadius={50}
         style={{
-          flex: 1,
-          alignSelf: 'center',
-          justifyContent: 'center',
-          width,
-          aspectRatio: 1,
+          width
         }}
-        source={{
-          uri: post?.media,
-        }}
-        useNativeControls={false}
-        resizeMode='cover'
-        onPlaybackStatusUpdate={status => setStatus(() => status)}
-      />
+      >
+        <Video
+          isLooping
+          ref={video}
+          style={{
+            flex: 1,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            width: post?.mediaSize ? post?.mediaSize?.width : width,
+            aspectRatio: 1,
+          }}
+          source={{
+            uri: post?.media,
+          }}
+          usePoster
+          posterSource={{ uri: post?.thumbnail }}
+          posterStyle={{
+            resizeMode: 'contain',
+            height: '100%'
+          }}
+          useNativeControls={false}
+          resizeMode='contain'
+          onPlaybackStatusUpdate={status => setStatus(() => status)}
+        />
+      </ImageBackground>
 
       <TouchableOpacity
         onPress={() => status.isPlaying ? video?.current?.pauseAsync() : video?.current?.playAsync()}
