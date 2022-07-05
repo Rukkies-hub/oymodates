@@ -37,6 +37,7 @@ const AllAdd = () => {
   const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
   const [cameraFlash, setCameraFlash] = useState(Camera?.Constants?.FlashMode?.off)
   const [isCameraReady, setIsCameraReady] = useState(false)
+  const [postType, setPostType] = useState('reel')
 
   const isFocused = useIsFocused()
 
@@ -135,8 +136,6 @@ const AllAdd = () => {
         flex: 1
       }}
     >
-      <Bar color='light' />
-
       {
         isFocused ?
           <Camera
