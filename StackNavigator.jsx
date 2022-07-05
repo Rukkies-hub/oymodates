@@ -4,6 +4,7 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 
 const Stack = createStackNavigator()
 
+import Index from './layouts/Index'
 import BottomNavigation from './layouts/BottomNavigation'
 import TopNavigation from './layouts/TopNavigation'
 import Login from './screens/Login'
@@ -56,11 +57,12 @@ const StackNavigator = () => {
         user ? (
           <>
             <Stack.Group>
-              {
+              {/* {
                 userProfile?.layout == 'top' ?
                   <Stack.Screen name='Index' component={TopNavigation} /> :
                   <Stack.Screen name='Index' component={BottomNavigation} />
-              }
+              } */}
+              <Stack.Screen name='Index' component={Index} />
               <Stack.Screen name='Message' component={Message} />
               <Stack.Screen name='EditProfile' component={EditProfile} />
               <Stack.Screen name='Add' component={Add} />

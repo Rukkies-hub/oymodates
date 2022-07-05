@@ -13,7 +13,6 @@ import Feeds from '../screens/Feeds'
 import Likes from '../screens/Likes'
 import Reels from '../screens/Reels'
 
-import colors from '../style/color'
 import useAuth from '../hooks/useAuth'
 import Bar from '../components/StatusBar'
 import Header from '../components/Header'
@@ -42,7 +41,7 @@ const BottomNavigation = () => {
       <Tab.Navigator
         initialRouteName='Feeds'
         barStyle={{
-          backgroundColor: userProfile?.theme == 'dark' ? colors.black : color.white,
+          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
           height: 54,
           elevation: 0
         }}
@@ -51,7 +50,7 @@ const BottomNavigation = () => {
           name='Feeds'
           component={Feeds}
           options={{
-            tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />
+            tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
           }}
         />
 
@@ -59,7 +58,7 @@ const BottomNavigation = () => {
           name='Match'
           component={Match}
           options={{
-            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />
+            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
           }}
         />
 
@@ -85,14 +84,14 @@ const BottomNavigation = () => {
               component={Likes}
               options={{
                 tabBarBadge: pendingSwipes?.length,
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'dark' ? colors.white : colors.black} />
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
               }}
             /> :
             <Tab.Screen
               name='Likes'
               component={Likes}
               options={{
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? colors.white : colors.black} />
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
               }}
             />
         }
@@ -100,7 +99,7 @@ const BottomNavigation = () => {
           name='Chat'
           component={Chat}
           options={{
-            tabBarIcon: () => <Ionicons name='chatbubbles-outline' size={20} color={userProfile?.theme == 'dark' ? colors.white : colors.black} />
+            tabBarIcon: () => <Ionicons name='chatbubbles-outline' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
           }}
         />
       </Tab.Navigator>

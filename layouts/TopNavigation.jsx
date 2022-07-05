@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Image, SafeAreaView } from 'react-native'
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
-import { Ionicons, Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
+import { Ionicons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
 
 import * as NavigationBar from 'expo-navigation-bar'
 
@@ -13,15 +13,12 @@ import Feeds from '../screens/Feeds'
 import Likes from '../screens/Likes'
 import Reels from '../screens/Reels'
 
-import colors from '../style/color'
 import useAuth from '../hooks/useAuth'
 import Bar from '../components/StatusBar'
 import Header from '../components/Header'
 import color from '../style/color'
 
 const TopNavigation = () => {
-  const [swipeEnabled, setSwipeEnabled] = useState(true)
-
   const Tab = createMaterialTopTabNavigator()
 
   const { pendingSwipes, userProfile } = useAuth()
@@ -44,17 +41,12 @@ const TopNavigation = () => {
 
       <Tab.Navigator
         initialRouteName='Feeds'
-        barStyle={{
-          backgroundColor: userProfile?.theme == 'dark' ? colors.black : color.white,
-          height: 54,
-          elevation: 0
-        }}
         keyboardDismissMode='auto'
         screenOptions={{
           tabBarShowLabel: false,
           lazy: true,
           tabBarStyle: {
-            backgroundColor: userProfile?.theme == 'dark' ? colors.black : color.white,
+            backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
             height: 50,
             elevation: 0
           }
@@ -64,7 +56,7 @@ const TopNavigation = () => {
           name='Feeds'
           component={Feeds}
           options={{
-            tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />
+            tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
           }}
         />
 
@@ -72,7 +64,7 @@ const TopNavigation = () => {
           name='Match'
           component={Match}
           options={{
-            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />,
+            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />,
             swipeEnabled: false
           }}
         />
@@ -100,14 +92,14 @@ const TopNavigation = () => {
               component={Likes}
               options={{
                 tabBarBadge: pendingSwipes?.length,
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'dark' ? colors.white : colors.black} />
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
               }}
             /> :
             <Tab.Screen
               name='Likes'
               component={Likes}
               options={{
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? colors.white : colors.black} />
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
               }}
             />
         }
@@ -115,7 +107,7 @@ const TopNavigation = () => {
           name='Chat'
           component={Chat}
           options={{
-            tabBarIcon: () => <Ionicons name='chatbubbles-outline' size={20} color={userProfile?.theme == 'dark' ? colors.white : colors.black} />
+            tabBarIcon: () => <Ionicons name='chatbubbles-outline' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
           }}
         />
       </Tab.Navigator>

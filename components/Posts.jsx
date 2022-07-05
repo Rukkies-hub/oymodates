@@ -88,7 +88,8 @@ const Posts = () => {
             style={{
               flex: 1,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
             }}
           >
             <View

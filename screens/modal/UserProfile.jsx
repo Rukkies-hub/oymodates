@@ -109,7 +109,7 @@ const UserProfile = (params) => {
       }}
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
-      
+
       <Header showBack showTitle title={currentUser?.username} showAratar />
 
       <View
@@ -120,18 +120,14 @@ const UserProfile = (params) => {
           marginVertical: 20
         }}
       >
-        <Pressable
-          onPress={() => navigation.navigate('ViewAvarar', { avatar: currentUser?.photoURL })}
-        >
-          <Image
-            source={{ uri: currentUser?.photoURL }}
-            style={{
-              width: 80,
-              height: 80,
-              borderRadius: 100
-            }}
-          />
-        </Pressable>
+        <Image
+          source={{ uri: currentUser?.photoURL }}
+          style={{
+            width: 80,
+            height: 80,
+            borderRadius: 100
+          }}
+        />
 
         <View
           style={{

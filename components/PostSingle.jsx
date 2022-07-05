@@ -44,6 +44,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
       await ref?.current?.playAsync()
     } catch (e) {}
   }
+  
   const stop = async () => {
     if (ref?.current == null) return
 
