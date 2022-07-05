@@ -337,7 +337,7 @@ const Profile = () => {
           options={{
             tabBarIcon: () =>
               <Image
-                source={userProfile?.appMode == 'dark' ? require('../../assets/videoLight.png') : require('../../assets/video.png')}
+                source={userProfile?.theme == 'dark' ? require('../../assets/videoLight.png') : require('../../assets/video.png')}
                 style={{
                   width: 20,
                   height: 20
@@ -349,7 +349,7 @@ const Profile = () => {
           name="MyPosts"
           component={MyPosts}
           options={{
-            tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? colors.white : color.black} />
+            tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
           }}
         />
       </Tab.Navigator>

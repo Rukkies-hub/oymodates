@@ -75,7 +75,7 @@ const TopNavigation = () => {
           options={{
             tabBarIcon: () =>
               <Image
-                source={userProfile?.appMode == 'dark' ? require('../assets/videoLight.png') : require('../assets/video.png')}
+                source={userProfile?.theme == 'dark' ? require('../assets/videoLight.png') : require('../assets/video.png')}
                 style={{
                   width: 20,
                   height: 20
@@ -92,7 +92,7 @@ const TopNavigation = () => {
               component={Likes}
               options={{
                 tabBarBadge: pendingSwipes?.length,
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.appMode == 'dark' ? color.white : color.black} />
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
               }}
             /> :
             <Tab.Screen
