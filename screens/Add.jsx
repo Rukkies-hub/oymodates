@@ -785,7 +785,10 @@ const Add = () => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={pickImage}
+                onPress={() => {
+                  setMedia(null)
+                  pickImage()
+                }}
                 style={{
                   flex: 1,
                   height: 45,
