@@ -47,9 +47,7 @@ const StackNavigator = () => {
         gestureEnabled: true,
         gestureDirection: 'horizontal',
         keyboardHandlingEnabled: true,
-        headerMode: 'float',
         animationEnabled: true,
-        animationTypeForReplace: 'pop',
         ...TransitionPresets.SlideFromRightIOS
       }}
     >
@@ -57,11 +55,6 @@ const StackNavigator = () => {
         user ? (
           <>
             <Stack.Group>
-              {/* {
-                userProfile?.layout == 'top' ?
-                  <Stack.Screen name='Index' component={TopNavigation} /> :
-                  <Stack.Screen name='Index' component={BottomNavigation} />
-              } */}
               <Stack.Screen name='Index' component={Index} />
               <Stack.Screen name='Message' component={Message} />
               <Stack.Screen name='EditProfile' component={EditProfile} />
@@ -78,7 +71,12 @@ const StackNavigator = () => {
               <Stack.Screen name='MessageCamera' component={MessageCamera} />
             </Stack.Group>
 
-            <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
+            <Stack.Group
+              screenOptions={{
+                presentation: 'transparentModal',
+                animationEnabled: true,
+                ...TransitionPresets.ModalFadeTransition
+              }}>
               <Stack.Screen name='NewMatch' component={NewMatch} />
               <Stack.Screen name='ViewAvarar' component={ViewAvarar} />
               <Stack.Screen name='ReelsComment' component={ReelsComment} />
@@ -87,7 +85,12 @@ const StackNavigator = () => {
               <Stack.Screen name='MessageOptions' component={MessageOptions} />
             </Stack.Group>
 
-            <Stack.Group screenOptions={{ presentation: 'modal' }}>
+            <Stack.Group
+              screenOptions={{
+                presentation: 'modal',
+                animationEnabled: true,
+                ...TransitionPresets.ModalFadeTransition
+              }}>
               <Stack.Screen name='ViewReel' component={ViewReel} />
               <Stack.Screen name='UserProfile' component={UserProfile} />
               <Stack.Screen name='Passion' component={Passion} />
