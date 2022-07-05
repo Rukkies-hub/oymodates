@@ -100,8 +100,6 @@ export const AuthProvider = ({ children }) => {
       const { access_token } = fbResponse.params
       const credential = FacebookAuthProvider.credential(access_token)
       signInWithCredential(auth, credential)
-    } else {
-      console.log('hey')
     }
   }, [fbResponse]);
 
