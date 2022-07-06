@@ -77,6 +77,8 @@ export const AuthProvider = ({ children }) => {
   const [messageReply, setMessageReply] = useState(null)
   const [showExpand, setShowExpand] = useState(true)
   const [reel, setReel] = useState(null)
+  const [thumbnail, setThumbnail] = useState(null)
+  const [mediaType, setMediaType] = useState()
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -284,7 +286,11 @@ export const AuthProvider = ({ children }) => {
         showExpand,
         setShowExpand,
         reel,
-        setReel
+        setReel,
+        thumbnail,
+        setThumbnail,
+        mediaType,
+        setMediaType
       }}
     >
       {!loadingInitial && children}

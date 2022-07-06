@@ -54,7 +54,7 @@ import ViewShot from "react-native-view-shot"
 const { width } = Dimensions.get('window')
 
 const Add = () => {
-  const { user, madiaString, userProfile } = useAuth()
+  const { user, madiaString, userProfile, media, setMedia, thumbnail, setThumbnail, mediaType, setMediaType } = useAuth()
   const navigation = useNavigation()
   const video = useRef(null)
   const viewShotRef = useRef(null)
@@ -66,9 +66,6 @@ const Add = () => {
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
   const [status, setStatus] = useState({})
   const [loading, setLoading] = useState(false)
-  const [media, setMedia] = useState(null)
-  const [thumbnail, setThumbnail] = useState(null)
-  const [mediaType, setMediaType] = useState()
   const [mediaSize, setMediaSize] = useState()
   const [background, setBackground] = useState(null)
   const [backgroundTextColor, setBackgroundTextColor] = useState(null)
@@ -149,8 +146,8 @@ const Add = () => {
                       },
                       likesCount: 0,
                       commentsCount: 0,
-                      mediaType,
-                      mediaSize,
+                      mediaType: mediaType ? mediaType : null,
+                      mediaSize: mediaSize ? mediaSize : null,
                       media: downloadURL,
                       mediaLink: snapshot.ref._location.path,
                       thumbnail: thumbnailDownloadURL,

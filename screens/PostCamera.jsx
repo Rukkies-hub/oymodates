@@ -5,21 +5,21 @@ import { Camera } from 'expo-camera'
 
 import { Audio } from 'expo-av'
 
-import { useIsFocused } from '@react-navigation/core'
-
 import color from '../style/color'
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 import useAuth from '../hooks/useAuth'
 import Bar from '../components/StatusBar'
 
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
+import * as NavigationBar from 'expo-navigation-bar'
+
+import * as VideoThumbnails from 'expo-video-thumbnails'
+
 const PostCamera = () => {
   const navigation = useNavigation()
-  const { setMedia, madiaString } = useAuth()
+  const { setMedia, setThumbnail, setMediaType } = useAuth()
 
   const [hasCameraPermission, setHasCameraPermission] = useState(false)
   const [hasAudioPermission, setHasAudioPermission] = useState(false)
@@ -29,6 +29,15 @@ const PostCamera = () => {
   const [isCameraReady, setIscameraReady] = useState(false)
 
   const isFocused = useIsFocused()
+
+  if (isFocused) {
+    NavigationBar.setVisibilityAsync('hidden')
+    NavigationBar.setBehaviorAsync('overlay-swipe')
+  }
+
+  navigation.addListener('blur', () => {
+    NavigationBar.setVisibilityAsync('visible')
+  })
 
   useEffect(() => {
     (async () => {
@@ -41,7 +50,7 @@ const PostCamera = () => {
   }, [])
 
   if (!hasCameraPermission || !hasAudioPermission)
-    return <View></View>
+    return <View />
 
   const recordVideo = async () => {
     if (cameraRef)
@@ -54,6 +63,11 @@ const PostCamera = () => {
           const source = data?.uri
 
           setMedia(source)
+
+          const { uri } = await VideoThumbnails.getThumbnailAsync(source, { time: 3000 })
+          setThumbnail(uri)
+          setMediaType('video')
+
           navigation.goBack()
         }
       } catch (error) {
