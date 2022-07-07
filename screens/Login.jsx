@@ -38,7 +38,11 @@ const Login = () => {
     signin,
     recoverPassword,
     googlePromptAsync,
-    fbPromptAsync
+    fbPromptAsync,
+    googleLoadng,
+    setGoogleLoading,
+    facebookLoadng,
+    setFacebookLoading
   } = useAuth()
 
   const isFocused = useIsFocused()
@@ -197,7 +201,10 @@ const Login = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => fbPromptAsync()}
+            onPress={() => {
+              setFacebookLoading(true)
+              fbPromptAsync()
+            }}
             style={{
               width: 45,
               height: 45,
@@ -208,17 +215,24 @@ const Login = () => {
               marginLeft: 20
             }}
           >
-            <Image
-              source={require('../assets/facebook.png')}
-              style={{
-                width: 25,
-                height: 25
-              }}
-            />
+            {
+              facebookLoadng ?
+                <ActivityIndicator size='small' color={color.blue} /> :
+                <Image
+                  source={require('../assets/facebook.png')}
+                  style={{
+                    width: 25,
+                    height: 25
+                  }}
+                />
+            }
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => googlePromptAsync()}
+            onPress={() => {
+              setGoogleLoading(true)
+              googlePromptAsync()
+            }}
             style={{
               width: 45,
               height: 45,
@@ -229,14 +243,17 @@ const Login = () => {
               marginLeft: 20
             }}
           >
-            <Image
-              source={require('../assets/google.png')}
-              style={{
-                width: 25,
-                height: 25
-              }}
-            />
-
+            {
+              googleLoadng ?
+                <ActivityIndicator size='small' color={color.red} /> :
+                <Image
+                  source={require('../assets/google.png')}
+                  style={{
+                    width: 25,
+                    height: 25
+                  }}
+                />
+            }
           </TouchableOpacity>
         </View>
 

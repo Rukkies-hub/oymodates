@@ -77,6 +77,8 @@ export const AuthProvider = ({ children }) => {
   const [reel, setReel] = useState(null)
   const [thumbnail, setThumbnail] = useState(null)
   const [mediaType, setMediaType] = useState()
+  const [googleLoadng, setGoogleLoading] = useState(false)
+  const [facebookLoadng, setFacebookLoading] = useState(false)
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -87,6 +89,9 @@ export const AuthProvider = ({ children }) => {
       const { id_token } = googleResponse?.params
       const credential = GoogleAuthProvider.credential(id_token)
       signInWithCredential(auth, credential)
+    } else {
+      setGoogleLoading(false)
+      setFacebookLoading(false)
     }
   }, [googleResponse])
 
@@ -100,6 +105,9 @@ export const AuthProvider = ({ children }) => {
       const { access_token } = fbResponse?.params
       const credential = FacebookAuthProvider?.credential(access_token)
       signInWithCredential(auth, credential)
+    } else {
+      setGoogleLoading(false)
+      setFacebookLoading(false)
     }
   }, [fbResponse]);
 
@@ -183,7 +191,9 @@ export const AuthProvider = ({ children }) => {
         if (profile?.about) setAbout(profile?.about)
         if (profile?.passions) setPassions([...profile?.passions])
       })
-
+    
+    setGoogleLoading(false)
+    setFacebookLoading(false)
     return unsub
   }
 
@@ -288,7 +298,11 @@ export const AuthProvider = ({ children }) => {
         thumbnail,
         setThumbnail,
         mediaType,
-        setMediaType
+        setMediaType,
+        googleLoadng,
+        setGoogleLoading,
+        facebookLoadng,
+        setFacebookLoading
       }}
     >
       {!loadingInitial && children}
