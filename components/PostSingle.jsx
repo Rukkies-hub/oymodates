@@ -67,7 +67,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
   return (
     <TouchableOpacity
       activeOpacity={1}
-      onPress={() => videoStatus.isPlaying ? ref?.current?.pauseAsync() : ref?.current?.playAsync()}
+      onPress={() => videoStatus?.isPlaying ? ref?.current?.pauseAsync() : ref?.current?.playAsync()}
       style={{
         flex: 1,
         width,

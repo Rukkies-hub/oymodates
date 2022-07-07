@@ -79,7 +79,7 @@ const AllPostCommentReplies = (props) => {
       >
         <FlatList
           data={replies}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item?.id}
           style={{ flex: 1 }}
           renderItem={({ item: reply }) => (
             <View

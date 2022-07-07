@@ -55,7 +55,7 @@ const Posts = () => {
     setPosts(
       queryPosts?.docs?.map(doc => ({
         id: doc?.id,
-        ...doc.data()
+        ...doc?.data()
       }))
     )
   }
@@ -66,7 +66,7 @@ const Posts = () => {
         setPosts(
           doc?.docs?.map(doc => ({
             id: doc?.id,
-            ...doc.data()
+            ...doc?.data()
           }))
         )
       })
@@ -83,7 +83,7 @@ const Posts = () => {
   return (
     <>
       {
-        posts.length < 1 ?
+        posts?.length < 1 ?
           <View
             style={{
               flex: 1,
@@ -107,7 +107,7 @@ const Posts = () => {
                   marginLeft: 10
                 }}
               >
-                Loading Feeds....
+                Loading Feeds...
               </Text>
             </View>
           </View> :
@@ -144,7 +144,7 @@ const Posts = () => {
                     marginLeft: 10
                   }}
                 >
-                  Loading Feeds....
+                  Loading Feeds...
                 </Text>
               </View>
             )}
@@ -154,7 +154,7 @@ const Posts = () => {
                 onRefresh={onRefresh}
               />
             }
-            keyExtractor={item => item.id}
+            keyExtractor={item => item?.id}
             style={{
               flex: 1,
               height: height - 109

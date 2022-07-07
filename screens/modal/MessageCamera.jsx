@@ -58,7 +58,7 @@ const MessageCamera = () => {
           navigation.navigate('PreviewMessageImage', {
             matchDetails,
             media: {
-              uri: data.uri,
+              uri: data?.uri,
               type: 'video'
             }
           })
@@ -69,7 +69,7 @@ const MessageCamera = () => {
   }
 
   const stopVideo = async () => {
-    if (cameraRef) cameraRef.stopRecording()
+    if (cameraRef) cameraRef?.stopRecording()
   }
 
   const takePictire = async () => {
@@ -77,7 +77,7 @@ const MessageCamera = () => {
       const data = await cameraRef?.takePictureAsync(null)
       navigation.navigate('PreviewMessageImage', {
         matchDetails, media: {
-          uri: data.uri,
+          uri: data?.uri,
           type: 'image'
         }
       })

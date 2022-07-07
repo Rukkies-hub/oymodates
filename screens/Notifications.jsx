@@ -22,7 +22,7 @@ const Notifications = () => {
   const [refreshing, setRefreshing] = useState(false)
 
   const viewNotification = async notification => {
-    if (!notification.seen)
+    if (!notification?.seen)
       await updateDoc(doc(db, 'users', user?.uid, 'notifications', notification?.notification), {
         seen: true
       }).then(() => navigation.navigate(notification?.activity == 'likes' ? 'ViewPost' : 'AddComment', { post: notification?.post }))
@@ -46,7 +46,7 @@ const Notifications = () => {
 
       <FlatList
         data={notifications}
-        keyExtractor={item => Math.random(item.id)}
+        keyExtractor={item => Math.random(item?.id)}
         style={{
           flex: 1,
           paddingHorizontal: 10,

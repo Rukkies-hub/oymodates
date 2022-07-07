@@ -17,7 +17,7 @@ const Tab = createMaterialTopTabNavigator()
 
 const Profile = () => {
   const navigation = useNavigation()
-  const { userProfile } = useAuth()
+  const { user, userProfile } = useAuth()
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -57,12 +57,12 @@ const Profile = () => {
             /> :
             <View
               style={{
-                width: '100%',
-                height: 400,
+                width: 80,
+                height: 80,
+                borderRadius: 100,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: userProfile?.theme == 'dark' ? color.black : color.offWhite,
-                borderRadius: 20
+                backgroundColor: userProfile?.theme == 'dark' ? color.black : color.offWhite
               }}
             >
               <SimpleLineIcons name="user" size={60} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />

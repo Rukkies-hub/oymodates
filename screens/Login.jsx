@@ -21,6 +21,8 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 
+import * as NavigationBar from 'expo-navigation-bar'
+
 const Login = () => {
   const {
     signinEmail,
@@ -41,6 +43,17 @@ const Login = () => {
 
   const isFocused = useIsFocused()
   const navigation = useNavigation()
+
+  if (isFocused) {
+    NavigationBar.setPositionAsync('absolute')
+    NavigationBar.setBackgroundColorAsync(color.transparent)
+    NavigationBar.setBackgroundColorAsync(color.faintBlack)
+    NavigationBar.setButtonStyleAsync('light')
+  }
+
+  navigation.addListener('blur', () => {
+    NavigationBar.setPositionAsync('relative')
+  })
 
   const [loaded] = useFonts({
     logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),

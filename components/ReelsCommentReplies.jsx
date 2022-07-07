@@ -46,8 +46,8 @@ const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll }) =
       }}
     >
       <FlatList
-        data={showAll ? replies : replies.length > 1 ? replies.splice(0, 1) : replies}
-        keyExtractor={item => item.id}
+        data={showAll ? replies : replies?.length > 1 ? replies?.splice(0, 1) : replies}
+        keyExtractor={item => item?.id}
         style={{ flex: 1 }}
         renderItem={({ item: reply }) => (
           <View

@@ -41,7 +41,7 @@ const Chat = () => {
           <Image
             resizeMode='cover'
             blurRadius={100}
-            source={{ uri: pendingSwipes[0].photoURL }}
+            source={{ uri: pendingSwipes[0]?.photoURL }}
             style={{
               width: 70,
               height: 70,
@@ -63,7 +63,7 @@ const Chat = () => {
               }}
             >
               {
-                pendingSwipes[0].username ?
+                pendingSwipes[0]?.username ?
                   <Text
                     style={{
                       fontFamily: 'text',
@@ -71,9 +71,9 @@ const Chat = () => {
                       color: userProfile?.theme == 'light' ? color.lightText : color.white
                     }}
                   >
-                    {pendingSwipes[0].username}
+                    {pendingSwipes[0]?.username}
                   </Text> :
-                  <Text>{pendingSwipes[0].displayName}</Text>
+                  <Text>{pendingSwipes[0]?.displayName}</Text>
               }
               <View
                 style={{

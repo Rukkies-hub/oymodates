@@ -14,8 +14,6 @@ import * as WebBrowser from 'expo-web-browser'
 
 WebBrowser.maybeCompleteAuthSession()
 
-import axios from 'axios'
-
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -86,7 +84,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (googleResponse?.type === 'success') {
-      const { id_token } = googleResponse.params
+      const { id_token } = googleResponse?.params
       const credential = GoogleAuthProvider.credential(id_token)
       signInWithCredential(auth, credential)
     }
@@ -99,8 +97,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (fbResponse?.type === 'success') {
-      const { access_token } = fbResponse.params
-      const credential = FacebookAuthProvider.credential(access_token)
+      const { access_token } = fbResponse?.params
+      const credential = FacebookAuthProvider?.credential(access_token)
       signInWithCredential(auth, credential)
     }
   }, [fbResponse]);
@@ -162,8 +160,8 @@ export const AuthProvider = ({ children }) => {
       snapshot =>
         setPendingSwipes(
           snapshot?.docs?.map(doc => ({
-            id: doc.id,
-            ...doc.data()
+            id: doc?.id,
+            ...doc?.data()
           }))
         )
     )
@@ -172,7 +170,7 @@ export const AuthProvider = ({ children }) => {
   const getUserProfile = async user => {
     const unsub = onSnapshot(doc(db, 'users', user?.uid),
       doc => {
-        let profile = doc.data()
+        let profile = doc?.data()
         setUserProfile(profile)
 
         if (profile?.job) setJob(profile?.job)

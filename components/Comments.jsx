@@ -27,8 +27,7 @@ import { useFonts } from 'expo-font'
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
-)
-  UIManager.setLayoutAnimationEnabledExperimental(true)
+) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 import CommentReplies from './CommentReplies'
 import PostCommentReply from './PostCommentReply'
@@ -62,7 +61,7 @@ const Comments = ({ post }) => {
     >
       <FlatList
         data={comments}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item?.id}
         style={{
           flex: 1,
           paddingHorizontal: 10

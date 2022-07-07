@@ -27,7 +27,7 @@ const LikeReply = ({ reply, textColor }) => {
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
     getDoc(doc(db, 'posts', reply?.post?.id, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid))
-      .then(res => resolve(res.exists()))
+      .then(res => resolve(res?.exists()))
   })
 
   const updateLike = () => new Promise(async (resolve, reject) => {
@@ -40,7 +40,7 @@ const LikeReply = ({ reply, textColor }) => {
       await setDoc(doc(db, 'posts', reply?.post?.id, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid), {
         id: userProfile?.id,
         comment: reply?.comment,
-        reply: reply.id,
+        reply: reply?.id,
         photoURL: userProfile?.photoURL,
         displayName: userProfile?.displayName,
         username: userProfile?.username,

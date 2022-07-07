@@ -5,9 +5,8 @@ import useAuth from '../hooks/useAuth'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
-const PostSubReplies = (props) => {
+const PostSubReplies = ({ reply }) => {
   const { userProfile } = useAuth()
-  const reply = props?.reply
 
   const [replies, setReplies] = useState([])
 
@@ -28,7 +27,7 @@ const PostSubReplies = (props) => {
   return (
     <FlatList
       data={replies}
-      keyExtractor={Item => Item.id}
+      keyExtractor={Item => Item?.id}
       style={{ flex: 1 }}
       renderItem={({ item: reply }) => (
         <View

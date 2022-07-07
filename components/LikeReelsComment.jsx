@@ -7,9 +7,8 @@ import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
 
-const LikeReelsComment = (props) => {
+const LikeReelsComment = ({ comment }) => {
   const { user, userProfile } = useAuth()
-  const comment = props.comment
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
 
@@ -27,7 +26,7 @@ const LikeReelsComment = (props) => {
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
     getDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.uid))
-      .then(res => resolve(res.exists()))
+      .then(res => resolve(res?.exists()))
   })
 
   const updateLike = () => new Promise(async (resolve, reject) => {

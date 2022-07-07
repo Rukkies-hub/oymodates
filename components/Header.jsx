@@ -71,7 +71,7 @@ const Header = ({
     (async () => {
       const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')))
       setNotificatios(
-        querySnapshot.docs.map(doc => ({
+        querySnapshot?.docs?.map(doc => ({
           id: doc?.id,
           notification: doc?.id,
           ...doc?.data()
@@ -84,7 +84,7 @@ const Header = ({
     (async () => {
       const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)))
       setNotificationCount(
-        querySnapshot.docs.map(doc => ({
+        querySnapshot?.docs?.map(doc => ({
           id: doc?.id,
           notification: doc?.id,
           ...doc?.data()
@@ -336,7 +336,7 @@ const Header = ({
               }}
             >
               {
-                user?.photoURL ?
+                user?.photoURL || userProfile?.photoURL ?
                   <Image
                     source={{ uri: userProfile?.photoURL || user?.photoURL }}
                     style={{

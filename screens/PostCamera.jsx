@@ -76,7 +76,7 @@ const PostCamera = () => {
   }
 
   const stopVideo = async () => {
-    if (cameraRef) cameraRef.stopRecording()
+    if (cameraRef) cameraRef?.stopRecording()
   }
 
   const takePictire = async () => {

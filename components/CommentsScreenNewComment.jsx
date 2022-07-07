@@ -30,9 +30,6 @@ if (
 const CommentsScreenNewComment = ({ post }) => {
   const { userProfile, postCommentType, replyCommentProps, setPostCommentType } = useAuth()
 
-
-  console.log(post)
-
   const [height, setHeight] = useState(50)
   const [input, setInput] = useState('')
 

@@ -23,7 +23,7 @@ const ViewVideo = (props) => {
     >
       <Pressable
         style={{ flex: 1 }}
-        onPress={() => status.isPlaying ? videoRef?.current?.pauseAsync() : videoRef?.current?.playAsync()}
+        onPress={() => status?.isPlaying ? videoRef?.current?.pauseAsync() : videoRef?.current?.playAsync()}
       >
         <Video
           ref={videoRef}

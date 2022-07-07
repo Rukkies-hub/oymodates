@@ -22,10 +22,8 @@ const BottomNavigation = () => {
   const Tab = createMaterialBottomTabNavigator()
   const { pendingSwipes, userProfile } = useAuth()
 
-  useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(userProfile?.theme == 'dark' ? color.black : color.white)
-    NavigationBar.setButtonStyleAsync(userProfile?.theme == 'dark' ? 'light' : 'dark')
-  }, [])
+  NavigationBar.setBackgroundColorAsync(userProfile?.theme == 'dark' ? color.black : color.white)
+  NavigationBar.setButtonStyleAsync(userProfile?.theme == 'dark' ? 'light' : 'dark')
 
   return (
     <SafeAreaView

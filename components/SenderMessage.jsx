@@ -45,12 +45,12 @@ const SenderMessage = ({ messages, matchDetails }) => {
 
   const UpdateStatus = async (data) => {
     try {
-      if (data.didJustFinish) {
+      if (data?.didJustFinish) {
         SetValue(0)
         setIsPlaying(false)
-      } else if (data.positionMillis) {
-        if (data.durationMillis) {
-          SetValue((data.positionMillis / data.durationMillis) * 100)
+      } else if (data?.positionMillis) {
+        if (data?.durationMillis) {
+          SetValue((data?.positionMillis / data?.durationMillis) * 100)
         }
       }
     } catch (error) {
@@ -85,7 +85,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 messages?.reply ?
                   <View
                     style={{
-                      backgroundColor: messages.message ? color.blue : color.transparent,
+                      backgroundColor: messages?.message ? color.blue : color.transparent,
                       padding: messages?.reply ? 5 : 10,
                       borderTopLeftRadius: 12,
                       borderBottomLeftRadius: 12,
@@ -169,7 +169,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                   </View> :
                   <View
                     style={{
-                      backgroundColor: messages.message ? color.blue : color.transparent,
+                      backgroundColor: messages?.message ? color.blue : color.transparent,
                       paddingVertical: 8,
                       paddingHorizontal: 8,
                       borderTopRightRadius: 0,
@@ -334,7 +334,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
             </View>
           }
           {
-            messages.voiceNote &&
+            messages?.voiceNote &&
             <View
               style={{
                 position: 'relative',
@@ -360,7 +360,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 thumbTintColor={color.offWhite}
               />
               <TouchableOpacity
-                onPress={() => !isPlaying ? playVoicenote(messages.voiceNote) : pauseVoicenote(messages.voiceNote)}
+                onPress={() => !isPlaying ? playVoicenote(messages?.voiceNote) : pauseVoicenote(messages?.voiceNote)}
                 style={{
                   backgroundColor: color.white,
                   width: 30,

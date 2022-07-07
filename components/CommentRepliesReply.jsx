@@ -14,15 +14,14 @@ import LikeReply from './LikeReply'
 import useAuth from '../hooks/useAuth'
 import PostCommentReplyReply from './PostCommentReplyReply'
 
-const CommentReplies = (props) => {
-  const comments = props.comment
+const CommentReplies = ({ comment }) => {
   const { userProfile } = useAuth()
 
   const [replies, setReplies] = useState([])
 
   useEffect(() =>
     (() => {
-      onSnapshot(collection(db, 'posts', comments?.post?.id, 'comments', comments?.id, 'replies'),
+      onSnapshot(collection(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'replies'),
         snapshot =>
           setReplies(
             snapshot?.docs?.map(doc => ({
@@ -47,8 +46,8 @@ const CommentReplies = (props) => {
       }}
     >
       <FlatList
-        data={replies.splice(0, 1)}
-        keyExtractor={item => item.id}
+        data={replies?.splice(0, 1)}
+        keyExtractor={item => item?.id}
         style={{ flex: 1 }}
         renderItem={({ item: reply }) => (
           <View

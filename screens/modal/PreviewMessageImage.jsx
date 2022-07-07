@@ -86,14 +86,14 @@ const PreviewMessageImage = () => {
 
     uploadBytes(sourceRef, blob)
       .then(snapshot => {
-        getDownloadURL(snapshot.ref)
+        getDownloadURL(snapshot?.ref)
           .then(downloadURL => {
             setExpanded(false)
-            addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
+            addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
               userId: user?.uid,
               username: userProfile?.username,
-              photoURL: matchDetails.users[user?.uid].photoURL,
-              mediaLink: snapshot.ref._location.path,
+              photoURL: matchDetails?.users[user?.uid].photoURL,
+              mediaLink: snapshot?.ref?._location?.path,
               mediaType: media?.type,
               media: downloadURL,
               caption: input,
@@ -136,7 +136,7 @@ const PreviewMessageImage = () => {
         {
           media?.type == 'video' &&
           <Pressable
-            onPress={() => status.isPlaying ? video?.current?.pauseAsync() : video?.current?.playAsync()}
+            onPress={() => status?.isPlaying ? video?.current?.pauseAsync() : video?.current?.playAsync()}
             style={{ flex: 1 }}
           >
             <Video

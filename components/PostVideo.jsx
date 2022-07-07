@@ -68,7 +68,7 @@ const PostVideo = (props) => {
       </ImageBackground>
 
       <TouchableOpacity
-        onPress={() => status.isPlaying ? video?.current?.pauseAsync() : video?.current?.playAsync()}
+        onPress={() => status?.isPlaying ? video?.current?.pauseAsync() : video?.current?.playAsync()}
         style={{
           position: 'absolute',
           width: '100%',
@@ -78,7 +78,7 @@ const PostVideo = (props) => {
         }}
       >
         {
-          !status.isPlaying &&
+          !status?.isPlaying &&
           <Feather name='play' size={60} color={color.white} />
         }
       </TouchableOpacity>

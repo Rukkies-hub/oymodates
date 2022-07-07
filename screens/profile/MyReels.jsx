@@ -22,7 +22,7 @@ const MyReels = () => {
       onSnapshot(query(collection(db, 'reels'),
         where('user.id', '==', user?.uid)),
         snapshot => setReels(
-          snapshot.docs.map(doc => ({
+          snapshot?.docs?.map(doc => ({
             id: doc?.id,
             ...doc?.data()
           }))

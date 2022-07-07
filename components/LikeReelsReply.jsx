@@ -24,26 +24,26 @@ const LikeReelsReply = ({ reply, textColor }) => {
   }, [])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply.id, 'likes', user?.uid))
-      .then(res => resolve(res.exists()))
+    getDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid))
+      .then(res => resolve(res?.exists()))
   })
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply.id, 'likes', user?.uid))
-      await updateDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply.id), {
+      await deleteDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid))
+      await updateDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply?.id), {
         likesCount: increment(-1)
       })
     } else {
-      await setDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply.id, 'likes', user?.uid), {
+      await setDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply?.id, 'likes', user?.uid), {
         id: userProfile?.id,
         comment: reply?.comment,
-        reply: reply.id,
+        reply: reply?.id,
         photoURL: userProfile?.photoURL,
         displayName: userProfile?.displayName,
         username: userProfile?.username,
       })
-      await updateDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply.id), {
+      await updateDoc(doc(db, 'reels', reply?.reel?.id, 'comments', reply?.comment, 'replies', reply?.id), {
         likesCount: increment(1)
       })
     }

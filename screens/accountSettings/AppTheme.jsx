@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
 import color from '../../style/color'
 
@@ -10,12 +10,17 @@ import { db } from '../../hooks/firebase'
 
 const { width } = Dimensions.get('window')
 
+import * as NavigationBar from 'expo-navigation-bar'
+
 const AppTheme = () => {
   const { user, userProfile } = useAuth()
 
   const lightMode = () => updateDoc(doc(db, 'users', user?.uid), { theme: 'light' })
 
   const darkMode = () => updateDoc(doc(db, 'users', user?.uid), { theme: 'dark' })
+
+  NavigationBar.setBackgroundColorAsync(userProfile?.theme == 'dark' ? color.black : color.white)
+  NavigationBar.setButtonStyleAsync(userProfile?.theme == 'dark' ? 'light' : 'dark')
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),

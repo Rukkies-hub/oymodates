@@ -26,13 +26,13 @@ const Reels = () => {
   const navigation = useNavigation()
 
   const onViewableItemsChanged = useRef(({ changed }) => {
-    changed.forEach(element => {
-      const cell = mediaRefs.current[element.key]
+    changed?.forEach(element => {
+      const cell = mediaRefs?.current[element?.key]
       if (cell) {
-        if (element.isViewable) {
-          cell.play()
+        if (element?.isViewable) {
+          cell?.play()
         } else {
-          cell.stop()
+          cell?.stop()
         }
       }
     })
@@ -47,7 +47,7 @@ const Reels = () => {
     setReels(
       queryReels?.docs?.map(doc => ({
         id: doc?.id,
-        ...doc.data()
+        ...doc?.data()
       }))
     )
   }
@@ -58,7 +58,7 @@ const Reels = () => {
         setReels(
           doc?.docs?.map(doc => ({
             id: doc?.id,
-            ...doc.data()
+            ...doc?.data()
           }))
         )
       })
@@ -99,7 +99,7 @@ const Reels = () => {
           alignItems: 'center'
         }}
       >
-        <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)} />
+        <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item?.id] = PostSingleRef)} />
 
         <LinearGradient
           colors={['transparent', color.labelColor]}
@@ -240,9 +240,9 @@ const Reels = () => {
           }}
           renderItem={renderItem}
           pagingEnabled
-          keyExtractor={item => item.id}
+          keyExtractor={item => item?.id}
           decelerationRate={'normal'}
-          onViewableItemsChanged={onViewableItemsChanged.current}
+          onViewableItemsChanged={onViewableItemsChanged?.current}
           showsVerticalScrollIndicator={false}
           vertical={true}
           scrollEnabled={true}

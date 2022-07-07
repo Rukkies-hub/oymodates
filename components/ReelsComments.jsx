@@ -32,9 +32,8 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
-const ReelsComments = (props) => {
+const ReelsComments = ({ reel }) => {
   const { userProfile, user } = useAuth()
-  const reel = props?.reel
 
   const [comments, setComments] = useState([])
   const [height, setHeight] = useState(40)
@@ -86,7 +85,7 @@ const ReelsComments = (props) => {
     >
       <FlatList
         data={comments}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item?.id}
         style={{
           flex: 1,
           marginHorizontal: 10

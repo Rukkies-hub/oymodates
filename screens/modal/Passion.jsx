@@ -181,14 +181,14 @@ const Passion = () => {
             }}
           >
             {
-              passionList.map((passion, index) => {
+              passionList?.map((passion, index) => {
                 return (
                   <TouchableOpacity
                     key={index}
                     onPress={() => {
-                      if (passions.includes(passion))
-                        setPassions(passions.filter(item => item !== passion))
-                      else if (passions.length <= 4)
+                      if (passions?.includes(passion))
+                        setPassions(passions?.filter(item => item !== passion))
+                      else if (passions?.length <= 4)
                         setPassions(oldArray => [...oldArray, passion])
                     }}
                     style={{

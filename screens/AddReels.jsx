@@ -89,7 +89,7 @@ const AddReels = () => {
   }
 
   const stopVideo = async () => {
-    if (cameraRef) cameraRef.stopRecording()
+    if (cameraRef) cameraRef?.stopRecording()
   }
 
   const pickFromGallery = async () => {

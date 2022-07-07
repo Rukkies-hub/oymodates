@@ -4,10 +4,8 @@ import { Text, TouchableOpacity } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-const ReelsCommentReply = (props) => {
+const ReelsCommentReply = ({ comment }) => {
   const { userProfile, setReelsCommentType, setReplyCommentProps, setCommentAutoFocus } = useAuth()
-
-  const comment = props?.comment
 
   return (
     <TouchableOpacity

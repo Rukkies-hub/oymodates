@@ -23,12 +23,13 @@ const Likes = (params) => {
 
   useEffect(() => {
     (() => {
-      getLikesById(post?.id, user?.uid).then(res => {
-        setCurrentLikesState({
-          ...currentLikesState,
-          state: res
+      getLikesById(post?.id, user?.uid)
+        .then(res => {
+          setCurrentLikesState({
+            ...currentLikesState,
+            state: res
+          })
         })
-      })
     })()
   }, [])
 
@@ -91,7 +92,7 @@ const Likes = (params) => {
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
     getDoc(doc(db, 'posts', post?.id, 'likes', user?.uid))
-      .then(res => resolve(res.exists()))
+      .then(res => resolve(res?.exists()))
   })
 
   const handleUpdateLikes = async () => {

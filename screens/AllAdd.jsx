@@ -66,7 +66,7 @@ const AllAdd = () => {
           sortBy: ['creationTime'],
           mediaType: ['video']
         })
-        setGalleryItems(userGalleryMedia.assets)
+        setGalleryItems(userGalleryMedia?.assets)
       }
     })()
   }, [])
@@ -90,7 +90,7 @@ const AllAdd = () => {
   }
 
   const stopVideo = async () => {
-    if (cameraRef) cameraRef.stopRecording()
+    if (cameraRef) cameraRef?.stopRecording()
   }
 
   const pickFromGallery = async () => {

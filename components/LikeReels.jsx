@@ -70,7 +70,7 @@ const LikeReels = (props) => {
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
     getDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid))
-      .then(res => resolve(res.exists()))
+      .then(res => resolve(res?.exists()))
   })
 
   const handleUpdateLikes = async () => {

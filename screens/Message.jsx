@@ -86,9 +86,9 @@ const Message = () => {
       onSnapshot(query(collection(db,
         'matches', matchDetails?.id, 'messages'),
         orderBy('timestamp', 'desc')),
-        snapshot => setMessages(snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
+        snapshot => setMessages(snapshot?.docs?.map(doc => ({
+          id: doc?.id,
+          ...doc?.data()
         })))
       )
     })()
@@ -98,7 +98,7 @@ const Message = () => {
     (() => {
       onSnapshot(doc(db, 'matches', matchDetails?.id), doc => {
         setChatTheme(doc.data()?.chatTheme)
-        setChatThemeIndex(doc.data()?.chatThemeIndex)
+        setChatThemeIndex(doc?.data()?.chatThemeIndex)
       })
     })()
     , [matchDetails, db])
@@ -129,7 +129,7 @@ const Message = () => {
       quality: 1,
     })
 
-    if (!result.cancelled) navigation.navigate('PreviewMessageImage', { matchDetails, media: result })
+    if (!result?.cancelled) navigation.navigate('PreviewMessageImage', { matchDetails, media: result })
   }
 
   const sendMessage = () => {
@@ -178,7 +178,7 @@ const Message = () => {
     updateRecordings = []
     updateRecordings.push({
       sound,
-      duration: getDurationFormated(status.durationMillis),
+      duration: getDurationFormated(status?.durationMillis),
       file: recording.getURI()
     })
 
@@ -199,15 +199,15 @@ const Message = () => {
 
     uploadBytes(sourceRef, blob)
       .then(snapshot => {
-        getDownloadURL(snapshot.ref)
+        getDownloadURL(snapshot?.ref)
           .then(downloadURL => {
-            addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
+            addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
               userId: user?.uid,
               username: userProfile?.username,
-              photoURL: matchDetails.users[user?.uid].photoURL,
+              photoURL: matchDetails?.users[user?.uid].photoURL,
               voiceNote: downloadURL,
-              mediaLink: snapshot.ref._location.path,
-              duration: getDurationFormated(status.durationMillis),
+              mediaLink: snapshot?.ref?._location?.path,
+              duration: getDurationFormated(status?.durationMillis),
               seen: false,
               timestamp: serverTimestamp(),
             }).finally(() => setRecordingLoading(false))
@@ -261,12 +261,12 @@ const Message = () => {
           }}
           data={messages}
           showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item?.id}
           renderItem={({ item: message }) => (
-            message.userId === user?.uid ? (
-              <SenderMessage key={message.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
+            message?.userId === user?.uid ? (
+              <SenderMessage key={message?.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
             ) : (
-              <RecieverMessage key={message.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
+              <RecieverMessage key={message?.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
             )
           )}
         />

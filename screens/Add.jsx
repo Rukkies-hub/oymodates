@@ -87,15 +87,15 @@ const Add = () => {
       quality: 1,
     })
 
-    if (!result.cancelled) {
-      setMedia(result.uri)
-      setMediaType(result.type)
+    if (!result?.cancelled) {
+      setMedia(result?.uri)
+      setMediaType(result?.type)
 
-      setMediaSize({ width: result.width, height: result.height })
+      setMediaSize({ width: result?.width, height: result?.height })
 
-      if (result.type == 'video') {
+      if (result?.type == 'video') {
         try {
-          const { uri } = await VideoThumbnails.getThumbnailAsync(result.uri, { time: 3000 })
+          const { uri } = await VideoThumbnails.getThumbnailAsync(result?.uri, { time: 3000 })
           setThumbnail(uri)
         } catch (e) {
           console.warn(e)
@@ -130,12 +130,12 @@ const Add = () => {
     setLoading(true)
     uploadBytes(mediaRef, blob)
       .then(snapshot => {
-        getDownloadURL(snapshot.ref)
+        getDownloadURL(snapshot?.ref)
           .then(downloadURL => {
             navigation.goBack()
             uploadBytes(thumbnailRef, thumbnailBlob)
               .then(thumbnailSnapshot => {
-                getDownloadURL(thumbnailSnapshot.ref)
+                getDownloadURL(thumbnailSnapshot?.ref)
                   .then(thumbnailDownloadURL => {
                     addDoc(collection(db, 'posts'), {
                       user: {
@@ -149,9 +149,9 @@ const Add = () => {
                       mediaType: mediaType ? mediaType : null,
                       mediaSize: mediaSize ? mediaSize : null,
                       media: downloadURL,
-                      mediaLink: snapshot.ref._location.path,
+                      mediaLink: snapshot?.ref?._location?.path,
                       thumbnail: thumbnailDownloadURL,
-                      thumbnailLink: thumbnailSnapshot.ref._location.path,
+                      thumbnailLink: thumbnailSnapshot?.ref?._location?.path,
                       caption: input,
                       timestamp: serverTimestamp()
                     }).finally(() => setLoading(false))
@@ -176,7 +176,7 @@ const Add = () => {
     setLoading(true)
     uploadBytes(mediaRef, blob)
       .then(snapshot => {
-        getDownloadURL(snapshot.ref)
+        getDownloadURL(snapshot?.ref)
           .then(downloadURL => {
             navigation.goBack()
             addDoc(collection(db, 'posts'), {
@@ -192,7 +192,7 @@ const Add = () => {
               mediaSize: mediaSize ? mediaSize : null,
               postType: postType || 'image',
               media: downloadURL,
-              mediaLink: snapshot.ref._location.path,
+              mediaLink: snapshot?.ref?._location?.path,
               caption: input,
               timestamp: serverTimestamp()
             }).finally(() => setLoading(false))

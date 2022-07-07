@@ -44,12 +44,12 @@ const RecieverMessage = ({ messages, matchDetails }) => {
 
   const UpdateStatus = async (data) => {
     try {
-      if (data.didJustFinish) {
+      if (data?.didJustFinish) {
         SetValue(0)
         setIsPlaying(false)
-      } else if (data.positionMillis) {
-        if (data.durationMillis) {
-          SetValue((data.positionMillis / data.durationMillis) * 100)
+      } else if (data?.positionMillis) {
+        if (data?.durationMillis) {
+          SetValue((data?.positionMillis / data?.durationMillis) * 100)
         }
       }
     } catch (error) {
@@ -89,7 +89,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 messages?.reply ?
                   <View
                     style={{
-                      backgroundColor: messages.message ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
+                      backgroundColor: messages?.message ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
                       padding: messages?.reply ? 5 : 10,
                       borderTopRightRadius: 12,
                       borderBottomRightRadius: 12,
@@ -104,7 +104,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                         borderTopRightRadius: 8,
                         borderBottomRightRadius: 8,
                         borderBottomLeftRadius: 8,
-                        backgroundColor: messages.message ? (userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.lightText : color.black) : color.transparent,
+                        backgroundColor: messages?.message ? (userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.lightText : color.black) : color.transparent,
                         flexDirection: 'row',
                         justifyContent: 'flex-start',
                         alignItems: 'flex-start',
@@ -173,7 +173,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                   </View> :
                   <View
                     style={{
-                      backgroundColor: messages.message ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
+                      backgroundColor: messages?.message ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
                       paddingVertical: 8,
                       paddingHorizontal: 8,
                       borderTopLeftRadius: 0,
@@ -212,7 +212,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             <View
               style={{
                 position: 'relative',
-                backgroundColor: messages.mediaType == 'image' ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
+                backgroundColor: messages?.mediaType == 'image' ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
                 borderRadius: 20,
                 overflow: 'hidden'
               }}
@@ -340,7 +340,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
           }
 
           {
-            messages.voiceNote &&
+            messages?.voiceNote &&
             <View
               style={{
                 position: 'relative',
@@ -357,7 +357,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
               }}
             >
               <TouchableOpacity
-                onPress={() => !isPlaying ? playVoicenote(messages.voiceNote) : pauseVoicenote(messages.voiceNote)}
+                onPress={() => !isPlaying ? playVoicenote(messages?.voiceNote) : pauseVoicenote(messages?.voiceNote)}
                 style={{
                   backgroundColor: color.blue,
                   width: 30,

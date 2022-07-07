@@ -100,11 +100,11 @@ const EditProfile = () => {
             .then(() => {
               uploadTask.on('state_changed',
                 snapshot => {
-                  const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                  const progress = (snapshot?.bytesTransferred / snapshot?.totalBytes) * 100
                 },
                 error => setUploadLoading(false),
                 () => {
-                  getDownloadURL(uploadTask.snapshot.ref)
+                  getDownloadURL(uploadTask?.snapshot?.ref)
                     .then(downloadURL => {
                       setImage(downloadURL)
                       updateDoc(doc(db, 'users', user?.uid), {
@@ -114,17 +114,17 @@ const EditProfile = () => {
                     })
                 }
               )
-            })
-            .catch(() => setUploadLoading(false))
+            }).catch(() => setUploadLoading(false))
+            .finally(() => setUploadLoading(false))
         } else {
           setUploadLoading(true)
           uploadTask.on('state_changed',
             snapshot => {
-              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+              const progress = (snapshot?.bytesTransferred / snapshot?.totalBytes) * 100
             },
             error => setUploadLoading(false),
             () => {
-              getDownloadURL(uploadTask.snapshot.ref)
+              getDownloadURL(uploadTask?.snapshot?.ref)
                 .then(downloadURL => {
                   setImage(downloadURL)
                   updateDoc(doc(db, 'users', user?.uid), {
@@ -240,15 +240,15 @@ const EditProfile = () => {
               /> :
               <View
                 style={{
-                  width: '100%',
-                  height: 400,
+                  width: 80,
+                  height: 80,
+                  borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: userProfile?.theme == 'dark' ? color.black : color.offWhite,
-                  borderRadius: 20
+                  backgroundColor: userProfile?.theme == 'dark' ? color.black : color.offWhite
                 }}
               >
-                <SimpleLineIcons name="user" size={60} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
+                <SimpleLineIcons name="user" size={30} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
               </View>
           }
 
@@ -269,7 +269,7 @@ const EditProfile = () => {
             >
               <Text
                 style={{
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                  color: userProfile?.theme == 'dark' ? (userProfile?.username ? color.white : color.offWhite) : (userProfile?.username ? color.dark : color.lightText),
                   fontFamily: 'boldText',
                   fontSize: 20
                 }}
@@ -549,7 +549,7 @@ const EditProfile = () => {
                 }}
               >
                 {
-                  passions.map((passion, index) => {
+                  passions?.map((passion, index) => {
                     return (
                       <View
                         key={index}

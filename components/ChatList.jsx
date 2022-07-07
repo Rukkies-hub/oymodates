@@ -17,8 +17,8 @@ const ChatList = () => {
       onSnapshot(query(collection(db, 'matches'),
         where('usersMatched', 'array-contains', user?.uid)),
         snapshot => setMatches(
-          snapshot.docs.map(doc => ({
-            id: doc.id,
+          snapshot?.docs?.map(doc => ({
+            id: doc?.id,
             ...doc?.data()
           }))
         ))
@@ -26,7 +26,7 @@ const ChatList = () => {
   }, [user, db])
 
   return (
-    matches.length > 0 ? (
+    matches?.length > 0 ? (
       <FlatList
         style={{
           flex: 1,
@@ -35,7 +35,7 @@ const ChatList = () => {
           paddingHorizontal: 10
         }}
         data={matches}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item?.id}
         renderItem={({ item }) => <ChatRow matchDetails={item} />}
       />
     ) : (

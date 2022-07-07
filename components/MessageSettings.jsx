@@ -57,12 +57,9 @@ const backgrounds = [
   },
 ]
 
-const MessageSettings = props => {
+const MessageSettings = ({ matchDetails, iconColor }) => {
   const { userProfile, setChatTheme } = useAuth()
   const refMessageSettingsSheet = useRef()
-
-  const matchDetails = props?.matchDetails
-  const iconColor = props?.iconColor
 
   const setChatBackground = async background => {
     await updateDoc(doc(db, 'matches', matchDetails?.id), {
