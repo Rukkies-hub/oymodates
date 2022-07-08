@@ -6,11 +6,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   Image,
-  Keyboard,
-  TouchableOpacity,
-  TextInput,
-  LayoutAnimation,
-  UIManager,
+  Keyboard
 } from 'react-native'
 
 import { collection, onSnapshot } from 'firebase/firestore'
@@ -23,11 +19,6 @@ import useAuth from '../hooks/useAuth'
 
 import Likecomments from './Likecomments'
 import { useFonts } from 'expo-font'
-
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 import CommentReplies from './CommentReplies'
 import PostCommentReply from './PostCommentReply'

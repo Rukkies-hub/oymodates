@@ -2,15 +2,15 @@ import React, {
   createContext,
   useContext,
   useEffect,
-  useState,
-  useRef,
-  useLayoutEffect
+  useState
 } from 'react'
 
 import * as Google from 'expo-auth-session/providers/google'
 import * as Facebook from 'expo-auth-session/providers/facebook'
 import { ResponseType } from 'expo-auth-session'
 import * as WebBrowser from 'expo-web-browser'
+
+import { registerIndieID } from 'native-notify'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -156,8 +156,6 @@ export const AuthProvider = ({ children }) => {
           getPendingSwipes(user)
         }
         else setUser(null)
-
-
         setLoadingInitial(false)
       })
     })()
@@ -191,6 +189,8 @@ export const AuthProvider = ({ children }) => {
         if (profile?.about) setAbout(profile?.about)
         if (profile?.passions) setPassions([...profile?.passions])
       })
+    
+    registerIndieID(user?.uid, 3167, 'ND7GyrPMrqE6c0PdboxvGF')
     
     setGoogleLoading(false)
     setFacebookLoading(false)
@@ -305,6 +305,7 @@ export const AuthProvider = ({ children }) => {
         setFacebookLoading
       }}
     >
+      {/* {!loadingInitial && children} */}
       {!loadingInitial && children}
     </AuthContext.Provider>
   )

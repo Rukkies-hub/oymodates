@@ -131,7 +131,7 @@ const Likes = () => {
                             alignItems: 'center'
                           }}
                         >
-                          <Feather name="x" size={24} color={color.red} />
+                          <Feather name='x' size={24} color={color.red} />
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -145,7 +145,7 @@ const Likes = () => {
                             alignItems: 'center'
                           }}
                         >
-                          <AntDesign name="heart" size={24} color={color.lightGreen} />
+                          <AntDesign name='heart' size={24} color={color.lightGreen} />
                         </TouchableOpacity>
                       </View>
                     </View>

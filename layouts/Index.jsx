@@ -24,11 +24,11 @@ const Index = () => {
         }
       }}
     >
-      <Tab.Screen name="AllAdd" component={AllAdd} />
+      <Tab.Screen name='AllAdd' component={AllAdd} />
       {
         userProfile?.layout == 'top' ?
-          <Tab.Screen name="Main" component={TopNavigation} /> :
-          <Tab.Screen name="Main" component={BottomNavigation} />
+          <Tab.Screen name='Main' component={TopNavigation} /> :
+          <Tab.Screen name='Main' component={BottomNavigation} />
       }
     </Tab.Navigator>
   )

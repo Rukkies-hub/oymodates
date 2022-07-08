@@ -14,14 +14,13 @@ import {
   useWindowDimensions,
   Dimensions,
   ActivityIndicator,
-  Platform
+  Platform,
+  BackHandler
 } from 'react-native'
 
 import Header from '../components/Header'
 
 import color from '../style/color'
-
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { EvilIcons, Feather } from '@expo/vector-icons'
 
@@ -39,8 +38,6 @@ if (
 
 import { useNavigation } from '@react-navigation/native'
 
-import { Video } from 'expo-av'
-
 import Bar from '../components/StatusBar'
 
 import * as VideoThumbnails from 'expo-video-thumbnails'
@@ -49,9 +46,11 @@ import uuid from 'uuid-random'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
-import ViewShot from "react-native-view-shot"
+import ViewShot from 'react-native-view-shot'
 
 const { width } = Dimensions.get('window')
+
+import axios from 'axios'
 
 const Add = () => {
   const { user, madiaString, userProfile, media, setMedia, thumbnail, setThumbnail, mediaType, setMediaType } = useAuth()
@@ -70,6 +69,7 @@ const Add = () => {
   const [background, setBackground] = useState(null)
   const [backgroundTextColor, setBackgroundTextColor] = useState(null)
   const [postType, setPostType] = useState(null)
+  const [selectionColor, setSelectionColor] = useState(null)
 
   const storage = getStorage()
 
@@ -127,6 +127,7 @@ const Add = () => {
 
     const thumbnailRef = ref(storage, `posts/${user?.uid}/thumbnail/${uuid()}`)
 
+    setSelectionColor(color.transparent)
     setLoading(true)
     uploadBytes(mediaRef, blob)
       .then(snapshot => {
@@ -154,7 +155,18 @@ const Add = () => {
                       thumbnailLink: thumbnailSnapshot?.ref?._location?.path,
                       caption: input,
                       timestamp: serverTimestamp()
-                    }).finally(() => setLoading(false))
+                    }).catch(() => setLoading(false))
+                      .finally(() => {
+                        setLoading(false)
+                        setMedia(null)
+                        axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+                          subID: userProfile?.id,
+                          appId: 3167,
+                          appToken: 'ND7GyrPMrqE6c0PdboxvGF',
+                          title: 'Post saved',
+                          message: `Your post ${input.slice(0, 100)} was saved successfully`
+                        })
+                      })
                   })
               })
           })
@@ -173,6 +185,7 @@ const Add = () => {
 
     const mediaRef = ref(storage, `posts/${user?.uid}/media/${uuid()}`)
 
+    setSelectionColor(color.transparent)
     setLoading(true)
     uploadBytes(mediaRef, blob)
       .then(snapshot => {
@@ -195,16 +208,27 @@ const Add = () => {
               mediaLink: snapshot?.ref?._location?.path,
               caption: input,
               timestamp: serverTimestamp()
-            }).finally(() => setLoading(false))
+            }).catch(() => setLoading(false))
+              .finally(() => {
+                setLoading(false)
+                setMedia(null)
+                axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+                  subID: userProfile?.id,
+                  appId: 3167,
+                  appToken: 'ND7GyrPMrqE6c0PdboxvGF',
+                  title: 'Post saved',
+                  message: `Your post ${input.slice(0, 100)} was saved successfully`
+                })
+              })
           })
       })
-
   }
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
       setMediaVidiblity(false)
+      setSelectionColor(backgroundTextColor)
     })
   }, [])
 
@@ -213,6 +237,7 @@ const Add = () => {
       setExpanded(false)
       LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
       setMediaVidiblity(true)
+      setSelectionColor(color.transparent)
     })
   }, [])
 
@@ -334,6 +359,7 @@ const Add = () => {
                             value={input}
                             onChangeText={setInput}
                             maxLength={200}
+                            selectionColor={selectionColor || backgroundTextColor}
                             placeholder="What's on your mind..."
                             placeholderTextColor={backgroundTextColor || color.black}
                             onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
@@ -371,6 +397,7 @@ const Add = () => {
                             value={input}
                             onChangeText={setInput}
                             placeholder="What's on your mind..."
+                            selectionColor={selectionColor || backgroundTextColor}
                             placeholderTextColor={backgroundTextColor || color.black}
                             onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                             style={{
@@ -379,8 +406,9 @@ const Add = () => {
                               position: 'absolute',
                               alignSelf: 'center',
                               bottom: '50%',
+                              minWidth: width,
                               maxHeight: 300,
-                              fontSize: 18,
+                              fontSize: input?.length <= 30 ? 30 : 18,
                               paddingVertical: 10,
                               borderRadius: 12,
                               paddingHorizontal: 10,
@@ -599,6 +627,31 @@ const Add = () => {
                       style={{
                         fontFamily: 'boldText',
                         color: color.white
+                      }}
+                    >
+                      Aa
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      setBackgroundTextColor(color.white)
+                      setPostType('poster')
+                    }}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: 8,
+                      backgroundColor: userProfile?.theme == 'dark' ? color.white : color.offWhite,
+                      marginRight: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontFamily: 'boldText',
+                        color: color.black
                       }}
                     >
                       Aa

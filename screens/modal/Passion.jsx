@@ -19,63 +19,63 @@ import useAuth from '../../hooks/useAuth'
 import color from '../../style/color'
 
 const passionList = [
-  "karaoke",
-  "cycling",
-  "swimming",
-  "cat lover",
-  "dog lover",
-  "environmentalism",
-  "running",
-  "outdoors",
-  "trivia",
-  "grap a drink",
-  "museum",
-  "gammer",
-  "soccer",
-  "netflix",
-  "sports",
-  "working out",
-  "comedy",
-  "spirituality",
-  "board games",
-  "cooking",
-  "wine",
-  "foodie",
-  "hiking",
-  "politics",
-  "writer",
-  "travel",
-  "golf",
-  "reading",
-  "movies",
-  "athlete",
-  "baking",
-  "plant-based",
-  "vlogging",
-  "gardening",
-  "fishing",
-  "art",
-  "brunch",
-  "climbing",
-  "tea",
-  "walking",
-  "blogging",
-  "volunteering",
-  "astrology",
-  "yoga",
-  "instagram",
-  "language exchange",
-  "surfing",
-  "craft beer",
-  "shopping",
-  "DIY",
-  "dancing",
-  "disney",
-  "fashion",
-  "music",
-  "photography",
-  "picnicking",
-  "coffie"
+  'karaoke',
+  'cycling',
+  'swimming',
+  'cat lover',
+  'dog lover',
+  'environmentalism',
+  'running',
+  'outdoors',
+  'trivia',
+  'grap a drink',
+  'museum',
+  'gammer',
+  'soccer',
+  'netflix',
+  'sports',
+  'working out',
+  'comedy',
+  'spirituality',
+  'board games',
+  'cooking',
+  'wine',
+  'foodie',
+  'hiking',
+  'politics',
+  'writer',
+  'travel',
+  'golf',
+  'reading',
+  'movies',
+  'athlete',
+  'baking',
+  'plant-based',
+  'vlogging',
+  'gardening',
+  'fishing',
+  'art',
+  'brunch',
+  'climbing',
+  'tea',
+  'walking',
+  'blogging',
+  'volunteering',
+  'astrology',
+  'yoga',
+  'instagram',
+  'language exchange',
+  'surfing',
+  'craft beer',
+  'shopping',
+  'DIY',
+  'dancing',
+  'disney',
+  'fashion',
+  'music',
+  'photography',
+  'picnicking',
+  'coffie'
 ]
 
 const Passion = () => {
@@ -138,7 +138,7 @@ const Passion = () => {
           style={{
             fontSize: 20,
             color: userProfile?.theme == 'dark' ? color.white : color.dark,
-            fontFamily: "text"
+            fontFamily: 'text'
           }}
         >
           Edit Passions
@@ -160,7 +160,7 @@ const Passion = () => {
       <View
         style={{
           flex: 1,
-          width: "100%",
+          width: '100%',
           paddingHorizontal: 10,
           marginTop: 30,
           paddingBottom: 20
@@ -174,10 +174,10 @@ const Passion = () => {
         >
           <View
             style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "flex-start",
-              alignItems: "flex-start"
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start'
             }}
           >
             {
@@ -205,8 +205,8 @@ const Passion = () => {
                       style={{
                         color: passions?.includes(passion) ? color.red : userProfile?.theme == 'dark' ? color.white : color.lightText,
                         fontSize: 12,
-                        fontFamily: "text",
-                        textTransform: "capitalize"
+                        fontFamily: 'text',
+                        textTransform: 'capitalize'
                       }}
                     >
                       {passion}
@@ -225,19 +225,19 @@ const Passion = () => {
             backgroundColor: passions?.length >= 3 ? color.red : userProfile?.theme == 'dark' ? color.dark : color.lightText,
             height: 50,
             borderRadius: 12,
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
         >
           {
             passionsLoading ?
-              <ActivityIndicator size="small" color={color.white} />
+              <ActivityIndicator size='small' color={color.white} />
               :
               <Text
                 style={{
                   color: color.white,
                   fontSize: 18,
-                  fontFamily: "text"
+                  fontFamily: 'text'
                 }}
               >
                 Update passion

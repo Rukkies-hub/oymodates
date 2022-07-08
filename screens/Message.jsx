@@ -250,7 +250,7 @@ const Message = () => {
       />
 
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
         <FlatList
@@ -507,7 +507,7 @@ const Message = () => {
                   <ActivityIndicator size='small' color={userProfile?.theme == 'light' ? color.lightText : color.white} /> :
                   <FontAwesome5
                     size={20}
-                    name="microphone-alt"
+                    name='microphone-alt'
                     color={userProfile?.theme == 'light' ? color.lightText : color.white}
                   />
               }

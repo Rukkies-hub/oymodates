@@ -191,7 +191,7 @@ const SaveReels = (params) => {
           {
             !loading ?
               <>
-                <Feather name="corner-left-up" size={24} color={loading == true ? color.red : color.white} />
+                <Feather name='corner-left-up' size={24} color={loading == true ? color.red : color.white} />
                 <Text
                   style={{
                     fontFamily: 'text',

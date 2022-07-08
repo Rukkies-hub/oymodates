@@ -5,8 +5,6 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  LayoutAnimation,
-  UIManager,
   Platform,
   Keyboard,
   ImageBackground,
@@ -28,11 +26,6 @@ import { db } from '../../hooks/firebase'
 import { useFonts } from 'expo-font'
 
 import Bar from '../../components/StatusBar'
-
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const ReelsComment = () => {
   const {

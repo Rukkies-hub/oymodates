@@ -65,7 +65,7 @@ const Profile = () => {
                 backgroundColor: userProfile?.theme == 'dark' ? color.black : color.offWhite
               }}
             >
-              <SimpleLineIcons name="user" size={60} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
+              <SimpleLineIcons name='user' size={60} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
             </View>
         }
 
@@ -116,7 +116,7 @@ const Profile = () => {
             width: 40,
           }}
         >
-          <FontAwesome name="edit" size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+          <FontAwesome name='edit' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
         </TouchableOpacity>
       </View>
 
@@ -256,7 +256,7 @@ const Profile = () => {
           alignItems: 'center'
         }}
       >
-        <Fontisto name="date" size={14} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+        <Fontisto name='date' size={14} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
 
         <View
           style={{
@@ -299,7 +299,7 @@ const Profile = () => {
           alignItems: 'center'
         }}
       >
-        <Feather name="briefcase" size={14} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+        <Feather name='briefcase' size={14} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
 
         <Text
           style={{
@@ -332,7 +332,7 @@ const Profile = () => {
         }}
       >
         <Tab.Screen
-          name="MyReels"
+          name='MyReels'
           component={MyReels}
           options={{
             tabBarIcon: () =>
@@ -346,7 +346,7 @@ const Profile = () => {
           }}
         />
         <Tab.Screen
-          name="MyPosts"
+          name='MyPosts'
           component={MyPosts}
           options={{
             tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />

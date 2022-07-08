@@ -6,11 +6,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   Image,
-  Keyboard,
-  TouchableOpacity,
-  TextInput,
-  LayoutAnimation,
-  UIManager,
+  Keyboard
 } from 'react-native'
 
 import { addDoc, collection, onSnapshot, serverTimestamp } from 'firebase/firestore'
@@ -26,11 +22,6 @@ import { useFonts } from 'expo-font'
 import LikeReelsComment from './LikeReelsComment'
 import ReelsCommentReplies from './ReelsCommentReplies'
 import ReelsCommentReply from './ReelsCommentReply'
-
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const ReelsComments = ({ reel }) => {
   const { userProfile, user } = useAuth()

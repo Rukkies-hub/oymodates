@@ -4,13 +4,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Keyboard,
-  Dimensions,
-  FlatList,
-  ScrollView,
-  LayoutAnimation,
-  UIManager,
-  Platform
+  Keyboard
 } from 'react-native'
 
 import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
@@ -21,11 +15,6 @@ import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
 
 import { FontAwesome5 } from '@expo/vector-icons'
-
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const CommentsScreenNewComment = ({ post }) => {
   const { userProfile, postCommentType, replyCommentProps, setPostCommentType } = useAuth()
