@@ -144,7 +144,13 @@ const ViewPostComments = () => {
                 <PostCommentReply textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
               </View>
 
-              <CommentReplies showAll={true} backgroundColor={userProfile?.theme == 'dark' ? color.dark : color.offWhite} textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
+              <CommentReplies
+                showAll={true}
+                backgroundColor={userProfile?.theme == 'dark' ? color.dark : color.offWhite}
+                textColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+                comment={comment}
+                screen={userProfile?.theme == 'dark' ? color.white : color.dark}
+              />
             </View>
           </View>
         </View>

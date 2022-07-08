@@ -178,6 +178,40 @@ const CommentsScreenNewComment = ({ post }) => {
     <View>
       <View
         style={{
+          paddingHorizontal: 10,
+          marginVertical: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <TouchableOpacity onPress={() => setInput(input + '🤣')}>
+          <Text style={{ fontSize: 30 }}>🤣</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '😭')}>
+          <Text style={{ fontSize: 30 }}>😭</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '🥺')}>
+          <Text style={{ fontSize: 30 }}>🥺</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '😏')}>
+          <Text style={{ fontSize: 30 }}>😏</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '🤨')}>
+          <Text style={{ fontSize: 30 }}>🤨</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '🙄')}>
+          <Text style={{ fontSize: 30 }}>🙄</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '😍')}>
+          <Text style={{ fontSize: 30 }}>😍</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '❤️')}>
+          <Text style={{ fontSize: 30 }}>❤️</Text>
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: 10,
@@ -225,41 +259,6 @@ const CommentsScreenNewComment = ({ post }) => {
             color={userProfile?.theme == 'light' ? color.lightText : color.white}
             size={20}
           />
-        </TouchableOpacity>
-      </View>
-
-      <View
-        style={{
-          paddingHorizontal: 10,
-          marginVertical: 10,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
-        <TouchableOpacity onPress={() => setInput(input + '🤣')}>
-          <Text style={{ fontSize: 30 }}>🤣</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '😭')}>
-          <Text style={{ fontSize: 30 }}>😭</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '🥺')}>
-          <Text style={{ fontSize: 30 }}>🥺</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '😏')}>
-          <Text style={{ fontSize: 30 }}>😏</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '🤨')}>
-          <Text style={{ fontSize: 30 }}>🤨</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '🙄')}>
-          <Text style={{ fontSize: 30 }}>🙄</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '😍')}>
-          <Text style={{ fontSize: 30 }}>😍</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '❤️')}>
-          <Text style={{ fontSize: 30 }}>❤️</Text>
         </TouchableOpacity>
       </View>
     </View>

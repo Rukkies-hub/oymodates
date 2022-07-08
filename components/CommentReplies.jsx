@@ -16,12 +16,14 @@ import PostCommentReplyReply from './PostCommentReplyReply'
 import AllPostCommentReplies from './AllPostCommentReplies'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
-const CommentReplies = ({ comment, textColor, backgroundColor, showAll }) => {
+const CommentReplies = ({ comment, textColor, backgroundColor, showAll, screen }) => {
   const { userProfile, showExpand, setShowExpand } = useAuth()
   const navigation = useNavigation()
   const route = useRoute()
 
   const [replies, setReplies] = useState([])
+
+  console.log(route.name)
 
   useEffect(() =>
     (() => {
@@ -130,7 +132,7 @@ const CommentReplies = ({ comment, textColor, backgroundColor, showAll }) => {
                   alignItems: 'center',
                 }}
               >
-                <LikeReply textColor={route.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} />
+                <LikeReply textColor={route.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} screen={screen} />
                 <PostCommentReplyReply textColor={route.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} comment={reply} />
               </View>
 
