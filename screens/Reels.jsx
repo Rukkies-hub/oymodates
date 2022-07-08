@@ -20,7 +20,15 @@ import LikeReels from '../components/LikeReels'
 import { useNavigation } from '@react-navigation/native'
 
 const Reels = () => {
-  const { userProfile, user, reelsProps, setReelsProps } = useAuth()
+  const {
+    userProfile,
+    user,
+    reelsProps,
+    setReelsProps,
+    reels,
+    setReels,
+    reelsLimit,
+    setReelsLimit } = useAuth()
   const mediaRefs = useRef([])
 
   const navigation = useNavigation()
@@ -38,9 +46,6 @@ const Reels = () => {
     })
   })
 
-  const [reels, setReels] = useState([])
-  const [reelsLimit, setReelsLimit] = useState(2)
-
   const getReels = async () => {
     const queryReels = await getDocs(query(collection(db, 'reels'), limit(reelsLimit)))
 
@@ -51,19 +56,6 @@ const Reels = () => {
       }))
     )
   }
-
-  useEffect(() => {
-    (() => {
-      onSnapshot(collection(db, 'reels'), limit(reelsLimit), doc => {
-        setReels(
-          doc?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        )
-      })
-    })()
-  }, [])
 
   const likeReel = async (item) => {
     let reels = item
@@ -96,7 +88,9 @@ const Reels = () => {
           height: userProfile?.layout == 'bottom' ? height - 109 : height - 100,
           backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          borderRadius: userProfile?.theme == 'dark' ? 8 : 0,
+          overflow: 'hidden'
         }}
       >
         <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item?.id] = PostSingleRef)} />

@@ -36,11 +36,9 @@ const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout))
 
 const Posts = () => {
   const navigation = useNavigation()
-  const { userProfile, user } = useAuth()
+  const { userProfile, user, posts, setPosts, postLimit, setPostLimit } = useAuth()
 
-  const [posts, setPosts] = useState([])
   const [refreshing, setRefreshing] = useState(false)
-  const [postLimit, setPostLimit] = useState(3)
 
   const onRefresh = useCallback(() => {
     setRefreshing(true)
@@ -60,20 +58,6 @@ const Posts = () => {
       }))
     )
   }
-
-  useEffect(() =>
-    (() => {
-      onSnapshot(collection(db, 'posts'), limit(postLimit), doc => {
-        setPosts(
-          doc?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        )
-      })
-    })()
-    , [])
-
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')

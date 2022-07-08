@@ -26,7 +26,7 @@ import {
 
 import { auth, db } from './firebase'
 
-import { collection, doc, onSnapshot } from 'firebase/firestore'
+import { collection, doc, limit, onSnapshot } from 'firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -79,6 +79,10 @@ export const AuthProvider = ({ children }) => {
   const [mediaType, setMediaType] = useState()
   const [googleLoadng, setGoogleLoading] = useState(false)
   const [facebookLoadng, setFacebookLoading] = useState(false)
+  const [posts, setPosts] = useState([])
+  const [postLimit, setPostLimit] = useState(3)
+  const [reels, setReels] = useState([])
+  const [reelsLimit, setReelsLimit] = useState(2)
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -161,6 +165,32 @@ export const AuthProvider = ({ children }) => {
     })()
     , [])
 
+  useEffect(() => {
+    (() => {
+      onSnapshot(collection(db, 'reels'), limit(reelsLimit), doc => {
+        setReels(
+          doc?.docs?.map(doc => ({
+            id: doc?.id,
+            ...doc?.data()
+          }))
+        )
+      })
+    })()
+  }, [])
+
+  useEffect(() =>
+    (() => {
+      onSnapshot(collection(db, 'posts'), limit(postLimit), doc => {
+        setPosts(
+          doc?.docs?.map(doc => ({
+            id: doc?.id,
+            ...doc?.data()
+          }))
+        )
+      })
+    })()
+    , [])
+
   const getPendingSwipes = (user) => {
     onSnapshot(collection(db, 'users', user?.uid, 'pendingSwipes'),
       snapshot =>
@@ -189,9 +219,9 @@ export const AuthProvider = ({ children }) => {
         if (profile?.about) setAbout(profile?.about)
         if (profile?.passions) setPassions([...profile?.passions])
       })
-    
+
     registerIndieID(user?.uid, 3167, 'ND7GyrPMrqE6c0PdboxvGF')
-    
+
     setGoogleLoading(false)
     setFacebookLoading(false)
     return unsub
@@ -302,10 +332,17 @@ export const AuthProvider = ({ children }) => {
         googleLoadng,
         setGoogleLoading,
         facebookLoadng,
-        setFacebookLoading
+        setFacebookLoading,
+        posts,
+        setPosts,
+        postLimit,
+        setPostLimit,
+        reels,
+        setReels,
+        reelsLimit,
+        setReelsLimit
       }}
     >
-      {/* {!loadingInitial && children} */}
       {!loadingInitial && children}
     </AuthContext.Provider>
   )

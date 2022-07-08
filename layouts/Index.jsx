@@ -17,7 +17,6 @@ const Index = () => {
       keyboardDismissMode='auto'
       screenOptions={{
         tabBarShowLabel: false,
-        lazy: true,
         tabBarStyle: {
           height: 0,
           elevation: 0
