@@ -144,7 +144,7 @@ const Header = ({
                 fontSize: 30,
                 margin: 0,
                 marginTop: -10,
-                color: userProfile?.theme == 'light' ? color.black : color.white
+                color: userProfile?.theme == 'dark' ? color.white : color.black
               }}
             >
               Oymo

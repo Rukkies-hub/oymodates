@@ -16,6 +16,9 @@ import { useFonts } from 'expo-font'
 
 import { FontAwesome5 } from '@expo/vector-icons'
 
+import { appToken } from '@env'
+import axios from 'axios'
+
 const NewComment = ({ post }) => {
   const { userProfile, postCommentType, replyCommentProps, setPostCommentType } = useAuth()
 
@@ -62,6 +65,14 @@ const NewComment = ({ post }) => {
               photoURL: userProfile?.photoURL
             },
             timestamp: serverTimestamp()
+          }).then(() => {
+            axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+              subID: post?.user?.id,
+              appId: 3167,
+              appToken,
+              title: '💬',
+              message: `@${userProfile?.username} commented on your post (${input.slice(0, 100)})`
+            })
           })
       })
 
@@ -106,6 +117,14 @@ const NewComment = ({ post }) => {
               photoURL: userProfile?.photoURL
             },
             timestamp: serverTimestamp()
+          }).then(() => {
+            axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+              subID: comment?.post?.user?.id,
+              appId: 3167,
+              appToken,
+              title: '💬',
+              message: `@${userProfile?.username} replied to your comment (${input.slice(0, 100)})`
+            })
           })
       })
 
@@ -178,17 +197,51 @@ const NewComment = ({ post }) => {
     <View>
       <View
         style={{
+          paddingHorizontal: 10,
+          marginVertical: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <TouchableOpacity onPress={() => setInput(input + '🤣')}>
+          <Text style={{ fontSize: 30 }}>🤣</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '😭')}>
+          <Text style={{ fontSize: 30 }}>😭</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '🥺')}>
+          <Text style={{ fontSize: 30 }}>🥺</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '😏')}>
+          <Text style={{ fontSize: 30 }}>😏</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '🤨')}>
+          <Text style={{ fontSize: 30 }}>🤨</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '🙄')}>
+          <Text style={{ fontSize: 30 }}>🙄</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '😍')}>
+          <Text style={{ fontSize: 30 }}>😍</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setInput(input + '❤️')}>
+          <Text style={{ fontSize: 30 }}>❤️</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View
+        style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: 10,
-          borderTopWidth: .3,
-          borderTopColor: color.borderColor,
           backgroundColor: color.white,
           minHeight: 50,
           overflow: 'hidden',
           position: 'relative',
           marginHorizontal: 10,
-          borderRadius: 12
+          borderRadius: 12,
+          marginVertical: 10
         }}
       >
         <TextInput
@@ -227,41 +280,6 @@ const NewComment = ({ post }) => {
             color={userProfile?.theme == 'light' ? color.lightText : color.white}
             size={20}
           />
-        </TouchableOpacity>
-      </View>
-
-      <View
-        style={{
-          paddingHorizontal: 10,
-          marginVertical: 10,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
-        <TouchableOpacity onPress={() => setInput(input + '🤣')}>
-          <Text style={{ fontSize: 30 }}>🤣</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '😭')}>
-          <Text style={{ fontSize: 30 }}>😭</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '🥺')}>
-          <Text style={{ fontSize: 30 }}>🥺</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '😏')}>
-          <Text style={{ fontSize: 30 }}>😏</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '🤨')}>
-          <Text style={{ fontSize: 30 }}>🤨</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '🙄')}>
-          <Text style={{ fontSize: 30 }}>🙄</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '😍')}>
-          <Text style={{ fontSize: 30 }}>😍</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setInput(input + '❤️')}>
-          <Text style={{ fontSize: 30 }}>❤️</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -6,6 +6,9 @@ import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
+import { appToken } from '@env'
+import axios from 'axios'
+
 const Likecomments = ({ comment, textColor }) => {
   const { user, userProfile } = useAuth()
 
@@ -23,40 +26,31 @@ const Likecomments = ({ comment, textColor }) => {
     })()
   }, [])
 
-  useEffect(() => {
-    (async () => {
-      // const likes = await getDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.id))
-      const likes = await getDoc(doc(db, 'reels', comment?.reel?.id))
-      // console.log('likes: ', likes?.id)
-      console.log('comment: ', comment?.id)
-    })()
-  }, [])
-
   const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.uid))
+    getDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'likes', user?.uid))
       .then(res => resolve(res?.exists()))
   })
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.uid))
-      await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
+      await deleteDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'likes', user?.uid))
+      await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
         likesCount: increment(-1)
       })
     } else {
-      await setDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.uid), {
+      await setDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'likes', user?.uid), {
         id: userProfile?.id,
         photoURL: userProfile?.photoURL,
         displayName: userProfile?.displayName,
         username: userProfile?.username,
       })
-      await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
+      await updateDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id), {
         likesCount: increment(1)
       })
     }
 
     if (comment?.user?.id != userProfile?.id) {
-      const post = await (await getDoc(doc(db, 'reels', comment?.reel?.id))).data()
+      const post = await (await getDoc(doc(db, 'posts', comment?.post?.id))).data()
 
       await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
         action: 'post',
@@ -73,6 +67,14 @@ const Likecomments = ({ comment, textColor }) => {
           photoURL: userProfile?.photoURL
         },
         timestamp: serverTimestamp()
+      }).then(() => {
+        axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+          subID: comment?.post?.user?.id,
+          appId: 3167,
+          appToken,
+          title: '👍',
+          message: `@${userProfile?.username} likes to your comment (${comment?.comment.slice(0, 100)})`
+        })
       })
     }
   })

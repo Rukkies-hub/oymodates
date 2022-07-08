@@ -73,9 +73,7 @@ const StackNavigator = () => {
 
             <Stack.Group
               screenOptions={{
-                presentation: 'transparentModal',
-                animationEnabled: true,
-                ...TransitionPresets.ModalFadeTransition
+                presentation: 'transparentModal'
               }}>
               <Stack.Screen name='NewMatch' component={NewMatch} />
               <Stack.Screen name='ViewAvarar' component={ViewAvarar} />
@@ -87,9 +85,7 @@ const StackNavigator = () => {
 
             <Stack.Group
               screenOptions={{
-                presentation: 'modal',
-                animationEnabled: true,
-                ...TransitionPresets.ModalFadeTransition
+                presentation: 'modal'
               }}>
               <Stack.Screen name='ViewReel' component={ViewReel} />
               <Stack.Screen name='UserProfile' component={UserProfile} />

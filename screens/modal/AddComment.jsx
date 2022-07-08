@@ -24,6 +24,8 @@ import { Entypo } from '@expo/vector-icons'
 
 import Bar from '../../components/StatusBar'
 
+import * as NavigationBar from 'expo-navigation-bar'
+
 const AddComment = params => {
   const { userProfile } = useAuth()
   const post = params?.route?.params?.post
@@ -45,7 +47,7 @@ const AddComment = params => {
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ImageBackground
-          source={{ uri: post?.mediaType == 'image' ? post?.media : userProfile?.photoURL }}
+          source={{ uri: post?.mediaType == 'image' ? post?.media : post?.thumbnail }}
           blurRadius={100}
           style={{ flex: 1 }}
         >

@@ -17,12 +17,13 @@ const LikeReels = (props) => {
 
   useEffect(() =>
     (() => {
-      getLikesById(reel?.id, user?.uid).then(res => {
-        setCurrentLikesState({
-          ...currentLikesState,
-          state: res
+      getLikesById(reel?.id, user?.uid)
+        .then(res => {
+          setCurrentLikesState({
+            ...currentLikesState,
+            state: res
+          })
         })
-      })
     })()
     , [])
 
