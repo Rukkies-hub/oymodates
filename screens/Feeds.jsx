@@ -14,12 +14,12 @@ const Feeds = () => {
   const { user, profiles, setProfiles, userProfile } = useAuth()
   const navigation = useNavigation()
 
-  useLayoutEffect(() =>
-    onSnapshot(doc(db, 'users', user?.uid),
-      snapshot => {
-        if (!snapshot?.exists()) navigation.navigate('EditProfile')
-      })
-    , [])
+  // useLayoutEffect(() =>
+  //   onSnapshot(doc(db, 'users', user?.uid),
+  //     snapshot => {
+  //       if (!snapshot?.exists()) navigation.navigate('EditProfile')
+  //     })
+  //   , [])
 
   useEffect(() => {
     let unsub

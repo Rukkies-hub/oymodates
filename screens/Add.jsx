@@ -31,6 +31,8 @@ import useAuth from '../hooks/useAuth'
 
 import AutoHeightImage from 'react-native-auto-height-image'
 
+import { appToken } from '@env'
+
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -162,7 +164,7 @@ const Add = () => {
                         axios.post(`https://app.nativenotify.com/api/indie/notification`, {
                           subID: userProfile?.id,
                           appId: 3167,
-                          appToken: 'ND7GyrPMrqE6c0PdboxvGF',
+                          appToken,
                           title: 'Post saved',
                           message: `Your post ${input.slice(0, 100)} was saved successfully`
                         })
@@ -173,7 +175,7 @@ const Add = () => {
       })
   }
 
-  const savePost = async () => {
+  const saveImagePost = async () => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
       xhr.onload = () => resolve(xhr.response)
@@ -215,13 +217,44 @@ const Add = () => {
                 axios.post(`https://app.nativenotify.com/api/indie/notification`, {
                   subID: userProfile?.id,
                   appId: 3167,
-                  appToken: 'ND7GyrPMrqE6c0PdboxvGF',
+                  appToken,
                   title: 'Post saved',
                   message: `Your post ${input.slice(0, 100)} was saved successfully`
                 })
               })
           })
       })
+  }
+
+  const savePost = () => {
+    if (input != '') {
+      setLoading(true)
+      addDoc(collection(db, 'posts'), {
+        user: {
+          id: userProfile?.id,
+          displayName: userProfile?.displayName,
+          username: userProfile?.username,
+          photoURL: userProfile?.photoURL
+        },
+        likesCount: 0,
+        commentsCount: 0,
+        postType: 'text',
+        caption: input,
+        timestamp: serverTimestamp()
+      }).then(() => navigation.goBack())
+        .catch(() => setLoading(false))
+        .finally(() => {
+          setLoading(false)
+          setMedia(null)
+          axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+            subID: userProfile?.id,
+            appId: 3167,
+            appToken: 'ND7GyrPMrqE6c0PdboxvGF',
+            title: 'Post saved',
+            message: `Your post ${input.slice(0, 100)} was saved successfully`
+          })
+        })
+    }
   }
 
   useEffect(() => {
@@ -300,7 +333,7 @@ const Add = () => {
                     height,
                     backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.lightText : color.dark,
                     maxHeight: 300,
-                    fontSize: 18,
+                    fontSize: media ? 18 : input.length <= 120 ? 30 : 18,
                     paddingVertical: 10,
                     borderRadius: 12,
                     paddingHorizontal: 10,
@@ -904,7 +937,7 @@ const Add = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => mediaType == 'video' ? saveVideoPost() : savePost()}
+          onPress={() => mediaType == 'video' ? saveVideoPost() : input != '' || media == '' ? savePost() : saveImagePost()}
           style={{
             flex: 1,
             height: 45,

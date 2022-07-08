@@ -11,10 +11,12 @@ import color from './style/color'
 
 import registerNNPushToken from 'native-notify'
 
+import { appToken } from '@env'
+
 LogBox.ignoreAllLogs()
 
 export default function App () {
-  registerNNPushToken(3167, 'ND7GyrPMrqE6c0PdboxvGF')
+  registerNNPushToken(3167, appToken)
 
   return (
     <NavigationContainer>

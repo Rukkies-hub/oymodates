@@ -30,6 +30,7 @@ const { width, height } = Dimensions.get('window')
 
 import PostImage from './PostImage'
 import PostVideo from './PostVideo'
+import PostText from './PostText'
 
 const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout))
 
@@ -221,7 +222,7 @@ const Posts = () => {
 
                 <View
                   style={{
-                    minHeight: 200
+                    minHeight: post?.postType == 'text' ? null : 200
                   }}
                 >
                   {
@@ -238,7 +239,9 @@ const Posts = () => {
                       >
                         <PostImage post={post} />
                       </View> :
-                      <PostVideo post={post} />
+                      post?.mediaType == 'video' ?
+                        <PostVideo post={post} /> :
+                        <PostText post={post} />
                   }
                 </View>
 
@@ -289,7 +292,7 @@ const Posts = () => {
                     </TouchableOpacity>
                   }
                   {
-                    post?.postType != 'poster' &&
+                    post?.postType != 'poster' && post?.postType != 'text' &&
                     <Text
                       style={{
                         color: userProfile?.theme == 'dark' ? color.white : color.dark,

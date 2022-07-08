@@ -30,7 +30,7 @@ import { collection, doc, onSnapshot } from 'firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
-import { iosClientId, androidClientId, webClientId, facebookClientId } from '@env'
+import { webClientId, facebookClientId } from '@env'
 import { ToastAndroid } from 'react-native'
 
 const AuthContext = createContext({})
