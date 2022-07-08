@@ -7,20 +7,21 @@ import color from '../../style/color'
 import useAuth from '../../hooks/useAuth'
 
 import Bar from '../../components/StatusBar'
-import Likecomments from '../../components/Likecomments'
+import ViewCommentsLikecomments from '../../components/ViewCommentsLikecomments'
 import PostCommentReply from '../../components/PostCommentReply'
 import CommentReplies from '../../components/CommentReplies'
 import Header from '../../components/Header'
 import CommentsScreenNewComment from '../../components/CommentsScreenNewComment'
 
 const ViewPostComments = () => {
-  const { userProfile, showExpand, setShowExpand, setReplyCommentProps } = useAuth()
+  const { userProfile, showExpand, setShowExpand, setReplyCommentProps, user } = useAuth()
   const navigation = useNavigation()
   const route = useRoute()
 
-  const { comment } = route.params
+  const { comment, reply, commentId, replyId } = route.params
 
   const [scrrenComment, setScrrenComment] = useState(null)
+  // const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
 
   navigation.addListener('blur', () => {
     setShowExpand(true)
@@ -34,12 +35,29 @@ const ViewPostComments = () => {
     setShowExpand(false)
   }, [])
 
-  useEffect(() => {
-    (async () => {
-      const x = await (await getDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id))).data()
-      setScrrenComment(x)
-    })()
-  }, [comment])
+  // useEffect(() => {
+  //   (async () => {
+  //     const x = await (await getDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id))).data()
+  //     setScrrenComment(x)
+  //   })()
+  // }, [])
+
+  // useEffect(() => {
+  //   (() => {
+  //     getLikesById(commentId, user?.uid)
+  //       .then(res => {
+  //         setCurrentLikesState({
+  //           ...currentLikesState,
+  //           state: res
+  //         })
+  //       })
+  //   })()
+  // }, [])
+
+  // const getLikesById = () => new Promise(async (resolve, reject) => {
+  //   getDoc(doc(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'likes', user?.uid))
+  //     .then(res => resolve(res?.exists()))
+  // })
 
   return (
     <View
@@ -49,7 +67,7 @@ const ViewPostComments = () => {
       }}
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
-      
+
       <Header showBack showTitle title={`${comment?.post?.commentsCount} Comments`} />
 
       <ScrollView
@@ -66,7 +84,7 @@ const ViewPostComments = () => {
           }}
         >
           <Image
-            source={{ uri: scrrenComment?.user?.photoURL }}
+            source={{ uri: comment?.user?.photoURL }}
             style={{
               width: 30,
               height: 30,
@@ -95,14 +113,14 @@ const ViewPostComments = () => {
                   fontSize: 13
                 }}
               >
-                @{scrrenComment?.user?.username}
+                @{comment?.user?.username}
               </Text>
               <Text
                 style={{
                   color: userProfile?.theme == 'dark' ? color.white : color.dark
                 }}
               >
-                {scrrenComment?.comment}
+                {comment?.comment}
               </Text>
             </View>
 
@@ -121,9 +139,9 @@ const ViewPostComments = () => {
                   marginTop: 4
                 }}
               >
-                <Likecomments textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={scrrenComment} />
+                <ViewCommentsLikecomments textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} commentId={commentId} />
 
-                <PostCommentReply textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={scrrenComment} />
+                <PostCommentReply textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
               </View>
 
               <CommentReplies showAll={true} backgroundColor={userProfile?.theme == 'dark' ? color.dark : color.offWhite} textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />

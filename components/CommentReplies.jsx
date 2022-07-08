@@ -137,7 +137,14 @@ const CommentReplies = ({ comment, textColor, backgroundColor, showAll }) => {
               {
                 showExpand &&
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ViewPostComments', { comment })}
+                  onPress={() =>
+                    navigation.navigate('ViewPostComments', {
+                      comment,
+                      reply,
+                      commentId: comment?.id,
+                      replyId: reply?.id
+                    })
+                  }
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
