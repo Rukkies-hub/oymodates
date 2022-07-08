@@ -124,7 +124,7 @@ const Comments = ({ post }) => {
                 >
                   <Likecomments comment={comment} />
 
-                  {/* <PostCommentReply comment={comment} /> */}
+                  <PostCommentReply comment={comment} />
                 </View>
 
                 <CommentReplies comment={comment} />

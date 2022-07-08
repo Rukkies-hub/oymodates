@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Platform,
@@ -25,12 +25,24 @@ import { Entypo } from '@expo/vector-icons'
 import Bar from '../../components/StatusBar'
 
 import * as NavigationBar from 'expo-navigation-bar'
+import { doc, onSnapshot } from 'firebase/firestore'
+import { db } from '../../hooks/firebase'
 
 const AddComment = params => {
   const { userProfile } = useAuth()
   const post = params?.route?.params?.post
   const navigation = useNavigation()
   const isFocused = useIsFocused()
+  const [commtsCount, setCommentsCount] = useState()
+
+  useEffect(() => {
+    (() => {
+      onSnapshot(doc(db, 'posts', post?.id),
+        doc => {
+          setCommentsCount(doc?.data()?.commentsCount)
+        })
+    })()
+  }, [])
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -87,7 +99,7 @@ const AddComment = params => {
                   marginRight: 5
                 }}
               >
-                {post?.commentsCount}
+                {commtsCount}
               </Text>
               <Text
                 style={{
@@ -96,7 +108,7 @@ const AddComment = params => {
                   color: color.white
                 }}
               >
-                {post?.commentsCount == 1 ? 'Comment' : 'Comments'}
+                {commtsCount == 1 ? 'Comment' : 'Comments'}
               </Text>
             </View>
           </View>

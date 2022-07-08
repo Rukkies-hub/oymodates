@@ -11,6 +11,8 @@ import color from '../style/color'
 const LikeReply = ({ reply, textColor }) => {
   const { user, userProfile } = useAuth()
 
+  console.log('reply: ', reply)
+
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reply?.likesCount })
 
   useEffect(() => {
@@ -101,7 +103,7 @@ const LikeReply = ({ reply, textColor }) => {
           currentLikesState.counter > 0 &&
           <Text
             style={{
-              color: textColor || currentLikesState.state ? color.red : userProfile?.theme == 'dark' ? color.dark : color.white,
+              color: currentLikesState?.state ? color.red : textColor || userProfile?.theme == 'dark' ? color.white : color.dark,
               fontFamily: 'text',
               marginRight: 3
             }}
@@ -113,7 +115,7 @@ const LikeReply = ({ reply, textColor }) => {
         }
         <Text
           style={{
-            color: textColor || currentLikesState.state ? color.red : userProfile?.theme == 'dark' ? color.dark : color.white,
+            color: currentLikesState?.state ? color.red : textColor || userProfile?.theme == 'dark' ? color.white : color.dark,
             fontFamily: 'text'
           }}
         >

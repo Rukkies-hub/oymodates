@@ -110,25 +110,21 @@ const Likecomments = ({ comment, textColor }) => {
           currentLikesState.counter > 0 &&
           <Text
             style={{
-              color: textColor || color.white,
+              color: currentLikesState.state ? color.red : textColor || color.white,
               fontFamily: 'text',
               marginRight: 3
             }}
           >
-            {
-              currentLikesState.counter
-            }
+            {currentLikesState.counter}
           </Text>
         }
         <Text
           style={{
-            color: textColor || color.white,
+            color: currentLikesState.state ? color.red : textColor || color.white,
             fontFamily: 'text'
           }}
         >
-          {
-            currentLikesState.counter <= 1 ? 'Like' : 'Likes'
-          }
+          {currentLikesState.counter <= 1 ? 'Like' : 'Likes'}
         </Text>
       </TouchableOpacity>
     </View>
