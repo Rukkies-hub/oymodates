@@ -79,25 +79,21 @@ const LikeReelsReply = ({ reply, textColor }) => {
         currentLikesState.counter > 0 &&
         <Text
           style={{
-            color: textColor || currentLikesState.state ? color.red : color.white,
+            color: currentLikesState.state ? color.red : userProfile?.theme == 'dark' ? color.white : color.dark,
             fontFamily: 'text',
             marginRight: 3
           }}
         >
-          {
-            currentLikesState.counter
-          }
+          {currentLikesState.counter}
         </Text>
       }
       <Text
         style={{
-          color: textColor || currentLikesState.state ? color.red : color.white,
+          color: currentLikesState.state ? color.red : userProfile?.theme == 'dark' ? color.white : color.dark,
           fontFamily: 'text'
         }}
       >
-        {
-          currentLikesState.counter <= 1 ? 'Like' : 'Likes'
-        }
+        {currentLikesState.counter <= 1 ? 'Like' : 'Likes'}
       </Text>
     </TouchableOpacity>
   )

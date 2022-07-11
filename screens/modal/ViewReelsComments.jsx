@@ -7,20 +7,16 @@ import color from '../../style/color'
 import useAuth from '../../hooks/useAuth'
 
 import Bar from '../../components/StatusBar'
-import Likecomments from '../../components/Likecomments'
+import ViewReelsCommentsLikecomments from '../../components/ViewReelsCommentsLikecomments'
 import PostCommentReply from '../../components/PostCommentReply'
-import CommentReplies from '../../components/CommentReplies'
+import ViewReelsCommentReplies from '../../components/ViewReelsCommentReplies'
 import Header from '../../components/Header'
 import CommentsScreenNewComment from '../../components/CommentsScreenNewComment'
 
 const ViewReelsComments = () => {
   const { userProfile, showExpand, setShowExpand, setReplyCommentProps } = useAuth()
   const navigation = useNavigation()
-  const route = useRoute()
-
-  const { comment } = route.params
-
-  const [scrrenComment, setScrrenComment] = useState(null)
+  const { comment } = useRoute().params
 
   navigation.addListener('blur', () => {
     setShowExpand(true)
@@ -33,13 +29,6 @@ const ViewReelsComments = () => {
   useEffect(() => {
     setShowExpand(false)
   }, [])
-
-  useEffect(() => {
-    (async () => {
-      const x = await (await getDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id))).data()
-      setScrrenComment(x)
-    })()
-  }, [comment])
 
   return (
     <View
@@ -66,7 +55,7 @@ const ViewReelsComments = () => {
           }}
         >
           <Image
-            source={{ uri: scrrenComment?.user?.photoURL }}
+            source={{ uri: comment?.user?.photoURL }}
             style={{
               width: 30,
               height: 30,
@@ -95,14 +84,14 @@ const ViewReelsComments = () => {
                   fontSize: 13
                 }}
               >
-                @{scrrenComment?.user?.username}
+                @{comment?.user?.username}
               </Text>
               <Text
                 style={{
                   color: userProfile?.theme == 'dark' ? color.white : color.dark
                 }}
               >
-                {scrrenComment?.comment}
+                {comment?.comment}
               </Text>
             </View>
 
@@ -121,12 +110,12 @@ const ViewReelsComments = () => {
                   marginTop: 4
                 }}
               >
-                <Likecomments textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={scrrenComment} />
+                <ViewReelsCommentsLikecomments textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
 
-                {/* <PostCommentReply textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={scrrenComment} /> */}
+                <PostCommentReply textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
               </View>
 
-              {/* <CommentReplies showAll={true} backgroundColor={userProfile?.theme == 'dark' ? color.dark : color.offWhite} textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} /> */}
+              <ViewReelsCommentReplies showAll={true} backgroundColor={userProfile?.theme == 'dark' ? color.dark : color.offWhite} textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
             </View>
           </View>
         </View>

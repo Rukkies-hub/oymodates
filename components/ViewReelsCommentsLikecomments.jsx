@@ -1,13 +1,15 @@
+import { useFonts } from 'expo-font'
+import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
-import color from '../style/color'
-
-import { addDoc, collection, deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
-import { useFonts } from 'expo-font'
+import color from '../style/color'
 
-const LikeReelsComment = ({ comment }) => {
+import { appToken } from '@env'
+import axios from 'axios'
+
+const ViewReelsCommentsLikecomments = ({ comment, textColor }) => {
   const { user, userProfile } = useAuth()
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
@@ -22,7 +24,7 @@ const LikeReelsComment = ({ comment }) => {
           })
         })
     })()
-  }, [])
+  }, [comment])
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
     getDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.uid))
@@ -48,8 +50,6 @@ const LikeReelsComment = ({ comment }) => {
     }
 
     if (comment?.user?.id != userProfile?.id) {
-      const reel = await (await getDoc(doc(db, 'reels', comment?.reel?.id))).data()
-
       await addDoc(collection(db, 'users', comment?.user?.id, 'notifications'), {
         action: 'reel',
         activity: 'comment likes',
@@ -57,7 +57,7 @@ const LikeReelsComment = ({ comment }) => {
         notify: comment?.user,
         id: comment?.id,
         seen: false,
-        reel,
+        reel: comment?.reel,
         user: {
           id: userProfile?.id,
           username: userProfile?.username,
@@ -65,6 +65,14 @@ const LikeReelsComment = ({ comment }) => {
           photoURL: userProfile?.photoURL
         },
         timestamp: serverTimestamp()
+      }).then(() => {
+        axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+          subID: comment?.reel?.user?.id,
+          appId: 3167,
+          appToken,
+          title: '👍',
+          message: `@${userProfile?.username} likes to your comment (${comment?.comment.slice(0, 100)})`
+        })
       })
     }
   })
@@ -84,39 +92,41 @@ const LikeReelsComment = ({ comment }) => {
   if (!loaded) return null
 
   return (
-    <TouchableOpacity
-      onPress={handleUpdateLikes}
-      style={{
-        paddingHorizontal: 10,
-        paddingVertical: 2,
-        marginRight: 10,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-      }}
-    >
-      {
-        currentLikesState.counter > 0 &&
-        <Text
-          style={{
-            color: currentLikesState?.state ? color.red : color.white,
-            fontFamily: 'text',
-            marginRight: 3
-          }}
-        >
-          {currentLikesState.counter}
-        </Text>
-      }
-      <Text
+    <View>
+      <TouchableOpacity
+        onPress={handleUpdateLikes}
         style={{
-          color: currentLikesState?.state ? color.red : color.white,
-          fontFamily: 'text'
+          paddingHorizontal: 10,
+          paddingVertical: 2,
+          marginRight: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center'
         }}
       >
-        {currentLikesState.counter <= 1 ? 'Like' : 'Likes'}
-      </Text>
-    </TouchableOpacity>
+        {
+          currentLikesState.counter > 0 &&
+          <Text
+            style={{
+              color: currentLikesState.state ? color.red : userProfile?.thme == 'dark' ? color.white : color.dark,
+              fontFamily: 'text',
+              marginRight: 3
+            }}
+          >
+            {currentLikesState.counter}
+          </Text>
+        }
+        <Text
+          style={{
+            color: currentLikesState.state ? color.red : userProfile?.thme == 'dark' ? color.white : color.dark,
+            fontFamily: 'text'
+          }}
+        >
+          {currentLikesState.counter <= 1 ? 'Like' : 'Likes'}
+        </Text>
+      </TouchableOpacity>
+    </View>
   )
 }
 
-export default LikeReelsComment
+export default ViewReelsCommentsLikecomments

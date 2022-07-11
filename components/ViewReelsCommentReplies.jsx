@@ -10,13 +10,13 @@ import color from '../style/color'
 import { useFonts } from 'expo-font'
 
 import { Octicons } from '@expo/vector-icons'
-import LikeReply from './LikeReply'
+import LikeReelsReply from './LikeReelsReply'
 import useAuth from '../hooks/useAuth'
 import PostCommentReplyReply from './PostCommentReplyReply'
 import AllPostCommentReplies from './AllPostCommentReplies'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
-const CommentReplies = ({ comment, textColor, backgroundColor, showAll, screen }) => {
+const ViewReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, screen }) => {
   const { userProfile, showExpand, setShowExpand } = useAuth()
   const navigation = useNavigation()
   const route = useRoute()
@@ -25,7 +25,7 @@ const CommentReplies = ({ comment, textColor, backgroundColor, showAll, screen }
 
   useEffect(() =>
     (() => {
-      onSnapshot(query(collection(db, 'posts', comment?.post?.id, 'comments', comment?.id, 'replies'), orderBy('timestamp', 'asc')),
+      onSnapshot(query(collection(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'replies'), orderBy('timestamp', 'asc')),
         snapshot =>
           setReplies(
             snapshot?.docs?.map(doc => ({
@@ -51,7 +51,7 @@ const CommentReplies = ({ comment, textColor, backgroundColor, showAll, screen }
       }}
     >
       <FlatList
-        data={showAll ? replies : replies?.length > 1 ? replies?.splice(0, 1) : replies}
+        data={replies}
         keyExtractor={item => item?.id}
         style={{ flex: 1 }}
         renderItem={({ item: reply }) => (
@@ -108,7 +108,7 @@ const CommentReplies = ({ comment, textColor, backgroundColor, showAll, screen }
                         marginRight: 5
                       }}
                     >
-                      @{reply?.postReply?.user?.username}
+                      @{reply?.reelComment?.user?.username}
                     </Text>
                     <Text
                       style={{
@@ -130,41 +130,9 @@ const CommentReplies = ({ comment, textColor, backgroundColor, showAll, screen }
                   alignItems: 'center',
                 }}
               >
-                <LikeReply textColor={route?.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} screen={screen} />
-                <PostCommentReplyReply textColor={route?.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} comment={reply} />
+                <LikeReelsReply textColor={route?.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} screen={screen} />
+                {/* <PostCommentReplyReply textColor={route?.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} comment={reply} /> */}
               </View>
-
-              {
-                showExpand &&
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('ViewPostComments', {
-                      comment,
-                      reply,
-                      commentId: comment?.id,
-                      replyId: reply?.id
-                    })
-                  }
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    marginTop: 10
-                  }}
-                >
-                  <Octicons name='reply' size={18} color={color.white} />
-                  <Text
-                    style={{
-                      fontFamily: 'text',
-                      marginLeft: 5,
-                      fontSize: 14,
-                      color: textColor || color.white
-                    }}
-                  >
-                    {1 + replies?.length} Replies
-                  </Text>
-                </TouchableOpacity>
-              }
             </View>
           </View>
         )}
@@ -173,4 +141,4 @@ const CommentReplies = ({ comment, textColor, backgroundColor, showAll, screen }
   )
 }
 
-export default CommentReplies
+export default ViewReelsCommentReplies

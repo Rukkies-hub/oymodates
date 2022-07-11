@@ -182,7 +182,7 @@ const Reels = () => {
               <TouchableOpacity
                 onPress={() => {
                   setReelsProps(item)
-                  navigation.navigate('ReelsComment')
+                  navigation.navigate('ReelsComment', { item })
                 }}
                 style={{
                   width: 40,

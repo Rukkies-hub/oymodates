@@ -44,26 +44,6 @@ const ReelsComments = ({ reel }) => {
     })()
     , [])
 
-  const sendCommentReply = (comment) => {
-    if (input != '')
-      addDoc(collection(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'replies'), {
-        reply: input,
-        reel: comment?.reel?.id,
-        comment: comment?.id,
-        likesCount: 0,
-        repliesCount: 0,
-        user: {
-          id: userProfile?.id,
-          displayName: userProfile?.displayName,
-          photoURL: userProfile?.photoURL,
-          username: userProfile?.username,
-        },
-        to: comment?.user?.id,
-        timestamp: serverTimestamp()
-      })
-    setInput('')
-  }
-
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
@@ -71,9 +51,7 @@ const ReelsComments = ({ reel }) => {
   if (!loaded) return null
 
   return (
-    <TouchableWithoutFeedback
-      onPress={Keyboard.dismiss}
-    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <FlatList
         data={comments}
         keyExtractor={item => item?.id}
