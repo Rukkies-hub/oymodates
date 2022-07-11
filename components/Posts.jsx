@@ -59,6 +59,8 @@ const Posts = () => {
     )
   }
 
+  // let randomPosts = posts?.sort(() => Math.random() - 0.5)
+
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })

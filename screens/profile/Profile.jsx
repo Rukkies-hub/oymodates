@@ -323,7 +323,6 @@ const Profile = () => {
         keyboardDismissMode='auto'
         screenOptions={{
           tabBarShowLabel: false,
-          lazy: true,
           tabBarStyle: {
             backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
             height: 50,

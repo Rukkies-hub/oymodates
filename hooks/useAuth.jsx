@@ -26,7 +26,7 @@ import {
 
 import { auth, db } from './firebase'
 
-import { collection, doc, limit, onSnapshot } from 'firebase/firestore'
+import { collection, doc, limit, onSnapshot, query, where } from 'firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -83,6 +83,8 @@ export const AuthProvider = ({ children }) => {
   const [postLimit, setPostLimit] = useState(3)
   const [reels, setReels] = useState([])
   const [reelsLimit, setReelsLimit] = useState(2)
+  const [profileReels, setProfileReels] = useState([])
+  const [profilePosts, setProfilePosts] = useState([])
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -158,6 +160,8 @@ export const AuthProvider = ({ children }) => {
           setUser(user)
           getUserProfile(user)
           getPendingSwipes(user)
+          getUserReels(user)
+          getUserPosts(user)
         }
         else setUser(null)
         setLoadingInitial(false)
@@ -190,6 +194,32 @@ export const AuthProvider = ({ children }) => {
       })
     })()
     , [])
+
+  const getUserReels = user => {
+    let unsub = onSnapshot(query(collection(db, 'reels'),
+      where('user.id', '==', user?.uid)),
+      snapshot => setProfileReels(
+        snapshot?.docs?.map(doc => ({
+          id: doc?.id,
+          ...doc?.data()
+        }))
+      ))
+
+    return unsub
+  }
+
+  const getUserPosts = user => {
+    let unsub = onSnapshot(query(collection(db, 'posts'),
+      where('user.id', '==', user?.uid)),
+      snapshot => setProfilePosts(
+        snapshot.docs.map(doc => ({
+          id: doc?.id,
+          ...doc?.data()
+        }))
+      ))
+
+    return unsub
+  }
 
   const getPendingSwipes = (user) => {
     onSnapshot(collection(db, 'users', user?.uid, 'pendingSwipes'),
@@ -340,7 +370,11 @@ export const AuthProvider = ({ children }) => {
         reels,
         setReels,
         reelsLimit,
-        setReelsLimit
+        setReelsLimit,
+        profileReels,
+        setProfileReels,
+        profilePosts,
+        setProfilePosts
       }}
     >
       {!loadingInitial && children}

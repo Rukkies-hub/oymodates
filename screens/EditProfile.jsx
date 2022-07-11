@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import {
   View,
   Text,
@@ -20,7 +20,7 @@ import { useFonts } from 'expo-font'
 
 import * as ImagePicker from 'expo-image-picker'
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import { db } from '../hooks/firebase'
 
@@ -63,10 +63,17 @@ const EditProfile = () => {
   } = useAuth()
   const storage = getStorage()
   const navigation = useNavigation()
+  const route = useRoute()
+
+  const setup = route?.params
 
   const [height, setHeight] = useState(50)
   const [uploadLoading, setUploadLoading] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
+
+  useLayoutEffect(() => {
+    if (setup) navigation.goBack()
+  }, [])
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

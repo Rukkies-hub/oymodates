@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, Text, Pressable, Image, FlatList, ActivityIndicator } from 'react-native'
 
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
-
-import { db } from '../../hooks/firebase'
 import useAuth from '../../hooks/useAuth'
 import color from '../../style/color'
 
@@ -12,23 +9,8 @@ import { useNavigation } from '@react-navigation/native'
 
 
 const MyReels = () => {
-  const { user, userProfile } = useAuth()
+  const { user, userProfile, profileReels } = useAuth()
   const navigation = useNavigation()
-
-  const [reels, setReels] = useState([])
-
-  useEffect(() =>
-    (() => {
-      onSnapshot(query(collection(db, 'reels'),
-        where('user.id', '==', user?.uid)),
-        snapshot => setReels(
-          snapshot?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        ))
-    })()
-    , [user, db])
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -40,7 +22,7 @@ const MyReels = () => {
   return (
     <>
       {
-        reels?.length < 1 ?
+        profileReels?.length < 1 ?
           <View
             style={{
               flex: 1,
@@ -69,7 +51,7 @@ const MyReels = () => {
             </View>
           </View> :
           <FlatList
-            data={reels}
+            data={profileReels}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
             style={{

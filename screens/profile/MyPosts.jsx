@@ -1,35 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, Text, Pressable, Image, FlatList, ActivityIndicator } from 'react-native'
 
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
-
-import { db } from '../../hooks/firebase'
 import useAuth from '../../hooks/useAuth'
 import color from '../../style/color'
 
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
-import { Video } from 'expo-av'
 
 
 const MyPosts = () => {
-  const { user, userProfile } = useAuth()
+  const { userProfile, profilePosts } = useAuth()
   const navigation = useNavigation()
-
-  const [posts, setPosts] = useState([])
-
-  useEffect(() =>
-    (() => {
-      onSnapshot(query(collection(db, 'posts'),
-        where('user.id', '==', user?.uid)),
-        snapshot => setPosts(
-          snapshot.docs.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        ))
-    })()
-    , [user, db])
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -41,7 +22,7 @@ const MyPosts = () => {
   return (
     <>
       {
-        posts?.length < 1 ?
+        profilePosts?.length < 1 ?
           <View
             style={{
               flex: 1,
@@ -70,7 +51,7 @@ const MyPosts = () => {
             </View>
           </View> :
           <FlatList
-            data={posts}
+            data={profilePosts}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
             style={{
