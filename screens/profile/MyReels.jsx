@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, Pressable, Image, FlatList, ActivityIndicator } from 'react-native'
 
 import useAuth from '../../hooks/useAuth'
@@ -6,11 +6,38 @@ import color from '../../style/color'
 
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
+import { collection, getDocs, limit, onSnapshot, query, where } from 'firebase/firestore'
+import { db } from '../../hooks/firebase'
 
 
 const MyReels = () => {
-  const { user, userProfile, profileReels } = useAuth()
+  const { user, userProfile } = useAuth()
   const navigation = useNavigation()
+
+  const [reels, setReels] = useState([])
+  const [reelsLimit, setLimit] = useState(4)
+
+  useEffect(() => {
+    onSnapshot(query(collection(db, 'reels'),
+      where('user.id', '==', user?.uid), limit(reelsLimit)),
+      snapshot => setReels(
+        snapshot?.docs?.map(doc => ({
+          id: doc?.id,
+          ...doc?.data()
+        }))
+      ))
+  }, [reelsLimit, db])
+
+  const getReels = async () => {
+    const queryPosts = await getDocs(query(collection(db, 'reels'), where('user.id', '==', user?.uid), limit(reelsLimit)))
+
+    setReels(
+      queryPosts?.docs?.map(doc => ({
+        id: doc?.id,
+        ...doc?.data()
+      }))
+    )
+  }
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -22,7 +49,7 @@ const MyReels = () => {
   return (
     <>
       {
-        profileReels?.length < 1 ?
+        reels?.length < 1 ?
           <View
             style={{
               flex: 1,
@@ -51,7 +78,7 @@ const MyReels = () => {
             </View>
           </View> :
           <FlatList
-            data={profileReels}
+            data={reels}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
             style={{
@@ -60,6 +87,31 @@ const MyReels = () => {
               paddingTop: 10,
               backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
             }}
+            onEndReached={() => {
+              setLimit(reelsLimit + 4)
+              getReels()
+            }}
+            ListFooterComponent={() => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 50
+                }}
+              >
+                <ActivityIndicator size='large' color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+                <Text
+                  style={{
+                    color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                    fontFamily: 'text',
+                    marginLeft: 10
+                  }}
+                >
+                  Loading Feeds...
+                </Text>
+              </View>
+            )}
             renderItem={({ item: reel }) => (
               <Pressable
                 onPress={() => navigation.navigate('ViewReel', { reel })}

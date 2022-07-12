@@ -317,7 +317,7 @@ const Profile = () => {
         initialRouteName='MyReels'
         barStyle={{
           backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
-          height: 54,
+          height: 50,
           elevation: 0
         }}
         keyboardDismissMode='auto'
