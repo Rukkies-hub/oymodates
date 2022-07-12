@@ -12,7 +12,7 @@ import { useFonts } from 'expo-font'
 import { Octicons } from '@expo/vector-icons'
 import LikeReelsReply from './LikeReelsReply'
 import useAuth from '../hooks/useAuth'
-import PostCommentReplyReply from './PostCommentReplyReply'
+import ReelsCommentReplyReply from './ReelsCommentReplyReply'
 import AllPostCommentReplies from './AllPostCommentReplies'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
@@ -131,7 +131,7 @@ const ViewReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll,
                 }}
               >
                 <LikeReelsReply textColor={route?.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} screen={screen} />
-                {/* <PostCommentReplyReply textColor={route?.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} comment={reply} /> */}
+                <ReelsCommentReplyReply textColor={route?.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} comment={reply} />
               </View>
             </View>
           </View>
