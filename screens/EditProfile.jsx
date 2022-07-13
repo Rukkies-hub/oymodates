@@ -36,6 +36,8 @@ import Bar from '../components/StatusBar'
 
 import uuid from 'uuid-random'
 
+import Constants from 'expo-constants'
+
 const EditProfile = () => {
   const {
     user,
@@ -637,6 +639,32 @@ const EditProfile = () => {
               Logout
             </Text>
           </TouchableOpacity>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Image
+              source={require('../assets/icon.png')}
+              style={{
+                width: 60,
+                height: 60
+              }}
+            />
+            <Text
+              style={{
+                color: userProfile?.theme == 'dark' ? color.offWhite : color.lightText,
+                fontFamily: 'text',
+                fontSize: 18,
+                marginLeft: 10
+              }}
+            >
+              Version {Constants.manifest.version}
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </View>
