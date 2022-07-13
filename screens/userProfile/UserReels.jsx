@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { View, Text, Pressable, Image, FlatList, ActivityIndicator } from 'react-native'
 
 import useAuth from '../../hooks/useAuth'
@@ -10,30 +10,28 @@ import { collection, getDocs, limit, onSnapshot, query, where } from 'firebase/f
 import { db } from '../../hooks/firebase'
 
 
-const MyPosts = () => {
-  const { userProfile, user } = useAuth()
+const UserReels = () => {
+  const { user, userProfile, viewUser } = useAuth()
   const navigation = useNavigation()
 
-  const [posts, setPosts] = useState([])
-  const [postsLimit, setLimit] = useState(4)
+  const [reels, setReels] = useState([])
+  const [reelsLimit, setLimit] = useState(4)
 
-  useEffect(() => {
-    (() => {
-      onSnapshot(query(collection(db, 'posts'),
-        where('user.id', '==', user?.uid), limit(4)),
-        snapshot => setPosts(
-          snapshot.docs.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        ))
-    })()
-  }, [postsLimit, db])
+  useLayoutEffect(() => {
+    onSnapshot(query(collection(db, 'reels'),
+      where('user.id', '==', viewUser?.id), limit(reelsLimit)),
+      snapshot => setReels(
+        snapshot?.docs?.map(doc => ({
+          id: doc?.id,
+          ...doc?.data()
+        }))
+      ))
+  }, [reelsLimit, db])
 
-  const getPosts = async () => {
-    const queryPosts = await getDocs(query(collection(db, 'posts'), where('user.id', '==', user?.uid), limit(postsLimit)))
+  const getReels = async () => {
+    const queryPosts = await getDocs(query(collection(db, 'reels'), where('user.id', '==', viewUser?.id), limit(reelsLimit)))
 
-    setPosts(
+    setReels(
       queryPosts?.docs?.map(doc => ({
         id: doc?.id,
         ...doc?.data()
@@ -51,7 +49,7 @@ const MyPosts = () => {
   return (
     <>
       {
-        posts?.length < 1 ?
+        reels?.length < 1 ?
           <View
             style={{
               flex: 1,
@@ -75,12 +73,12 @@ const MyPosts = () => {
                   color: userProfile?.theme == 'dark' ? color.white : color.dark
                 }}
               >
-                Loading posts...
+                Loading reels...
               </Text>
             </View>
           </View> :
           <FlatList
-            data={posts}
+            data={reels}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
             style={{
@@ -90,8 +88,8 @@ const MyPosts = () => {
               backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
             }}
             onEndReached={() => {
-              setLimit(postsLimit + 4)
-              getPosts()
+              setLimit(reelsLimit + 4)
+              getReels()
             }}
             ListFooterComponent={() => (
               <View
@@ -114,9 +112,9 @@ const MyPosts = () => {
                 </Text>
               </View>
             )}
-            renderItem={({ item: post }) => (
+            renderItem={({ item: reel }) => (
               <Pressable
-                onPress={() => navigation.navigate('ViewPost', { post })}
+                onPress={() => navigation.navigate('ViewReel', { reel })}
                 style={{
                   padding: 5,
                   flexDirection: 'row',
@@ -125,73 +123,30 @@ const MyPosts = () => {
                   marginBottom: 20
                 }}
               >
-                {/* {
-                  post?.mediaType != 'video' ?
-                    <Image
-                      source={{ uri: post?.media }}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        borderRadius: 12,
-                        marginRight: 10
-                      }}
-                    /> :
-                    post?.mediaType != 'image' ?
-                      <Image
-                        source={{ uri: post?.thumbnail }}
-                        resizeMode='cover'
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: 12,
-                          marginRight: 10
-                        }}
-                      /> : <View />
-                } */}
-
-                {
-                  post?.mediaType == 'video' &&
-                  <Image
-                    source={{ uri: post?.thumbnail }}
-                    style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: 12,
-                      marginRight: 10
-                    }}
-                  />
-                }
-
-                {
-                  post?.mediaType == 'image' &&
-                  <Image
-                    source={{ uri: post?.media }}
-                    style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: 12,
-                      marginRight: 10
-                    }}
-                  />
-                }
+                <Image
+                  source={{ uri: reel?.thumbnail }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 12,
+                    marginRight: 10
+                  }}
+                />
 
                 <View
                   style={{
                     flex: 1,
                   }}
                 >
-                  {
-                    post?.caption &&
-                    <Text
-                      numberOfLines={1}
-                      style={{
-                        color: userProfile?.theme == 'dark' ? color.white : color.black,
-                        fontSize: 18
-                      }}
-                    >
-                      {post?.caption}
-                    </Text>
-                  }
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      color: userProfile?.theme == 'dark' ? color.white : color.black,
+                      fontSize: 18
+                    }}
+                  >
+                    {reel?.description}
+                  </Text>
 
                   <Text
                     style={{
@@ -199,7 +154,7 @@ const MyPosts = () => {
                       fontSize: 13
                     }}
                   >
-                    Video - {post?.user?.username}
+                    Video - {reel?.user?.username}
                   </Text>
                   <View
                     style={{
@@ -221,7 +176,7 @@ const MyPosts = () => {
                           color: userProfile?.theme == 'dark' ? color.white : color.dark
                         }}
                       >
-                        {post?.likesCount}
+                        {reel?.likesCount}
                       </Text>
                       <Text
                         style={{
@@ -229,7 +184,7 @@ const MyPosts = () => {
                           fontFamily: 'text'
                         }}
                       >
-                        {post?.likesCount == 1 ? 'Like' : 'Likes'}
+                        {reel?.likesCount == 1 ? 'Like' : 'Likes'}
                       </Text>
                     </View>
                     <View
@@ -245,7 +200,7 @@ const MyPosts = () => {
                           color: userProfile?.theme == 'dark' ? color.white : color.dark
                         }}
                       >
-                        {post?.commentsCount}
+                        {reel?.commentsCount}
                       </Text>
                       <Text
                         style={{
@@ -253,7 +208,7 @@ const MyPosts = () => {
                           fontFamily: 'text'
                         }}
                       >
-                        {post?.commentsCount == 1 ? 'Comment' : 'Comments'}
+                        {reel?.commentsCount == 1 ? 'Comment' : 'Comments'}
                       </Text>
                     </View>
                   </View>
@@ -266,4 +221,4 @@ const MyPosts = () => {
   )
 }
 
-export default MyPosts
+export default UserReels

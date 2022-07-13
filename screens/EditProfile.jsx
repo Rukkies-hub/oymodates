@@ -619,7 +619,6 @@ const EditProfile = () => {
             style={{
               flex: 1,
               marginTop: 30,
-              marginBottom: 50,
               marginVertical: 20,
               flexDirection: 'row',
               justifyContent: 'center',
@@ -644,14 +643,15 @@ const EditProfile = () => {
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              marginVertical: 50
             }}
           >
             <Image
               source={require('../assets/icon.png')}
               style={{
-                width: 60,
-                height: 60
+                width: 50,
+                height: 50
               }}
             />
             <Text

@@ -121,6 +121,10 @@ const Match = () => {
     setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped.id), userSwiped)
   }
 
+  const disabled = () => {
+    console.log('not logged in')
+  }
+
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
     lightText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Light.ttf'),
@@ -153,9 +157,8 @@ const Match = () => {
               backgroundColor={color.transparent}
               cardHorizontalMargin={1}
               cardVerticalMargin={0}
-              onSwipedLeft={cardIndex => swipeLeft(cardIndex)}
-              onSwipedRight={cardIndex => swipeRight(cardIndex)}
-              onSwipedBottom={cardIndex => swipeLeft(cardIndex)}
+              onSwipedLeft={cardIndex => userProfile ? swipeLeft(cardIndex) : disabled()}
+              onSwipedRight={cardIndex => userProfile ? swipeRight(cardIndex) : disabled()}
               overlayLabels={{
                 left: {
                   title: 'NOPE',
@@ -258,7 +261,9 @@ const Match = () => {
                       </View>
 
                       <TouchableOpacity
-                        onPress={() => navigation.navigate('UserProfile', { user: card })}
+                        onPress={() =>
+                          userProfile ? navigation.navigate('UserProfile', { user: card }) : disabled()
+                        }
                         style={{
                           width: 40,
                           height: 40,

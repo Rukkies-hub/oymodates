@@ -10,8 +10,8 @@ import { collection, getDocs, limit, onSnapshot, query, where } from 'firebase/f
 import { db } from '../../hooks/firebase'
 
 
-const MyPosts = () => {
-  const { userProfile, user } = useAuth()
+const UserPosts = () => {
+  const { userProfile, viewUser } = useAuth()
   const navigation = useNavigation()
 
   const [posts, setPosts] = useState([])
@@ -20,7 +20,7 @@ const MyPosts = () => {
   useEffect(() => {
     (() => {
       onSnapshot(query(collection(db, 'posts'),
-        where('user.id', '==', user?.uid), limit(4)),
+        where('user.id', '==', viewUser?.id), limit(4)),
         snapshot => setPosts(
           snapshot.docs.map(doc => ({
             id: doc?.id,
@@ -31,7 +31,7 @@ const MyPosts = () => {
   }, [postsLimit, db])
 
   const getPosts = async () => {
-    const queryPosts = await getDocs(query(collection(db, 'posts'), where('user.id', '==', user?.uid), limit(postsLimit)))
+    const queryPosts = await getDocs(query(collection(db, 'posts'), where('user.id', '==', viewUser?.id), limit(postsLimit)))
 
     setPosts(
       queryPosts?.docs?.map(doc => ({
@@ -266,4 +266,4 @@ const MyPosts = () => {
   )
 }
 
-export default MyPosts
+export default UserPosts

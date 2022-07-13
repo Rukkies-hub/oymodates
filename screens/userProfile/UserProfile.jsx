@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import {
   View,
   Text,
@@ -10,88 +10,90 @@ import {
   TouchableOpacity
 } from 'react-native'
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import Header from '../../components/Header'
 import Bar from '../../components/StatusBar'
 import color from '../../style/color'
 import { useFonts } from 'expo-font'
-import { Feather, Fontisto, AntDesign } from '@expo/vector-icons'
+import { Feather, Fontisto, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 import { collection, deleteDoc, doc, getDoc, increment, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import AutoHeightImage from 'react-native-auto-height-image'
 import useAuth from '../../hooks/useAuth'
+import UserPosts from './UserPosts'
+import UserReels from './UserReels'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+
+const Tab = createMaterialTopTabNavigator()
 
 const { width, height } = Dimensions.get('window')
+
 const UserProfile = (params) => {
-  const { user, userProfile } = useAuth()
-  const currentUser = params?.route?.params?.user
+  const { userProfile, setViewUser } = useAuth()
+  const { user } = useRoute().params
   const navigation = useNavigation()
 
   const [reels, setReels] = useState([])
-  const [viewingUser, setViewingUser] = useState(null)
-  const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: viewingUser?.followersCount })
+  const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: user?.followersCount })
 
-  useEffect(() =>
-    (() => {
-      onSnapshot(query(collection(db, 'reels'),
-        where('user.id', '==', currentUser?.id)),
-        snapshot => setReels(
-          snapshot.docs.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        ))
-    })()
-    , [currentUser, db])
+  useLayoutEffect(() => {
+    setViewUser(user)
+  }, [user])
 
-  const getUserProfile = async () => {
-    const user = await getDoc(doc(db, 'users', currentUser?.id))
-    setViewingUser(user?.data())
-  }
+  // useEffect(() =>
+  //   (() => {
+  //     onSnapshot(query(collection(db, 'reels'),
+  //       where('user.id', '==', currentUser?.id)),
+  //       snapshot => setReels(
+  //         snapshot.docs.map(doc => ({
+  //           id: doc?.id,
+  //           ...doc?.data()
+  //         }))
+  //       ))
+  //   })()
+  //   , [currentUser, db])
 
-  useEffect(() => getUserProfile(user), [])
+  // useEffect(() => {
+  //   (() => {
+  //     getLikesById(currentUser?.id, userProfile?.id).then(res => {
+  //       setCurrentLikesState({
+  //         ...currentLikesState,
+  //         state: res
+  //       })
+  //     })
+  //   })()
+  // }, [currentUser])
 
-  useEffect(() => {
-    (() => {
-      getLikesById(currentUser?.id, user?.uid).then(res => {
-        setCurrentLikesState({
-          ...currentLikesState,
-          state: res
-        })
-      })
-    })()
-  }, [currentUser])
+  // const getLikesById = () => new Promise(async (resolve, reject) => {
+  //   getDoc(doc(db, 'users', currentUser?.id, 'following', userProfile?.id))
+  //     .then(res => resolve(res.exists()))
+  // })
 
-  const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'users', currentUser?.id, 'following', user?.uid))
-      .then(res => resolve(res.exists()))
-  })
-
-  const updateLike = () => new Promise(async (resolve, reject) => {
-    if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'users', currentUser?.id, 'following', user?.uid))
-      await updateDoc(doc(db, 'users', currentUser?.id), {
-        followersCount: increment(-1)
-      }).then(() => getUserProfile(user))
-    } else {
-      await setDoc(doc(db, 'users', currentUser?.id, 'following', user?.uid), {
-        id: userProfile?.id,
-        photoURL: userProfile?.photoURL,
-        username: userProfile?.username
-      })
-      await updateDoc(doc(db, 'users', currentUser?.id), {
-        followersCount: increment(1)
-      }).then(() => getUserProfile(user))
-    }
-  })
+  // const updateLike = () => new Promise(async (resolve, reject) => {
+  //   if (currentLikesState.state) {
+  //     await deleteDoc(doc(db, 'users', currentUser?.id, 'following', userProfile?.id))
+  //     await updateDoc(doc(db, 'users', currentUser?.id), {
+  //       followersCount: increment(-1)
+  //     }).then(() => getUserProfile(user))
+  //   } else {
+  //     await setDoc(doc(db, 'users', currentUser?.id, 'following', userProfile?.id), {
+  //       id: userProfile?.id,
+  //       photoURL: userProfile?.photoURL,
+  //       username: userProfile?.username
+  //     })
+  //     await updateDoc(doc(db, 'users', currentUser?.id), {
+  //       followersCount: increment(1)
+  //     }).then(() => getUserProfile(user))
+  //   }
+  // })
 
   const handleUpdateLikes = async () => {
-    setCurrentLikesState({
-      state: !currentLikesState.state,
-      counter: currentLikesState.counter + (currentLikesState.state ? -1 : 1)
-    })
-    updateLike()
+    // setCurrentLikesState({
+    //   state: !currentLikesState.state,
+    //   counter: currentLikesState.counter + (currentLikesState.state ? -1 : 1)
+    // })
+    // updateLike()
   }
 
   const [loaded] = useFonts({
@@ -110,7 +112,7 @@ const UserProfile = (params) => {
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
-      <Header showBack showTitle title={currentUser?.username} showAratar />
+      <Header showBack showTitle title={user?.username} showAratar />
 
       <View
         style={{
@@ -121,7 +123,7 @@ const UserProfile = (params) => {
         }}
       >
         <Image
-          source={{ uri: currentUser?.photoURL }}
+          source={{ uri: user?.photoURL }}
           style={{
             width: 80,
             height: 80,
@@ -137,7 +139,7 @@ const UserProfile = (params) => {
           }}
         >
           {
-            currentUser?.username &&
+            user?.username &&
             <View
               style={{
                 flexDirection: 'row',
@@ -152,7 +154,7 @@ const UserProfile = (params) => {
                   fontSize: 20
                 }}
               >
-                @{viewingUser?.username}
+                @{user?.username}
               </Text>
             </View>
           }
@@ -162,7 +164,7 @@ const UserProfile = (params) => {
               color: userProfile?.theme == 'light' ? color.lightText : color.white
             }}
           >
-            {currentUser?.displayName}
+            {user?.displayName}
           </Text>
         </View>
 
@@ -189,6 +191,11 @@ const UserProfile = (params) => {
             }
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+        >
+          <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={color.white} />
+        </TouchableOpacity>
       </View>
 
       <View
@@ -214,7 +221,7 @@ const UserProfile = (params) => {
               color: userProfile?.theme == 'light' ? color.black : color.white
             }}
           >
-            {viewingUser?.followersCount ? viewingUser?.followersCount : '0'}
+            {user?.followersCount ? user?.followersCount : '0'}
           </Text>
           <Text
             style={{
@@ -224,7 +231,7 @@ const UserProfile = (params) => {
               marginLeft: 5
             }}
           >
-            {viewingUser?.followersCount == 1 ? 'Follower' : 'Followers'}
+            {user?.followersCount == 1 ? 'Follower' : 'Followers'}
           </Text>
         </View>
 
@@ -242,7 +249,7 @@ const UserProfile = (params) => {
               color: userProfile?.theme == 'light' ? color.black : color.white
             }}
           >
-            {viewingUser?.likesCount ? viewingUser?.likesCount : '0'}
+            {user?.likesCount ? user?.likesCount : '0'}
           </Text>
           <Text
             style={{
@@ -252,13 +259,13 @@ const UserProfile = (params) => {
               marginLeft: 5
             }}
           >
-            {viewingUser?.likesCount == 1 ? 'Like' : 'Likes'}
+            {user?.likesCount == 1 ? 'Like' : 'Likes'}
           </Text>
         </View>
       </View>
 
       {
-        viewingUser?.about &&
+        user?.about != '' &&
         <View
           style={{
             marginHorizontal: 10,
@@ -272,7 +279,7 @@ const UserProfile = (params) => {
               color: userProfile?.theme == 'light' ? color.dark : color.white
             }}
           >
-            {viewingUser?.about}
+            {user?.about}
           </Text>
         </View>
       }
@@ -314,7 +321,7 @@ const UserProfile = (params) => {
               marginLeft: 5
             }}
           >
-            {viewingUser?.city}
+            {user?.city}
           </Text>
         </View>
       </View>
@@ -356,7 +363,7 @@ const UserProfile = (params) => {
               marginLeft: 5
             }}
           >
-            {viewingUser?.timestamp?.toDate().toDateString()}
+            {user?.timestamp?.toDate().toDateString()}
           </Text>
         </View>
       </View>
@@ -380,11 +387,56 @@ const UserProfile = (params) => {
             marginLeft: 10
           }}
         >
-          {viewingUser?.job} {viewingUser?.job ? 'at' : null} {viewingUser?.company}
+          {user?.job} {user?.job ? 'at' : null} {user?.company}
         </Text>
       </View>
 
-      <ScrollView>
+      <Tab.Navigator
+        initialRouteName='UserReels'
+        barStyle={{
+          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+          height: 50,
+          elevation: 0
+        }}
+        keyboardDismissMode='auto'
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+            height: 50,
+            elevation: 0
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: userProfile.theme == 'dark' ? color.offWhite : color.dark,
+            borderBottomLeftRadius: 50,
+            borderBottomRightRadius: 50
+          }
+        }}
+      >
+        <Tab.Screen
+          name='UserReels'
+          component={UserReels}
+          options={{
+            tabBarIcon: () =>
+              <Image
+                source={userProfile?.theme == 'dark' ? require('../../assets/videoLight.png') : require('../../assets/video.png')}
+                style={{
+                  width: 20,
+                  height: 20
+                }}
+              />
+          }}
+        />
+        <Tab.Screen
+          name='UserPosts'
+          component={UserPosts}
+          options={{
+            tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+          }}
+        />
+      </Tab.Navigator>
+
+      {/* <ScrollView>
         {
           reels?.length > 0 &&
           <View
@@ -442,7 +494,7 @@ const UserProfile = (params) => {
             }
           </View>
         }
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   )
 }

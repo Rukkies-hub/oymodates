@@ -83,6 +83,7 @@ export const AuthProvider = ({ children }) => {
   const [postLimit, setPostLimit] = useState(3)
   const [reels, setReels] = useState([])
   const [reelsLimit, setReelsLimit] = useState(2)
+  const [viewUser, setViewUser] = useState(null)
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -341,6 +342,8 @@ export const AuthProvider = ({ children }) => {
         setReels,
         reelsLimit,
         setReelsLimit,
+        viewUser,
+        setViewUser
       }}
     >
       {!loadingInitial && children}
