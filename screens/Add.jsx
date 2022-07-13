@@ -285,7 +285,7 @@ const Add = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
         position: 'relative'
       }}
     >
@@ -326,18 +326,18 @@ const Add = () => {
                   value={input}
                   onChangeText={setInput}
                   placeholder="What's on your mind..."
-                  placeholderTextColor={userProfile?.theme == 'light' ? color.dark : color.white}
+                  placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
                   onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                   style={{
                     flex: 1,
                     height,
-                    backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.lightText : color.dark,
+                    backgroundColor: userProfile?.theme == 'dark' ? color.lightText : color.offWhite,
                     maxHeight: 300,
                     fontSize: media ? 18 : input.length <= 120 ? 30 : 18,
                     paddingVertical: 10,
                     borderRadius: 12,
                     paddingHorizontal: 10,
-                    color: userProfile?.theme == 'light' ? color.dark : color.white
+                    color: userProfile?.theme == 'dark' ? color.white : color.dark
                   }}
                 />
                 {
@@ -929,7 +929,7 @@ const Add = () => {
           <Text
             style={{
               fontFamily: 'text',
-              color: userProfile?.theme == 'light' ? color.dark : color.white
+              color: userProfile?.theme == 'dark' ? color.white : color.dark
             }}
           >
             Cancel

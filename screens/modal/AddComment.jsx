@@ -24,7 +24,6 @@ import { Entypo } from '@expo/vector-icons'
 
 import Bar from '../../components/StatusBar'
 
-import * as NavigationBar from 'expo-navigation-bar'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 
