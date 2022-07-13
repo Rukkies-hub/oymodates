@@ -167,11 +167,13 @@ const Posts = () => {
                   }}
                 >
                   <Pressable
-                    onPress={() =>
-                      post?.user?.id == user?.uid ?
-                        navigation.navigate('Profile') :
-                        navigation.navigate('UserProfile', { user: post?.user })
-                    }
+                    onPress={() => {
+                      userProfile ? (
+                        post?.user?.id == user?.uid ?
+                          navigation.navigate('Profile') :
+                          navigation.navigate('UserProfile', { user: post?.user })
+                      ) : disabled()
+                    }}
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'flex-start',
@@ -244,7 +246,7 @@ const Posts = () => {
                   <Likes post={post} />
 
                   <TouchableOpacity
-                    onPress={() => userProfile ?  navigation.navigate('AddComment', { post }) : disabled()}
+                    onPress={() => userProfile ? navigation.navigate('AddComment', { post }) : disabled()}
                     style={{
                       width: 35,
                       height: 35,

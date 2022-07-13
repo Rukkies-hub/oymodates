@@ -46,6 +46,10 @@ const ViewReel = (props) => {
       return () => unload()
     })
     , [navigation])
+  
+  const disabled = () => {
+    console.log('not logged in')
+  }
 
   return (
     <ImageBackground
@@ -185,8 +189,8 @@ const ViewReel = (props) => {
 
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('ReelsComment')
-                setReelsProps(reel)
+                userProfile ? setReelsProps(reel) : null
+                userProfile ? navigation.navigate('ReelsComment') : disabled()
               }}
               style={{
                 width: 40,
