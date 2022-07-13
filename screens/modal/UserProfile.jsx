@@ -152,7 +152,7 @@ const UserProfile = (params) => {
                   fontSize: 20
                 }}
               >
-                {viewingUser?.username}
+                @{viewingUser?.username}
               </Text>
             </View>
           }

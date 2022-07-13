@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -70,10 +70,6 @@ const EditProfile = () => {
   const [height, setHeight] = useState(50)
   const [uploadLoading, setUploadLoading] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
-
-  useLayoutEffect(() => {
-    if (setup) navigation.goBack()
-  }, [])
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -292,12 +288,12 @@ const EditProfile = () => {
                 color: userProfile?.theme == 'dark' ? color.white : color.dark
               }}
             >
-              {userProfile?.displayName ? userProfile?.displayName : user?.displayName}
+              {userProfile?.displayName ? userProfile?.displayName : user?.displayName ? user?.displayName : 'John Doe'}
             </Text>
           </View>
 
           {
-            userProfile?.displayName &&
+            userProfile?.displayName != '' &&
             <TouchableOpacity
               onPress={pickImage}
               style={{
@@ -346,6 +342,9 @@ const EditProfile = () => {
           <TextInput
             value={username}
             placeholder='Username'
+            autoCapitalize='none'
+            textContentType='username'
+            autoCorrect={false}
             placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
             onChangeText={setUsername}
             style={{

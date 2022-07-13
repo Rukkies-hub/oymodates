@@ -186,7 +186,7 @@ const Profile = () => {
       </View>
 
       {
-        userProfile?.about &&
+        userProfile?.about != '' &&
         <View
           style={{
             marginHorizontal: 10,
@@ -309,7 +309,7 @@ const Profile = () => {
             marginLeft: 10
           }}
         >
-          {userProfile?.job} at {userProfile?.company}
+          {userProfile?.job} {userProfile?.company != '' && 'at'} {userProfile?.company}
         </Text>
       </View>
 

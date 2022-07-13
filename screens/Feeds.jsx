@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { View, SafeAreaView } from 'react-native'
 import color from '../style/color'
 
@@ -8,18 +8,9 @@ import Posts from '../components/Posts'
 import { collection, doc, getDocs, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
-import { useNavigation } from '@react-navigation/native'
 
 const Feeds = () => {
-  const { user, profiles, setProfiles, userProfile } = useAuth()
-  const navigation = useNavigation()
-
-  useLayoutEffect(() =>
-    onSnapshot(doc(db, 'users', user?.uid),
-      snapshot => {
-        if (!snapshot?.exists()) navigation.navigate('EditProfile', { setup: true })
-      })
-    , [])
+  const { user, setProfiles, userProfile } = useAuth()
 
   useEffect(() => {
     let unsub

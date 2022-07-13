@@ -326,27 +326,57 @@ const Header = ({
 
           {
             showAratar &&
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Profile')}
-              style={{
-                minWidth: 40,
-                minHeight: 40,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
+            <>
               {
-                user?.photoURL || userProfile?.photoURL ?
-                  <Image
-                    source={{ uri: userProfile?.photoURL || user?.photoURL }}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 50
-                    }}
-                  /> : <SimpleLineIcons name='user' size={20} color={color.lightText} />
+                userProfile &&
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Profile')}
+                  style={{
+                    minWidth: 40,
+                    minHeight: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  {
+                    user?.photoURL || userProfile?.photoURL ?
+                      <Image
+                        source={{ uri: userProfile?.photoURL || user?.photoURL }}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 50
+                        }}
+                      /> : <SimpleLineIcons name='user' size={20} color={color.lightText} />
+                  }
+                </TouchableOpacity>
               }
-            </TouchableOpacity>
+
+              {
+                !userProfile &&
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('EditProfile', { setup: true })}
+                  style={{
+                    minWidth: 40,
+                    minHeight: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  {
+                    user?.photoURL || userProfile?.photoURL ?
+                      <Image
+                        source={{ uri: userProfile?.photoURL || user?.photoURL }}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 50
+                        }}
+                      /> : <SimpleLineIcons name='user' size={20} color={color.lightText} />
+                  }
+                </TouchableOpacity>
+              }
+            </>
           }
         </View>
       </View>

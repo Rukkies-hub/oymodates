@@ -133,7 +133,8 @@ const AllAdd = () => {
   return (
     <View
       style={{
-        flex: 1
+        flex: 1,
+        backgroundColor: color.black
       }}
     >
       {
