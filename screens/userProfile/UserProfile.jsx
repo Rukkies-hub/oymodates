@@ -34,66 +34,53 @@ const UserProfile = (params) => {
   const { user } = useRoute().params
   const navigation = useNavigation()
 
-  const [reels, setReels] = useState([])
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: user?.followersCount })
 
   useLayoutEffect(() => {
     setViewUser(user)
   }, [user])
 
-  // useEffect(() =>
-  //   (() => {
-  //     onSnapshot(query(collection(db, 'reels'),
-  //       where('user.id', '==', currentUser?.id)),
-  //       snapshot => setReels(
-  //         snapshot.docs.map(doc => ({
-  //           id: doc?.id,
-  //           ...doc?.data()
-  //         }))
-  //       ))
-  //   })()
-  //   , [currentUser, db])
+  useEffect(() => {
+    (() => {
+      getLikesById(user?.id, userProfile?.id)
+        .then(res => {
+          setCurrentLikesState({
+            ...currentLikesState,
+            state: res
+          })
+        })
+    })()
+  }, [user])
 
-  // useEffect(() => {
-  //   (() => {
-  //     getLikesById(currentUser?.id, userProfile?.id).then(res => {
-  //       setCurrentLikesState({
-  //         ...currentLikesState,
-  //         state: res
-  //       })
-  //     })
-  //   })()
-  // }, [currentUser])
+  const getLikesById = () => new Promise(async (resolve, reject) => {
+    getDoc(doc(db, 'users', user?.id, 'following', userProfile?.id))
+      .then(res => resolve(res.exists()))
+  })
 
-  // const getLikesById = () => new Promise(async (resolve, reject) => {
-  //   getDoc(doc(db, 'users', currentUser?.id, 'following', userProfile?.id))
-  //     .then(res => resolve(res.exists()))
-  // })
-
-  // const updateLike = () => new Promise(async (resolve, reject) => {
-  //   if (currentLikesState.state) {
-  //     await deleteDoc(doc(db, 'users', currentUser?.id, 'following', userProfile?.id))
-  //     await updateDoc(doc(db, 'users', currentUser?.id), {
-  //       followersCount: increment(-1)
-  //     }).then(() => getUserProfile(user))
-  //   } else {
-  //     await setDoc(doc(db, 'users', currentUser?.id, 'following', userProfile?.id), {
-  //       id: userProfile?.id,
-  //       photoURL: userProfile?.photoURL,
-  //       username: userProfile?.username
-  //     })
-  //     await updateDoc(doc(db, 'users', currentUser?.id), {
-  //       followersCount: increment(1)
-  //     }).then(() => getUserProfile(user))
-  //   }
-  // })
+  const updateLike = () => new Promise(async (resolve, reject) => {
+    if (currentLikesState.state) {
+      await deleteDoc(doc(db, 'users', user?.id, 'following', userProfile?.id))
+      await updateDoc(doc(db, 'users', user?.id), {
+        followersCount: increment(-1)
+      })
+    } else {
+      await setDoc(doc(db, 'users', user?.id, 'following', userProfile?.id), {
+        id: userProfile?.id,
+        photoURL: userProfile?.photoURL,
+        username: userProfile?.username
+      })
+      await updateDoc(doc(db, 'users', user?.id), {
+        followersCount: increment(1)
+      })
+    }
+  })
 
   const handleUpdateLikes = async () => {
-    // setCurrentLikesState({
-    //   state: !currentLikesState.state,
-    //   counter: currentLikesState.counter + (currentLikesState.state ? -1 : 1)
-    // })
-    // updateLike()
+    setCurrentLikesState({
+      state: !currentLikesState.state,
+      counter: currentLikesState.counter + (currentLikesState.state ? -1 : 1)
+    })
+    updateLike()
   }
 
   const [loaded] = useFonts({
@@ -221,7 +208,7 @@ const UserProfile = (params) => {
               color: userProfile?.theme == 'light' ? color.black : color.white
             }}
           >
-            {user?.followersCount ? user?.followersCount : '0'}
+            {currentLikesState?.counter ? currentLikesState?.counter : '0'}
           </Text>
           <Text
             style={{
