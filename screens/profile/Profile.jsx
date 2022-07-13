@@ -5,19 +5,33 @@ import Bar from '../../components/StatusBar'
 import Header from '../../components/Header'
 import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import MyReels from './MyReels'
 import MyPosts from './MyPosts'
 import { FontAwesome, Feather, Fontisto, SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
+import * as NavigationBar from 'expo-navigation-bar'
+
 const Tab = createMaterialTopTabNavigator()
 
 
 const Profile = () => {
   const navigation = useNavigation()
+  const focus = useIsFocused()
   const { user, userProfile } = useAuth()
+
+  if (focus) {
+    NavigationBar.setPositionAsync('absolute')
+    NavigationBar.setBackgroundColorAsync(color.transparent)
+  }
+
+  navigation.addListener('blur', () => {
+    NavigationBar.setPositionAsync('relative')
+    NavigationBar.setBackgroundColorAsync(userProfile?.theme == 'dark' ? color.black : color.white)
+    NavigationBar.setButtonStyleAsync(userProfile?.theme == 'dark' ? 'light' : 'dark')
+  })
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -327,6 +341,11 @@ const Profile = () => {
             backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
             height: 50,
             elevation: 0
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: userProfile.theme == 'dark' ? color.offWhite : color.dark,
+            borderBottomLeftRadius: 50,
+            borderBottomRightRadius: 50
           }
         }}
       >

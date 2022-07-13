@@ -36,7 +36,7 @@ const Match = () => {
 
   const swipeRef = useRef(null)
 
-  const [stackSize, setStackSize] = useState(1)
+  const [stackSize, setStackSize] = useState(2)
 
 
   useLayoutEffect(() =>
@@ -132,7 +132,7 @@ const Match = () => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
         flex: 1
       }}
     >
@@ -148,7 +148,7 @@ const Match = () => {
               }}
               cardIndex={0}
               stackSize={stackSize}
-              verticalSwipe={true}
+              verticalSwipe={false}
               animateCardOpacity={true}
               backgroundColor={color.transparent}
               cardHorizontalMargin={1}
@@ -227,7 +227,8 @@ const Match = () => {
                       minHeight: 60,
                       position: 'absolute',
                       bottom: 0,
-                      padding: 20
+                      padding: 20,
+                      marginBottom: -2
                     }}
                   >
                     <View
@@ -339,6 +340,7 @@ const Match = () => {
                     {
                       card?.about.length >= 20 ?
                         <Text
+                          numberOfLines={4}
                           style={{
                             color: color.white,
                             fontSize: 18,
@@ -350,54 +352,53 @@ const Match = () => {
                         </Text> : null
                     }
                     {
-                      card?.passions?.length > 0 ?
+                      card?.passions?.length > 0 &&
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          marginTop: 10
+                        }}
+                      >
                         <View
                           style={{
                             flexDirection: 'row',
                             justifyContent: 'flex-start',
                             alignItems: 'center',
-                            marginTop: 10
+                            flexWrap: 'wrap'
                           }}
                         >
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              justifyContent: 'flex-start',
-                              alignItems: 'center',
-                              flexWrap: 'wrap'
-                            }}
-                          >
-                            {
-                              card?.passions?.map((passion, index) => {
-                                return (
-                                  <View
-                                    key={index}
+                          {
+                            card?.passions?.map((passion, index) => {
+                              return (
+                                <View
+                                  key={index}
+                                  style={{
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 5,
+                                    borderRadius: 50,
+                                    marginBottom: 10,
+                                    marginRight: 10,
+                                    backgroundColor: `${color.faintBlack}`
+                                  }}
+                                >
+                                  <Text
                                     style={{
-                                      paddingHorizontal: 10,
-                                      paddingVertical: 5,
-                                      borderRadius: 50,
-                                      marginBottom: 10,
-                                      marginRight: 10,
-                                      backgroundColor: `${color.faintBlack}`
+                                      color: color.white,
+                                      fontSize: 12,
+                                      fontFamily: 'lightText',
+                                      textTransform: 'capitalize'
                                     }}
                                   >
-                                    <Text
-                                      style={{
-                                        color: color.white,
-                                        fontSize: 12,
-                                        fontFamily: 'lightText',
-                                        textTransform: 'capitalize'
-                                      }}
-                                    >
-                                      {passion}
-                                    </Text>
-                                  </View>
-                                )
-                              })
-                            }
-                          </View>
-                        </View> :
-                        null
+                                    {passion}
+                                  </Text>
+                                </View>
+                              )
+                            })
+                          }
+                        </View>
+                      </View>
                     }
                   </LinearGradient>
                 </View>

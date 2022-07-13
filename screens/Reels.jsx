@@ -69,6 +69,10 @@ const Reels = () => {
       })
   }
 
+  const disabled = () => {
+    console.log('not logged in')
+  }
+
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
     boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
@@ -85,8 +89,8 @@ const Reels = () => {
         style={{
           flex: 1,
           width,
-          height: userProfile?.layout == 'bottom' ? height - 109 : height - 100,
-          backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
+          height: userProfile?.layout == 'bottom' ? height - 108 : height - 100,
+          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: userProfile?.theme == 'dark' ? 8 : 0,
@@ -181,8 +185,8 @@ const Reels = () => {
 
               <TouchableOpacity
                 onPress={() => {
-                  setReelsProps(item)
-                  navigation.navigate('ReelsComment', { item })
+                  userProfile ? setReelsProps(item) : null
+                  userProfile ? navigation.navigate('ReelsComment', { item }) : disabled()
                 }}
                 style={{
                   width: 40,
@@ -213,7 +217,7 @@ const Reels = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
 

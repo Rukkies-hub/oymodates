@@ -82,9 +82,13 @@ const LikeReels = (props) => {
     updateLike()
   }
 
+  const disabled = () => {
+    console.log('not logged in')
+  }
+
   return (
     <TouchableOpacity
-      onPress={handleUpdateLikes}
+      onPress={() => userProfile ? handleUpdateLikes() : disabled()}
       style={{
         width: 40,
         height: 40,
