@@ -103,9 +103,13 @@ const Likes = (params) => {
     updateLike()
   }
 
+  const disabled = () => { 
+    console.log('not logged in')
+  }
+
   return (
     <TouchableOpacity
-      onPress={handleUpdateLikes}
+      onPress={() => userProfile ? handleUpdateLikes() : disabled()}
       disabled={likeDisable}
       style={{
         width: 35,

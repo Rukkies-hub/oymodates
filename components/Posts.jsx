@@ -59,6 +59,10 @@ const Posts = () => {
     )
   }
 
+  const disabled = () => {
+    console.log('not logged in')
+  }
+
   // let randomPosts = posts?.sort(() => Math.random() - 0.5)
 
   const [loaded] = useFonts({
@@ -240,7 +244,7 @@ const Posts = () => {
                   <Likes post={post} />
 
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('AddComment', { post })}
+                    onPress={() => userProfile ?  navigation.navigate('AddComment', { post }) : disabled()}
                     style={{
                       width: 35,
                       height: 35,
