@@ -1,7 +1,7 @@
 import React from 'react'
 import { LogBox } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
-import StackNavigator from './StackNavigator'
+import StackNavigator from './layouts/StackNavigator'
 import { AuthProvider } from './hooks/useAuth'
 
 import { MenuProvider } from 'react-native-popup-menu'
