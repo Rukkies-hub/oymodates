@@ -1,20 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
   Image,
-  TouchableOpacity,
-  ActivityIndicator
+  TouchableOpacity
 } from 'react-native'
 
 import {
   FontAwesome,
   MaterialCommunityIcons,
-  MaterialIcons,
   Entypo,
-  AntDesign,
   FontAwesome5,
-  Feather,
   SimpleLineIcons
 } from '@expo/vector-icons'
 
@@ -33,11 +29,9 @@ import { useFonts } from 'expo-font'
 
 import color from '../style/color'
 
-import { addDoc, collection, getDocs, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore'
 
 import { db } from '../hooks/firebase'
-
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 import MessageSettings from './MessageSettings'
@@ -104,7 +98,7 @@ const Header = ({
     <View>
       <View
         style={{
-          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+          backgroundColor: backgroundColor ? backgroundColor : userProfile?.theme == 'dark' ? color.black : color.white,
           height: 50,
           marginTop: 40,
           paddingHorizontal: 10,
