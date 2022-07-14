@@ -254,68 +254,73 @@ const Header = ({
           }
 
           {
-            showAdd &&
-            <Menu>
-              <MenuTrigger
-                customStyles={{
-                  triggerWrapper: {
-                    width: 30,
-                    height: 30,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginRight: 20
-                  }
-                }}
-              >
-                <FontAwesome name='plus-square-o' color={userProfile?.theme == 'dark' ? color.white : color.black} size={26} />
-              </MenuTrigger>
-
-              <MenuOptions
-                customStyles={{
-                  optionsContainer: {
-                    width: 150,
-                    borderRadius: 10,
-                    overflow: 'hidden'
-                  }
-                }}
-              >
-                <MenuOption
-                  onSelect={() => navigation.navigate('Add')}
-                  customStyles={{
-                    optionWrapper: {
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      paddingHorizontal: 15,
-                      paddingVertical: 8
-                    }
-                  }}
-                >
-                  <Text>Post</Text>
-                  <MaterialCommunityIcons name='grid' size={20} color={color.dark} />
-                </MenuOption>
-
-                <MenuOption
-                  onSelect={() => navigation.navigate('AddReels')}
-                  customStyles={{
-                    optionWrapper: {
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      paddingHorizontal: 15,
-                      paddingVertical: 8
-                    }
-                  }}
-                >
-                  <Text>Reel</Text>
-                  <Image
-                    source={require('../assets/video.png')}
-                    style={{
-                      width: 19,
-                      height: 19
+            userProfile &&
+            <>
+              {
+                showAdd &&
+                <Menu>
+                  <MenuTrigger
+                    customStyles={{
+                      triggerWrapper: {
+                        width: 30,
+                        height: 30,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginRight: 20
+                      }
                     }}
-                  />
-                </MenuOption>
-              </MenuOptions>
-            </Menu>
+                  >
+                    <FontAwesome name='plus-square-o' color={userProfile?.theme == 'dark' ? color.white : color.black} size={26} />
+                  </MenuTrigger>
+
+                  <MenuOptions
+                    customStyles={{
+                      optionsContainer: {
+                        width: 150,
+                        borderRadius: 10,
+                        overflow: 'hidden'
+                      }
+                    }}
+                  >
+                    <MenuOption
+                      onSelect={() => navigation.navigate('Add')}
+                      customStyles={{
+                        optionWrapper: {
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingHorizontal: 15,
+                          paddingVertical: 8
+                        }
+                      }}
+                    >
+                      <Text>Post</Text>
+                      <MaterialCommunityIcons name='grid' size={20} color={color.dark} />
+                    </MenuOption>
+
+                    <MenuOption
+                      onSelect={() => navigation.navigate('AddReels')}
+                      customStyles={{
+                        optionWrapper: {
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingHorizontal: 15,
+                          paddingVertical: 8
+                        }
+                      }}
+                    >
+                      <Text>Reel</Text>
+                      <Image
+                        source={require('../assets/video.png')}
+                        style={{
+                          width: 19,
+                          height: 19
+                        }}
+                      />
+                    </MenuOption>
+                  </MenuOptions>
+                </Menu>
+              }
+            </>
           }
 
           {
