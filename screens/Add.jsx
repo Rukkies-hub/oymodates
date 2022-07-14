@@ -173,6 +173,7 @@ const Add = () => {
               })
           })
       })
+    setMedia(null)
   }
 
   const saveImagePost = async () => {
@@ -224,6 +225,7 @@ const Add = () => {
               })
           })
       })
+    setMedia(null)
   }
 
   const savePost = () => {
@@ -255,6 +257,7 @@ const Add = () => {
           })
         })
     }
+    setMedia(null)
   }
 
   useEffect(() => {
@@ -392,7 +395,8 @@ const Add = () => {
                             value={input}
                             onChangeText={setInput}
                             maxLength={200}
-                            selectionColor={selectionColor || backgroundTextColor}
+                            // selectionColor={selectionColor || backgroundTextColor}
+                            selectionColor={color.transparent}
                             placeholder="What's on your mind..."
                             placeholderTextColor={backgroundTextColor || color.black}
                             onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
@@ -471,7 +475,7 @@ const Add = () => {
                     onPress={() => {
                       setBackground({
                         type: 'image',
-                        background: 'https://firebasestorage.googleapis.com/v0/b/oymo-73694.appspot.com/o/post%20backgrounds%2F1.jpg?alt=media&token=0c8d109b-184c-446b-b60f-0a410e202acb'
+                        background: 'https://firebasestorage.googleapis.com/v0/b/oymo-16379.appspot.com/o/post%20image%2F1.jpg?alt=media&token=58bfeb2e-2316-4c9c-b8ba-513275ae85d1'
                       })
                       setMediaType('image')
                       setPostType('poster')
@@ -484,7 +488,7 @@ const Add = () => {
                     }}
                   >
                     <Image
-                      source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/oymo-73694.appspot.com/o/post%20backgrounds%2F1.jpg?alt=media&token=0c8d109b-184c-446b-b60f-0a410e202acb' }}
+                      source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/oymo-16379.appspot.com/o/post%20image%2F1.jpg?alt=media&token=58bfeb2e-2316-4c9c-b8ba-513275ae85d1' }}
                       style={{
                         flex: 1
                       }}
@@ -495,7 +499,7 @@ const Add = () => {
                     onPress={() => {
                       setBackground({
                         type: 'image',
-                        background: 'https://firebasestorage.googleapis.com/v0/b/oymo-73694.appspot.com/o/post%20backgrounds%2F2.jpg?alt=media&token=315f2e5f-6e62-484d-a610-5fc0478e9707'
+                        background: 'https://firebasestorage.googleapis.com/v0/b/oymo-16379.appspot.com/o/post%20image%2F2.jpg?alt=media&token=58bfeb2e-2316-4c9c-b8ba-513275ae85d1'
                       })
                       setMediaType('image')
                       setPostType('poster')
@@ -509,7 +513,7 @@ const Add = () => {
                     }}
                   >
                     <Image
-                      source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/oymo-73694.appspot.com/o/post%20backgrounds%2F2.jpg?alt=media&token=315f2e5f-6e62-484d-a610-5fc0478e9707' }}
+                      source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/oymo-16379.appspot.com/o/post%20image%2F2.jpg?alt=media&token=58bfeb2e-2316-4c9c-b8ba-513275ae85d1' }}
                       style={{
                         flex: 1
                       }}
@@ -520,7 +524,7 @@ const Add = () => {
                     onPress={() => {
                       setBackground({
                         type: 'image',
-                        background: 'https://firebasestorage.googleapis.com/v0/b/oymo-73694.appspot.com/o/post%20backgrounds%2F3.jpg?alt=media&token=315f2e5f-6e62-484d-a610-5fc0478e9707'
+                        background: 'https://firebasestorage.googleapis.com/v0/b/oymo-16379.appspot.com/o/post%20image%2F3.jpg?alt=media&token=58bfeb2e-2316-4c9c-b8ba-513275ae85d1'
                       })
                       setMediaType('image')
                       setPostType('poster')
@@ -534,7 +538,7 @@ const Add = () => {
                     }}
                   >
                     <Image
-                      source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/oymo-73694.appspot.com/o/post%20backgrounds%2F3.jpg?alt=media&token=315f2e5f-6e62-484d-a610-5fc0478e9707' }}
+                      source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/oymo-16379.appspot.com/o/post%20image%2F3.jpg?alt=media&token=58bfeb2e-2316-4c9c-b8ba-513275ae85d1' }}
                       style={{
                         flex: 1
                       }}
@@ -937,7 +941,8 @@ const Add = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => mediaType == 'video' ? saveVideoPost() : input != '' || media == '' ? savePost() : saveImagePost()}
+          // onPress={() => mediaType == 'video' ? saveVideoPost() : input != '' || media == '' ? savePost() : saveImagePost()}
+          onPress={() => mediaType == 'video' ? saveVideoPost() : mediaType == 'image' ? saveImagePost() : input != '' || media == '' ? savePost() : null}
           style={{
             flex: 1,
             height: 45,
