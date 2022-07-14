@@ -5,8 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
-    "scheme": "oymo",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -30,19 +29,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/favicon.png",
-          "color": "#ffffff",
-          "sounds": [
-            "./assets/sent.mp3",
-            "./assets/sent.mp3"
-          ]
-        }
-      ]
-    ]
+    }
   }
 }

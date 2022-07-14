@@ -17,30 +17,32 @@ import Bar from '../../components/StatusBar'
 import color from '../../style/color'
 import { useFonts } from 'expo-font'
 import { Feather, Fontisto, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
-import { collection, deleteDoc, doc, getDoc, increment, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDoc, increment, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import AutoHeightImage from 'react-native-auto-height-image'
 import useAuth from '../../hooks/useAuth'
 import UserPosts from './UserPosts'
 import UserReels from './UserReels'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import generateId from '../../lib/generateId'
 
 const Tab = createMaterialTopTabNavigator()
 
 const { width, height } = Dimensions.get('window')
 
-const UserProfile = (params) => {
-  const { userProfile, setViewUser } = useAuth()
+const UserProfile = () => {
+  const { userProfile, setViewUser, profiles } = useAuth()
   const { user } = useRoute().params
   const navigation = useNavigation()
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: user?.followersCount })
+  const [showMatch, setShowMatch] = useState(false)
 
   useLayoutEffect(() => {
     setViewUser(user)
   }, [user])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (() => {
       getLikesById(user?.id, userProfile?.id)
         .then(res => {
@@ -52,6 +54,18 @@ const UserProfile = (params) => {
     })()
   }, [user])
 
+  useLayoutEffect(() => {
+    const needle = user?.id
+    const cardIndex = profiles?.findIndex(item => item.id === needle)
+
+    if (!profiles[cardIndex]) return
+
+    const userSwiped = profiles[cardIndex]
+
+    if (userSwiped) setShowMatch(true)
+  }, [user])
+
+  // FOLLOW USER
   const getLikesById = () => new Promise(async (resolve, reject) => {
     getDoc(doc(db, 'users', user?.id, 'following', userProfile?.id))
       .then(res => resolve(res.exists()))
@@ -81,6 +95,44 @@ const UserProfile = (params) => {
       counter: currentLikesState.counter + (currentLikesState.state ? -1 : 1)
     })
     updateLike()
+  }
+
+  // MATCH WITH USER
+  const swipeRight = async () => {
+    const needle = user?.id
+    const cardIndex = profiles?.findIndex(item => item.id === needle)
+
+    if (!profiles[cardIndex]) return
+
+    const userSwiped = profiles[cardIndex]
+
+    getDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped.id))
+      .then(documentSnapshot => {
+        if (documentSnapshot.exists()) {
+          setDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped.id), userSwiped)
+
+          // CREAT A MATCH
+          setDoc(doc(db, 'matches', generateId(userProfile?.id, userSwiped.id)), {
+            users: {
+              [userProfile?.id]: userProfile,
+              [userSwiped.id]: userSwiped
+            },
+            usersMatched: [userProfile?.id, userSwiped.id],
+            timestamp: serverTimestamp()
+          }).finally(async () => await deleteDoc(doc(db, 'users', userProfile?.id, 'pendingSwipes', userSwiped.id)))
+
+          navigation.navigate('NewMatch', {
+            loggedInProfile: userProfile,
+            userSwiped
+          })
+        } else {
+          setDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped.id), userSwiped)
+          setShowMatch(false)
+        }
+      })
+
+    setDoc(doc(db, 'users', userSwiped.id, 'pendingSwipes', user?.id), userProfile)
+    setDoc(doc(db, 'users', user?.id, 'swipes', userSwiped.id), userSwiped)
   }
 
   const [loaded] = useFonts({
@@ -161,7 +213,7 @@ const UserProfile = (params) => {
             backgroundColor: color.red,
             paddingHorizontal: 20,
             height: 35,
-            borderRadius: 4,
+            borderRadius: 8,
             justifyContent: 'center',
             alignItems: 'center'
           }}
@@ -170,7 +222,7 @@ const UserProfile = (params) => {
             style={{
               color: color.white,
               fontFamily: 'text',
-              fontSize: 16
+              fontSize: 12
             }}
           >
             {
@@ -179,10 +231,23 @@ const UserProfile = (params) => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-        >
-          <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={color.white} />
-        </TouchableOpacity>
+        {
+          showMatch &&
+          <TouchableOpacity
+            onPress={swipeRight}
+            style={{
+              backgroundColor: color.red,
+              width: 35,
+              height: 35,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginLeft: 5,
+              borderRadius: 8
+            }}
+          >
+            <MaterialCommunityIcons name='heart-multiple-outline' size={18} color={color.white} />
+          </TouchableOpacity>
+        }
       </View>
 
       <View

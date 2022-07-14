@@ -19,7 +19,7 @@ const Likes = () => {
   const { pendingSwipes, user, profiles, setProfiles, userProfile } = useAuth()
   const navigation = useNavigation()
 
-  const window = Dimensions.get('window')
+  const { width, height } = Dimensions.get('window')
 
   const swipeLeft = async like => {
     setDoc(doc(db, 'users', user?.uid, 'passes', like.id), like)
@@ -93,7 +93,7 @@ const Likes = () => {
                     <View
                       key={index}
                       style={{
-                        width: (window.width / 2) - 18,
+                        width: (width / 2) - 18,
                         position: 'relative',
                         borderRadius: 20,
                         overflow: 'hidden'
@@ -103,7 +103,7 @@ const Likes = () => {
                         resizeMode='cover'
                         // blurRadius={userProfile?.plan != 'gold' ? 50 : userProfile?.plan != 'platinum' ? 50 : 0}
                         source={{ uri: like.photoURL }}
-                        width={(window.width / 2) - 10}
+                        width={(width / 2) - 10}
                         style={{
                           maxHeight: 250
                         }}
