@@ -66,7 +66,8 @@ const Posts = () => {
   // let randomPosts = posts?.sort(() => Math.random() - 0.5)
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -166,7 +167,7 @@ const Posts = () => {
                     alignItems: 'center'
                   }}
                 >
-                  <Pressable
+                  <TouchableOpacity
                     onPress={() => {
                       userProfile ? (
                         post?.user?.id == user?.uid ?
@@ -190,15 +191,15 @@ const Posts = () => {
                     />
                     <Text
                       style={{
-                        fontFamily: 'text',
+                        fontFamily: 'boldText',
                         marginLeft: 10,
-                        fontSize: 18,
+                        fontSize: 16,
                         color: userProfile?.theme == 'dark' ? color.white : color.dark
                       }}
                     >
-                      {post?.user?.username}
+                      @{post?.user?.username}
                     </Text>
-                  </Pressable>
+                  </TouchableOpacity>
 
                   <TouchableOpacity
                     style={{

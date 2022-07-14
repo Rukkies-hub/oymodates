@@ -210,6 +210,16 @@ export const AuthProvider = ({ children }) => {
         let profile = doc?.data()
         setUserProfile(profile)
 
+        setJob('')
+        setCompany('')
+        setUsername('')
+        setSchool('')
+        setCity('')
+        setChecked('male')
+        setScreen('default')
+        setAbout('')
+        setPassions([])
+
         if (profile?.job) setJob(profile?.job)
         if (profile?.company) setCompany(profile?.company)
         if (profile?.username) setUsername(profile?.username)

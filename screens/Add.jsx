@@ -141,12 +141,7 @@ const Add = () => {
                 getDownloadURL(thumbnailSnapshot?.ref)
                   .then(thumbnailDownloadURL => {
                     addDoc(collection(db, 'posts'), {
-                      user: {
-                        id: userProfile?.id,
-                        displayName: userProfile?.displayName,
-                        username: userProfile?.username,
-                        photoURL: userProfile?.photoURL
-                      },
+                      user: { ...userProfile },
                       likesCount: 0,
                       commentsCount: 0,
                       mediaType: mediaType ? mediaType : null,
@@ -196,12 +191,7 @@ const Add = () => {
           .then(downloadURL => {
             navigation.goBack()
             addDoc(collection(db, 'posts'), {
-              user: {
-                id: userProfile?.id,
-                displayName: userProfile?.displayName,
-                username: userProfile?.username,
-                photoURL: userProfile?.photoURL
-              },
+              user: { ...userProfile },
               likesCount: 0,
               commentsCount: 0,
               mediaType: mediaType ? mediaType : null,
@@ -232,12 +222,7 @@ const Add = () => {
     if (input != '') {
       setLoading(true)
       addDoc(collection(db, 'posts'), {
-        user: {
-          id: userProfile?.id,
-          displayName: userProfile?.displayName,
-          username: userProfile?.username,
-          photoURL: userProfile?.photoURL
-        },
+        user: { ...userProfile },
         likesCount: 0,
         commentsCount: 0,
         postType: 'text',
@@ -336,7 +321,8 @@ const Add = () => {
                     height,
                     backgroundColor: userProfile?.theme == 'dark' ? color.lightText : color.offWhite,
                     maxHeight: 300,
-                    fontSize: media ? 18 : input.length <= 120 ? 30 : 18,
+                    // fontSize: media ? 18 : input.length <= 120 ? 30 : 18,
+                    fontSize: 18,
                     paddingVertical: 10,
                     borderRadius: 12,
                     paddingHorizontal: 10,
