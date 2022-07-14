@@ -10,17 +10,23 @@ import { useNavigation } from '@react-navigation/native'
 
 const ProfileDetails = ({ userProfile, user }) => {
   const navigation = useNavigation()
-  
+
   return (
     <ImageBackground
       source={{ uri: userProfile?.photoURL ? userProfile?.photoURL : 'https://firebasestorage.googleapis.com/v0/b/oymo-16379.appspot.com/o/post%20image%2F1.jpg?alt=media&token=58bfeb2e-2316-4c9c-b8ba-513275ae85d1' }}
       blurRadius={50}
       style={{
         flex: 1,
-        height: 400
+        height: 400,
+        marginBottom: -70
       }}
     >
-      <LinearGradient colors={[color.transparent, userProfile?.theme == 'dark' ? color.black : color.white]}>
+      <LinearGradient
+        colors={[color.transparent, userProfile?.theme == 'dark' ? color.black : color.white]}
+        style={{
+          height: 400
+        }}
+      >
         <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
         <Header showBack showTitle title='Profile' showAratar backgroundColor={color.transparent} />
@@ -29,8 +35,7 @@ const ProfileDetails = ({ userProfile, user }) => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginHorizontal: 10,
-            marginVertical: 24
+            marginHorizontal: 10
           }}
         >
           {
@@ -190,6 +195,49 @@ const ProfileDetails = ({ userProfile, user }) => {
             >
               {userProfile?.about}
             </Text>
+          </View>
+        }
+
+        {
+          userProfile?.passions?.length > 1 &&
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              paddingHorizontal: 10,
+              marginTop: 10
+            }}
+          >
+            {
+              userProfile?.passions?.map((passion, index) => {
+                return (
+                  <View
+                    key={index}
+                    style={{
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      backgroundColor: userProfile?.theme == 'dark' ? color.faintBlack : color.faintWhite,
+                      borderRadius: 100,
+                      marginBottom: 10,
+                      marginRight: 5
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: userProfile?.theme == 'dark' ? color.white : color.lightText,
+                        fontSize: 12,
+                        fontFamily: 'text',
+                        textTransform: 'capitalize'
+                      }}
+                    >
+                      {passion}
+                    </Text>
+                  </View>
+                )
+              })
+            }
           </View>
         }
 
