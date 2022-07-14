@@ -87,7 +87,7 @@ const UserPosts = () => {
                     right: -13,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    shadowColor: "#000",
+                    shadowColor: color.black,
                     shadowOffset: {
                       width: 0,
                       height: 2,
@@ -148,30 +148,6 @@ const UserPosts = () => {
                   marginBottom: 20
                 }}
               >
-                {/* {
-                  post?.mediaType != 'video' ?
-                    <Image
-                      source={{ uri: post?.media }}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        borderRadius: 12,
-                        marginRight: 10
-                      }}
-                    /> :
-                    post?.mediaType != 'image' ?
-                      <Image
-                        source={{ uri: post?.thumbnail }}
-                        resizeMode='cover'
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: 12,
-                          marginRight: 10
-                        }}
-                      /> : <View />
-                } */}
-
                 {
                   post?.mediaType == 'video' &&
                   <Image

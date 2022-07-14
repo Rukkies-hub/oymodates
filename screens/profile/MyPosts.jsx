@@ -67,16 +67,39 @@ const MyPosts = () => {
                 alignItems: 'center'
               }}
             >
-              <ActivityIndicator size='large' color={userProfile?.theme == 'dark' ? color.white : color.dark} />
-              <Text
-                style={{
-                  marginLeft: 10,
-                  fontFamily: 'text',
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark
-                }}
-              >
-                Loading posts...
-              </Text>
+              <View style={{ position: 'relative' }}>
+                <Image
+                  source={{ uri: userProfile?.photoURL }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 100
+                  }}
+                />
+                <View
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 100,
+                    backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.white,
+                    position: 'absolute',
+                    top: -13,
+                    right: -13,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    shadowColor: color.black,
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                  }}
+                >
+                  <ActivityIndicator size='small' color={color.red} />
+                </View>
+              </View>
             </View>
           </View> :
           <FlatList
@@ -125,30 +148,6 @@ const MyPosts = () => {
                   marginBottom: 20
                 }}
               >
-                {/* {
-                  post?.mediaType != 'video' ?
-                    <Image
-                      source={{ uri: post?.media }}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        borderRadius: 12,
-                        marginRight: 10
-                      }}
-                    /> :
-                    post?.mediaType != 'image' ?
-                      <Image
-                        source={{ uri: post?.thumbnail }}
-                        resizeMode='cover'
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: 12,
-                          marginRight: 10
-                        }}
-                      /> : <View />
-                } */}
-
                 {
                   post?.mediaType == 'video' &&
                   <Image

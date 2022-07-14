@@ -85,7 +85,7 @@ const UserReels = () => {
                     right: -13,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    shadowColor: "#000",
+                    shadowColor: color.black,
                     shadowOffset: {
                       width: 0,
                       height: 2,
