@@ -4,7 +4,7 @@ import { View, Text, ImageBackground, Image, TouchableOpacity } from 'react-nati
 import { LinearGradient } from 'expo-linear-gradient'
 import Bar from '../../components/StatusBar'
 import Header from '../../components/Header'
-import { FontAwesome, Feather, Fontisto, SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons'
+import { FontAwesome, Feather, Fontisto, SimpleLineIcons } from '@expo/vector-icons'
 import color from '../../style/color'
 import { useNavigation } from '@react-navigation/native'
 
