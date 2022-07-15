@@ -10,6 +10,7 @@ import useAuth from '../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
+import SearchChat from '../components/SearchChat'
 
 const Chat = () => {
   const navigation = useNavigation()
@@ -25,9 +26,10 @@ const Chat = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
+      <SearchChat />
       {
         pendingSwipes?.length > 0 &&
         <Pressable
