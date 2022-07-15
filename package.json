@@ -78,6 +78,7 @@
     "react-native-slider": "^0.11.0",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-super-grid": "^4.4.0",
+    "react-native-swipe-list-view": "^3.2.9",
     "react-native-tab-view": "^3.1.1",
     "react-native-track-player": "^2.2.0-rc4",
     "react-native-vector-icons": "^9.2.0",

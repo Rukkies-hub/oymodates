@@ -63,7 +63,9 @@ const ChatRow = ({ matchDetails }) => {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+        borderRadius: 12
       }}
     >
       <View
@@ -115,6 +117,7 @@ const ChatRow = ({ matchDetails }) => {
         </View>
         <View style={{ marginLeft: 10, flex: 1 }}>
           <Text
+            numberOfLines={1}
             style={{
               fontSize: 18,
               fontFamily: 'text',

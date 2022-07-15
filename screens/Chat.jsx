@@ -67,6 +67,7 @@ const Chat = () => {
               {
                 pendingSwipes[0]?.username ?
                   <Text
+                    numberOfLines={1}
                     style={{
                       fontFamily: 'text',
                       fontSize: 18,
