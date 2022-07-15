@@ -33,18 +33,56 @@ const ChatList = () => {
     console.log('This row opened', rowKey)
   }
 
+  const renderHiddenItem = ({ item }) => (
+    <View
+      style={{
+        alignItems: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingLeft: 15,
+      }}
+    >
+      <TouchableOpacity
+        style={
+          [{
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            top: 10,
+            bottom: 0,
+            width: 45,
+            height: 45,
+            borderRadius: 12,
+          }, {
+            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            right: 20,
+          }]
+        }
+      >
+        <Feather name="trash-2" size={20} color={color.red} />
+      </TouchableOpacity>
+    </View >
+  )
+
   return (
     matches?.length > 0 ? (
-      <FlatList
+      <SwipeListView
+        data={matches}
+        keyExtractor={item => item?.id}
         style={{
           flex: 1,
-          width: '100%',
           height: 70,
           paddingHorizontal: 10
         }}
-        data={matches}
-        keyExtractor={item => item?.id}
         renderItem={({ item }) => <ChatRow matchDetails={item} />}
+        renderHiddenItem={renderHiddenItem}
+        rightOpenValue={-90}
+        previewRowKey={'0'}
+        previewOpenValue={-40}
+        previewOpenDelay={3000}
+        onRowDidOpen={onRowDidOpen}
       />
     ) : (
       <View

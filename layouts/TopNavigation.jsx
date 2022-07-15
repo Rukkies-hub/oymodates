@@ -48,6 +48,11 @@ const TopNavigation = () => {
         screenOptions={{
           tabBarShowLabel: false,
           lazy: true,
+          tabBarIndicatorStyle: {
+            backgroundColor: userProfile?.theme == 'dark' ? color.offWhite : color.dark,
+            borderBottomLeftRadius: 50,
+            borderBottomRightRadius: 50
+          },
           tabBarStyle: {
             backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
             height: 50,

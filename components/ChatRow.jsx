@@ -64,7 +64,7 @@ const ChatRow = ({ matchDetails }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 10,
-        // backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
         borderRadius: 12
       }}
     >
