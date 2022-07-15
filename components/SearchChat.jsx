@@ -29,10 +29,10 @@ const SearchChat = () => {
         paddingHorizontal: 10
       }}
     >
-      <Entypo name="magnifying-glass" size={24} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+      <Entypo name="magnifying-glass" size={24} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
       <TextInput
         placeholder='Search'
-        placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+        placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.lightText}
         style={{
           flex: 1,
           marginLeft: 10,
