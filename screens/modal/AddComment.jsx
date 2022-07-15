@@ -50,10 +50,7 @@ const AddComment = params => {
   if (!loaded) return null
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <Bar color='light' />
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

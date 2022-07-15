@@ -109,18 +109,15 @@ const PreviewMessageImage = () => {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
+          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
         }}
       >
         <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
-        
+
         <Header showBack showTitle title='Preview image' />
 
         {

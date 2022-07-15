@@ -102,7 +102,7 @@ const SaveReels = (params) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />

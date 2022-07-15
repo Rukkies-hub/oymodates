@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect, useRef } from 'react'
+import React, { useState, useLayoutEffect, useRef } from 'react'
 import { View, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native'
 
 import { useNavigation } from '@react-navigation/native'
@@ -41,19 +41,19 @@ const Match = () => {
 
   useLayoutEffect(() =>
     onSnapshot(doc(db, 'users', user?.uid), snapshot => {
-      if (!snapshot.exists()) navigation.navigate('EditProfile')
+      if (!snapshot?.exists()) navigation.navigate('EditProfile')
     })
     , [])
 
   useLayoutEffect(() => {
     (async () => {
       const passes = await getDocs(collection(db, 'users', user?.uid, 'passes'))
-        .then(snapshot => snapshot.docs.map(doc => doc.id))
+        .then(snapshot => snapshot?.docs?.map(doc => doc?.id))
 
       const passeedUserIds = (await passes).length > 0 ? passes : ['test']
 
       const swipes = await getDocs(collection(db, 'users', user?.uid, 'swipes'))
-        .then(snapshot => snapshot.docs.map(doc => doc.id))
+        .then(snapshot => snapshot?.docs?.map(doc => doc?.id))
 
       const swipededUserIds = (await swipes).length > 0 ? swipes : ['test']
 
@@ -61,10 +61,10 @@ const Match = () => {
       onSnapshot(query(collection(db, 'users'), where('id', 'not-in', [...passeedUserIds, ...swipededUserIds])),
         snapshot => {
           setProfiles(
-            snapshot.docs.filter(doc => doc.id !== user?.uid)
+            snapshot?.docs?.filter(doc => doc?.id !== user?.uid)
               .map(doc => ({
-                id: doc.id,
-                ...doc.data()
+                id: doc?.id,
+                ...doc?.data()
               }))
           )
         })
@@ -88,18 +88,18 @@ const Match = () => {
 
     getDoc(doc(db, 'users', userSwiped?.id, 'swipes', user?.uid))
       .then(documentSnapshot => {
-        if (documentSnapshot.exists()) {
+        if (documentSnapshot?.exists()) {
           setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
 
           // CREAT A MATCH
           setDoc(doc(db, 'matches', generateId(user?.uid, userSwiped?.id)), {
             users: {
               [user?.uid]: userProfile,
-              [userSwiped.id]: userSwiped
+              [userSwiped?.id]: userSwiped
             },
             usersMatched: [user?.uid, userSwiped?.id],
             timestamp: serverTimestamp()
-          }).finally(async () => await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped.id)))
+          }).finally(async () => await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped?.id)))
 
           navigation.navigate('NewMatch', {
             loggedInProfile: userProfile,
@@ -192,7 +192,7 @@ const Match = () => {
 
               renderCard={card => (
                 <View
-                  key={card.id}
+                  key={card?.id}
                   style={{
                     backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
                     height: 698,
@@ -267,75 +267,74 @@ const Match = () => {
                       </TouchableOpacity>
                     </View>
                     {
-                      card?.job ?
-                        <View
+                      card?.job != '' &&
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <MaterialCommunityIcons name='briefcase-variant-outline' size={17} color={color.white} />
+                        <Text
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            alignItems: 'center'
+                            fontSize: 18,
+                            color: color.white,
+                            fontFamily: 'lightText'
                           }}
                         >
-                          <MaterialCommunityIcons name='briefcase-variant-outline' size={17} color={color.white} />
-                          <Text
-                            style={{
-                              fontSize: 18,
-                              color: color.white,
-                              fontFamily: 'lightText'
-                            }}
-                          >
-                            {` ${card?.job}`} {card?.job ? 'at' : null} {card?.company}
-                          </Text>
-                        </View> :
-                        null
+                          {` ${card?.job}`} {card?.job ? 'at' : null} {card?.company}
+                        </Text>
+                      </View>
                     }
                     {
-                      card?.school ?
-                        <View
+                      card?.school != '' &&
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          marginTop: 10
+                        }}
+                      >
+                        <MaterialCommunityIcons name='school-outline' size={17} color={color.white} />
+                        <Text
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            alignItems: 'center',
-                            marginTop: 10
+                            fontSize: 18,
+                            color: color.white,
+                            fontFamily: 'lightText'
                           }}
                         >
-                          <MaterialCommunityIcons name='school-outline' size={17} color={color.white} />
-                          <Text
-                            style={{
-                              fontSize: 18,
-                              color: color.white,
-                              fontFamily: 'lightText'
-                            }}
-                          >
-                            {` ${card?.school}`}
-                          </Text>
-                        </View> :
-                        null
+                          {` ${card?.school}`}
+                        </Text>
+                      </View>
                     }
+
                     {
-                      card?.city ?
-                        <View
+                      card?.city != '' &&
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          marginTop: 10
+                        }}
+                      >
+                        <MaterialCommunityIcons name='home-outline' size={17} color={color.white} />
+                        <Text
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            alignItems: 'center',
-                            marginTop: 10
+                            fontSize: 18,
+                            color: color.white,
+                            fontFamily: 'lightText'
                           }}
                         >
-                          <MaterialCommunityIcons name='home-outline' size={17} color={color.white} />
-                          <Text
-                            style={{
-                              fontSize: 18,
-                              color: color.white,
-                              fontFamily: 'lightText'
-                            }}
-                          >
-                            {` ${card?.city}`}
-                          </Text>
-                        </View> :
-                        null
+                          {` ${card?.city}`}
+                        </Text>
+                      </View>
                     }
+
                     {
-                      card?.about.length >= 20 &&
+                      card?.about?.length >= 20 &&
                       <Text
                         numberOfLines={4}
                         style={{
@@ -348,6 +347,7 @@ const Match = () => {
                         {card?.about}
                       </Text>
                     }
+                    
                     {
                       card?.passions?.length > 0 &&
                       <View
@@ -405,7 +405,7 @@ const Match = () => {
               <View
                 style={{
                   flex: 1,
-                  backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
+                  backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}

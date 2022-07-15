@@ -63,14 +63,12 @@ const Message = () => {
   const navigation = useNavigation()
   const { user, userProfile, messageReply, setMessageReply } = useAuth()
 
-  const { params } = useRoute()
-  const { matchDetails } = params
+  const { matchDetails } = useRoute().params
 
   const storage = getStorage()
 
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState([])
-  const [expanded, setExpanded] = useState(false)
   const [height, setHeight] = useState(50)
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
   const [showRecording, setShowRecording] = useState(false)
@@ -106,7 +104,6 @@ const Message = () => {
   useEffect(() =>
     (() => {
       Keyboard.addListener('keyboardDidShow', () => {
-        setExpanded(false)
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setMediaVidiblity(false)
       })
@@ -133,7 +130,6 @@ const Message = () => {
   }
 
   const sendMessage = () => {
-    setExpanded(false)
     if (input != '')
       addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
         timestamp: serverTimestamp(),
@@ -224,7 +220,8 @@ const Message = () => {
   }
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -233,43 +230,110 @@ const Message = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
       <Header
         showBack
         showTitle
-        // showPhone
-        // showVideo
         showMatchAvatar
         matchDetails={matchDetails}
-        title={`@${getMatchedUserInfo(matchDetails?.users, user?.uid).username}`}
+        title={getMatchedUserInfo(matchDetails?.users, user?.uid).username}
         matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL}
-        showChatMenu
+        // showChatMenu
         backgroundColor={color.transparent}
       />
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
-      >
-        <FlatList
-          inverted={-1}
-          style={{
-            flex: 1,
-            paddingHorizontal: 10
-          }}
-          data={messages}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => item?.id}
-          renderItem={({ item: message }) => (
-            message?.userId === user?.uid ? (
-              <SenderMessage key={message?.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
-            ) : (
-              <RecieverMessage key={message?.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
-            )
-          )}
-        />
+      <KeyboardAvoidingView style={{ flex: 1 }}>
+        {
+          !messages.length ?
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  marginBottom: 20,
+                  fontFamily: 'text',
+                  fontSize: 16,
+                  color: userProfile?.theme == 'dark' ? color.white : color.dark
+                }}
+              >
+                You matched with
+                <Text
+                  style={{
+                    fontFamily: 'boldText'
+                  }}
+                >
+                  {` ${getMatchedUserInfo(matchDetails?.users, user?.uid)?.username}`}
+                </Text>
+              </Text>
+              <View
+                style={{
+                  position: 'relative'
+                }}
+              >
+                <Image
+                  source={{ uri: getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 100
+                  }}
+                />
+                <View
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderWidth: 2,
+                    borderColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                    borderRadius: 100,
+                    overflow: 'hidden',
+                    position: 'absolute',
+                    top: -10,
+                    right: -10,
+                    shadowColor: color.black,
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    shadowOpacity: 0.30,
+                    shadowRadius: 4.65,
+                    elevation: 8
+                  }}
+                >
+                  <Image
+                    source={{ uri: userProfile?.photoURL }}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 100
+                    }}
+                  />
+                </View>
+              </View>
+            </View> :
+            <FlatList
+              inverted={-1}
+              style={{
+                flex: 1,
+                paddingHorizontal: 10
+              }}
+              data={messages}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={item => item?.id}
+              renderItem={({ item: message }) => (
+                message?.userId === user?.uid ? (
+                  <SenderMessage key={message?.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
+                ) : (
+                  <RecieverMessage key={message?.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
+                )
+              )}
+            />
+        }
 
         <View>
           {
@@ -281,7 +345,7 @@ const Message = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginHorizontal: 10,
-                backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark,
+                backgroundColor: userProfile?.theme == 'dark' ? color.lightText : color.offWhite,
                 marginTop: 10,
                 borderTopLeftRadius: 12,
                 borderTopRightRadius: 12,
@@ -373,7 +437,7 @@ const Message = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
               paddingHorizontal: 10,
-              backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark,
+              backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
               minHeight: 50,
               overflow: 'hidden',
               position: 'relative',
@@ -409,20 +473,6 @@ const Message = () => {
                 </TouchableOpacity>
               </>
             }
-            <TouchableOpacity
-              onPress={() => {
-                Keyboard.dismiss()
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-                setExpanded(!expanded)
-              }}
-              style={{
-                width: 40,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-              <MaterialCommunityIcons name='emoticon-happy-outline' color={userProfile?.theme == 'light' ? color.lightText : color.white} size={26} />
-            </TouchableOpacity>
 
             {
               showRecording ?
@@ -446,8 +496,7 @@ const Message = () => {
                   >
                     Recording...
                   </Text>
-                </View>
-                :
+                </View> :
                 <TextInput
                   multiline
                   value={input}
@@ -515,56 +564,6 @@ const Message = () => {
           </View>
         </View>
       </KeyboardAvoidingView>
-
-      {
-        expanded && (
-          <View style={{ minWidth: 150, maxHeight: 150, flex: 1 }}>
-            <ScrollView
-              horizontal
-              pagingEnabled
-              scrollEnabled
-
-            >
-              <FlatGrid
-                data={smileys}
-                itemDimension={30}
-                renderItem={({ item: emoji }) => (
-                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-              <FlatGrid
-                data={smileys1}
-                itemDimension={30}
-                renderItem={({ item: emoji }) => (
-                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-              <FlatGrid
-                data={smileys2}
-                itemDimension={30}
-                renderItem={({ item: emoji }) => (
-                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-              <FlatGrid
-                data={smileys3}
-                itemDimension={30}
-                renderItem={({ item: emoji }) => (
-                  <TouchableOpacity onPress={() => setInput(input + emoji.emoji)}>
-                    <Text style={{ fontSize: 30 }}>{emoji.emoji}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-            </ScrollView>
-          </View>
-        )
-      }
     </View>
   )
 }

@@ -244,7 +244,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                       alignItems: 'flex-start',
                       padding: 5,
                       margin: 5,
-                      backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
+                      backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
                       borderRadius: 4,
                       borderBottomLeftRadius: 20,
                       borderBottomRightRadius: 20

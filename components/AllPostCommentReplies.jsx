@@ -68,7 +68,7 @@ const AllPostCommentReplies = (props) => {
             backgroundColor: color.faintBlack
           },
           container: {
-            backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
+            backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20
           },

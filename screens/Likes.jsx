@@ -1,11 +1,9 @@
 import React, { useRef, useState } from 'react'
-import { View, Text, Image, Dimensions, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native'
 
 import useAuth from '../hooks/useAuth'
 
 import color from '../style/color'
-
-import AutoHeightImage from 'react-native-auto-height-image'
 
 import { useFonts } from 'expo-font'
 import { deleteDoc, doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
@@ -17,12 +15,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import Swiper from 'react-native-deck-swiper'
 
-const { width, height } = Dimensions.get('window')
-
 import { LinearGradient } from 'expo-linear-gradient'
 
 const Likes = () => {
-  const { pendingSwipes, user, profiles, setProfiles, userProfile } = useAuth()
+  const { pendingSwipes, user, profiles, userProfile } = useAuth()
   const navigation = useNavigation()
   const swipeRef = useRef(null)
 
@@ -47,20 +43,20 @@ const Likes = () => {
 
     const userSwiped = profiles[cardIndex]
 
-    getDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped.id))
+    getDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped?.id))
       .then(documentSnapshot => {
-        if (documentSnapshot.exists()) {
-          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped.id), userSwiped)
+        if (documentSnapshot?.exists()) {
+          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
 
           // CREAT A MATCH
-          setDoc(doc(db, 'matches', generateId(user?.uid, userSwiped.id)), {
+          setDoc(doc(db, 'matches', generateId(user?.uid, userSwiped?.id)), {
             users: {
               [user?.uid]: userProfile,
-              [userSwiped.id]: userSwiped
+              [userSwiped?.id]: userSwiped
             },
-            usersMatched: [user?.uid, userSwiped.id],
+            usersMatched: [user?.uid, userSwiped?.id],
             timestamp: serverTimestamp()
-          }).finally(async () => await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped.id)))
+          }).finally(async () => await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped?.id)))
 
           navigation.navigate('NewMatch', {
             loggedInProfile: userProfile,
@@ -68,6 +64,8 @@ const Likes = () => {
           })
         }
       })
+
+    setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
   }
 
   const disabled = () => {
@@ -89,141 +87,193 @@ const Likes = () => {
         backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
-      <View style={{ flex: 1, marginTop: -5 }}>
-        {
-          pendingSwipes?.length >= 1 ?
-            <Swiper
-              ref={swipeRef}
-              cards={pendingSwipes}
-              containerStyle={{
-                backgroundColor: color.transparent,
-                marginTop: 33
+      {
+        !pendingSwipes?.length ?
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+            }}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center'
               }}
-              cardIndex={0}
-              stackSize={stackSize}
-              verticalSwipe={false}
-              animateCardOpacity={true}
-              backgroundColor={color.transparent}
-              cardHorizontalMargin={1}
-              cardVerticalMargin={0}
-              onSwipedLeft={cardIndex => userProfile ? swipeLeft(cardIndex) : disabled()}
-              onSwipedRight={cardIndex => userProfile ? swipeRight(cardIndex) : disabled()}
-              overlayLabels={{
-                left: {
-                  title: 'NOPE',
-                  style: {
-                    label: {
-                      textAlign: 'center',
-                      color: color.red,
-                      fontFamily: 'text',
-                      borderWidth: 4,
-                      borderRadius: 20,
-                      borderColor: color.red,
-                      position: 'absolute',
-                      top: 0,
-                      right: 20,
-                      width: 150
-                    }
-                  }
-                },
-
-                right: {
-                  title: 'MATCH',
-                  style: {
-                    label: {
-                      textAlign: 'center',
-                      color: color.lightGreen,
-                      fontFamily: 'text',
-                      borderWidth: 4,
-                      borderRadius: 20,
-                      borderColor: color.lightGreen,
-                      position: 'absolute',
-                      top: 0,
-                      left: 20,
-                      width: 160
-                    }
-                  }
-                }
-              }}
-
-              renderCard={card => (
-                <View
-                  key={card.id}
+            >
+              <View style={{ position: 'relative' }}>
+                <Image
+                  source={{ uri: userProfile?.photoURL }}
                   style={{
-                    backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
-                    height: 698,
-                    marginTop: -30,
-                    width: '100%',
-                    borderRadius: 12,
-                    position: 'relative',
-                    overflow: 'hidden'
+                    width: 100,
+                    height: 100,
+                    borderRadius: 100
+                  }}
+                />
+                <View
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 100,
+                    backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.white,
+                    position: 'absolute',
+                    top: -13,
+                    right: -13,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    shadowColor: color.black,
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
                   }}
                 >
-                  <Image
-                    style={{
-                      flex: 1,
-                      width: '100%',
-                      height: '100%',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                    }}
-                    source={{ uri: card?.photoURL }}
-                  />
+                  <ActivityIndicator size='small' color={color.red} />
+                </View>
+              </View>
+            </View>
+          </View> :
+          <View style={{ flex: 1, marginTop: -5 }}>
+            {
+              pendingSwipes?.length >= 1 &&
+              <Swiper
+                ref={swipeRef}
+                cards={pendingSwipes}
+                containerStyle={{
+                  backgroundColor: color.transparent,
+                  marginTop: 33
+                }}
+                cardIndex={0}
+                stackSize={stackSize}
+                verticalSwipe={false}
+                animateCardOpacity={true}
+                backgroundColor={color.transparent}
+                cardHorizontalMargin={1}
+                cardVerticalMargin={0}
+                onSwipedLeft={cardIndex => userProfile ? swipeLeft(cardIndex) : disabled()}
+                onSwipedRight={cardIndex => userProfile ? swipeRight(cardIndex) : disabled()}
+                overlayLabels={{
+                  left: {
+                    title: 'NOPE',
+                    style: {
+                      label: {
+                        textAlign: 'center',
+                        color: color.red,
+                        fontFamily: 'text',
+                        borderWidth: 4,
+                        borderRadius: 20,
+                        borderColor: color.red,
+                        position: 'absolute',
+                        top: 0,
+                        right: 20,
+                        width: 150
+                      }
+                    }
+                  },
 
-                  <LinearGradient
-                    colors={['transparent', color.dark]}
+                  right: {
+                    title: 'MATCH',
+                    style: {
+                      label: {
+                        textAlign: 'center',
+                        color: color.lightGreen,
+                        fontFamily: 'text',
+                        borderWidth: 4,
+                        borderRadius: 20,
+                        borderColor: color.lightGreen,
+                        position: 'absolute',
+                        top: 0,
+                        left: 20,
+                        width: 160
+                      }
+                    }
+                  }
+                }}
+
+                renderCard={card => (
+                  <View
+                    key={card?.id}
                     style={{
+                      backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+                      height: 698,
+                      marginTop: -30,
                       width: '100%',
-                      minHeight: 60,
-                      position: 'absolute',
-                      bottom: 0,
-                      padding: 20,
-                      marginBottom: -2
+                      borderRadius: 12,
+                      position: 'relative',
+                      overflow: 'hidden'
                     }}
                   >
-                    <View
+                    <Image
                       style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
+                        flex: 1,
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                      }}
+                      source={{ uri: card?.photoURL }}
+                    />
+
+                    <LinearGradient
+                      colors={['transparent', color.dark]}
+                      style={{
+                        width: '100%',
+                        minHeight: 60,
+                        position: 'absolute',
+                        bottom: 0,
+                        padding: 20,
+                        marginBottom: -2
                       }}
                     >
-                      <TouchableOpacity
-                        onPress={() => userProfile ? navigation.navigate('UserProfile', { user: card }) : disabled()}
+                      <View
                         style={{
                           flexDirection: 'row',
-                          justifyContent: 'flex-start',
+                          justifyContent: 'space-between',
                           alignItems: 'center'
                         }}
                       >
-                        <Text
+                        <TouchableOpacity
+                          onPress={() => userProfile ? navigation.navigate('UserProfile', { user: card }) : disabled()}
                           style={{
-                            fontSize: 30,
-                            color: color.white,
-                            marginBottom: 10,
-                            fontFamily: 'boldText',
-                            textTransform: 'capitalize'
-                          }}>
-                          {card?.username}
-                        </Text>
-                      </TouchableOpacity>
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 30,
+                              color: color.white,
+                              marginBottom: 10,
+                              fontFamily: 'boldText',
+                              textTransform: 'capitalize'
+                            }}>
+                            {card?.username}
+                          </Text>
+                        </TouchableOpacity>
 
-                      <TouchableOpacity
-                        onPress={() => userProfile ? navigation.navigate('UserProfile', { user: card }) : disabled()}
-                        style={{
-                          width: 40,
-                          height: 40,
-                          justifyContent: 'center',
-                          alignItems: 'center'
-                        }}
-                      >
-                        <MaterialCommunityIcons name='information-outline' size={20} color={color.white} />
-                      </TouchableOpacity>
-                    </View>
-                    {
-                      card?.job ?
+                        <TouchableOpacity
+                          onPress={() => userProfile ? navigation.navigate('UserProfile', { user: card }) : disabled()}
+                          style={{
+                            width: 40,
+                            height: 40,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <MaterialCommunityIcons name='information-outline' size={20} color={color.white} />
+                        </TouchableOpacity>
+                      </View>
+                      {
+                        card?.job != '' &&
                         <View
                           style={{
                             flexDirection: 'row',
@@ -241,11 +291,11 @@ const Likes = () => {
                           >
                             {` ${card?.job}`} {card?.job ? 'at' : null} {card?.company}
                           </Text>
-                        </View> :
-                        null
-                    }
-                    {
-                      card?.school ?
+                        </View>
+                      }
+
+                      {
+                        card?.school != '' &&
                         <View
                           style={{
                             flexDirection: 'row',
@@ -264,11 +314,11 @@ const Likes = () => {
                           >
                             {` ${card?.school}`}
                           </Text>
-                        </View> :
-                        null
-                    }
-                    {
-                      card?.city ?
+                        </View>
+                      }
+
+                      {
+                        card?.city != '' &&
                         <View
                           style={{
                             flexDirection: 'row',
@@ -287,79 +337,80 @@ const Likes = () => {
                           >
                             {` ${card?.city}`}
                           </Text>
-                        </View> :
-                        null
-                    }
-                    {
-                      card?.about.length >= 20 &&
-                      <Text
-                        numberOfLines={4}
-                        style={{
-                          color: color.white,
-                          fontSize: 18,
-                          fontFamily: 'lightText',
-                          marginTop: 10
-                        }}
-                      >
-                        {card?.about}
-                      </Text>
-                    }
-                    {
-                      card?.passions?.length > 0 &&
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'flex-start',
-                          alignItems: 'center',
-                          marginTop: 10
-                        }}
-                      >
+                        </View>
+                      }
+
+                      {
+                        card?.about?.length >= 20 &&
+                        <Text
+                          numberOfLines={4}
+                          style={{
+                            color: color.white,
+                            fontSize: 18,
+                            fontFamily: 'lightText',
+                            marginTop: 10
+                          }}
+                        >
+                          {card?.about}
+                        </Text>
+                      }
+
+                      {
+                        card?.passions?.length > 0 &&
                         <View
                           style={{
                             flexDirection: 'row',
                             justifyContent: 'flex-start',
                             alignItems: 'center',
-                            flexWrap: 'wrap'
+                            marginTop: 10
                           }}
                         >
-                          {
-                            card?.passions?.map((passion, index) => {
-                              return (
-                                <View
-                                  key={index}
-                                  style={{
-                                    paddingHorizontal: 10,
-                                    paddingVertical: 5,
-                                    borderRadius: 50,
-                                    marginBottom: 10,
-                                    marginRight: 10,
-                                    backgroundColor: `${color.faintBlack}`
-                                  }}
-                                >
-                                  <Text
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                              alignItems: 'center',
+                              flexWrap: 'wrap'
+                            }}
+                          >
+                            {
+                              card?.passions?.map((passion, index) => {
+                                return (
+                                  <View
+                                    key={index}
                                     style={{
-                                      color: color.white,
-                                      fontSize: 12,
-                                      fontFamily: 'lightText',
-                                      textTransform: 'capitalize'
+                                      paddingHorizontal: 10,
+                                      paddingVertical: 5,
+                                      borderRadius: 50,
+                                      marginBottom: 10,
+                                      marginRight: 10,
+                                      backgroundColor: `${color.faintBlack}`
                                     }}
                                   >
-                                    {passion}
-                                  </Text>
-                                </View>
-                              )
-                            })
-                          }
+                                    <Text
+                                      style={{
+                                        color: color.white,
+                                        fontSize: 12,
+                                        fontFamily: 'lightText',
+                                        textTransform: 'capitalize'
+                                      }}
+                                    >
+                                      {passion}
+                                    </Text>
+                                  </View>
+                                )
+                              })
+                            }
+                          </View>
                         </View>
-                      </View>
-                    }
-                  </LinearGradient>
-                </View>
-              )}
-            />
-            : null
-        }
-      </View>
+                      }
+                    </LinearGradient>
+                  </View>
+                )}
+              />
+            }
+          </View>
+      }
     </SafeAreaView>
   )
 }

@@ -76,7 +76,7 @@ const AllPostLikes = (props) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
       <Header showBack showTitle title='All likes' />

@@ -144,18 +144,22 @@ const Header = ({
               Oymo
             </Text>
           }
+
           {
             showMatchAvatar &&
-            <Image
-              source={{ uri: matchAvatar }}
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 50,
-                marginRight: 10
-              }}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate('UserProfile', { user: getMatchedUserInfo(matchDetails?.users, user?.uid) })}>
+              <Image
+                source={{ uri: matchAvatar }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 50,
+                  marginRight: 10
+                }}
+              />
+            </TouchableOpacity>
           }
+
           {
             showTitle &&
             <Text

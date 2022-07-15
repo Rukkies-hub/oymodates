@@ -29,58 +29,28 @@ const ChatList = () => {
     })()
   }, [user, db])
 
+  const onRowDidOpen = rowKey => {
+    console.log('This row opened', rowKey)
+  }
+
   return (
     matches?.length > 0 ? (
-      <SwipeListView
+      <FlatList
+        style={{
+          flex: 1,
+          width: '100%',
+          height: 70,
+          paddingHorizontal: 10
+        }}
         data={matches}
         keyExtractor={item => item?.id}
-        style={{
-          marginHorizontal: 10
-        }}
         renderItem={({ item }) => <ChatRow matchDetails={item} />}
-        renderHiddenItem={({ item }) => (
-          <View
-            style={{
-              alignItems: 'center',
-              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingLeft: 15,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => console.log(item)}
-              style={
-                [{
-                  alignItems: 'center',
-                  bottom: 0,
-                  justifyContent: 'center',
-                  position: 'absolute',
-                  top: 0,
-                  width: 45,
-                  height: 45,
-                  borderRadius: 12
-                }, {
-                  backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
-                  right: 20,
-                }]
-              }
-            >
-              <Feather name="trash-2" size={20} color={color.red} />
-            </TouchableOpacity>
-          </View>
-        )}
-        rightOpenValue={-50}
-        previewRowKey={'0'}
-        previewOpenValue={-40}
-        previewOpenDelay={3000}
       />
     ) : (
       <View
         style={{
           flex: 1,
-          backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
+          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
           justifyContent: 'center',
           alignItems: 'center'
         }}

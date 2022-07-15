@@ -112,6 +112,7 @@ const Login = () => {
         >
           <MaterialIcons name='alternate-email' size={24} color={color.white} style={{ marginHorizontal: 10 }} />
           <TextInput
+            autoCapitalize='none'
             placeholder='Email'
             value={signinEmail}
             onChangeText={setSigninEmail}
@@ -141,6 +142,7 @@ const Login = () => {
           >
             <Ionicons name='lock-open-outline' size={24} color={color.white} style={{ marginHorizontal: 10 }} />
             <TextInput
+              autoCapitalize='none'
               placeholder='Password'
               value={signinPassword}
               onChangeText={setSigninPassword}
@@ -161,7 +163,7 @@ const Login = () => {
                 alignItems: 'center'
               }}
             >
-              <Ionicons name={securePasswordEntry ? 'ios-eye-outline' : 'ios-eye-off-outline'} size={24} color={color.white} style={{ marginHorizontal: 10 }} />
+              <Ionicons name={securePasswordEntry ? 'ios-eye-off-outline' : 'ios-eye-outline'} size={24} color={color.white} style={{ marginHorizontal: 10 }} />
             </TouchableOpacity>
           </View>
         }
