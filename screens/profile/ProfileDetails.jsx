@@ -17,8 +17,7 @@ const ProfileDetails = ({ userProfile, user }) => {
       blurRadius={50}
       style={{
         flex: 1,
-        height: 400,
-        marginBottom: -70
+        height: 400
       }}
     >
       <LinearGradient

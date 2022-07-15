@@ -61,28 +61,34 @@ const AppTheme = () => {
           onPress={lightMode}
           style={{
             flex: 1,
-            height: 50,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.white,
+            height: 100,
             borderRadius: 12,
+            borderWidth: 1,
+            borderColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
             marginRight: 5,
-            overflow: 'hidden'
+            overflow: 'hidden',
+            position: 'relative',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
         >
           <View
             style={{
-              width: 50,
-              height: 50,
+              width: 100,
+              height: 100,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: userProfile?.theme == 'light' ? color.red : color.dark,
+              backgroundColor: color.red,
               marginRight: 10,
-              borderRadius: 12
+              borderRadius: 100,
+              position: 'absolute',
+              top: -30,
+              left: -30,
+              paddingTop: 20,
+              paddingLeft: 20
             }}
           >
-            <Entypo name='light-down' size={30} color={color.white} />
+            <Entypo name='light-down' size={50} color={color.white} />
           </View>
           <Text
             style={{
@@ -99,27 +105,34 @@ const AppTheme = () => {
           onPress={darkMode}
           style={{
             flex: 1,
-            height: 50,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.white,
+            height: 100,
             borderRadius: 12,
-            marginLeft: 5
+            borderWidth: 1,
+            borderColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            marginLeft: 5,
+            overflow: 'hidden',
+            position: 'relative',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
         >
           <View
             style={{
-              width: 50,
-              height: 50,
+              width: 100,
+              height: 100,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: userProfile?.theme == 'dark' ? color.red : color.dark,
+              backgroundColor: color.red,
               marginRight: 10,
-              borderRadius: 12
+              borderRadius: 100,
+              position: 'absolute',
+              top: -30,
+              left: -30,
+              paddingTop: 20,
+              paddingLeft: 20
             }}
           >
-            <MaterialCommunityIcons name='theme-light-dark' size={30} color={color.white} />
+            <MaterialCommunityIcons name='theme-light-dark' size={35} color={color.white} />
           </View>
           <Text
             style={{

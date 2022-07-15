@@ -127,8 +127,7 @@ const UserDetails = ({ userProfile, user }) => {
       blurRadius={50}
       style={{
         flex: 1,
-        height: 400,
-        marginBottom: -60
+        height: 400
       }}
     >
       <LinearGradient
@@ -173,7 +172,8 @@ const UserDetails = ({ userProfile, user }) => {
                   alignItems: 'center'
                 }}
               >
-                <Text
+                  <Text
+                    numberOfLines={1}
                   style={{
                     color: userProfile?.theme == 'light' ? color.dark : color.white,
                     fontFamily: 'boldText',
