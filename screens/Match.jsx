@@ -77,7 +77,7 @@ const Match = () => {
 
     const userSwiped = profiles[cardIndex]
 
-    setDoc(doc(db, 'users', user?.uid, 'passes', userSwiped.id), userSwiped)
+    setDoc(doc(db, 'users', user?.uid, 'passes', userSwiped?.id), userSwiped)
   }
 
   const swipeRight = async (cardIndex) => {
@@ -86,34 +86,32 @@ const Match = () => {
 
     const userSwiped = profiles[cardIndex]
 
-    const loggedInProfile = await (await getDoc(doc(db, 'users', user?.uid))).data()
-
-    getDoc(doc(db, 'users', userSwiped.id, 'swipes', user?.uid))
+    getDoc(doc(db, 'users', userSwiped?.id, 'swipes', user?.uid))
       .then(documentSnapshot => {
         if (documentSnapshot.exists()) {
-          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped.id), userSwiped)
+          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
 
           // CREAT A MATCH
-          setDoc(doc(db, 'matches', generateId(user?.uid, userSwiped.id)), {
+          setDoc(doc(db, 'matches', generateId(user?.uid, userSwiped?.id)), {
             users: {
-              [user?.uid]: loggedInProfile,
+              [user?.uid]: userProfile,
               [userSwiped.id]: userSwiped
             },
-            usersMatched: [user?.uid, userSwiped.id],
+            usersMatched: [user?.uid, userSwiped?.id],
             timestamp: serverTimestamp()
           }).finally(async () => await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped.id)))
 
           navigation.navigate('NewMatch', {
-            loggedInProfile,
+            loggedInProfile: userProfile,
             userSwiped
           })
         } else {
-          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped.id), userSwiped)
+          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
         }
       })
 
-    setDoc(doc(db, 'users', userSwiped.id, 'pendingSwipes', user?.uid), userProfile)
-    setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped.id), userSwiped)
+    setDoc(doc(db, 'users', userSwiped?.id, 'pendingSwipes', user?.uid), userProfile)
+    setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
   }
 
   const disabled = () => {
@@ -131,8 +129,8 @@ const Match = () => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
-        flex: 1
+        flex: 1,
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
       <View style={{ flex: 1, marginTop: -5 }}>
@@ -196,7 +194,7 @@ const Match = () => {
                 <View
                   key={card.id}
                   style={{
-                    backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
+                    backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
                     height: 698,
                     marginTop: -30,
                     width: '100%',
@@ -236,7 +234,8 @@ const Match = () => {
                         alignItems: 'center'
                       }}
                     >
-                      <View
+                      <TouchableOpacity
+                        onPress={() => userProfile ? navigation.navigate('UserProfile', { user: card }) : disabled()}
                         style={{
                           flexDirection: 'row',
                           justifyContent: 'flex-start',
@@ -253,12 +252,10 @@ const Match = () => {
                           }}>
                           {card?.username}
                         </Text>
-                      </View>
+                      </TouchableOpacity>
 
                       <TouchableOpacity
-                        onPress={() =>
-                          userProfile ? navigation.navigate('UserProfile', { user: card }) : disabled()
-                        }
+                        onPress={() => userProfile ? navigation.navigate('UserProfile', { user: card }) : disabled()}
                         style={{
                           width: 40,
                           height: 40,
@@ -338,18 +335,18 @@ const Match = () => {
                         null
                     }
                     {
-                      card?.about.length >= 20 ?
-                        <Text
-                          numberOfLines={4}
-                          style={{
-                            color: color.white,
-                            fontSize: 18,
-                            fontFamily: 'lightText',
-                            marginTop: 10
-                          }}
-                        >
-                          {card?.about}
-                        </Text> : null
+                      card?.about.length >= 20 &&
+                      <Text
+                        numberOfLines={4}
+                        style={{
+                          color: color.white,
+                          fontSize: 18,
+                          fontFamily: 'lightText',
+                          marginTop: 10
+                        }}
+                      >
+                        {card?.about}
+                      </Text>
                     }
                     {
                       card?.passions?.length > 0 &&
@@ -403,8 +400,7 @@ const Match = () => {
                   </LinearGradient>
                 </View>
               )}
-            />
-            :
+            /> :
             (
               <View
                 style={{

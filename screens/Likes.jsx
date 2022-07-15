@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { View, Text, Image, Dimensions, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native'
 
 import useAuth from '../hooks/useAuth'
@@ -13,22 +13,35 @@ import { db } from '../hooks/firebase'
 import generateId from '../lib/generateId'
 import { useNavigation } from '@react-navigation/native'
 
-import { AntDesign, Feather } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+
+import Swiper from 'react-native-deck-swiper'
+
+const { width, height } = Dimensions.get('window')
+
+import { LinearGradient } from 'expo-linear-gradient'
 
 const Likes = () => {
   const { pendingSwipes, user, profiles, setProfiles, userProfile } = useAuth()
   const navigation = useNavigation()
+  const swipeRef = useRef(null)
 
-  const { width, height } = Dimensions.get('window')
+  const [stackSize, setStackSize] = useState(2)
 
-  const swipeLeft = async like => {
-    setDoc(doc(db, 'users', user?.uid, 'passes', like.id), like)
-    await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', like.id))
+
+  const swipeLeft = async cardIndex => {
+    setStackSize(stackSize + 1)
+
+    if (!profiles[cardIndex]) return
+
+    const userSwiped = profiles[cardIndex]
+
+    setDoc(doc(db, 'users', user?.uid, 'passes', userSwiped?.id), userSwiped)
+    await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped?.id))
   }
 
-  const swipeRight = async like => {
-    const needle = like.id
-    const cardIndex = profiles.findIndex(item => item.id === needle)
+  const swipeRight = async cardIndex => {
+    setStackSize(stackSize + 1)
 
     if (!profiles[cardIndex]) return
 
@@ -57,8 +70,14 @@ const Likes = () => {
       })
   }
 
+  const disabled = () => {
+    console.log('not logged in')
+  }
+
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    lightText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Light.ttf'),
+    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -67,139 +86,280 @@ const Likes = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black
+        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
-      {
-        pendingSwipes?.length > 0 ?
-          <ScrollView
-            style={{
-              flex: 1,
-              marginTop: 20
-            }}
-          >
-            <View
-              style={{
-                paddingHorizontal: 10,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                flexWrap: 'wrap'
+      <View style={{ flex: 1, marginTop: -5 }}>
+        {
+          pendingSwipes?.length >= 1 ?
+            <Swiper
+              ref={swipeRef}
+              cards={pendingSwipes}
+              containerStyle={{
+                backgroundColor: color.transparent,
+                marginTop: 33
               }}
-            >
-              {
-                pendingSwipes.map((like, index) => {
-                  return (
+              cardIndex={0}
+              stackSize={stackSize}
+              verticalSwipe={false}
+              animateCardOpacity={true}
+              backgroundColor={color.transparent}
+              cardHorizontalMargin={1}
+              cardVerticalMargin={0}
+              onSwipedLeft={cardIndex => userProfile ? swipeLeft(cardIndex) : disabled()}
+              onSwipedRight={cardIndex => userProfile ? swipeRight(cardIndex) : disabled()}
+              overlayLabels={{
+                left: {
+                  title: 'NOPE',
+                  style: {
+                    label: {
+                      textAlign: 'center',
+                      color: color.red,
+                      fontFamily: 'text',
+                      borderWidth: 4,
+                      borderRadius: 20,
+                      borderColor: color.red,
+                      position: 'absolute',
+                      top: 0,
+                      right: 20,
+                      width: 150
+                    }
+                  }
+                },
+
+                right: {
+                  title: 'MATCH',
+                  style: {
+                    label: {
+                      textAlign: 'center',
+                      color: color.lightGreen,
+                      fontFamily: 'text',
+                      borderWidth: 4,
+                      borderRadius: 20,
+                      borderColor: color.lightGreen,
+                      position: 'absolute',
+                      top: 0,
+                      left: 20,
+                      width: 160
+                    }
+                  }
+                }
+              }}
+
+              renderCard={card => (
+                <View
+                  key={card.id}
+                  style={{
+                    backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+                    height: 698,
+                    marginTop: -30,
+                    width: '100%',
+                    borderRadius: 12,
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
+                >
+                  <Image
+                    style={{
+                      flex: 1,
+                      width: '100%',
+                      height: '100%',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                    }}
+                    source={{ uri: card?.photoURL }}
+                  />
+
+                  <LinearGradient
+                    colors={['transparent', color.dark]}
+                    style={{
+                      width: '100%',
+                      minHeight: 60,
+                      position: 'absolute',
+                      bottom: 0,
+                      padding: 20,
+                      marginBottom: -2
+                    }}
+                  >
                     <View
-                      key={index}
                       style={{
-                        width: (width / 2) - 18,
-                        position: 'relative',
-                        borderRadius: 20,
-                        overflow: 'hidden'
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
                       }}
                     >
-                      <AutoHeightImage
-                        resizeMode='cover'
-                        // blurRadius={userProfile?.plan != 'gold' ? 50 : userProfile?.plan != 'platinum' ? 50 : 0}
-                        source={{ uri: like.photoURL }}
-                        width={(width / 2) - 10}
+                      <TouchableOpacity
+                        onPress={() => userProfile ? navigation.navigate('UserProfile', { user: card }) : disabled()}
                         style={{
-                          maxHeight: 250
-                        }}
-                      />
-
-                      <View
-                        style={{
-                          position: 'absolute',
-                          bottom: 0,
-                          left: 0,
-                          width: '100%',
                           flexDirection: 'row',
-                          justifyContent: 'space-evenly',
-                          marginBottom: 10
+                          justifyContent: 'flex-start',
+                          alignItems: 'center'
                         }}
                       >
-                        <TouchableOpacity
-                          onPress={() => swipeLeft(like)}
+                        <Text
                           style={{
-                            backgroundColor: color.white,
-                            width: 40,
-                            height: 40,
-                            borderRadius: 50,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <Feather name='x' size={24} color={color.red} />
-                        </TouchableOpacity>
+                            fontSize: 30,
+                            color: color.white,
+                            marginBottom: 10,
+                            fontFamily: 'boldText',
+                            textTransform: 'capitalize'
+                          }}>
+                          {card?.username}
+                        </Text>
+                      </TouchableOpacity>
 
-                        <TouchableOpacity
-                          onPress={() => swipeRight(like)}
-                          style={{
-                            backgroundColor: color.white,
-                            width: 40,
-                            height: 40,
-                            borderRadius: 50,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <AntDesign name='heart' size={24} color={color.lightGreen} />
-                        </TouchableOpacity>
-                      </View>
+                      <TouchableOpacity
+                        onPress={() => userProfile ? navigation.navigate('UserProfile', { user: card }) : disabled()}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <MaterialCommunityIcons name='information-outline' size={20} color={color.white} />
+                      </TouchableOpacity>
                     </View>
-                  )
-                })
-              }
-            </View>
-          </ScrollView> :
-
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.black,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <View
-              style={{
-                position: 'relative',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              {
-                userProfile?.theme == 'light' &&
-                <Image
-                  source={require('../assets/rader.gif')}
-                  style={{
-                    position: 'absolute'
-                  }}
-                />
-              }
-              <Image
-                source={{ uri: userProfile?.photoURL || user?.photoURL }}
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 100
-                }}
-              />
-            </View>
-
-            <Text
-              style={{
-                fontFamily: 'text',
-                color: userProfile?.theme == 'light' ? color.lightText : color.white,
-                marginTop: 50
-              }}
-            >
-              No likes at the moment
-            </Text>
-          </View>
-      }
+                    {
+                      card?.job ?
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <MaterialCommunityIcons name='briefcase-variant-outline' size={17} color={color.white} />
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              color: color.white,
+                              fontFamily: 'lightText'
+                            }}
+                          >
+                            {` ${card?.job}`} {card?.job ? 'at' : null} {card?.company}
+                          </Text>
+                        </View> :
+                        null
+                    }
+                    {
+                      card?.school ?
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            marginTop: 10
+                          }}
+                        >
+                          <MaterialCommunityIcons name='school-outline' size={17} color={color.white} />
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              color: color.white,
+                              fontFamily: 'lightText'
+                            }}
+                          >
+                            {` ${card?.school}`}
+                          </Text>
+                        </View> :
+                        null
+                    }
+                    {
+                      card?.city ?
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            marginTop: 10
+                          }}
+                        >
+                          <MaterialCommunityIcons name='home-outline' size={17} color={color.white} />
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              color: color.white,
+                              fontFamily: 'lightText'
+                            }}
+                          >
+                            {` ${card?.city}`}
+                          </Text>
+                        </View> :
+                        null
+                    }
+                    {
+                      card?.about.length >= 20 &&
+                      <Text
+                        numberOfLines={4}
+                        style={{
+                          color: color.white,
+                          fontSize: 18,
+                          fontFamily: 'lightText',
+                          marginTop: 10
+                        }}
+                      >
+                        {card?.about}
+                      </Text>
+                    }
+                    {
+                      card?.passions?.length > 0 &&
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          marginTop: 10
+                        }}
+                      >
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            flexWrap: 'wrap'
+                          }}
+                        >
+                          {
+                            card?.passions?.map((passion, index) => {
+                              return (
+                                <View
+                                  key={index}
+                                  style={{
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 5,
+                                    borderRadius: 50,
+                                    marginBottom: 10,
+                                    marginRight: 10,
+                                    backgroundColor: `${color.faintBlack}`
+                                  }}
+                                >
+                                  <Text
+                                    style={{
+                                      color: color.white,
+                                      fontSize: 12,
+                                      fontFamily: 'lightText',
+                                      textTransform: 'capitalize'
+                                    }}
+                                  >
+                                    {passion}
+                                  </Text>
+                                </View>
+                              )
+                            })
+                          }
+                        </View>
+                      </View>
+                    }
+                  </LinearGradient>
+                </View>
+              )}
+            />
+            : null
+        }
+      </View>
     </SafeAreaView>
   )
 }

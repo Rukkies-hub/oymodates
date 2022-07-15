@@ -61,9 +61,10 @@ const NewMatch = () => {
             text={'MATCH'}
             mainColor={color.lightGreen}
             shadowColor={color.red}
-            glitchDuration={2000}
+            glitchDuration={3000}
             glitchAmplitude={10}
             repeatDelay={10}
+            glitchHeight={100}
             textStyle={{
               color: color.lightGreen,
               fontSize: 120,
