@@ -219,12 +219,15 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             >
               <Pressable
                 onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvarar', { avatar: messages?.media }) : null}
-                style={{ flex: 1 }}
+                style={{
+                  flex: 1,
+                  maxHeight: 250
+                }}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
                 <AutoHeightImage
                   source={{ uri: messages?.media }}
-                  width={300}
+                  width={250}
                   resizeMode='cover'
                   style={{
                     flex: 1,
@@ -281,7 +284,10 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             messages?.mediaType == 'video' &&
             <View
               style={{
-                position: 'relative'
+                position: 'relative',
+                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                borderRadius: 20,
+                overflow: 'hidden'
               }}
             >
               <Pressable
@@ -294,8 +300,8 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                   resizeMode='cover'
                   style={{
                     flex: 1,
-                    minWidth: 300,
-                    minHeight: 300,
+                    minWidth: 250,
+                    minHeight: 250,
                     borderRadius: 20
                   }}
                 />
@@ -305,11 +311,17 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 <>
                   <View
                     style={{
-                      width: '100%',
+                      flex: 1,
                       height: 30,
                       flexDirection: 'row',
                       justifyContent: 'flex-start',
-                      alignItems: 'flex-start'
+                      alignItems: 'flex-start',
+                      padding: 5,
+                      margin: 5,
+                      backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+                      borderRadius: 4,
+                      borderBottomLeftRadius: 20,
+                      borderBottomRightRadius: 20
                     }}
                   >
                     <Text

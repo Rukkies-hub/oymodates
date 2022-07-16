@@ -214,13 +214,17 @@ const SenderMessage = ({ messages, matchDetails }) => {
               }}
             >
               <Pressable
-                style={{ flex: 1 }}
+                style={{
+                  flex: 1,
+                  maxHeight: 250
+                }}
                 onPress={() => navigation.navigate('ViewAvarar', { avatar: messages?.media })}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
                 <AutoHeightImage
+                  animated={true}
                   source={{ uri: messages?.media }}
-                  width={300}
+                  width={250}
                   resizeMode='cover'
                   style={{
                     flex: 1,
@@ -249,7 +253,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.theme == 'light' ? color.dark : color.white,
+                        color: color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -262,7 +266,15 @@ const SenderMessage = ({ messages, matchDetails }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right', marginRight: 10, marginBottom: 10 }}>
+                        <Text
+                          style={{
+                            color: color.white,
+                            fontSize: 8,
+                            textAlign: 'right',
+                            marginRight: 10,
+                            marginBottom: 10
+                          }}
+                        >
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }
@@ -276,7 +288,10 @@ const SenderMessage = ({ messages, matchDetails }) => {
             messages?.mediaType == 'video' &&
             <View
               style={{
-                position: 'relative'
+                position: 'relative',
+                backgroundColor: color.blue,
+                borderRadius: 20,
+                overflow: 'hidden'
               }}
             >
               <Pressable
@@ -289,8 +304,8 @@ const SenderMessage = ({ messages, matchDetails }) => {
                   resizeMode='cover'
                   style={{
                     flex: 1,
-                    minWidth: 300,
-                    minHeight: 300,
+                    minWidth: 250,
+                    minHeight: 250,
                     borderRadius: 20
                   }}
                 />
@@ -300,17 +315,23 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 <>
                   <View
                     style={{
-                      width: '100%',
+                      flex: 1,
                       height: 30,
                       flexDirection: 'row',
                       justifyContent: 'flex-start',
-                      alignItems: 'flex-start'
+                      alignItems: 'flex-start',
+                      padding: 5,
+                      margin: 5,
+                      backgroundColor: color.darkBlue,
+                      borderRadius: 4,
+                      borderBottomLeftRadius: 20,
+                      borderBottomRightRadius: 20
                     }}
                   >
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.theme == 'light' ? color.dark : color.white,
+                        color: color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -323,7 +344,15 @@ const SenderMessage = ({ messages, matchDetails }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right' }}>
+                        <Text
+                          style={{
+                            color: color.white,
+                            fontSize: 8,
+                            textAlign: 'right',
+                            marginRight: 10,
+                            marginBottom: 10
+                          }}
+                        >
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }
