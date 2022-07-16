@@ -62,7 +62,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
   }, [sound])
 
   return (
-    <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+    <View style={{ flexDirection: 'row', marginBottom: 20 }}>
       <Image
         style={{ width: 30, height: 30, borderRadius: 50 }}
         source={{ uri: messages?.photoURL }}
@@ -340,7 +340,15 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
+                        <Text
+                          style={{
+                            color: color.white,
+                            fontSize: 8,
+                            textAlign: 'left',
+                            marginLeft: 10,
+                            marginBottom: 10
+                          }}
+                        >
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }
