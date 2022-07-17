@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 
 import { Camera } from 'expo-camera'
 
@@ -9,13 +9,15 @@ import { useIsFocused } from '@react-navigation/core'
 
 import color from '../../style/color'
 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-
 import { useNavigation, useRoute } from '@react-navigation/native'
 import useAuth from '../../hooks/useAuth'
 import Bar from '../../components/StatusBar'
 
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
+
+import * as NavigationBar from 'expo-navigation-bar'
+
+import * as VideoThumbnails from 'expo-video-thumbnails'
 
 const MessageCamera = () => {
   const navigation = useNavigation()
@@ -27,11 +29,21 @@ const MessageCamera = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(false)
   const [hasAudioPermission, setHasAudioPermission] = useState(false)
   const [cameraRef, setCameraRef] = useState(null)
-  const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.front)
+  const [cameraType, setCameraType] = useState(Camera?.Constants?.Type?.back)
   const [cameraFlash, setCameraFlash] = useState(Camera?.Constants?.FlashMode?.off)
   const [isCameraReady, setIscameraReady] = useState(false)
+  const [thumbnail, setThumbnail] = useState('')
 
   const isFocused = useIsFocused()
+
+  if (isFocused) {
+    NavigationBar.setVisibilityAsync('hidden')
+    NavigationBar.setBehaviorAsync('overlay-swipe')
+  }
+
+  navigation.addListener('blur', () => {
+    NavigationBar.setVisibilityAsync('visible')
+  })
 
   useEffect(() => {
     (async () => {
@@ -44,7 +56,7 @@ const MessageCamera = () => {
   }, [])
 
   if (!hasCameraPermission || !hasAudioPermission)
-    return <View></View>
+    return <View />
 
   const recordVideo = async () => {
     if (cameraRef)
@@ -54,11 +66,12 @@ const MessageCamera = () => {
 
         if (videoRecordPromise) {
           const data = await videoRecordPromise
-
+          const { uri } = await VideoThumbnails.getThumbnailAsync(data?.uri, { time: 2000 })
           navigation.navigate('PreviewMessageImage', {
             matchDetails,
             media: {
               uri: data?.uri,
+              thumbnail: uri,
               type: 'video'
             }
           })
@@ -76,8 +89,9 @@ const MessageCamera = () => {
     if (cameraRef) {
       const data = await cameraRef?.takePictureAsync(null)
       navigation.navigate('PreviewMessageImage', {
-        matchDetails, media: {
-          uri: data?.uri,
+        matchDetails,
+        media: {
+          ...data,
           type: 'image'
         }
       })

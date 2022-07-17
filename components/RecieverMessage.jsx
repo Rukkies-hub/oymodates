@@ -220,7 +220,6 @@ const RecieverMessage = ({ messages, matchDetails }) => {
               <Pressable
                 onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvarar', { avatar: messages?.media }) : null}
                 style={{
-                  flex: 1,
                   maxHeight: 250
                 }}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}

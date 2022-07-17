@@ -215,7 +215,6 @@ const SenderMessage = ({ messages, matchDetails }) => {
             >
               <Pressable
                 style={{
-                  flex: 1,
                   maxHeight: 250
                 }}
                 onPress={() => navigation.navigate('ViewAvarar', { avatar: messages?.media })}
