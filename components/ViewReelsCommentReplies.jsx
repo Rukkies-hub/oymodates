@@ -13,7 +13,6 @@ import { Octicons } from '@expo/vector-icons'
 import LikeReelsReply from './LikeReelsReply'
 import useAuth from '../hooks/useAuth'
 import ReelsCommentReplyReply from './ReelsCommentReplyReply'
-import AllPostCommentReplies from './AllPostCommentReplies'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
 const ViewReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, screen }) => {

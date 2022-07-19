@@ -13,7 +13,6 @@ import Message from '../screens/Message'
 import Add from '../screens/Add'
 import AddReels from '../screens/AddReels'
 import SaveReels from '../screens/SaveReels'
-import AddComment from '../screens/modal/AddComment'
 import PostCamera from '../screens/PostCamera'
 import ViewPost from '../screens/ViewPost'
 import UserProfile from '../screens/userProfile/UserProfile'
@@ -27,11 +26,10 @@ import Notifications from '../screens/Notifications'
 import AllPostLikes from '../screens/AllPostLikes'
 import ViewReel from '../screens/ViewReel'
 import ViewAvarar from '../screens/modal/ViewAvarar'
-import ReelsComment from '../screens/modal/ReelsComment'
+import ReelsComment from '../screens/ReelsComment'
 import ViewVideo from '../screens/modal/ViewVideo'
 import MessageOptions from '../screens/modal/MessageOptions'
 import MessageCamera from '../screens/modal/MessageCamera'
-import ViewPostComments from '../screens/modal/ViewPostComments'
 import ViewReelsComments from '../screens/modal/ViewReelsComments'
 
 import useAuth from '../hooks/useAuth'
@@ -81,7 +79,6 @@ const StackNavigator = () => {
               <Stack.Screen name='NewMatch' component={NewMatch} />
               <Stack.Screen name='ViewAvarar' component={ViewAvarar} />
               <Stack.Screen name='ReelsComment' component={ReelsComment} />
-              <Stack.Screen name='AddComment' component={AddComment} />
               <Stack.Screen name='ViewVideo' component={ViewVideo} />
               <Stack.Screen name='MessageOptions' component={MessageOptions} />
             </Stack.Group>
@@ -95,7 +92,6 @@ const StackNavigator = () => {
               <Stack.Screen name='Passion' component={Passion} />
               <Stack.Screen name='UserLocation' component={UserLocation} />
               <Stack.Screen name='PreviewMessageImage' component={PreviewMessageImage} />
-              <Stack.Screen name='ViewPostComments' component={ViewPostComments} />
               <Stack.Screen name='ViewReelsComments' component={ViewReelsComments} />
             </Stack.Group>
           </>

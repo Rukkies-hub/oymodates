@@ -11,21 +11,21 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback
 } from 'react-native'
-import useAuth from '../../hooks/useAuth'
+import useAuth from '../hooks/useAuth'
 
-import color from '../../style/color'
+import color from '../style/color'
 import { useNavigation, useIsFocused, useRoute } from '@react-navigation/native'
 
-import ReelsComments from '../../components/ReelsComments'
+import ReelsComments from '../components/ReelsComments'
 
 import { FontAwesome5, Entypo } from '@expo/vector-icons'
 
 import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { db } from '../../hooks/firebase'
+import { db } from '../hooks/firebase'
 
 import { useFonts } from 'expo-font'
 
-import Bar from '../../components/StatusBar'
+import Bar from '../components/StatusBar'
 
 import { appToken } from '@env'
 import axios from 'axios'
@@ -223,7 +223,7 @@ const ReelsComment = () => {
   }
 
   const [loaded] = useFonts({
-    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
@@ -290,7 +290,7 @@ const ReelsComment = () => {
             </View>
           </View>
 
-          <ReelsComments reel={item} />
+          {/* <ReelsComments reel={item} /> */}
 
           <View
             style={{
@@ -349,17 +349,16 @@ const ReelsComment = () => {
               onChangeText={reelsCommentType == 'comment' ? setComment : reelsCommentType == 'reply' ? setReply : setReply}
               onSubmitEditing={sendComment}
               placeholder={reelsCommentType == 'comment' ? 'Write a comment...' : reelsCommentType == 'reply' ? `Reply @${replyCommentProps?.user?.username}` : `Reply @${replyCommentProps?.user?.username}`}
-              placeholderTextColor={userProfile?.theme == 'light' ? color.dark : color.white}
+              placeholderTextColor={color.lightText}
               onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
               style={{
                 fontSize: 18,
                 flex: 1,
-                width: '100%',
                 height,
                 minHeight: 50,
                 maxHeight: 150,
                 fontFamily: 'text',
-                color: userProfile?.theme == 'light' ? color.dark : color.white,
+                color: color.dark,
                 paddingRight: 40 + 50,
                 paddingVertical: 5
               }}
@@ -378,7 +377,7 @@ const ReelsComment = () => {
               }}>
               <FontAwesome5
                 name='paper-plane'
-                color={userProfile?.theme == 'light' ? color.lightText : color.white}
+                color={color.lightText}
                 size={20}
               />
             </TouchableOpacity>

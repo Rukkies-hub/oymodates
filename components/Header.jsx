@@ -118,7 +118,7 @@ const Header = ({
             showBack &&
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              onLongPress={() => navigation.navigate('Feeds')}
+              onLongPress={() => navigation.navigate('Match')}
               style={{
                 width: 40,
                 height: 40,
@@ -262,67 +262,18 @@ const Header = ({
             <>
               {
                 showAdd &&
-                <Menu>
-                  <MenuTrigger
-                    customStyles={{
-                      triggerWrapper: {
-                        width: 30,
-                        height: 30,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginRight: 20
-                      }
-                    }}
-                  >
-                    <FontAwesome name='plus-square-o' color={userProfile?.theme == 'dark' ? color.white : color.black} size={26} />
-                  </MenuTrigger>
-
-                  <MenuOptions
-                    customStyles={{
-                      optionsContainer: {
-                        width: 150,
-                        borderRadius: 10,
-                        overflow: 'hidden'
-                      }
-                    }}
-                  >
-                    <MenuOption
-                      onSelect={() => navigation.navigate('Add')}
-                      customStyles={{
-                        optionWrapper: {
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          paddingHorizontal: 15,
-                          paddingVertical: 8
-                        }
-                      }}
-                    >
-                      <Text>Post</Text>
-                      <MaterialCommunityIcons name='grid' size={20} color={color.dark} />
-                    </MenuOption>
-
-                    <MenuOption
-                      onSelect={() => navigation.navigate('AddReels')}
-                      customStyles={{
-                        optionWrapper: {
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          paddingHorizontal: 15,
-                          paddingVertical: 8
-                        }
-                      }}
-                    >
-                      <Text>Reel</Text>
-                      <Image
-                        source={require('../assets/video.png')}
-                        style={{
-                          width: 19,
-                          height: 19
-                        }}
-                      />
-                    </MenuOption>
-                  </MenuOptions>
-                </Menu>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('AddReels')}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginRight: 20
+                  }}
+                >
+                  <FontAwesome name='plus-square-o' color={userProfile?.theme == 'dark' ? color.white : color.black} size={26} />
+                </TouchableOpacity>
               }
             </>
           }
@@ -383,7 +334,7 @@ const Header = ({
           }
         </View>
       </View>
-    </View>
+    </View >
   )
 }
 

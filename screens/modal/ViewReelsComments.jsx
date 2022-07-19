@@ -11,7 +11,6 @@ import ViewReelsCommentsLikecomments from '../../components/ViewReelsCommentsLik
 import PostCommentReply from '../../components/PostCommentReply'
 import ViewReelsCommentReplies from '../../components/ViewReelsCommentReplies'
 import Header from '../../components/Header'
-import CommentsScreenNewComment from '../../components/CommentsScreenNewComment'
 
 import { FontAwesome5, Entypo } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
@@ -283,7 +282,6 @@ const ViewReelsComments = () => {
         </View>
       </ScrollView>
 
-      {/* <CommentsScreenNewComment defaultType={route.name == 'ViewReelsComments' ? 'reply' : 'comment'} post={comment?.post} /> */}
       <View
         style={{
           paddingHorizontal: 10,

@@ -11,10 +11,7 @@ import { AntDesign, Fontisto } from '@expo/vector-icons'
 
 import useAuth from '../hooks/useAuth'
 
-import NewComment from '../components/NewComment'
-import Comments from '../components/Comments'
 import { useNavigation } from '@react-navigation/native'
-import Likes from '../components/Likes'
 
 const ViewPost = (params) => {
   const navigation = useNavigation()
@@ -159,9 +156,6 @@ const ViewPost = (params) => {
             flexDirection: 'row'
           }}
         >
-
-          <Likes post={post} />
-
           <Pressable
             style={{
               width: 35,
@@ -224,9 +218,7 @@ const ViewPost = (params) => {
             marginTop: 30
           }}
         />
-        <Comments post={post} />
       </ScrollView>
-      <NewComment post={post} />
     </SafeAreaView>
   )
 }

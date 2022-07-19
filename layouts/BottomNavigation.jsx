@@ -9,7 +9,6 @@ import * as NavigationBar from 'expo-navigation-bar'
 
 import Match from '../screens/Match'
 import Chat from '../screens/Chat'
-import Feeds from '../screens/Feeds'
 import Likes from '../screens/Likes'
 import Reels from '../screens/Reels'
 
@@ -42,21 +41,13 @@ const BottomNavigation = () => {
       <Header showLogo showAdd showAratar showNotification />
 
       <Tab.Navigator
-        initialRouteName='Feeds'
+        initialRouteName='Match'
         barStyle={{
           backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
           height: 54,
           elevation: 0
         }}
       >
-        <Tab.Screen
-          name='Feeds'
-          component={Feeds}
-          options={{
-            tabBarIcon: () => <MaterialCommunityIcons name='grid' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
-          }}
-        />
-
         <Tab.Screen
           name='Match'
           component={Match}
