@@ -67,8 +67,6 @@ const EditProfile = () => {
   const navigation = useNavigation()
   const route = useRoute()
 
-  const setup = route?.params
-
   const [height, setHeight] = useState(50)
   const [uploadLoading, setUploadLoading] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)

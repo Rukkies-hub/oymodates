@@ -9,8 +9,8 @@ import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import useAuth from '../../hooks/useAuth'
 import UserDetails from './UserDetails'
-import UserTabs from './UserTabs'
 import * as NavigationBar from 'expo-navigation-bar'
+import UserReels from './UserReels'
 
 const UserProfile = () => {
   const { userProfile, setViewUser, viewUser } = useAuth()
@@ -60,7 +60,7 @@ const UserProfile = () => {
 
       {
         viewUser &&
-        <UserTabs userProfile={userProfile} />
+        <UserReels userProfile={userProfile} />
       }
     </View>
   )
