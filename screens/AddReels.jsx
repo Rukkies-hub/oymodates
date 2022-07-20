@@ -95,7 +95,7 @@ const AddReels = () => {
   const pickFromGallery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [16, 9],
       quality: 1,
       videoMaxDuration: 30
