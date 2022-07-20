@@ -278,42 +278,46 @@ const Header = ({
           }
 
           {
-            !userProfile &&
-            <TouchableOpacity
-              onPress={() => navigation.navigate('EditProfile')}
-              style={{
-                minWidth: 40,
-                minHeight: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginLeft: 10
-              }}
-            >
-              <SimpleLineIcons name='user' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
-            </TouchableOpacity>
-          }
-
-          {
             showAratar &&
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Profile')}
-              style={{
-                minWidth: 35,
-                minHeight: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginLeft: 15
-              }}
-            >
-              <Image
-                source={{ uri: userProfile?.photoURL || user?.photoURL }}
-                style={{
-                  width: 35,
-                  height: 35,
-                  borderRadius: 50
-                }}
-              />
-            </TouchableOpacity>
+            <>
+              {
+                !userProfile &&
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('EditProfile')}
+                  style={{
+                    minWidth: 40,
+                    minHeight: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginLeft: 10
+                  }}
+                >
+                  <SimpleLineIcons name='user' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+                </TouchableOpacity>
+              }
+              {
+                userProfile &&
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Profile')}
+                  style={{
+                    minWidth: 35,
+                    minHeight: 35,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginLeft: 15
+                  }}
+                >
+                  <Image
+                    source={{ uri: userProfile?.photoURL || user?.photoURL }}
+                    style={{
+                      width: 35,
+                      height: 35,
+                      borderRadius: 50
+                    }}
+                  />
+                </TouchableOpacity>
+              }
+            </>
           }
         </View>
       </View>

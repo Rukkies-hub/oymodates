@@ -294,7 +294,7 @@ const EditProfile = () => {
           </View>
 
           {
-            userProfile?.displayName != '' &&
+            userProfile?.displayName && userProfile?.displayName != '' &&
             <TouchableOpacity
               onPress={pickImage}
               style={{
@@ -493,39 +493,42 @@ const EditProfile = () => {
             </View>
           }
 
-          <View
-            style={{
-              minHeight: 45,
-              marginTop: 20
-            }}
-          >
-            <Text
+          {
+            userProfile &&
+            <View
               style={{
-                color: color.red,
-                fontFamily: 'text',
-                marginBottom: 10
+                minHeight: 45,
+                marginTop: 20
               }}
             >
-              About me
-            </Text>
-            <TextInput
-              multiline
-              value={about}
-              onChangeText={setAbout}
-              placeholder='About me'
-              onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-              placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
-              style={{
-                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
-                paddingHorizontal: 10,
-                borderRadius: 12,
-                height: 45,
-                fontFamily: 'text',
-                marginBottom: 20,
-                color: userProfile?.theme == 'dark' ? color.white : color.dark
-              }}
-            />
-          </View>
+              <Text
+                style={{
+                  color: color.red,
+                  fontFamily: 'boldText',
+                  marginBottom: 10
+                }}
+              >
+                About me
+              </Text>
+              <TextInput
+                multiline
+                value={about}
+                onChangeText={setAbout}
+                placeholder='About me'
+                onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+                placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+                style={{
+                  backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                  paddingHorizontal: 10,
+                  borderRadius: 12,
+                  height: 45,
+                  fontFamily: 'text',
+                  marginBottom: 20,
+                  color: userProfile?.theme == 'dark' ? color.white : color.dark
+                }}
+              />
+            </View>
+          }
 
           {
             userProfile &&
@@ -585,7 +588,10 @@ const EditProfile = () => {
             </TouchableOpacity>
           }
 
-          <AppTheme />
+          {
+            userProfile &&
+            <AppTheme />
+          }
 
           <TouchableOpacity
             onPress={updateUserProfile}

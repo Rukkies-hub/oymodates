@@ -187,7 +187,7 @@ const ViewReel = (props) => {
           >
             <LikeReels reel={reel} />
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 userProfile ? setReelsProps(reel) : null
                 userProfile ? navigation.navigate('ReelsComment') : disabled()
@@ -209,7 +209,7 @@ const ViewReel = (props) => {
               >
                 {reel?.commentsCount ? reel?.commentsCount : '0'}
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </LinearGradient>

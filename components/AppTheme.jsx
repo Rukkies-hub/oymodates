@@ -38,7 +38,6 @@ const AppTheme = () => {
     <View
       style={{
         width,
-        paddingHorizontal: 10,
         marginTop: 20
       }}
     >
