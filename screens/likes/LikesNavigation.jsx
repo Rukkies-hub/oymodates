@@ -63,17 +63,11 @@ const LikesNavigation = () => {
         <Tab.Screen
           name="Swipes"
           component={Swipes}
-          options={{
-            swipeEnabled: false
-          }}
         />
 
         <Tab.Screen
           name="Passes"
           component={Passes}
-          options={{
-            swipeEnabled: false
-          }}
         />
       </Tab.Navigator>
     </View>

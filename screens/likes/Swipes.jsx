@@ -31,9 +31,8 @@ import AutoHeightImage from 'react-native-auto-height-image'
 const { width, height } = Dimensions.get('window')
 
 const Swipes = () => {
-  const { pendingSwipes, user, profiles, userProfile } = useAuth()
+  const { user, userProfile } = useAuth()
   const navigation = useNavigation()
-  const swipeRef = useRef(null)
 
   const [swipes, setSwipes] = useState([])
 
