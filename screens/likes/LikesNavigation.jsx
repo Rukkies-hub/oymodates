@@ -7,7 +7,6 @@ import color from '../../style/color'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import Likes from './Likes'
 import { useFonts } from 'expo-font'
-import Swipes from './Swipes'
 import Passes from './Passes'
 
 const Tab = createMaterialTopTabNavigator()
@@ -16,9 +15,7 @@ const LikesNavigation = () => {
   const { userProfile, pendingSwipes } = useAuth()
 
   const [loaded] = useFonts({
-    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
-    lightText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Light.ttf'),
-    boldText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
@@ -59,11 +56,6 @@ const LikesNavigation = () => {
             swipeEnabled: pendingSwipes?.length ? false : true,
             title: 'Likes'
           }}
-        />
-
-        <Tab.Screen
-          name="Swipes"
-          component={Swipes}
         />
 
         <Tab.Screen
