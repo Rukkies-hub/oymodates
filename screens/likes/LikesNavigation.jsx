@@ -31,7 +31,7 @@ const LikesNavigation = () => {
       }}
     >
       <Tab.Navigator
-        initialRouteName='Swipes'
+        initialRouteName='PendingLikes'
         keyboardDismissMode='auto'
         screenOptions={{
           lazy: false,
@@ -53,10 +53,11 @@ const LikesNavigation = () => {
         }}
       >
         <Tab.Screen
-          name="Likes"
+          name="PendingLikes"
           component={Likes}
           options={{
-            swipeEnabled: false
+            swipeEnabled: false,
+            title: 'Likes'
           }}
         />
 

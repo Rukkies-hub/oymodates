@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator, Dimensions, ScrollView } from 'react-native'
 
 import useAuth from '../../hooks/useAuth'
@@ -6,7 +6,7 @@ import useAuth from '../../hooks/useAuth'
 import color from '../../style/color'
 
 import { useFonts } from 'expo-font'
-import { collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query, serverTimestamp, setDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 
@@ -14,7 +14,7 @@ import { Feather } from '@expo/vector-icons'
 
 import AutoHeightImage from 'react-native-auto-height-image'
 
-const { width, height } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const Passes = () => {
   const { user, userProfile } = useAuth()
