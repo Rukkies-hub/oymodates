@@ -17,24 +17,20 @@ const ProfileDetails = ({ userProfile, user }) => {
       blurRadius={50}
       style={{
         flex: 1,
-        height: 400
+        maxHeight: 400
       }}
     >
       <LinearGradient
         colors={[color.transparent, userProfile?.theme == 'dark' ? color.black : color.white]}
         style={{
-          height: 400
+          flex: 1,
+          paddingHorizontal: 10
         }}
       >
-        <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
-
-        <Header showBack showTitle title='Profile' showAratar backgroundColor={color.transparent} />
-
         <View
           style={{
             flexDirection: 'row',
-            alignItems: 'center',
-            marginHorizontal: 10
+            alignItems: 'center'
           }}
         >
           {
@@ -116,8 +112,7 @@ const ProfileDetails = ({ userProfile, user }) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'flex-start',
-            alignItems: 'center',
-            marginHorizontal: 10
+            alignItems: 'center'
           }}
         >
           <View
@@ -181,7 +176,6 @@ const ProfileDetails = ({ userProfile, user }) => {
           userProfile?.about != '' &&
           <View
             style={{
-              marginHorizontal: 10,
               marginTop: 20
             }}
           >
@@ -205,7 +199,6 @@ const ProfileDetails = ({ userProfile, user }) => {
               justifyContent: 'flex-start',
               alignItems: 'center',
               flexWrap: 'wrap',
-              paddingHorizontal: 10,
               marginTop: 10
             }}
           >
@@ -242,7 +235,6 @@ const ProfileDetails = ({ userProfile, user }) => {
 
         <View
           style={{
-            marginHorizontal: 10,
             marginTop: 10,
             flexDirection: 'row',
             justifyContent: 'flex-start',
@@ -284,7 +276,6 @@ const ProfileDetails = ({ userProfile, user }) => {
 
         <View
           style={{
-            marginHorizontal: 10,
             marginTop: 10,
             flexDirection: 'row',
             justifyContent: 'flex-start',
@@ -326,7 +317,6 @@ const ProfileDetails = ({ userProfile, user }) => {
 
         <View
           style={{
-            marginHorizontal: 10,
             marginTop: 10,
             marginBottom: 20,
             flexDirection: 'row',

@@ -268,8 +268,7 @@ const Header = ({
                     width: 30,
                     height: 30,
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    marginRight: 20
+                    alignItems: 'center'
                   }}
                 >
                   <FontAwesome name='plus-square-o' color={userProfile?.theme == 'dark' ? color.white : color.black} size={26} />
@@ -282,31 +281,6 @@ const Header = ({
             showAratar &&
             <>
               {
-                userProfile &&
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Profile')}
-                  style={{
-                    minWidth: 40,
-                    minHeight: 40,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  {
-                    user?.photoURL || userProfile?.photoURL ?
-                      <Image
-                        source={{ uri: userProfile?.photoURL || user?.photoURL }}
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 50
-                        }}
-                      /> : <SimpleLineIcons name='user' size={20} color={color.lightText} />
-                  }
-                </TouchableOpacity>
-              }
-
-              {
                 !userProfile &&
                 <TouchableOpacity
                   onPress={() => navigation.navigate('EditProfile', { setup: true })}
@@ -314,20 +288,11 @@ const Header = ({
                     minWidth: 40,
                     minHeight: 40,
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    marginLeft: 10
                   }}
                 >
-                  {
-                    user?.photoURL || userProfile?.photoURL ?
-                      <Image
-                        source={{ uri: userProfile?.photoURL || user?.photoURL }}
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 50
-                        }}
-                      /> : <SimpleLineIcons name='user' size={20} color={color.lightText} />
-                  }
+                  <SimpleLineIcons name='user' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
                 </TouchableOpacity>
               }
             </>

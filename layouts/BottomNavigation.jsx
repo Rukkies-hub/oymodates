@@ -11,6 +11,7 @@ import Match from '../screens/Match'
 import Chat from '../screens/Chat'
 import Likes from '../screens/Likes'
 import Reels from '../screens/Reels'
+import Profile from '../screens/profile/Profile'
 
 import useAuth from '../hooks/useAuth'
 import Bar from '../components/StatusBar'
@@ -19,7 +20,7 @@ import color from '../style/color'
 
 const BottomNavigation = () => {
   const Tab = createMaterialBottomTabNavigator()
-  const { pendingSwipes, userProfile } = useAuth()
+  const { pendingSwipes, userProfile, user } = useAuth()
 
   useEffect(() => {
     NavigationBar.setBackgroundColorAsync(userProfile?.theme == 'dark' ? color.black : color.white)
@@ -56,21 +57,6 @@ const BottomNavigation = () => {
           }}
         />
 
-        <Tab.Screen
-          name='Reels'
-          component={Reels}
-          options={{
-            tabBarIcon: () =>
-              <Image
-                source={userProfile?.theme == 'dark' ? require('../assets/videoLight.png') : require('../assets/video.png')}
-                style={{
-                  width: 20,
-                  height: 20
-                }}
-              />
-          }}
-        />
-
         {
           pendingSwipes?.length > 0 ?
             <Tab.Screen
@@ -89,6 +75,22 @@ const BottomNavigation = () => {
               }}
             />
         }
+
+        <Tab.Screen
+          name='Reels'
+          component={Reels}
+          options={{
+            tabBarIcon: () =>
+              <Image
+                source={userProfile?.theme == 'dark' ? require('../assets/videoLight.png') : require('../assets/video.png')}
+                style={{
+                  width: 20,
+                  height: 20
+                }}
+              />
+          }}
+        />
+
         <Tab.Screen
           name='Chat'
           component={Chat}
@@ -96,6 +98,26 @@ const BottomNavigation = () => {
             tabBarIcon: () => <Ionicons name='chatbubbles-outline' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
           }}
         />
+
+        {
+          userProfile?.photoURL &&
+          <Tab.Screen
+            name='Profile'
+            component={Profile}
+            options={{
+              tabBarIcon: () =>
+                <Image
+                  source={{ uri: userProfile?.photoURL || user?.photoURL }}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: 50
+                  }}
+                />,
+              tabBarLabel: false
+            }}
+          />
+        }
       </Tab.Navigator>
     </SafeAreaView>
   )
