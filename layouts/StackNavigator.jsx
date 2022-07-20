@@ -9,10 +9,8 @@ import Login from '../screens/Login'
 import EditProfile from '../screens/EditProfile'
 import NewMatch from '../screens/modal/NewMatch'
 import Message from '../screens/Message'
-import Add from '../screens/Add'
 import AddReels from '../screens/AddReels'
 import SaveReels from '../screens/SaveReels'
-import PostCamera from '../screens/PostCamera'
 import ViewPost from '../screens/ViewPost'
 import UserProfile from '../screens/userProfile/UserProfile'
 import Passion from '../screens/modal/Passion'
@@ -53,33 +51,25 @@ const StackNavigator = () => {
               <Stack.Screen name='Main' component={BottomNavigation} />
               <Stack.Screen name='Message' component={Message} />
               <Stack.Screen name='EditProfile' component={EditProfile} />
-              <Stack.Screen name='Add' component={Add} />
               <Stack.Screen name='AddReels' component={AddReels} />
               <Stack.Screen name='SaveReels' component={SaveReels} />
-              <Stack.Screen name='PostCamera' component={PostCamera} />
               <Stack.Screen name='ViewPost' component={ViewPost} />
               <Stack.Screen name='Profile' component={Profile} />
               <Stack.Screen name='VideoCall' component={VideoCall} />
               <Stack.Screen name='Notifications' component={Notifications} />
               <Stack.Screen name='AllPostLikes' component={AllPostLikes} />
               <Stack.Screen name='MessageCamera' component={MessageCamera} />
+              <Stack.Screen name='ReelsComment' component={ReelsComment} />
             </Stack.Group>
 
-            <Stack.Group
-              screenOptions={{
-                presentation: 'transparentModal'
-              }}>
+            <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
               <Stack.Screen name='NewMatch' component={NewMatch} />
               <Stack.Screen name='ViewAvarar' component={ViewAvarar} />
-              <Stack.Screen name='ReelsComment' component={ReelsComment} />
               <Stack.Screen name='ViewVideo' component={ViewVideo} />
               <Stack.Screen name='MessageOptions' component={MessageOptions} />
             </Stack.Group>
 
-            <Stack.Group
-              screenOptions={{
-                presentation: 'modal'
-              }}>
+            <Stack.Group screenOptions={{ presentation: 'modal' }}>
               <Stack.Screen name='ViewReel' component={ViewReel} />
               <Stack.Screen name='UserProfile' component={UserProfile} />
               <Stack.Screen name='Passion' component={Passion} />
