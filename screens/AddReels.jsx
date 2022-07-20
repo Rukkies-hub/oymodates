@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, SafeAreaView, Text, TouchableOpacity, Image } from 'react-native'
 
 import { Camera } from 'expo-camera'
@@ -101,11 +101,11 @@ const AddReels = () => {
       videoMaxDuration: 30
     })
 
-    if (!result.cancelled) {
-      let source = result.uri
+    if (!result?.cancelled) {
+      let source = result?.uri
       let thumbnail = await generateThumbnail(source)
-      if (thumbnail)
-        navigation.navigate('SaveReels', { source, thumbnail })
+      if (thumbnail && result?.type === 'video')
+        navigation.navigate('SaveReels', { source, thumbnail, mediaType: result?.type })
     }
   }
 

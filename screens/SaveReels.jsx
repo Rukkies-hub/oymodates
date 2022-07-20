@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -10,12 +10,12 @@ import {
 } from 'react-native'
 import color from '../style/color'
 import Header from '../components/Header'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
-import { MaterialIcons, Entypo, Feather } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 
 import { useFonts } from 'expo-font'
-import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
@@ -26,8 +26,7 @@ import Bar from '../components/StatusBar'
 const SaveReels = (params) => {
   const { userProfile, user } = useAuth()
   const navigation = useNavigation()
-  const source = params?.route?.params?.source
-  const thumbnail = params?.route?.params?.thumbnail
+  const { source, thumbnail, mediaType } = useRoute().params
 
   const storage = getStorage()
 
@@ -35,61 +34,63 @@ const SaveReels = (params) => {
   const [loading, setLoading] = useState(false)
 
   const saveReel = async () => {
-    setLoading(true)
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.onload = () => resolve(xhr.response)
+    if (mediaType === 'video') {
+      setLoading(true)
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.onload = () => resolve(xhr.response)
 
-      xhr.responseType = 'blob'
-      xhr.open('GET', source, true)
-      xhr.send(null)
-    })
-
-    const thumbnailBlob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.onload = () => resolve(xhr.response)
-
-      xhr.responseType = 'blob'
-      xhr.open('GET', thumbnail, true)
-      xhr.send(null)
-    })
-
-    const sourceRef = ref(storage, `reels/${user?.uid}/video/${uuid()}`)
-
-    const thumbnailRef = ref(storage, `reels/${user?.uid}/thumbnail/${uuid()}`)
-
-    uploadBytes(sourceRef, blob)
-      .then(snapshot => {
-        getDownloadURL(snapshot.ref)
-          .then(downloadURL => {
-            uploadBytes(thumbnailRef, thumbnailBlob)
-              .then(thumbnailSnapshot => {
-                getDownloadURL(thumbnailSnapshot.ref)
-                  .then(thumbnailDownloadURL => {
-                    addDoc(collection(db, 'reels'), {
-                      user: {
-                        id: user?.uid,
-                        photoURL: userProfile?.photoURL,
-                        displayName: userProfile?.displayName,
-                        username: userProfile?.username,
-                      },
-                      media: downloadURL,
-                      mediaLink: snapshot?.ref?._location?.path,
-                      thumbnail: thumbnailDownloadURL,
-                      thumbnailLink: thumbnailSnapshot?.ref?._location?.path,
-                      description,
-                      likesCount: 0,
-                      commentsCount: 0,
-                      timestamp: serverTimestamp()
-                    }).finally(() => {
-                      setLoading(false)
-                      setDescription('')
-                      navigation.navigate('Reels')
-                    })
-                  })
-              })
-          })
+        xhr.responseType = 'blob'
+        xhr.open('GET', source, true)
+        xhr.send(null)
       })
+
+      const thumbnailBlob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.onload = () => resolve(xhr.response)
+
+        xhr.responseType = 'blob'
+        xhr.open('GET', thumbnail, true)
+        xhr.send(null)
+      })
+
+      const sourceRef = ref(storage, `reels/${user?.uid}/video/${uuid()}`)
+
+      const thumbnailRef = ref(storage, `reels/${user?.uid}/thumbnail/${uuid()}`)
+
+      uploadBytes(sourceRef, blob)
+        .then(snapshot => {
+          getDownloadURL(snapshot.ref)
+            .then(downloadURL => {
+              uploadBytes(thumbnailRef, thumbnailBlob)
+                .then(thumbnailSnapshot => {
+                  getDownloadURL(thumbnailSnapshot.ref)
+                    .then(thumbnailDownloadURL => {
+                      addDoc(collection(db, 'reels'), {
+                        user: {
+                          id: user?.uid,
+                          photoURL: userProfile?.photoURL,
+                          displayName: userProfile?.displayName,
+                          username: userProfile?.username,
+                        },
+                        media: downloadURL,
+                        mediaLink: snapshot?.ref?._location?.path,
+                        thumbnail: thumbnailDownloadURL,
+                        thumbnailLink: thumbnailSnapshot?.ref?._location?.path,
+                        description,
+                        likesCount: 0,
+                        commentsCount: 0,
+                        timestamp: serverTimestamp()
+                      }).finally(() => {
+                        setLoading(false)
+                        setDescription('')
+                        navigation.navigate('Reels')
+                      })
+                    })
+                })
+            })
+        })
+    }
   }
 
   const [loaded] = useFonts({
