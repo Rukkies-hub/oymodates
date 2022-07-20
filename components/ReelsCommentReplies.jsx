@@ -11,7 +11,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import ReelsCommentReplyReply from './ReelsCommentReplyReply'
 import { Octicons } from '@expo/vector-icons'
 
-const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll }) => {
+const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, background }) => {
   const { userProfile, showExpand, setShowExpand } = useAuth()
   const [replies, setReplies] = useState([])
 
@@ -135,7 +135,7 @@ const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll }) =
               {
                 showExpand &&
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ViewReelsComments', { comment })}
+                  onPress={() => navigation.navigate('ViewReelsComments', { comment, background })}
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'flex-start',

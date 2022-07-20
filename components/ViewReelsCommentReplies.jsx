@@ -15,7 +15,7 @@ import useAuth from '../hooks/useAuth'
 import ReelsCommentReplyReply from './ReelsCommentReplyReply'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
-const ViewReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, screen }) => {
+const ViewReelsCommentReplies = ({ comment, textColor, showAll, screen }) => {
   const { userProfile, showExpand, setShowExpand } = useAuth()
   const navigation = useNavigation()
   const route = useRoute()
@@ -74,7 +74,7 @@ const ViewReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll,
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: backgroundColor || color.lightBorderColor,
+                  backgroundColor: color.lightBorderColor,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,

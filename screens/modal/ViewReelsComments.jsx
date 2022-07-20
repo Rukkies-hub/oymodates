@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { addDoc, collection, doc, getDoc, increment, serverTimestamp, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, increment, onSnapshot, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import color from '../../style/color'
 import useAuth from '../../hooks/useAuth'
@@ -30,11 +30,12 @@ const ViewReelsComments = () => {
   } = useAuth()
 
   const navigation = useNavigation()
-  const { comment } = useRoute().params
+  const { comment, background } = useRoute().params
 
   const [_comment, _setComment] = useState('')
   const [reply, setReply] = useState('')
   const [height, setHeight] = useState(40)
+  const [commentsCount, setCommentsCount] = useState('')
 
   navigation.addListener('blur', () => {
     setShowExpand(true)
@@ -44,7 +45,16 @@ const ViewReelsComments = () => {
     setShowExpand(false)
   }, [])
 
-  useEffect(() => setReelsCommentType('reply'))
+  useEffect(() => setReelsCommentType('reply'), [])
+
+  useEffect(() =>
+    (() => {
+      onSnapshot(doc(db, 'reels', comment?.reel?.id),
+        doc => {
+          setCommentsCount(doc?.data().commentsCount)
+        })
+    })()
+    , [])
 
   const sendComment = async () => {
     if (_comment != '') {
@@ -192,21 +202,16 @@ const ViewReelsComments = () => {
   if (!loaded) return null
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
-      }}
+    <ImageBackground
+      source={{ uri: background }}
+      blurRadius={50}
+      style={{ flex: 1 }}
     >
-      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+      <Bar color='light' />
 
-      <Header showBack showTitle title={`${comment?.reel?.commentsCount} Comments`} />
+      <Header showBack showTitle backgroundColor={color.transparent} title={`${commentsCount} Comments`} />
 
-      <ScrollView
-        style={{
-          flex: 1
-        }}
-      >
+      <ScrollView style={{ flex: 1 }}>
         <View
           style={{
             flexDirection: 'row',
@@ -232,7 +237,7 @@ const ViewReelsComments = () => {
             <View
               style={{
                 marginLeft: 10,
-                backgroundColor: userProfile?.theme == 'dark' ? color.white : color.offWhite,
+                backgroundColor: color.lightBorderColor,
                 borderRadius: 12,
                 paddingHorizontal: 10,
                 paddingVertical: 4,
@@ -240,7 +245,7 @@ const ViewReelsComments = () => {
             >
               <Text
                 style={{
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                  color: color.white,
                   fontFamily: 'text',
                   fontSize: 13
                 }}
@@ -249,7 +254,7 @@ const ViewReelsComments = () => {
               </Text>
               <Text
                 style={{
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark
+                  color: color.white
                 }}
               >
                 {comment?.comment}
@@ -276,7 +281,7 @@ const ViewReelsComments = () => {
                 <PostCommentReply textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
               </View>
 
-              <ViewReelsCommentReplies showAll={true} backgroundColor={userProfile?.theme == 'dark' ? color.dark : color.offWhite} textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
+              <ViewReelsCommentReplies showAll={true} textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
             </View>
           </View>
         </View>
@@ -336,7 +341,7 @@ const ViewReelsComments = () => {
           onChangeText={reelsCommentType == 'comment' ? _setComment : reelsCommentType == 'reply' ? setReply : setReply}
           onSubmitEditing={sendComment}
           placeholder={reelsCommentType == 'comment' ? 'Write a comment...' : reelsCommentType == 'reply' ? `Reply @${comment?.user?.username}` : `Reply @${comment?.user?.username}`}
-          placeholderTextColor={userProfile?.theme == 'light' ? color.dark : color.white}
+          placeholderTextColor={color.lightText}
           onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
           style={{
             fontSize: 18,
@@ -346,11 +351,10 @@ const ViewReelsComments = () => {
             minHeight: 50,
             maxHeight: 150,
             fontFamily: 'text',
-            color: userProfile?.theme == 'light' ? color.dark : color.white,
             paddingRight: 40 + 50,
             paddingHorizontal: 10,
             paddingVertical: 5,
-            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            backgroundColor: color.white,
           }}
         />
 
@@ -367,12 +371,12 @@ const ViewReelsComments = () => {
           }}>
           <FontAwesome5
             name='paper-plane'
-            color={userProfile?.theme == 'light' ? color.lightText : color.white}
+            color={color.lightText}
             size={20}
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </ImageBackground>
   )
 }
 

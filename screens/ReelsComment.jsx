@@ -290,7 +290,7 @@ const ReelsComment = () => {
             </View>
           </View>
 
-          {/* <ReelsComments reel={item} /> */}
+          <ReelsComments reel={item} background={item?.thumbnail} />
 
           <View
             style={{

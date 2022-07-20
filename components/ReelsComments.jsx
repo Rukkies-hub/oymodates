@@ -17,13 +17,12 @@ import color from '../style/color'
 
 import useAuth from '../hooks/useAuth'
 
-import uuid from 'uuid-random'
 import { useFonts } from 'expo-font'
 import LikeReelsComment from './LikeReelsComment'
 import ReelsCommentReplies from './ReelsCommentReplies'
 import ReelsCommentReply from './ReelsCommentReply'
 
-const ReelsComments = ({ reel }) => {
+const ReelsComments = ({ reel, background }) => {
   const { userProfile, user } = useAuth()
 
   const [comments, setComments] = useState([])
@@ -129,7 +128,7 @@ const ReelsComments = ({ reel }) => {
                   <ReelsCommentReply comment={comment} />
                 </View>
 
-                <ReelsCommentReplies comment={comment} />
+                <ReelsCommentReplies comment={comment} background={background} />
               </View>
             </View>
           </View>

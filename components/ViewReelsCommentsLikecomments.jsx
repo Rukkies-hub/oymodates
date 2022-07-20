@@ -108,7 +108,7 @@ const ViewReelsCommentsLikecomments = ({ comment, textColor }) => {
           currentLikesState.counter > 0 &&
           <Text
             style={{
-              color: currentLikesState.state ? color.red : userProfile?.thme == 'dark' ? color.white : color.dark,
+              color: currentLikesState.state ? color.red : color.white,
               fontFamily: 'text',
               marginRight: 3
             }}
@@ -118,7 +118,7 @@ const ViewReelsCommentsLikecomments = ({ comment, textColor }) => {
         }
         <Text
           style={{
-            color: currentLikesState.state ? color.red : userProfile?.thme == 'dark' ? color.white : color.dark,
+            color: currentLikesState.state ? color.red : color.white,
             fontFamily: 'text'
           }}
         >
