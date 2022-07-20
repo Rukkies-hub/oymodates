@@ -13,7 +13,7 @@ import Passes from './Passes'
 const Tab = createMaterialTopTabNavigator()
 
 const LikesNavigation = () => {
-  const { userProfile } = useAuth()
+  const { userProfile, pendingSwipes } = useAuth()
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -56,7 +56,7 @@ const LikesNavigation = () => {
           name="PendingLikes"
           component={Likes}
           options={{
-            swipeEnabled: false,
+            swipeEnabled: pendingSwipes?.length ? false : true,
             title: 'Likes'
           }}
         />
