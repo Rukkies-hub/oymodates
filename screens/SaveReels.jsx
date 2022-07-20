@@ -125,6 +125,7 @@ const SaveReels = (params) => {
           style={{
             paddingVertical: 10,
             marginRight: 20,
+            fontSize: 18,
             flex: 1,
             color: userProfile?.theme == 'light' ? color.dark : color.white
           }}
@@ -156,9 +157,8 @@ const SaveReels = (params) => {
             flex: 1,
             borderColor: userProfile?.theme == 'light' ? color.borderColor : color.lightBorderColor,
             borderWidth: 1,
-            borderRadius: 12,
-            paddingVertical: 10,
-            paddingHorizontal: 20,
+            borderRadius: 8,
+            height: 45,
             marginRight: 5
           }}
         >
@@ -181,9 +181,8 @@ const SaveReels = (params) => {
             alignItems: 'center',
             flex: 1,
             backgroundColor: color.red,
-            borderRadius: 12,
-            paddingVertical: 10,
-            paddingHorizontal: 20,
+            borderRadius: 8,
+            height: 45,
             marginLeft: 5
           }}
         >

@@ -39,7 +39,7 @@ const BottomNavigation = () => {
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
-      <Header showLogo showAdd showAratar showNotification />
+      <Header showLogo showAdd showNotification />
 
       <Tab.Navigator
         initialRouteName='Match'
