@@ -37,6 +37,7 @@ import Bar from '../components/StatusBar'
 import uuid from 'uuid-random'
 
 import Constants from 'expo-constants'
+import AppTheme from '../components/AppTheme'
 
 const EditProfile = () => {
   const {
@@ -277,7 +278,7 @@ const EditProfile = () => {
                   fontSize: 20
                 }}
               >
-                @{userProfile?.username ? userProfile?.username : 'username'}
+                {userProfile?.username ? userProfile?.username : 'username'}
               </Text>
             </View>
 
@@ -311,24 +312,6 @@ const EditProfile = () => {
                   <ActivityIndicator size='small' color={userProfile?.theme == 'dark' ? color.white : color.dark} /> :
                   <AntDesign name='picture' size={24} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
               }
-            </TouchableOpacity>
-          }
-
-          {
-            userProfile &&
-            <TouchableOpacity
-              onPress={() => navigation.navigate('AccountSettings')}
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
-                borderRadius: 12,
-                marginLeft: 10
-              }}
-            >
-              <AntDesign name='setting' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
             </TouchableOpacity>
           }
         </View>
@@ -451,7 +434,7 @@ const EditProfile = () => {
             >
               <Text
                 style={{
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                  color: color.red,
                   fontFamily: 'text'
                 }}
               >
@@ -510,23 +493,39 @@ const EditProfile = () => {
             </View>
           }
 
-          <TextInput
-            multiline
-            value={about}
-            onChangeText={setAbout}
-            placeholder='About me'
-            onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-            placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+          <View
             style={{
-              backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
-              paddingHorizontal: 10,
-              borderRadius: 12,
-              height: 45,
-              fontFamily: 'text',
-              marginBottom: 20,
-              color: userProfile?.theme == 'dark' ? color.white : color.dark
+              minHeight: 45,
+              marginTop: 20
             }}
-          />
+          >
+            <Text
+              style={{
+                color: color.red,
+                fontFamily: 'text',
+                marginBottom: 10
+              }}
+            >
+              About me
+            </Text>
+            <TextInput
+              multiline
+              value={about}
+              onChangeText={setAbout}
+              placeholder='About me'
+              onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+              placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+              style={{
+                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                paddingHorizontal: 10,
+                borderRadius: 12,
+                height: 45,
+                fontFamily: 'text',
+                marginBottom: 20,
+                color: userProfile?.theme == 'dark' ? color.white : color.dark
+              }}
+            />
+          </View>
 
           {
             userProfile &&
@@ -540,7 +539,7 @@ const EditProfile = () => {
               <Text
                 style={{
                   fontFamily: 'text',
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark
+                  color: color.red
                 }}
               >
                 Passions
@@ -585,6 +584,8 @@ const EditProfile = () => {
               </View>
             </TouchableOpacity>
           }
+
+          <AppTheme />
 
           <TouchableOpacity
             onPress={updateUserProfile}

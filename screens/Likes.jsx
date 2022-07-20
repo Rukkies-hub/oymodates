@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native'
+import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator, Dimensions } from 'react-native'
 
 import useAuth from '../hooks/useAuth'
 
@@ -16,6 +16,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Swiper from 'react-native-deck-swiper'
 
 import { LinearGradient } from 'expo-linear-gradient'
+
+const { width, height } = Dimensions.get('window')
 
 const Likes = () => {
   const { pendingSwipes, user, profiles, userProfile } = useAuth()
@@ -201,9 +203,9 @@ const Likes = () => {
                     key={card?.id}
                     style={{
                       backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
-                      height: 698,
+                      width,
+                      height: height - 112,
                       marginTop: -30,
-                      width: '100%',
                       borderRadius: 12,
                       position: 'relative',
                       overflow: 'hidden'

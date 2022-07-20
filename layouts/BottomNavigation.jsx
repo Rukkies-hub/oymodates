@@ -63,8 +63,8 @@ const BottomNavigation = () => {
               name='Likes'
               component={Likes}
               options={{
-                tabBarBadge: pendingSwipes?.length,
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />,
+                tabBarBadge: pendingSwipes?.length
               }}
             /> :
             <Tab.Screen

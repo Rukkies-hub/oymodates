@@ -5,7 +5,6 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 const Stack = createStackNavigator()
 
 import BottomNavigation from './BottomNavigation'
-import TopNavigation from './TopNavigation'
 import Login from '../screens/Login'
 import EditProfile from '../screens/EditProfile'
 import NewMatch from '../screens/modal/NewMatch'
@@ -21,7 +20,6 @@ import UserLocation from '../screens/modal/UserLocation'
 import PreviewMessageImage from '../screens/modal/PreviewMessageImage'
 import Profile from '../screens/profile/Profile'
 import VideoCall from '../screens/VideoCall'
-import AccountSettings from '../screens/accountSettings/AccountSettings'
 import Notifications from '../screens/Notifications'
 import AllPostLikes from '../screens/AllPostLikes'
 import ViewReel from '../screens/ViewReel'
@@ -52,11 +50,7 @@ const StackNavigator = () => {
         user ? (
           <>
             <Stack.Group>
-              {
-                userProfile?.layout == 'top' ?
-                  <Stack.Screen name='Main' component={TopNavigation} /> :
-                  <Stack.Screen name='Main' component={BottomNavigation} />
-              }
+              <Stack.Screen name='Main' component={BottomNavigation} />
               <Stack.Screen name='Message' component={Message} />
               <Stack.Screen name='EditProfile' component={EditProfile} />
               <Stack.Screen name='Add' component={Add} />
@@ -66,7 +60,6 @@ const StackNavigator = () => {
               <Stack.Screen name='ViewPost' component={ViewPost} />
               <Stack.Screen name='Profile' component={Profile} />
               <Stack.Screen name='VideoCall' component={VideoCall} />
-              <Stack.Screen name='AccountSettings' component={AccountSettings} />
               <Stack.Screen name='Notifications' component={Notifications} />
               <Stack.Screen name='AllPostLikes' component={AllPostLikes} />
               <Stack.Screen name='MessageCamera' component={MessageCamera} />

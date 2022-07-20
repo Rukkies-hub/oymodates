@@ -89,7 +89,7 @@ const Reels = () => {
         style={{
           flex: 1,
           width,
-          height: userProfile?.layout == 'bottom' ? height - 108 : height - 100,
+          height: height - 108,
           backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
           justifyContent: 'center',
           alignItems: 'center',

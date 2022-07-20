@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect, useRef } from 'react'
-import { View, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions } from 'react-native'
 
 import { useNavigation } from '@react-navigation/native'
 import useAuth from '../hooks/useAuth'
@@ -29,6 +29,8 @@ import generateId from '../lib/generateId'
 import { useFonts } from 'expo-font'
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
+const { width, height } = Dimensions.get('window')
 
 const Match = () => {
   const navigation = useNavigation()
@@ -195,9 +197,9 @@ const Match = () => {
                   key={card?.id}
                   style={{
                     backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
-                    height: 698,
-                    marginTop: -30,
-                    width: '100%',
+                    width,
+                    height: height - 112,
+                    marginTop: -25,
                     borderRadius: 12,
                     position: 'relative',
                     overflow: 'hidden'
@@ -347,7 +349,7 @@ const Match = () => {
                         {card?.about}
                       </Text>
                     }
-                    
+
                     {
                       card?.passions?.length > 0 &&
                       <View
