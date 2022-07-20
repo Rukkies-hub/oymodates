@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font'
 
 import ProfileDetails from './ProfileDetails'
 import MyReels from './MyReels'
+import Header from '../../components/Header'
 
 const Profile = () => {
   const { user, userProfile } = useAuth()
@@ -24,9 +25,16 @@ const Profile = () => {
         backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
-      <ProfileDetails userProfile={userProfile} user={user} />
+      <>
+        {
+          userProfile &&
+          <>
+            <ProfileDetails userProfile={userProfile} user={user} />
 
-      <MyReels userProfile={userProfile} />
+            <MyReels userProfile={userProfile} />
+          </>
+        }
+      </>
     </View>
   )
 }

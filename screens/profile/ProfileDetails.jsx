@@ -7,7 +7,6 @@ import color from '../../style/color'
 import { useNavigation } from '@react-navigation/native'
 
 import Bar from '../../components/StatusBar'
-import Header from '../../components/Header'
 
 const ProfileDetails = ({ userProfile, user }) => {
   const navigation = useNavigation()
@@ -18,25 +17,25 @@ const ProfileDetails = ({ userProfile, user }) => {
       blurRadius={50}
       style={{
         flex: 1,
-        minHeight: 1
+        minHeight: 1,
+        maxHeight: 400
       }}
     >
       <LinearGradient
         colors={[color.transparent, userProfile?.theme == 'dark' ? color.black : color.white]}
         style={{
           flex: 1,
-          paddingHorizontal: 10
+          paddingHorizontal: 10,
+          maxHeight: 400
         }}
       >
-
         <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
-
-        <Header showBack showTitle title='Profile' showAratar backgroundColor={color.transparent} />
 
         <View
           style={{
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
+            marginTop: 40
           }}
         >
           {
@@ -186,6 +185,7 @@ const ProfileDetails = ({ userProfile, user }) => {
             }}
           >
             <Text
+              numberOfLines={2}
               style={{
                 fontFamily: 'text',
                 fontSize: 16,

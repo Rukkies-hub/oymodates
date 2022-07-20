@@ -53,16 +53,17 @@ const MyReels = () => {
           <View
             style={{
               flex: 1,
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               alignItems: 'center',
-              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+              marginTop: 10
             }}
           >
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <View style={{ position: 'relative' }}>
@@ -114,27 +115,6 @@ const MyReels = () => {
               setLimit(reelsLimit + 4)
               getReels()
             }}
-            ListFooterComponent={() => (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginBottom: 50
-                }}
-              >
-                <ActivityIndicator size='large' color={userProfile?.theme == 'dark' ? color.white : color.dark} />
-                <Text
-                  style={{
-                    color: userProfile?.theme == 'dark' ? color.white : color.dark,
-                    fontFamily: 'text',
-                    marginLeft: 10
-                  }}
-                >
-                  Loading Feeds...
-                </Text>
-              </View>
-            )}
             renderItem={({ item: reel }) => (
               <Pressable
                 onPress={() => navigation.navigate('ViewReel', { reel })}
