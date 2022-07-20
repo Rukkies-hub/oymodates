@@ -42,7 +42,6 @@ const Chat = () => {
         >
           <Image
             resizeMode='cover'
-            blurRadius={100}
             source={{ uri: pendingSwipes[0]?.photoURL }}
             style={{
               width: 70,

@@ -1,14 +1,14 @@
 import React, { useRef, useState } from 'react'
 import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator, Dimensions } from 'react-native'
 
-import useAuth from '../hooks/useAuth'
+import useAuth from '../../hooks/useAuth'
 
-import color from '../style/color'
+import color from '../../style/color'
 
 import { useFonts } from 'expo-font'
 import { deleteDoc, doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
-import { db } from '../hooks/firebase'
-import generateId from '../lib/generateId'
+import { db } from '../../hooks/firebase'
+import generateId from '../../lib/generateId'
 import { useNavigation } from '@react-navigation/native'
 
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -75,9 +75,9 @@ const Likes = () => {
   }
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
-    lightText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Light.ttf'),
-    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    lightText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Light.ttf'),
+    boldText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -204,8 +204,8 @@ const Likes = () => {
                     style={{
                       backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
                       width,
-                      height: height - 112,
-                      marginTop: -30,
+                      height: height - 160,
+                      marginTop: -25,
                       borderRadius: 12,
                       position: 'relative',
                       overflow: 'hidden'

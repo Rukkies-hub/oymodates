@@ -9,7 +9,7 @@ import * as NavigationBar from 'expo-navigation-bar'
 
 import Match from '../screens/Match'
 import Chat from '../screens/Chat'
-import Likes from '../screens/Likes'
+import LikesNavigation from '../screens/likes/LikesNavigation'
 import Reels from '../screens/Reels'
 import Profile from '../screens/profile/Profile'
 
@@ -61,7 +61,7 @@ const BottomNavigation = () => {
           pendingSwipes?.length > 0 ?
             <Tab.Screen
               name='Likes'
-              component={Likes}
+              component={LikesNavigation}
               options={{
                 tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />,
                 tabBarBadge: pendingSwipes?.length
@@ -69,7 +69,7 @@ const BottomNavigation = () => {
             /> :
             <Tab.Screen
               name='Likes'
-              component={Likes}
+              component={LikesNavigation}
               options={{
                 tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
               }}
