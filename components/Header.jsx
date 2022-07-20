@@ -295,47 +295,25 @@ const Header = ({
 
           {
             showAratar &&
-            <>
-              {
-                userProfile &&
-                <TouchableOpacity
-                  onPress={() => {
-                    // navigation.navigate('Match')
-                    // navigation.navigate('Profile')
-                  }}
-                  style={{
-                    minWidth: 40,
-                    minHeight: 40,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Image
-                    source={{ uri: userProfile?.photoURL || user?.photoURL }}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 50
-                    }}
-                  />
-                </TouchableOpacity>
-              }
-
-              {
-                !userProfile &&
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('EditProfile')}
-                  style={{
-                    minWidth: 40,
-                    minHeight: 40,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  <SimpleLineIcons name='user' size={20} color={color.lightText} />
-                </TouchableOpacity>
-              }
-            </>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Profile')}
+              style={{
+                minWidth: 35,
+                minHeight: 35,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginLeft: 15
+              }}
+            >
+              <Image
+                source={{ uri: userProfile?.photoURL || user?.photoURL }}
+                style={{
+                  width: 35,
+                  height: 35,
+                  borderRadius: 50
+                }}
+              />
+            </TouchableOpacity>
           }
         </View>
       </View>

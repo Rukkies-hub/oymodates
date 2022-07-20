@@ -139,7 +139,7 @@ const UserDetails = ({ userProfile, user }) => {
       >
         <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
-        <Header showBack showTitle title={user?.username} backgroundColor={color.transparent} />
+        <Header showBack showTitle title={user?.username} backgroundColor={color.transparent} showAratar />
 
         <View
           style={{

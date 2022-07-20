@@ -103,7 +103,7 @@ const TopNavigation = () => {
             swipeEnabled: false
           }}
         />
-        
+
         <Tab.Screen
           name='Chat'
           component={Chat}
@@ -115,8 +115,14 @@ const TopNavigation = () => {
         {
           userProfile?.photoURL &&
           <Tab.Screen
-            name='Profile'
+            name='ProfileTab'
             component={Profile}
+            listeners={({ navigation }) => ({
+              tabPress: event => {
+                event.preventDefault()
+                navigation.navigate('Profile')
+              }
+            })}
             options={{
               tabBarIcon: () =>
                 <Image

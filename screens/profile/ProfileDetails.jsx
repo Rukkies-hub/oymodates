@@ -2,11 +2,12 @@ import React from 'react'
 import { View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native'
 
 import { LinearGradient } from 'expo-linear-gradient'
-import Bar from '../../components/StatusBar'
-import Header from '../../components/Header'
 import { FontAwesome, Feather, Fontisto, SimpleLineIcons } from '@expo/vector-icons'
 import color from '../../style/color'
 import { useNavigation } from '@react-navigation/native'
+
+import Bar from '../../components/StatusBar'
+import Header from '../../components/Header'
 
 const ProfileDetails = ({ userProfile, user }) => {
   const navigation = useNavigation()
@@ -27,6 +28,11 @@ const ProfileDetails = ({ userProfile, user }) => {
           paddingHorizontal: 10
         }}
       >
+
+        <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+
+        <Header showBack showTitle title='Profile' showAratar backgroundColor={color.transparent} />
+
         <View
           style={{
             flexDirection: 'row',

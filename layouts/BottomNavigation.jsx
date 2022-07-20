@@ -39,7 +39,7 @@ const BottomNavigation = () => {
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
-      <Header showLogo showAdd showNotification />
+      <Header showLogo showAdd showAratar showNotification />
 
       <Tab.Navigator
         initialRouteName='Match'
@@ -102,8 +102,14 @@ const BottomNavigation = () => {
         {
           userProfile?.photoURL &&
           <Tab.Screen
-            name='Profile'
+            name='ProfileTab'
             component={Profile}
+            listeners={({ navigation }) => ({
+              tabPress: event => {
+                event.preventDefault()
+                navigation.navigate('Profile')
+              }
+            })}
             options={{
               tabBarIcon: () =>
                 <Image
