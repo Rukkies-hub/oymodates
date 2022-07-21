@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { useFonts } from 'expo-font'
 import { db } from '../hooks/firebase'
-import { collection, getDocs, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
+import { collection, doc, getDocs, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 
 const ChatRow = ({ matchDetails }) => {
   const { user, userProfile } = useAuth()
@@ -42,16 +42,17 @@ const ChatRow = ({ matchDetails }) => {
 
   useLayoutEffect(() => {
     (async () => {
-      // const snapshot = await getDocs(query(collection(db, 'matches', matchDetails?.id, 'messages')),
-      //   where('userId', '!=', user?.uid), where('seen', '==', false))
-
-      // setUnreadMessage(
-      //   snapshot?.docs?.map(doc => ({
-      //     id: doc?.id
-      //   }))
-      // )
+      onSnapshot(query(collection(db, 'matches', matchDetails?.id, 'messages'),
+        where('seen', '==', false)),
+        snapshot => {
+          setUnreadMessage(
+            snapshot?.docs?.map(doc => ({
+              id: doc?.id
+            }))
+          )
+        })
     })()
-  }, [matchDetails, db])
+  }, [db])
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
