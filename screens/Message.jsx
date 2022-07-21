@@ -59,6 +59,8 @@ import { FlatGrid } from 'react-native-super-grid'
 
 import * as ImagePicker from 'expo-image-picker'
 
+import * as VideoThumbnails from 'expo-video-thumbnails'
+
 const Message = () => {
   const navigation = useNavigation()
   const { user, userProfile, messageReply, setMessageReply } = useAuth()
@@ -126,8 +128,17 @@ const Message = () => {
       quality: 1,
     })
 
-    if (!result?.cancelled)
-      navigation.navigate('PreviewMessageImage', { matchDetails, media: result })
+    if (!result?.cancelled) {
+      const { uri } = await VideoThumbnails.getThumbnailAsync(result?.uri, { time: 1000 })
+      if (uri && result?.type === 'video')
+        navigation.navigate('PreviewMessageImage', {
+          matchDetails,
+          media: {
+            ...result,
+            thumbnail: uri
+          }
+        })
+    }
   }
 
   const sendMessage = () => {
