@@ -15,8 +15,6 @@ import Bar from '../../components/StatusBar'
 
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
-import * as NavigationBar from 'expo-navigation-bar'
-
 import * as VideoThumbnails from 'expo-video-thumbnails'
 
 const MessageCamera = () => {
@@ -35,15 +33,6 @@ const MessageCamera = () => {
   const [thumbnail, setThumbnail] = useState('')
 
   const isFocused = useIsFocused()
-
-  if (isFocused) {
-    NavigationBar.setVisibilityAsync('hidden')
-    NavigationBar.setBehaviorAsync('overlay-swipe')
-  }
-
-  navigation.addListener('blur', () => {
-    NavigationBar.setVisibilityAsync('visible')
-  })
 
   useEffect(() => {
     (async () => {

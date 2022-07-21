@@ -27,15 +27,6 @@ const ViewReel = (props) => {
 
   const [videoStatus, setVideoStatus] = useState({})
 
-  if (focus) {
-    NavigationBar.setVisibilityAsync('hidden')
-    NavigationBar.setBehaviorAsync('overlay-swipe')
-  }
-
-  navigation.addListener('blur', () => {
-    NavigationBar.setVisibilityAsync('visible')
-  })
-
   useLayoutEffect(() => {
     ref?.current?.playAsync()
   }, [])
@@ -136,7 +127,7 @@ const ViewReel = (props) => {
               fontSize: 16
             }}
           >
-            {reel?.user?.displayName}
+            {reel?.user?.username}
           </Text>
           <Text
             style={{
@@ -187,7 +178,7 @@ const ViewReel = (props) => {
           >
             <LikeReels reel={reel} />
 
-            {/* <TouchableOpacity
+            <TouchableOpacity
               onPress={() => {
                 userProfile ? setReelsProps(reel) : null
                 userProfile ? navigation.navigate('ReelsComment') : disabled()
@@ -209,7 +200,7 @@ const ViewReel = (props) => {
               >
                 {reel?.commentsCount ? reel?.commentsCount : '0'}
               </Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         </View>
       </LinearGradient>

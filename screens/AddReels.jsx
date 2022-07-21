@@ -23,8 +23,6 @@ import * as VideoThumbnails from 'expo-video-thumbnails'
 
 import useAuth from '../hooks/useAuth'
 
-import * as NavigationBar from 'expo-navigation-bar'
-
 const AddReels = () => {
   const navigation = useNavigation()
   const { userProfile } = useAuth()
@@ -39,15 +37,6 @@ const AddReels = () => {
   const [isCameraReady, setIsCameraReady] = useState(false)
 
   const isFocused = useIsFocused()
-
-  if (isFocused) {
-    NavigationBar.setVisibilityAsync('hidden')
-    NavigationBar.setBehaviorAsync('overlay-swipe')
-  }
-
-  navigation.addListener('blur', () => {
-    NavigationBar.setVisibilityAsync('visible')
-  })
 
   useEffect(() => {
     (async () => {
