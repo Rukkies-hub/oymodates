@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 
 import {
   View,
-  TouchableWithoutFeedback,
   Keyboard,
   TextInput,
   FlatList,
@@ -11,12 +10,9 @@ import {
   UIManager,
   Text,
   ActivityIndicator,
-  SafeAreaView,
   Platform,
   KeyboardAvoidingView,
-  ScrollView,
-  Image,
-  ImageBackground
+  Image
 } from 'react-native'
 
 import color from '../style/color'
@@ -40,11 +36,6 @@ import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons'
 
 import { useFonts } from 'expo-font'
 
-import smileys from '../components/emoji/smileys'
-import smileys1 from '../components/emoji/smileys1'
-import smileys2 from '../components/emoji/smileys2'
-import smileys3 from '../components/emoji/smileys3'
-
 if (
   Platform.OS === 'android' &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -54,8 +45,6 @@ import { Audio, Video } from 'expo-av'
 
 import uuid from 'uuid-random'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
-
-import { FlatGrid } from 'react-native-super-grid'
 
 import * as ImagePicker from 'expo-image-picker'
 

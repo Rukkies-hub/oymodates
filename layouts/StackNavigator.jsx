@@ -67,7 +67,14 @@ const StackNavigator = () => {
               <Stack.Screen name='NewMatch' component={NewMatch} />
               <Stack.Screen name='ViewAvarar' component={ViewAvarar} />
               <Stack.Screen name='ViewVideo' component={ViewVideo} />
-              <Stack.Screen name='MessageOptions' component={MessageOptions} />
+              <Stack.Screen
+                name='MessageOptions'
+                component={MessageOptions}
+                options={{
+                  animationEnabled: true,
+                  ...TransitionPresets.ModalSlideFromBottomIOS
+                }}
+              />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'modal' }}>

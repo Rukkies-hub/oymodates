@@ -8,7 +8,6 @@ import Slider from '@react-native-community/slider'
 
 import { Audio, Video } from 'expo-av'
 import useAuth from '../hooks/useAuth'
-import AutoHeightImage from 'react-native-auto-height-image'
 import { useNavigation } from '@react-navigation/native'
 
 if (
