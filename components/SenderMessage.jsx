@@ -208,7 +208,6 @@ const SenderMessage = ({ messages, matchDetails }) => {
             <View
               style={{
                 position: 'relative',
-                backgroundColor: color.blue,
                 borderRadius: 20,
                 overflow: 'hidden'
               }}
@@ -226,11 +225,11 @@ const SenderMessage = ({ messages, matchDetails }) => {
                   width={250}
                   resizeMode='cover'
                   style={{
-                    flex: 1,
                     borderRadius: 20
                   }}
                 />
               </Pressable>
+
               {
                 messages?.caption &&
                 <>
@@ -243,7 +242,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                       alignItems: 'flex-start',
                       padding: 5,
                       margin: 5,
-                      backgroundColor: color.darkBlue,
+                      backgroundColor: color.blue,
                       borderRadius: 4,
                       borderBottomLeftRadius: 20,
                       borderBottomRightRadius: 20
@@ -271,7 +270,8 @@ const SenderMessage = ({ messages, matchDetails }) => {
                             fontSize: 8,
                             textAlign: 'right',
                             marginRight: 10,
-                            marginBottom: 10
+                            marginBottom: 10,
+                            marginTop: 10
                           }}
                         >
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
@@ -283,6 +283,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
               }
             </View>
           }
+
           {
             messages?.mediaType == 'video' &&
             <View

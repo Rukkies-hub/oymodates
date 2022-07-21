@@ -58,32 +58,69 @@ const PreviewMessageImage = () => {
     , [])
 
   const sendMessage = async () => {
-    const videoBlob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.onload = () => resolve(xhr.response)
+    if (media?.type == 'image') {
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.onload = () => resolve(xhr.response)
 
-      xhr.responseType = 'blob'
-      xhr.open('GET', media?.uri, true)
-      xhr.send(null)
-    })
+        xhr.responseType = 'blob'
+        xhr.open('GET', media?.uri, true)
+        xhr.send(null)
+      })
 
-    const thumbnailBlob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.onload = () => resolve(xhr.response)
+      setDisableButton(true)
+      setSendLoading(true)
 
-      xhr.responseType = 'blob'
-      xhr.open('GET', media?.thumbnail, true)
-      xhr.send(null)
-    })
+      const mediaRef = ref(storage, `messages/${matchDetails?.id}/image/${uuid()}`)
 
-    setDisableButton(true)
-    setSendLoading(true)
+      uploadBytes(mediaRef, blob)
+        .then(snapshot => {
+          getDownloadURL(snapshot?.ref)
+            .then(downloadURL => {
+              addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
+                userId: user?.uid,
+                username: userProfile?.username,
+                photoURL: matchDetails?.users[user?.uid].photoURL,
+                mediaLink: snapshot?.ref?._location?.path,
+                mediaType: media?.type,
+                media: downloadURL,
+                caption: input,
+                seen: false,
+                timestamp: serverTimestamp(),
+              }).finally(() => {
+                setSendLoading(false)
+                setDisableButton(false)
+                setInput('')
+                navigation.navigate('Message', { matchDetails })
+              })
+            })
+        })
+    } else if (media?.type == 'video') {
+      const mediaBlob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.onload = () => resolve(xhr.response)
 
-    const mediaRef = ref(storage, `messages/${user?.uid}/${media?.type == 'image' ? 'image' : 'video'}/${uuid()}`)
-    const thumbnailRef = ref(storage, `messages/${user?.uid}/${'thumbnail'}/${uuid()}`)
+        xhr.responseType = 'blob'
+        xhr.open('GET', media?.uri, true)
+        xhr.send(null)
+      })
 
-    if (media?.thumbnail)
-      uploadBytes(mediaRef, videoBlob)
+      const thumbnailBlob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.onload = () => resolve(xhr.response)
+
+        xhr.responseType = 'blob'
+        xhr.open('GET', media?.thumbnail, true)
+        xhr.send(null)
+      })
+
+      setDisableButton(true)
+      setSendLoading(true)
+
+      const mediaRef = ref(storage, `messages/${matchDetails?.id}/'video'/${uuid()}`)
+      const thumbnailRef = ref(storage, `messages/${matchDetails?.id}/${'thumbnail'}/${uuid()}`)
+
+      uploadBytes(mediaRef, mediaBlob)
         .then(snapshot => {
           getDownloadURL(snapshot?.ref)
             .then(downloadURL => {
@@ -112,31 +149,88 @@ const PreviewMessageImage = () => {
                 })
             })
         })
-
-    else
-      uploadBytes(mediaRef, videoBlob)
-        .then(snapshot => {
-          getDownloadURL(snapshot?.ref)
-            .then(downloadURL => {
-              addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
-                userId: user?.uid,
-                username: userProfile?.username,
-                photoURL: matchDetails?.users[user?.uid].photoURL,
-                mediaLink: snapshot?.ref?._location?.path,
-                mediaType: media?.type,
-                media: downloadURL,
-                caption: input,
-                seen: false,
-                timestamp: serverTimestamp(),
-              }).finally(() => {
-                setSendLoading(false)
-                setDisableButton(false)
-                setInput('')
-                navigation.navigate('Message', { matchDetails })
-              })
-            })
-        })
+    }
   }
+
+  // const sendMessage = async () => {
+  //   const mediaBlob = await new Promise((resolve, reject) => {
+  //     const xhr = new XMLHttpRequest()
+  //     xhr.onload = () => resolve(xhr.response)
+
+  //     xhr.responseType = 'blob'
+  //     xhr.open('GET', media?.uri, true)
+  //     xhr.send(null)
+  //   })
+
+  //   const thumbnailBlob = await new Promise((resolve, reject) => {
+  //     const xhr = new XMLHttpRequest()
+  //     xhr.onload = () => resolve(xhr.response)
+
+  //     xhr.responseType = 'blob'
+  //     xhr.open('GET', media?.thumbnail, true)
+  //     xhr.send(null)
+  //   })
+
+  //   setDisableButton(true)
+  //   setSendLoading(true)
+
+  //   const mediaRef = ref(storage, `messages/${user?.uid}/${media?.type == 'image' ? 'image' : 'video'}/${uuid()}`)
+  //   const thumbnailRef = ref(storage, `messages/${user?.uid}/${'thumbnail'}/${uuid()}`)
+
+  //     uploadBytes(mediaRef, mediaBlob)
+  //       .then(snapshot => {
+  //         getDownloadURL(snapshot?.ref)
+  //           .then(downloadURL => {
+  //             uploadBytes(thumbnailRef, thumbnailBlob)
+  //               .then(thumbnailSnapshot => {
+  //                 getDownloadURL(thumbnailSnapshot?.ref)
+  //                   .then(thumbnailDownloadURL => {
+  //                     addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
+  //                       userId: user?.uid,
+  //                       username: userProfile?.username,
+  //                       photoURL: matchDetails?.users[user?.uid].photoURL,
+  //                       mediaLink: snapshot?.ref?._location?.path,
+  //                       mediaType: media?.type,
+  //                       media: downloadURL,
+  //                       thumbnail: thumbnailDownloadURL,
+  //                       caption: input,
+  //                       seen: false,
+  //                       timestamp: serverTimestamp(),
+  //                     }).finally(() => {
+  //                       setSendLoading(false)
+  //                       setDisableButton(false)
+  //                       setInput('')
+  //                       navigation.navigate('Message', { matchDetails })
+  //                     })
+  //                   })
+  //               })
+  //           })
+  //       })
+
+  //   else
+  //     uploadBytes(mediaRef, mediaBlob)
+  //       .then(snapshot => {
+  //         getDownloadURL(snapshot?.ref)
+  //           .then(downloadURL => {
+  //             addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
+  //               userId: user?.uid,
+  //               username: userProfile?.username,
+  //               photoURL: matchDetails?.users[user?.uid].photoURL,
+  //               mediaLink: snapshot?.ref?._location?.path,
+  //               mediaType: media?.type,
+  //               media: downloadURL,
+  //               caption: input,
+  //               seen: false,
+  //               timestamp: serverTimestamp(),
+  //             }).finally(() => {
+  //               setSendLoading(false)
+  //               setDisableButton(false)
+  //               setInput('')
+  //               navigation.navigate('Message', { matchDetails })
+  //             })
+  //           })
+  //       })
+  // }
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -148,7 +242,7 @@ const PreviewMessageImage = () => {
       >
         <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
-        <Header showBack showTitle title='Preview image' />
+        <Header showBack showTitle title={`Preview ${media?.type}`} />
 
         {
           media?.type == 'image' &&

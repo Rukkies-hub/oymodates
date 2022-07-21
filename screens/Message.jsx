@@ -126,7 +126,8 @@ const Message = () => {
       quality: 1,
     })
 
-    if (!result?.cancelled) navigation.navigate('PreviewMessageImage', { matchDetails, media: result })
+    if (!result?.cancelled)
+      navigation.navigate('PreviewMessageImage', { matchDetails, media: result })
   }
 
   const sendMessage = () => {
