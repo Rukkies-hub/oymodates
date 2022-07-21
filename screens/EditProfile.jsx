@@ -435,7 +435,7 @@ const EditProfile = () => {
               <Text
                 style={{
                   color: color.red,
-                  fontFamily: 'text'
+                    fontFamily: 'boldText'
                 }}
               >
                 Gender

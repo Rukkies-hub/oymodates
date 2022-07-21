@@ -122,18 +122,7 @@ const UserReels = () => {
                   alignItems: 'center',
                   marginBottom: 50
                 }}
-              >
-                <ActivityIndicator size='large' color={userProfile?.theme == 'dark' ? color.white : color.dark} />
-                <Text
-                  style={{
-                    color: userProfile?.theme == 'dark' ? color.white : color.dark,
-                    fontFamily: 'text',
-                    marginLeft: 10
-                  }}
-                >
-                  Loading Feeds...
-                </Text>
-              </View>
+              />
             )}
             renderItem={({ item: reel }) => (
               <Pressable

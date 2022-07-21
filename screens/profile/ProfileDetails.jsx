@@ -7,6 +7,7 @@ import color from '../../style/color'
 import { useNavigation } from '@react-navigation/native'
 
 import Bar from '../../components/StatusBar'
+import Header from '../../components/Header'
 
 const ProfileDetails = ({ userProfile, user }) => {
   const navigation = useNavigation()
@@ -15,27 +16,21 @@ const ProfileDetails = ({ userProfile, user }) => {
     <ImageBackground
       source={{ uri: userProfile?.photoURL ? userProfile?.photoURL : 'https://firebasestorage.googleapis.com/v0/b/oymo-16379.appspot.com/o/post%20image%2F1.jpg?alt=media&token=58bfeb2e-2316-4c9c-b8ba-513275ae85d1' }}
       blurRadius={50}
-      style={{
-        flex: 1,
-        minHeight: 1,
-        maxHeight: 400
-      }}
     >
       <LinearGradient
         colors={[color.transparent, userProfile?.theme == 'dark' ? color.black : color.white]}
         style={{
-          flex: 1,
-          paddingHorizontal: 10,
-          maxHeight: 400
+          paddingHorizontal: 10
         }}
       >
         <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
+        <Header showBack showTitle title={userProfile?.username} backgroundColor={color.transparent} showAratar />
+
         <View
           style={{
             flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 40
+            alignItems: 'center'
           }}
         >
           {
