@@ -64,7 +64,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
   return (
     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
       <Image
-        style={{ width: 20, height: 20, borderRadius: 50 }}
+        style={{ width: 25, height: 25, borderRadius: 50 }}
         source={{ uri: messages?.photoURL }}
       />
       <View
@@ -224,12 +224,12 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 }}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
-                <AutoHeightImage
+                <Image
                   source={{ uri: messages?.media }}
-                  width={250}
                   resizeMode='cover'
                   style={{
-                    flex: 1,
+                    minWidth: 250,
+                    minHeight: 250,
                     borderRadius: 20
                   }}
                 />
@@ -294,11 +294,10 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 onPress={() => messages?.mediaType == 'video' ? navigation.navigate('ViewVideo', { video: messages?.media }) : null}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
-                <Video
-                  source={{ uri: messages?.media }}
+                <Image
+                  source={{ uri: messages?.thumbnail }}
                   resizeMode='cover'
                   style={{
-                    flex: 1,
                     minWidth: 250,
                     minHeight: 250,
                     borderRadius: 20

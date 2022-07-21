@@ -129,15 +129,22 @@ const Message = () => {
     })
 
     if (!result?.cancelled) {
-      const { uri } = await VideoThumbnails.getThumbnailAsync(result?.uri, { time: 1000 })
-      if (uri && result?.type === 'video')
+      if (result?.type === 'video') {
+        const { uri } = await VideoThumbnails.getThumbnailAsync(result?.uri, { time: 1000 })
+        if (uri)
+          navigation.navigate('PreviewMessageImage', {
+            matchDetails,
+            media: {
+              ...result,
+              thumbnail: uri
+            }
+          })
+      } else {
         navigation.navigate('PreviewMessageImage', {
           matchDetails,
-          media: {
-            ...result,
-            thumbnail: uri
-          }
+          media: result
         })
+      }
     }
   }
 

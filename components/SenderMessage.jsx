@@ -209,6 +209,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
               style={{
                 position: 'relative',
                 borderRadius: 20,
+                backgroundColor: color.blue,
                 overflow: 'hidden'
               }}
             >
@@ -219,12 +220,12 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 onPress={() => navigation.navigate('ViewAvarar', { avatar: messages?.media })}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
-                <AutoHeightImage
-                  animated={true}
+                <Image
                   source={{ uri: messages?.media }}
-                  width={250}
                   resizeMode='cover'
                   style={{
+                    minWidth: 250,
+                    minHeight: 250,
                     borderRadius: 20
                   }}
                 />
@@ -242,7 +243,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                       alignItems: 'flex-start',
                       padding: 5,
                       margin: 5,
-                      backgroundColor: color.blue,
+                      backgroundColor: color.darkBlue,
                       borderRadius: 4,
                       borderBottomLeftRadius: 20,
                       borderBottomRightRadius: 20
@@ -299,11 +300,10 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 onPress={() => navigation.navigate('ViewVideo', { video: messages?.media })}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
-                <Video
-                  source={{ uri: messages?.media }}
+                <Image
+                  source={{ uri: messages?.thumbnail }}
                   resizeMode='cover'
                   style={{
-                    flex: 1,
                     minWidth: 250,
                     minHeight: 250,
                     borderRadius: 20

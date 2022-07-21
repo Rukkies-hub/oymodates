@@ -97,7 +97,6 @@ const PreviewMessageImage = () => {
         })
     }
     else if (media?.type == 'video') {
-      console.log(media)
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
         xhr.onload = () => resolve(xhr.response)
@@ -190,9 +189,8 @@ const PreviewMessageImage = () => {
             <Video
               ref={video}
               source={{ uri: media?.uri }}
-              width={width}
               style={{ flex: 1 }}
-              resizeMode={Video.RESIZE_MODE_CONTAIN}
+              resizeMode='cover'
               isLooping={true}
               onPlaybackStatusUpdate={status => setStatus(() => status)}
             />
