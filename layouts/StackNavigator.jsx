@@ -15,7 +15,7 @@ import ViewPost from '../screens/ViewPost'
 import UserProfile from '../screens/userProfile/UserProfile'
 import Passion from '../screens/modal/Passion'
 import UserLocation from '../screens/modal/UserLocation'
-import PreviewMessageImage from '../screens/modal/PreviewMessageImage'
+import PreviewMessageImage from '../screens/PreviewMessageImage'
 import Profile from '../screens/profile/Profile'
 import VideoCall from '../screens/VideoCall'
 import Notifications from '../screens/Notifications'
@@ -60,6 +60,7 @@ const StackNavigator = () => {
               <Stack.Screen name='AllPostLikes' component={AllPostLikes} />
               <Stack.Screen name='MessageCamera' component={MessageCamera} />
               <Stack.Screen name='ReelsComment' component={ReelsComment} />
+              <Stack.Screen name='PreviewMessageImage' component={PreviewMessageImage} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
@@ -74,7 +75,6 @@ const StackNavigator = () => {
               <Stack.Screen name='UserProfile' component={UserProfile} />
               <Stack.Screen name='Passion' component={Passion} />
               <Stack.Screen name='UserLocation' component={UserLocation} />
-              <Stack.Screen name='PreviewMessageImage' component={PreviewMessageImage} />
               <Stack.Screen name='ViewReelsComments' component={ViewReelsComments} />
             </Stack.Group>
           </>

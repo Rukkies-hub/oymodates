@@ -31,7 +31,7 @@ import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 
 import SenderMessage from '../components/SenderMessage'
 import RecieverMessage from '../components/RecieverMessage'
-import { addDoc, collection, doc, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, doc, onSnapshot, orderBy, query, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -81,7 +81,7 @@ const Message = () => {
   const [chatTheme, setChatTheme] = useState()
   const [chatThemeIndex, setChatThemeIndex] = useState()
 
-  useEffect(() =>
+  useLayoutEffect(() =>
     (() => {
       onSnapshot(query(collection(db,
         'matches', matchDetails?.id, 'messages'),
@@ -94,10 +94,10 @@ const Message = () => {
     })()
     , [matchDetails, db])
 
-  useEffect(() =>
+  useLayoutEffect(() =>
     (() => {
       onSnapshot(doc(db, 'matches', matchDetails?.id), doc => {
-        setChatTheme(doc.data()?.chatTheme)
+        setChatTheme(doc?.data()?.chatTheme)
         setChatThemeIndex(doc?.data()?.chatThemeIndex)
       })
     })()
@@ -148,19 +148,23 @@ const Message = () => {
     }
   }
 
-  const sendMessage = () => {
-    if (input != '')
-      addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
+  const sendMessage = async () => {
+    if (input != '') {
+      addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
         timestamp: serverTimestamp(),
         userId: user?.uid,
         username: userProfile?.username,
-        photoURL: matchDetails.users[user?.uid].photoURL,
+        photoURL: matchDetails?.users[user?.uid]?.photoURL,
         message: input,
         reply: messageReply ? messageReply : null,
         seen: false
       })
-    setInput('')
-    setMessageReply(null)
+      await updateDoc(doc(db, 'matches', matchDetails?.id), {
+        timestamp: serverTimestamp()
+      })
+      setInput('')
+      setMessageReply(null)
+    }
   }
 
   const startRecording = async () => {
@@ -219,7 +223,7 @@ const Message = () => {
             addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
               userId: user?.uid,
               username: userProfile?.username,
-              photoURL: matchDetails?.users[user?.uid].photoURL,
+              photoURL: matchDetails?.users[user?.uid]?.photoURL,
               voiceNote: downloadURL,
               mediaLink: snapshot?.ref?._location?.path,
               duration: getDurationFormated(status?.durationMillis),
@@ -258,14 +262,14 @@ const Message = () => {
         showMatchAvatar
         matchDetails={matchDetails}
         title={getMatchedUserInfo(matchDetails?.users, user?.uid).username}
-        matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL}
+        matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid)?.photoURL}
         // showChatMenu
         backgroundColor={color.transparent}
       />
 
       <KeyboardAvoidingView style={{ flex: 1 }}>
         {
-          !messages.length ?
+          !messages?.length ?
             <View
               style={{
                 flex: 1,
@@ -279,7 +283,7 @@ const Message = () => {
                 }}
               >
                 <Image
-                  source={{ uri: getMatchedUserInfo(matchDetails?.users, user?.uid).photoURL }}
+                  source={{ uri: getMatchedUserInfo(matchDetails?.users, user?.uid)?.photoURL }}
                   style={{
                     width: 100,
                     height: 100,

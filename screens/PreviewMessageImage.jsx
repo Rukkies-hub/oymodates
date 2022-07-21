@@ -12,11 +12,11 @@ import {
   KeyboardAvoidingView
 } from 'react-native'
 
-import Header from '../../components/Header'
+import Header from '../components/Header'
 
-import color from '../../style/color'
+import color from '../style/color'
 
-import useAuth from '../../hooks/useAuth'
+import useAuth from '../hooks/useAuth'
 
 const { width } = Dimensions.get('window')
 
@@ -24,15 +24,15 @@ import AutoHeightImage from 'react-native-auto-height-image'
 
 import { FontAwesome5 } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
-import { db } from '../../hooks/firebase'
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore'
+import { db } from '../hooks/firebase'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
 import { Video } from 'expo-av'
 
 import uuid from 'uuid-random'
 
-import Bar from '../../components/StatusBar'
+import Bar from '../components/StatusBar'
 
 const PreviewMessageImage = () => {
   const { userProfile, user } = useAuth()
@@ -87,6 +87,10 @@ const PreviewMessageImage = () => {
                 caption: input,
                 seen: false,
                 timestamp: serverTimestamp(),
+              }).then(async () => {
+                await updateDoc(doc(db, 'matches', matchDetails?.id), {
+                  timestamp: serverTimestamp()
+                })
               }).finally(() => {
                 setSendLoading(false)
                 setDisableButton(false)
@@ -145,6 +149,10 @@ const PreviewMessageImage = () => {
                         },
                         seen: false,
                         timestamp: serverTimestamp(),
+                      }).then(async () => {
+                        await updateDoc(doc(db, 'matches', matchDetails?.id), {
+                          timestamp: serverTimestamp()
+                        })
                       }).finally(() => {
                         setSendLoading(false)
                         setDisableButton(false)

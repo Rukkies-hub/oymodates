@@ -14,7 +14,7 @@ import SearchChat from '../components/SearchChat'
 
 const Chat = () => {
   const navigation = useNavigation()
-  const { user, pendingSwipes, userProfile } = useAuth()
+  const { pendingSwipes, userProfile } = useAuth()
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')

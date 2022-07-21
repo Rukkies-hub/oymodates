@@ -1,5 +1,5 @@
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
 import { db } from '../hooks/firebase'
@@ -16,7 +16,7 @@ const ChatList = () => {
   const { user, userProfile } = useAuth()
   const [matches, setMatches] = useState([])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (() => {
       onSnapshot(query(collection(db, 'matches'),
         where('usersMatched', 'array-contains', user?.uid)),

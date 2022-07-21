@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { View, Text, Pressable, Image } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
@@ -19,31 +19,26 @@ const ChatRow = ({ matchDetails }) => {
   const [lastMessage, setLastMessage] = useState('')
   const [unreadMessage, setUnreadMessage] = useState([])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (() => {
       setMatchedUserInfo(getMatchedUserInfo(matchDetails?.users, user?.uid))
     })()
   }, [matchDetails, user])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (() => {
       onSnapshot(query(collection(db, 'matches', matchDetails?.id, 'messages'),
         orderBy('timestamp', 'desc')),
         limit(1),
-        snapshot => setLastMessage(snapshot?.docs[0]?.data()?.message || snapshot?.docs[0]?.data()?.caption))
+        snapshot =>
+          setLastMessage(
+            snapshot?.docs[0]?.data()?.voiceNote ?
+              `${matchedUserInfo?.username} Sent you a voice note...` :
+              snapshot?.docs[0]?.data()?.message || snapshot?.docs[0]?.data()?.caption
+          )
+      )
     })()
   }, [matchDetails, db])
-
-  // useEffect(async () => {
-  //   const querySnapshot = await getDocs(query(collection(db, 'matches', matchDetails?.id, 'messages'),
-  //     where('userId', '!=', user?.uid), where('seen', '==', false)))
-
-  //   setUnreadMessage(
-  //     querySnapshot?.docs?.map(doc => ({
-  //       id: doc?.id
-  //     }))
-  //   )
-  // }, [matchDetails])
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
