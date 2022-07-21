@@ -31,7 +31,7 @@ import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 
 import SenderMessage from '../components/SenderMessage'
 import RecieverMessage from '../components/RecieverMessage'
-import { addDoc, collection, doc, onSnapshot, orderBy, query, serverTimestamp, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, getDocs, onSnapshot, orderBy, query, serverTimestamp, updateDoc, where } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -120,6 +120,17 @@ const Message = () => {
       })
     })()
     , [])
+
+  useLayoutEffect(() => {
+    (async () => {
+      const snapshot = await getDocs(query(collection(db, 'matches', matchDetails?.id, 'messages'), where('seen', '==', false)))
+      snapshot.forEach(async allDoc => {
+        await updateDoc(doc(db, 'matches', matchDetails?.id, 'messages', allDoc?.id), {
+          seen: true
+        })
+      })
+    })()
+  }, [matchDetails])
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

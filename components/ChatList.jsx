@@ -16,18 +16,18 @@ const ChatList = () => {
   const { user, userProfile } = useAuth()
   const [matches, setMatches] = useState([])
 
-  useLayoutEffect(() => {
+  useLayoutEffect(() =>
     (() => {
       onSnapshot(query(collection(db, 'matches'),
-        where('usersMatched', 'array-contains', user?.uid), orderBy('timestamp', 'desc')),
-        snapshot => setMatches(
-          snapshot?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        ))
+        where('usersMatched', 'array-contains', user?.uid)
+      ), snapshot => setMatches(
+        snapshot?.docs?.map(doc => ({
+          id: doc?.id,
+          ...doc?.data()
+        }))
+      ))
     })()
-  }, [user, db])
+    , [user, db])
 
   const onRowDidOpen = rowKey => {
     console.log('This row opened', rowKey)

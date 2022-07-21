@@ -40,6 +40,19 @@ const ChatRow = ({ matchDetails }) => {
     })()
   }, [matchDetails, db])
 
+  useLayoutEffect(() => {
+    (async () => {
+      // const snapshot = await getDocs(query(collection(db, 'matches', matchDetails?.id, 'messages')),
+      //   where('userId', '!=', user?.uid), where('seen', '==', false))
+
+      // setUnreadMessage(
+      //   snapshot?.docs?.map(doc => ({
+      //     id: doc?.id
+      //   }))
+      // )
+    })()
+  }, [matchDetails, db])
+
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
