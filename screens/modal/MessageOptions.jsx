@@ -35,13 +35,6 @@ const MessageOptions = (props) => {
     }
   }
 
-  const starMessage = async () => {
-    await updateDoc(doc(db, 'matches', matchDetails?.id, 'messages', messages?.id), {
-      star: [userProfile?.id]
-    })
-    navigation.goBack()
-  }
-
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
@@ -67,7 +60,7 @@ const MessageOptions = (props) => {
       <View
         style={{
           minWidth: Dimensions.get('window').width,
-          backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.black : color.dark,
+          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
           padding: 20,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20
@@ -75,8 +68,8 @@ const MessageOptions = (props) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setMessageReply(messages)
             navigation.goBack()
+            setMessageReply(messages)
           }}
           activeOpacity={0.5}
           style={{
@@ -94,49 +87,6 @@ const MessageOptions = (props) => {
             }}
           >
             Reply
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={{
-            height: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.dark : color.black,
-            borderRadius: 12,
-            marginTop: 10
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'text',
-              color: userProfile?.theme == 'light' ? color.dark : color.white
-            }}
-          >
-            React to message
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={starMessage}
-          activeOpacity={0.5}
-          style={{
-            height: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.dark : color.black,
-            borderRadius: 12,
-            marginTop: 10
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'text',
-              color: userProfile?.theme == 'light' ? color.dark : color.white
-            }}
-          >
-            Star message
           </Text>
         </TouchableOpacity>
 

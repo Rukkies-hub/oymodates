@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { useFonts } from 'expo-font'
 import { db } from '../hooks/firebase'
-import { collection, doc, getDocs, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
+import { collection, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 
 const ChatRow = ({ matchDetails }) => {
   const { user, userProfile } = useAuth()

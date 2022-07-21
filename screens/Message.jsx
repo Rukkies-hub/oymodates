@@ -49,6 +49,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import * as ImagePicker from 'expo-image-picker'
 
 import * as VideoThumbnails from 'expo-video-thumbnails'
+import Slider from '@react-native-community/slider'
 
 const Message = () => {
   const navigation = useNavigation()
@@ -368,7 +369,7 @@ const Message = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginHorizontal: 10,
-                backgroundColor: userProfile?.theme == 'dark' ? color.lightText : color.offWhite,
+                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
                 marginTop: 10,
                 borderTopLeftRadius: 12,
                 borderTopRightRadius: 12,
@@ -381,7 +382,7 @@ const Message = () => {
                   flexDirection: 'row',
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  backgroundColor: userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.dark : color.lightText,
+                  backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
                   flex: 1,
                   borderRadius: 12,
                   overflow: 'hidden',
@@ -390,13 +391,13 @@ const Message = () => {
               >
                 {
                   messageReply?.mediaType == 'video' &&
-                  <Video
-                    source={{ uri: messageReply?.media }}
+                  <Image
+                    source={{ uri: messageReply?.thumbnail }}
                     resizeMode='cover'
                     style={{
                       width: 50,
                       height: 50,
-                      borderRadius: 12
+                      borderRadius: 6
                     }}
                   />
                 }
@@ -408,9 +409,49 @@ const Message = () => {
                     style={{
                       width: 50,
                       height: 50,
-                      borderRadius: 12
+                      borderRadius: 6
                     }}
                   />
+                }
+                {
+                  messageReply?.voiceNote &&
+                  <View
+                    style={{
+                      flex: 1,
+                      position: 'relative',
+                      height: 35,
+                      borderRadius: 20,
+                      overflow: 'hidden',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: 2,
+                      paddingLeft: 10
+                    }}
+                  >
+                    <Slider
+                      value={0}
+                      minimumValue={0}
+                      maximumValue={100}
+                      style={{ flex: 1 }}
+                      minimumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                      maximumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                      thumbTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                    />
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={{
+                        backgroundColor: userProfile?.theme == 'dark' ? color.white : color.faintBlue,
+                        width: 30,
+                        height: 30,
+                        borderRadius: 50,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <AntDesign name='caretright' size={20} color={userProfile?.theme == 'dark' ? color.black : color.blue} />
+                    </TouchableOpacity>
+                  </View>
                 }
                 {
                   messageReply?.caption != '' &&
@@ -430,7 +471,8 @@ const Message = () => {
                     numberOfLines={3}
                     style={{
                       color: userProfile?.theme == 'light' ? color.dark : color.white,
-                      marginLeft: messageReply?.media ? 10 : 0
+                      marginLeft: messageReply?.media ? 10 : 0,
+                      marginVertical: 10
                     }}
                   >
                     {messageReply?.message}

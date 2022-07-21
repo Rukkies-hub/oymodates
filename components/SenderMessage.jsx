@@ -76,6 +76,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
             setShowTime(!showTime)
             setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
           }}
+          delayLongPress={100}
           onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
         >
           {
@@ -130,6 +131,28 @@ const SenderMessage = ({ messages, matchDetails }) => {
                             borderRadius: 8
                           }}
                         />
+                      }
+                      {
+                        messages?.reply?.voiceNote &&
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                          }}
+                        >
+                          <Slider
+                            value={0}
+                            disabled={true}
+                            minimumValue={0}
+                            maximumValue={100}
+                            style={{ flex: 1 }}
+                            minimumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                            maximumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                            thumbTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                          />
+                        </View>
                       }
                       {
                         messages?.reply?.caption != '' &&
@@ -214,9 +237,8 @@ const SenderMessage = ({ messages, matchDetails }) => {
               }}
             >
               <Pressable
-                style={{
-                  maxHeight: 250
-                }}
+                delayLongPress={100}
+                style={{ maxHeight: 250 }}
                 onPress={() => navigation.navigate('ViewAvarar', { avatar: messages?.media })}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
@@ -297,6 +319,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
             >
               <Pressable
                 style={{ flex: 1 }}
+                delayLongPress={100}
                 onPress={() => navigation.navigate('ViewVideo', { video: messages?.media })}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >

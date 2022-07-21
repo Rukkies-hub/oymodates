@@ -79,6 +79,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             setShowTime(!showTime)
             setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
           }}
+          delayLongPress={100}
           onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
         >
           {
@@ -135,11 +136,30 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                         />
                       }
                       {
+                        messages?.reply?.voiceNote &&
+                        <View
+                          style={{
+                            flex: 1
+                          }}
+                        >
+                          <Slider
+                            value={0}
+                            disabled={true}
+                            minimumValue={0}
+                            maximumValue={100}
+                            style={{ flex: 1 }}
+                            minimumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                            maximumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                            thumbTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                          />
+                        </View>
+                      }
+                      {
                         messages?.reply?.caption != '' &&
                         <Text
                           numberOfLines={3}
                           style={{
-                            color: color.white,
+                            color: userProfile?.theme == 'dark' ? color.white : color.dark,
                             marginLeft: messages?.reply?.media ? 10 : 0
                           }}
                         >
@@ -151,7 +171,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                         <Text
                           numberOfLines={3}
                           style={{
-                            color: color.white,
+                            color: userProfile?.theme == 'dark' ? color.white : color.dark,
                             marginLeft: messages?.reply?.media ? 10 : 0
                           }}
                         >
@@ -162,7 +182,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: color.white,
+                        color: userProfile?.theme == 'dark' ? color.white : color.dark,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -217,11 +237,10 @@ const RecieverMessage = ({ messages, matchDetails }) => {
               }}
             >
               <Pressable
-                onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvarar', { avatar: messages?.media }) : null}
-                style={{
-                  maxHeight: 250
-                }}
+                delayLongPress={100}
+                style={{ maxHeight: 250 }}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
+                onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvarar', { avatar: messages?.media }) : null}
               >
                 <Image
                   source={{ uri: messages?.media }}
@@ -290,6 +309,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             >
               <Pressable
                 style={{ flex: 1 }}
+                delayLongPress={100}
                 onPress={() => messages?.mediaType == 'video' ? navigation.navigate('ViewVideo', { video: messages?.media }) : null}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
@@ -365,7 +385,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 height: 35,
                 borderRadius: 20,
                 overflow: 'hidden',
-                backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark,
+                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
