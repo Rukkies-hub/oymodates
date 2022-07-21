@@ -254,23 +254,6 @@ const Message = () => {
                 alignItems: 'center'
               }}
             >
-              <Text
-                style={{
-                  marginBottom: 20,
-                  fontFamily: 'text',
-                  fontSize: 16,
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark
-                }}
-              >
-                You matched with
-                <Text
-                  style={{
-                    fontFamily: 'boldText'
-                  }}
-                >
-                  {` ${getMatchedUserInfo(matchDetails?.users, user?.uid)?.username}`}
-                </Text>
-              </Text>
               <View
                 style={{
                   position: 'relative'
@@ -315,6 +298,23 @@ const Message = () => {
                   />
                 </View>
               </View>
+              <Text
+                style={{
+                  marginTop: 20,
+                  fontFamily: 'text',
+                  fontSize: 16,
+                  color: userProfile?.theme == 'dark' ? color.white : color.dark
+                }}
+              >
+                You matched with
+                <Text
+                  style={{
+                    fontFamily: 'boldText'
+                  }}
+                >
+                  {` ${getMatchedUserInfo(matchDetails?.users, user?.uid)?.username}`}
+                </Text>
+              </Text>
             </View> :
             <FlatList
               inverted={-1}

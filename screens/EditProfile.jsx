@@ -419,7 +419,6 @@ const EditProfile = () => {
               borderRadius: 12,
               height: 45,
               fontFamily: 'text',
-              marginBottom: 20,
               color: userProfile?.theme == 'dark' ? color.white : color.dark
             }}
           />
@@ -435,7 +434,43 @@ const EditProfile = () => {
               <Text
                 style={{
                   color: color.red,
-                    fontFamily: 'boldText'
+                  fontFamily: 'boldText',
+                  marginBottom: 10
+                }}
+              >
+                About me
+              </Text>
+              <TextInput
+                multiline
+                value={about}
+                onChangeText={setAbout}
+                placeholder='About me'
+                onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+                placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+                style={{
+                  backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                  paddingHorizontal: 10,
+                  borderRadius: 12,
+                  height: 45,
+                  fontFamily: 'text',
+                  marginBottom: 20,
+                  color: userProfile?.theme == 'dark' ? color.white : color.dark
+                }}
+              />
+            </View>
+          }
+
+          {
+            userProfile &&
+            <View
+              style={{
+                minHeight: 45
+              }}
+            >
+              <Text
+                style={{
+                  color: color.red,
+                  fontFamily: 'boldText'
                 }}
               >
                 Gender
@@ -495,53 +530,16 @@ const EditProfile = () => {
 
           {
             userProfile &&
-            <View
-              style={{
-                minHeight: 45,
-                marginTop: 20
-              }}
-            >
-              <Text
-                style={{
-                  color: color.red,
-                  fontFamily: 'boldText',
-                  marginBottom: 10
-                }}
-              >
-                About me
-              </Text>
-              <TextInput
-                multiline
-                value={about}
-                onChangeText={setAbout}
-                placeholder='About me'
-                onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-                placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
-                style={{
-                  backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
-                  paddingHorizontal: 10,
-                  borderRadius: 12,
-                  height: 45,
-                  fontFamily: 'text',
-                  marginBottom: 20,
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark
-                }}
-              />
-            </View>
-          }
-
-          {
-            userProfile &&
             <TouchableOpacity
               onPress={() => navigation.navigate('Passion')}
               style={{
                 minHeight: 45,
-                marginTop: 20
+                marginTop: 10
               }}
             >
               <Text
                 style={{
-                  fontFamily: 'text',
+                  fontFamily: 'boldText',
                   color: color.red
                 }}
               >

@@ -64,7 +64,7 @@ const Notifications = () => {
                 paddingHorizontal: 10,
                 paddingVertical: 10,
                 borderRadius: 12,
-                backgroundColor: notification?.seen == false ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.lightText : color.dark) : color.transparent
+                backgroundColor: notification?.seen == false ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : color.transparent
               }}
             >
               <View
