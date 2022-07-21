@@ -189,8 +189,7 @@ const PreviewMessageImage = () => {
             overflow: 'hidden',
             position: 'relative',
             marginHorizontal: 10,
-            borderRadius: 12,
-            marginBottom: 15
+            borderRadius: 12
           }}
         >
           <TextInput

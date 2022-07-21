@@ -62,9 +62,9 @@ const RecieverMessage = ({ messages, matchDetails }) => {
   }, [sound])
 
   return (
-    <View style={{ flexDirection: 'row', marginBottom: 20 }}>
+    <View style={{ flexDirection: 'row', marginBottom: 10 }}>
       <Image
-        style={{ width: 30, height: 30, borderRadius: 50 }}
+        style={{ width: 20, height: 20, borderRadius: 50 }}
         source={{ uri: messages?.photoURL }}
       />
       <View
@@ -89,7 +89,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 messages?.reply ?
                   <View
                     style={{
-                      backgroundColor: messages?.message ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
+                      backgroundColor: messages?.message ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
                       padding: messages?.reply ? 5 : 10,
                       borderTopRightRadius: 12,
                       borderBottomRightRadius: 12,
@@ -173,7 +173,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                   </View> :
                   <View
                     style={{
-                      backgroundColor: messages?.message ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
+                      backgroundColor: messages?.message ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
                       paddingVertical: 8,
                       paddingHorizontal: 8,
                       borderTopLeftRadius: 0,
@@ -212,7 +212,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             <View
               style={{
                 position: 'relative',
-                backgroundColor: messages?.mediaType == 'image' ? (userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.black : color.dark) : color.transparent,
+                backgroundColor: messages?.mediaType == 'image' ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
                 borderRadius: 20,
                 overflow: 'hidden'
               }}

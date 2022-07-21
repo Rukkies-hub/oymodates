@@ -444,8 +444,7 @@ const Message = () => {
               marginHorizontal: 10,
               borderRadius: 12,
               borderTopLeftRadius: messageReply ? 0 : 12,
-              borderTopRightRadius: messageReply ? 0 : 12,
-              marginBottom: 15
+              borderTopRightRadius: messageReply ? 0 : 12
             }}
           >
             {

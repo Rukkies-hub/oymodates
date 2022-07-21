@@ -127,7 +127,7 @@ const ViewReel = (props) => {
               fontSize: 16
             }}
           >
-            {reel?.user?.username}
+            @{reel?.user?.username}
           </Text>
           <Text
             style={{

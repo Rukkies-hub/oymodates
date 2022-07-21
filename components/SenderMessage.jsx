@@ -63,7 +63,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
   }, [sound])
 
   return (
-    <View style={{ flexDirection: 'row-reverse', marginBottom: 20 }}>
+    <View style={{ flexDirection: 'row-reverse', marginBottom: 10 }}>
       <View
         style={{
           alignSelf: 'flex-end',
