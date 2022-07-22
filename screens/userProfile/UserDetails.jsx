@@ -167,8 +167,8 @@ const UserDetails = ({ userProfile, user }) => {
                   alignItems: 'center'
                 }}
               >
-                  <Text
-                    numberOfLines={1}
+                <Text
+                  numberOfLines={1}
                   style={{
                     color: userProfile?.theme == 'light' ? color.dark : color.white,
                     fontFamily: 'boldText',

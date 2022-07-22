@@ -180,7 +180,6 @@ const ProfileDetails = ({ userProfile, user }) => {
             }}
           >
             <Text
-              numberOfLines={2}
               style={{
                 fontFamily: 'text',
                 fontSize: 16,

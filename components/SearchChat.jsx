@@ -5,9 +5,28 @@ import color from '../style/color'
 
 import { Entypo } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
+import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 
 const SearchChat = () => {
-  const { userProfile } = useAuth()
+  const { user, userProfile, search, setSearch, matchesFilter, matches, setMatches, setMatchesFilter } = useAuth()
+
+  const searchFilter = text => {
+    if (text) {
+      const newData = matches.filter(item => {
+        const itemData = getMatchedUserInfo(item?.users, user?.uid)?.username ?
+          getMatchedUserInfo(item?.users, user?.uid)?.username?.toUpperCase() :
+          ''.toUpperCase()
+        
+        const textData = text.toUpperCase()
+        return itemData.indexOf(textData) > -1
+      })
+      setMatchesFilter(newData)
+      setSearch(text)
+    } else {
+      setMatchesFilter(matches)
+      setSearch(text)
+    }
+  }
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -31,7 +50,9 @@ const SearchChat = () => {
     >
       <Entypo name="magnifying-glass" size={24} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
       <TextInput
+        value={search}
         placeholder='Search'
+        onChangeText={text => searchFilter(text)}
         placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.lightText}
         style={{
           flex: 1,

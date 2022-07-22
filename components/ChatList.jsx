@@ -13,21 +13,43 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import { Feather } from '@expo/vector-icons'
 
 const ChatList = () => {
-  const { user, userProfile } = useAuth()
-  const [matches, setMatches] = useState([])
+  const {
+    user,
+    userProfile,
+    matches,
+    setMatches,
+    matchesFilter,
+    setMatchesFilter
+  } = useAuth()
+
+  useEffect(() => {
+    return () => {
+      fetchMatches()
+    }
+  }, [])
 
   useLayoutEffect(() =>
-    (() => {
-      onSnapshot(query(collection(db, 'matches'),
-        where('usersMatched', 'array-contains', user?.uid)
-      ), snapshot => setMatches(
-        snapshot?.docs?.map(doc => ({
-          id: doc?.id,
-          ...doc?.data()
-        }))
-      ))
-    })()
+    fetchMatches()
     , [user, db])
+
+  const fetchMatches = () => {
+    onSnapshot(query(collection(db, 'matches'), where('usersMatched', 'array-contains', user?.uid)),
+      snapshot => {
+        setMatches(
+          snapshot?.docs?.map(doc => ({
+            id: doc?.id,
+            ...doc?.data()
+          }))
+        )
+        setMatchesFilter(
+          snapshot?.docs?.map(doc => ({
+            id: doc?.id,
+            ...doc?.data()
+          }))
+        )
+      }
+    )
+  }
 
   const onRowDidOpen = rowKey => {
     console.log('This row opened', rowKey)
@@ -69,7 +91,7 @@ const ChatList = () => {
   return (
     matches?.length > 0 ? (
       <SwipeListView
-        data={matches}
+        data={matchesFilter}
         keyExtractor={item => item?.id}
         style={{
           flex: 1,

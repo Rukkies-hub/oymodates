@@ -265,7 +265,7 @@ const Message = () => {
         showTitle
         showMatchAvatar
         matchDetails={matchDetails}
-        title={getMatchedUserInfo(matchDetails?.users, user?.uid).username}
+        title={getMatchedUserInfo(matchDetails?.users, user?.uid)?.username}
         matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid)?.photoURL}
         // showChatMenu
         backgroundColor={color.transparent}
