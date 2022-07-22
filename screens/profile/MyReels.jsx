@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { View, Text, Pressable, Image, FlatList, ActivityIndicator } from 'react-native'
 
 import useAuth from '../../hooks/useAuth'
@@ -17,7 +17,7 @@ const MyReels = () => {
   const [reels, setReels] = useState([])
   const [reelsLimit, setLimit] = useState(4)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     onSnapshot(query(collection(db, 'reels'),
       where('user.id', '==', user?.uid), limit(reelsLimit)),
       snapshot => setReels(

@@ -9,7 +9,7 @@ import useAuth from '../hooks/useAuth'
 
 const { width } = Dimensions.get('window')
 
-export const PostSingle = forwardRef(({ item }, parentRef) => {
+export const ReelsSingle = forwardRef(({ item }, parentRef) => {
   const { userProfile } = useAuth()
   const ref = useRef(null)
 
@@ -93,4 +93,4 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
   )
 })
 
-export default PostSingle
+export default ReelsSingle

@@ -5,7 +5,7 @@ import { arrayRemove, arrayUnion, collection, doc, getDocs, limit, onSnapshot, q
 import { db } from '../hooks/firebase'
 
 import color from '../style/color'
-import PostSingle from '../components/PostSingle'
+import ReelsSingle from '../components/ReelsSingle'
 
 const { width, height } = Dimensions.get('window')
 
@@ -85,7 +85,7 @@ const Reels = () => {
           overflow: 'hidden'
         }}
       >
-        <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item?.id] = PostSingleRef)} />
+        <ReelsSingle item={item} ref={PostSingleRef => (mediaRefs.current[item?.id] = PostSingleRef)} />
 
         <LinearGradient
           colors={['transparent', color.labelColor]}

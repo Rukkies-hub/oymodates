@@ -111,15 +111,17 @@ const Message = () => {
     })()
     , [])
 
-  useLayoutEffect(() => {
-    (async () => {
-      const snapshot = await getDocs(query(collection(db, 'matches', matchDetails?.id, 'messages'), where('seen', '==', false)))
-      snapshot.forEach(async allDoc => {
-        await updateDoc(doc(db, 'matches', matchDetails?.id, 'messages', allDoc?.id), {
-          seen: true
-        })
+  const updateSeen = async () => {
+    const snapshot = await getDocs(query(collection(db, 'matches', matchDetails?.id, 'messages'), where('seen', '==', false)))
+    snapshot.forEach(async allDoc => {
+      await updateDoc(doc(db, 'matches', matchDetails?.id, 'messages', allDoc?.id), {
+        seen: true
       })
-    })()
+    })
+  }
+
+  useLayoutEffect(() => {
+    updateSeen()
   }, [matchDetails])
 
   const pickImage = async () => {
@@ -160,11 +162,12 @@ const Message = () => {
         reply: messageReply ? messageReply : null,
         seen: false
       })
+      setInput('')
+      setMessageReply(null)
+      updateSeen()
       await updateDoc(doc(db, 'matches', matchDetails?.id), {
         timestamp: serverTimestamp()
       })
-      setInput('')
-      setMessageReply(null)
     }
   }
 

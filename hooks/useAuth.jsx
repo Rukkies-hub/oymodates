@@ -179,19 +179,6 @@ export const AuthProvider = ({ children }) => {
     })()
   }, [])
 
-  useEffect(() =>
-    (() => {
-      onSnapshot(collection(db, 'posts'), limit(postLimit), doc => {
-        setPosts(
-          doc?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        )
-      })
-    })()
-    , [])
-
   const getPendingSwipes = (user) => {
     onSnapshot(collection(db, 'users', user?.uid, 'pendingSwipes'),
       snapshot =>
@@ -345,7 +332,6 @@ export const AuthProvider = ({ children }) => {
         facebookLoadng,
         setFacebookLoading,
         posts,
-        setPosts,
         postLimit,
         setPostLimit,
         reels,

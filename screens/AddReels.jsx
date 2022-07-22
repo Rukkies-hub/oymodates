@@ -100,12 +100,7 @@ const AddReels = () => {
 
   const generateThumbnail = async (source) => {
     try {
-      const { uri } = await VideoThumbnails.getThumbnailAsync(
-        source,
-        {
-          time: 1000,
-        }
-      )
+      const { uri } = await VideoThumbnails.getThumbnailAsync(source, { time: 3000 })
       return uri
     } catch (e) {
       console.warn(e)
@@ -113,9 +108,7 @@ const AddReels = () => {
   }
 
   if (!hasCameraPermission || !hasAudioPermission || !hasGalleryPermission) {
-    return (
-      <View></View>
-    )
+    return <View />
   }
 
   return (
