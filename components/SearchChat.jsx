@@ -8,7 +8,7 @@ import { useFonts } from 'expo-font'
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 
 const SearchChat = () => {
-  const { user, userProfile, search, setSearch, matchesFilter, matches, setMatches, setMatchesFilter } = useAuth()
+  const { user, userProfile, search, setSearch, matches, setMatchesFilter } = useAuth()
 
   const searchFilter = text => {
     if (text) {
@@ -16,7 +16,7 @@ const SearchChat = () => {
         const itemData = getMatchedUserInfo(item?.users, user?.uid)?.username ?
           getMatchedUserInfo(item?.users, user?.uid)?.username?.toUpperCase() :
           ''.toUpperCase()
-        
+
         const textData = text.toUpperCase()
         return itemData.indexOf(textData) > -1
       })
@@ -48,7 +48,7 @@ const SearchChat = () => {
         paddingHorizontal: 10
       }}
     >
-      <Entypo name="magnifying-glass" size={24} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
+      <Entypo name='magnifying-glass' size={24} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
       <TextInput
         value={search}
         placeholder='Search'
