@@ -7,7 +7,7 @@ import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
 import { AntDesign, MaterialCommunityIcons, Fontisto } from '@expo/vector-icons'
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 
@@ -35,6 +35,15 @@ const Notifications = () => {
     }
   }
 
+  const markAllAsRead = async () => {
+    const snapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '!=', false)))
+    snapshot?.forEach(async allDoc => {
+      await updateDoc(doc(db, 'users', user?.uid, 'notifications', allDoc?.id), {
+        seen: true
+      })
+    })
+  }
+
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
@@ -50,7 +59,7 @@ const Notifications = () => {
     >
       <Header showBack showTitle title='Notifications' showAratar showNotification />
 
-      <View
+      {/* <View
         style={{
           flexDirection: 'row',
           justifyContent: 'flex-end',
@@ -59,6 +68,7 @@ const Notifications = () => {
         }}
       >
         <TouchableOpacity
+          onPress={markAllAsRead}
           style={{
             backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
             height: 35,
@@ -77,12 +87,13 @@ const Notifications = () => {
             Mark all as read
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <FlatList
         data={notifications}
         keyExtractor={item => Math.random(item?.id)}
         style={{
           flex: 1,
+          marginTop: 20,
           paddingHorizontal: 10
         }}
         renderItem={({ item: notification }) => {
