@@ -29,7 +29,7 @@ import { useFonts } from 'expo-font'
 
 import color from '../style/color'
 
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore'
+import { collection, getDocs, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 
 import { db } from '../hooks/firebase'
 
@@ -63,27 +63,31 @@ const Header = ({
 
   useEffect(() => {
     (async () => {
-      const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')))
-      setNotificatios(
-        querySnapshot?.docs?.map(doc => ({
-          id: doc?.id,
-          notification: doc?.id,
-          ...doc?.data()
-        }))
-      )
+      onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')),
+        snapshot => {
+          setNotificatios(
+            snapshot?.docs?.map(doc => ({
+              id: doc?.id,
+              notification: doc?.id,
+              ...doc?.data()
+            }))
+          )
+        })
     })()
   }, [])
 
   useEffect(() => {
     (async () => {
-      const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)))
-      setNotificationCount(
-        querySnapshot?.docs?.map(doc => ({
-          id: doc?.id,
-          notification: doc?.id,
-          ...doc?.data()
-        }))
-      )
+      onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)),
+        snapshot => {
+          setNotificationCount(
+            snapshot?.docs?.map(doc => ({
+              id: doc?.id,
+              notification: doc?.id,
+              ...doc?.data()
+            }))
+          )
+        })
     })()
   }, [])
 

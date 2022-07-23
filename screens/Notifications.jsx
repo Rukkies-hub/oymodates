@@ -19,14 +19,20 @@ const Notifications = () => {
   const navigation = useNavigation()
   const { userProfile, notifications, user } = useAuth()
 
-  const [refreshing, setRefreshing] = useState(false)
-
   const viewNotification = async notification => {
-    if (!notification?.seen)
+    if (!notification?.seen) {
       await updateDoc(doc(db, 'users', user?.uid, 'notifications', notification?.notification), {
         seen: true
-      }).then(() => navigation.navigate(notification?.activity == 'likes' ? 'ViewPost' : 'AddComment', { post: notification?.post }))
-    else navigation.navigate(notification?.activity == 'likes' ? 'ViewPost' : notification?.activity == 'comment likes' ? 'ViewPosts' : 'AddComment', { post: notification?.post })
+      }).then(() => {
+        if (notification?.activity == 'likes') navigation.navigate('ViewReel', { reel: notification?.reel })
+        else if (notification?.activity == 'comment') navigation.navigate('ReelsComment', { item: notification?.reel })
+        else if (notification?.activity == 'reply') navigation.navigate('ReelsComment', { item: notification?.reel })
+      })
+    } else {
+      if (notification?.activity == 'likes') navigation.navigate('ViewReel', { reel: notification?.reel })
+      else if (notification?.activity == 'comment') navigation.navigate('ReelsComment', { item: notification?.reel })
+      else if (notification?.activity == 'reply') navigation.navigate('ReelsComment', { item: notification?.reel })
+    }
   }
 
   const [loaded] = useFonts({
@@ -44,13 +50,40 @@ const Notifications = () => {
     >
       <Header showBack showTitle title='Notifications' showAratar showNotification />
 
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          marginVertical: 20
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            height: 35,
+            paddingHorizontal: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 8
+          }}
+        >
+          <Text
+            style={{
+              color: userProfile?.theme == 'dark' ? color.white : color.dark,
+              fontFamily: 'text'
+            }}
+          >
+            Mark all as read
+          </Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={notifications}
         keyExtractor={item => Math.random(item?.id)}
         style={{
           flex: 1,
-          paddingHorizontal: 10,
-          marginTop: 20
+          paddingHorizontal: 10
         }}
         renderItem={({ item: notification }) => {
           return (

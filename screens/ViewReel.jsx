@@ -11,7 +11,7 @@ import LikeReels from '../components/LikeReels'
 const { width, height } = Dimensions.get('window')
 
 import { FontAwesome, Entypo } from '@expo/vector-icons'
-import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 
 import Bar from '../components/StatusBar'
 
@@ -20,8 +20,8 @@ import * as NavigationBar from 'expo-navigation-bar'
 const ViewReel = (props) => {
   const navigation = useNavigation()
   const focus = useIsFocused()
+  const { reel } = useRoute().params
   const { userProfile, setReelsProps } = useAuth()
-  const reel = props?.route?.params?.reel
 
   const ref = useRef(null)
 
@@ -37,7 +37,7 @@ const ViewReel = (props) => {
       return () => unload()
     })
     , [navigation])
-  
+
   const disabled = () => {
     console.log('not logged in')
   }
