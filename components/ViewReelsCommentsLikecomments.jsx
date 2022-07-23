@@ -9,7 +9,7 @@ import color from '../style/color'
 import { appToken } from '@env'
 import axios from 'axios'
 
-const ViewReelsCommentsLikecomments = ({ comment, textColor }) => {
+const ViewReelsCommentsLikecomments = ({ comment }) => {
   const { user, userProfile } = useAuth()
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
@@ -70,7 +70,7 @@ const ViewReelsCommentsLikecomments = ({ comment, textColor }) => {
           subID: comment?.reel?.user?.id,
           appId: 3167,
           appToken,
-          title: '👍',
+          title: '❤️❤️❤️❤️',
           message: `@${userProfile?.username} likes to your comment (${comment?.comment.slice(0, 100)})`
         })
       })

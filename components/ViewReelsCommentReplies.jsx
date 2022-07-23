@@ -129,8 +129,8 @@ const ViewReelsCommentReplies = ({ comment, textColor, showAll, screen }) => {
                   alignItems: 'center',
                 }}
               >
-                <LikeReelsReply textColor={route?.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} screen={screen} />
-                <ReelsCommentReplyReply textColor={route?.name == 'AddComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} comment={reply} />
+                <LikeReelsReply reply={reply} screen={screen} />
+                <ReelsCommentReplyReply comment={reply} />
               </View>
             </View>
           </View>

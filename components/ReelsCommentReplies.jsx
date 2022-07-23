@@ -78,7 +78,7 @@ const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, bac
               >
                 <Text
                   style={{
-                    color: textColor || color.white,
+                    color: color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -101,7 +101,7 @@ const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, bac
                   >
                     <Text
                       style={{
-                        color: textColor || color.white,
+                        color: color.white,
                         fontFamily: 'boldText',
                         marginRight: 5
                       }}
@@ -110,7 +110,7 @@ const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, bac
                     </Text>
                     <Text
                       style={{
-                        color: textColor || color.white
+                        color: color.white
                       }}
                     >
                       {reply?.reply}
@@ -128,8 +128,8 @@ const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, bac
                   alignItems: 'center',
                 }}
               >
-                <LikeReelsReply textColor={route.name == 'ReelsComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} />
-                <ReelsCommentReplyReply textColor={route.name == 'ReelsComment' ? color.white : userProfile?.theme == 'dark' ? color.white : color.dark} reply={reply} />
+                <LikeReelsReply reply={reply} />
+                <ReelsCommentReplyReply reply={reply} />
               </View>
 
               {
@@ -149,10 +149,10 @@ const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, bac
                       fontFamily: 'text',
                       marginLeft: 5,
                       fontSize: 14,
-                      color: textColor || color.white
+                      color: color.white
                     }}
                   >
-                    {1 + replies?.length} Replies
+                    {replies?.length} {replies?.length > 1 ? 'Replies' : 'Reply'}
                   </Text>
                 </TouchableOpacity>
               }

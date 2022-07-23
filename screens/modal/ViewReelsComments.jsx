@@ -10,13 +10,13 @@ import Bar from '../../components/StatusBar'
 import ViewReelsCommentsLikecomments from '../../components/ViewReelsCommentsLikecomments'
 import PostCommentReply from '../../components/PostCommentReply'
 import ViewReelsCommentReplies from '../../components/ViewReelsCommentReplies'
-import Header from '../../components/Header'
 
 import { FontAwesome5, Entypo } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
 
 import { appToken } from '@env'
 import axios from 'axios'
+import { BlurView } from 'expo-blur'
 
 const ViewReelsComments = () => {
   const {
@@ -204,178 +204,234 @@ const ViewReelsComments = () => {
   return (
     <ImageBackground
       source={{ uri: background }}
-      blurRadius={50}
+      blurRadius={10}
       style={{ flex: 1 }}
     >
-      <Bar color='light' />
+      <BlurView
+        tint='dark'
+        intensity={100}
+        style={{ flex: 1 }}
+      >
+        <Bar color='light' />
 
-      <Header showBack showTitle backgroundColor={color.transparent} title={`${commentsCount} Comments`} />
-
-      <ScrollView style={{ flex: 1 }}>
         <View
           style={{
+            marginTop: 30,
+            height: 40,
+            marginBottom: 10,
             flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            marginVertical: 10
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginHorizontal: 10
           }}
         >
-          <Image
-            source={{ uri: comment?.user?.photoURL }}
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
             style={{
               width: 30,
               height: 30,
-              borderRadius: 50
-            }}
-          />
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'flex-start'
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
-            <View
+            <Entypo name='chevron-left' size={24} color={color.white} />
+          </TouchableOpacity>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center'
+            }}
+          >
+            <Text
               style={{
-                marginLeft: 10,
-                backgroundColor: color.lightBorderColor,
-                borderRadius: 12,
-                paddingHorizontal: 10,
-                paddingVertical: 4,
+                fontFamily: 'text',
+                fontSize: 16,
+                color: color.white
               }}
             >
-              <Text
-                style={{
-                  color: color.white,
-                  fontFamily: 'text',
-                  fontSize: 13
-                }}
-              >
-                @{comment?.user?.username}
-              </Text>
-              <Text
-                style={{
-                  color: color.white
-                }}
-              >
-                {comment?.comment}
-              </Text>
-            </View>
+              {commentsCount || '0'}
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'text',
+                fontSize: 16,
+                color: color.white,
+                marginLeft: 10
+              }}
+            >
+              {commentsCount == 1 ? 'Comment' : 'Comments'}
+            </Text>
+          </View>
+        </View>
 
+        <ScrollView style={{ flex: 1 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              marginVertical: 10
+            }}
+          >
+            <Image
+              source={{ uri: comment?.user?.photoURL }}
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: 50
+              }}
+            />
             <View
               style={{
                 width: '100%',
-                paddingHorizontal: 10,
-                marginTop: 5
+                alignItems: 'flex-start'
               }}
             >
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  marginTop: 4
+                  marginLeft: 10,
+                  backgroundColor: color.lightBorderColor,
+                  borderRadius: 12,
+                  paddingHorizontal: 10,
+                  paddingVertical: 4,
                 }}
               >
-                <ViewReelsCommentsLikecomments textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
-
-                <PostCommentReply textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
+                <Text
+                  style={{
+                    color: color.white,
+                    fontFamily: 'text',
+                    fontSize: 13
+                  }}
+                >
+                  @{comment?.user?.username}
+                </Text>
+                <Text
+                  style={{
+                    color: color.white
+                  }}
+                >
+                  {comment?.comment}
+                </Text>
               </View>
 
-              <ViewReelsCommentReplies showAll={true} textColor={userProfile?.theme == 'dark' ? color.white : color.dark} comment={comment} />
+              <View
+                style={{
+                  width: '100%',
+                  paddingHorizontal: 10,
+                  marginTop: 5
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    marginTop: 4
+                  }}
+                >
+                  <ViewReelsCommentsLikecomments comment={comment} />
+
+                  <PostCommentReply comment={comment} />
+                </View>
+
+                <ViewReelsCommentReplies showAll={true} comment={comment} />
+              </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
 
-      <View
-        style={{
-          paddingHorizontal: 10,
-          marginVertical: 10,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
-        <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '🤣') : reelsCommentType == 'reply' ? setReply(reply + '🤣') : setReply(reply + '🤣')}>
-          <Text style={{ fontSize: 30 }}>🤣</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '😭') : reelsCommentType == 'reply' ? setReply(reply + '😭') : setReply(reply + '😭')}>
-          <Text style={{ fontSize: 30 }}>😭</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '🥺') : reelsCommentType == 'reply' ? setReply(reply + '🥺') : setReply(reply + '🥺')}>
-          <Text style={{ fontSize: 30 }}>🥺</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '😏') : reelsCommentType == 'reply' ? setReply(reply + '😏') : setReply(reply + '😏')}>
-          <Text style={{ fontSize: 30 }}>😏</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '🤨') : reelsCommentType == 'reply' ? setReply(reply + '🤨') : setReply(reply + '🤨')}>
-          <Text style={{ fontSize: 30 }}>🤨</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '🙄') : reelsCommentType == 'reply' ? setReply(reply + '🙄') : setReply(reply + '🙄')}>
-          <Text style={{ fontSize: 30 }}>🙄</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '😍') : reelsCommentType == 'reply' ? setReply(reply + '😍') : setReply(reply + '😍')}>
-          <Text style={{ fontSize: 30 }}>😍</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '❤️') : reelsCommentType == 'reply' ? setReply(reply + '❤️') : setReply(reply + '❤️')}>
-          <Text style={{ fontSize: 30 }}>❤️</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          minHeight: 50,
-          overflow: 'hidden',
-          position: 'relative',
-          marginHorizontal: 10,
-          marginBottom: 10,
-          borderRadius: 12,
-          overflow: 'hidden'
-        }}
-      >
-        <TextInput
-          multiline
-          value={reelsCommentType == 'comment' ? _comment : reelsCommentType == 'reply' ? reply : reply}
-          onChangeText={reelsCommentType == 'comment' ? _setComment : reelsCommentType == 'reply' ? setReply : setReply}
-          onSubmitEditing={sendComment}
-          placeholder={reelsCommentType == 'comment' ? 'Write a comment...' : reelsCommentType == 'reply' ? `Reply @${comment?.user?.username}` : `Reply @${comment?.user?.username}`}
-          placeholderTextColor={color.lightText}
-          onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+        <View
           style={{
-            fontSize: 18,
-            flex: 1,
-            width: '100%',
-            height,
-            minHeight: 50,
-            maxHeight: 150,
-            fontFamily: 'text',
-            paddingRight: 40 + 50,
             paddingHorizontal: 10,
-            paddingVertical: 5,
-            backgroundColor: color.white,
+            marginVertical: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
           }}
-        />
+        >
+          <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '🤣') : reelsCommentType == 'reply' ? setReply(reply + '🤣') : setReply(reply + '🤣')}>
+            <Text style={{ fontSize: 30 }}>🤣</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '😭') : reelsCommentType == 'reply' ? setReply(reply + '😭') : setReply(reply + '😭')}>
+            <Text style={{ fontSize: 30 }}>😭</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '🥺') : reelsCommentType == 'reply' ? setReply(reply + '🥺') : setReply(reply + '🥺')}>
+            <Text style={{ fontSize: 30 }}>🥺</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '😏') : reelsCommentType == 'reply' ? setReply(reply + '😏') : setReply(reply + '😏')}>
+            <Text style={{ fontSize: 30 }}>😏</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '🤨') : reelsCommentType == 'reply' ? setReply(reply + '🤨') : setReply(reply + '🤨')}>
+            <Text style={{ fontSize: 30 }}>🤨</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '🙄') : reelsCommentType == 'reply' ? setReply(reply + '🙄') : setReply(reply + '🙄')}>
+            <Text style={{ fontSize: 30 }}>🙄</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '😍') : reelsCommentType == 'reply' ? setReply(reply + '😍') : setReply(reply + '😍')}>
+            <Text style={{ fontSize: 30 }}>😍</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => reelsCommentType == 'comment' ? _setComment(_comment + '❤️') : reelsCommentType == 'reply' ? setReply(reply + '❤️') : setReply(reply + '❤️')}>
+            <Text style={{ fontSize: 30 }}>❤️</Text>
+          </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity
-          onPress={reelsCommentType == 'comment' ? sendComment : reelsCommentType == 'reply' ? sendCommentReply : sendCommentReplyReply}
+        <View
           style={{
-            width: 50,
-            height: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            right: 0,
-            bottom: 0
-          }}>
-          <FontAwesome5
-            name='paper-plane'
-            color={color.lightText}
-            size={20}
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            minHeight: 50,
+            overflow: 'hidden',
+            position: 'relative',
+            marginHorizontal: 10,
+            marginBottom: 10,
+            borderRadius: 12,
+            overflow: 'hidden'
+          }}
+        >
+          <TextInput
+            multiline
+            value={reelsCommentType == 'comment' ? _comment : reelsCommentType == 'reply' ? reply : reply}
+            onChangeText={reelsCommentType == 'comment' ? _setComment : reelsCommentType == 'reply' ? setReply : setReply}
+            onSubmitEditing={sendComment}
+            placeholder={reelsCommentType == 'comment' ? 'Write a comment...' : reelsCommentType == 'reply' ? `Reply @${comment?.user?.username}` : `Reply @${comment?.user?.username}`}
+            placeholderTextColor={color.lightText}
+            onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+            style={{
+              fontSize: 18,
+              flex: 1,
+              width: '100%',
+              height,
+              minHeight: 50,
+              maxHeight: 150,
+              fontFamily: 'text',
+              paddingRight: 40 + 50,
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+              backgroundColor: color.white,
+            }}
           />
-        </TouchableOpacity>
-      </View>
+
+          <TouchableOpacity
+            onPress={reelsCommentType == 'comment' ? sendComment : reelsCommentType == 'reply' ? sendCommentReply : sendCommentReplyReply}
+            style={{
+              width: 50,
+              height: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'absolute',
+              right: 0,
+              bottom: 0
+            }}>
+            <FontAwesome5
+              name='paper-plane'
+              color={color.lightText}
+              size={20}
+            />
+          </TouchableOpacity>
+        </View>
+      </BlurView>
     </ImageBackground>
   )
 }

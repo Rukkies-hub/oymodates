@@ -7,10 +7,9 @@ import color from '../style/color'
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, increment, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import useAuth from '../hooks/useAuth'
 import { db } from '../hooks/firebase'
+import axios from 'axios'
 
-const LikeReels = (props) => {
-  const reel = props?.reel
-
+const LikeReels = ({ reel }) => {
   const { auth, user, userProfile } = useAuth()
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reel?.likesCount })
@@ -65,6 +64,14 @@ const LikeReels = (props) => {
             photoURL: userProfile?.photoURL
           },
           timestamp: serverTimestamp()
+        }).then(() => {
+          axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+            subID: reel?.user?.id,
+            appId: 3167,
+            appToken,
+            title: '👍',
+            message: `@${userProfile?.username} likes to your comment (${reel?.description?.slice(0, 100)})`
+          })
         })
     }
   })
