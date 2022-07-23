@@ -18,7 +18,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 const { width } = Dimensions.get('window')
 
 const ViewReelsCommentReplies = ({ comment, screen }) => {
-  const { userProfile, showExpand, setShowExpand } = useAuth()
+  const { user, userProfile, showExpand, setShowExpand } = useAuth()
   const navigation = useNavigation()
   const route = useRoute()
 
@@ -64,14 +64,22 @@ const ViewReelsCommentReplies = ({ comment, screen }) => {
               marginTop: 10
             }}
           >
-            <Image
-              source={{ uri: reply?.user?.photoURL }}
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 50,
+            <TouchableOpacity
+              onPress={() => {
+                comment?.user?.id != user?.uid ?
+                  navigation.navigate('UserProfile', { user: reply?.user }) :
+                  navigation.navigate('Profile')
               }}
-            />
+            >
+              <Image
+                source={{ uri: reply?.user?.photoURL }}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 50,
+                }}
+              />
+            </TouchableOpacity>
             <View>
               <View
                 style={{

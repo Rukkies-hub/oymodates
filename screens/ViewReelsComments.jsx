@@ -20,6 +20,7 @@ import { BlurView } from 'expo-blur'
 
 const ViewReelsComments = () => {
   const {
+    user,
     userProfile,
     showExpand,
     setShowExpand,
@@ -196,8 +197,7 @@ const ViewReelsComments = () => {
             marginBottom: 10,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center',
-            marginHorizontal: 10
+            alignItems: 'center'
           }}
         >
           <TouchableOpacity
@@ -250,14 +250,22 @@ const ViewReelsComments = () => {
               marginVertical: 10
             }}
           >
-            <Image
-              source={{ uri: comment?.user?.photoURL }}
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 50
+            <TouchableOpacity
+              onPress={() => {
+                comment?.user?.id != user?.uid ?
+                  navigation.navigate('UserProfile', { user: comment?.user }) :
+                  navigation.navigate('Profile')
               }}
-            />
+            >
+              <Image
+                source={{ uri: comment?.user?.photoURL }}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 50
+                }}
+              />
+            </TouchableOpacity>
             <View
               style={{
                 width: '100%',

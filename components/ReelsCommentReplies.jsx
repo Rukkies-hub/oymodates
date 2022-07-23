@@ -12,7 +12,7 @@ import ReelsCommentReplyReply from './ReelsCommentReplyReply'
 import { Octicons } from '@expo/vector-icons'
 
 const ReelsCommentReplies = ({ comment, textColor, showAll, background }) => {
-  const { userProfile, showExpand, setShowExpand } = useAuth()
+  const { user, userProfile, showExpand, setShowExpand } = useAuth()
   const [replies, setReplies] = useState([])
 
   const navigation = useNavigation()
@@ -58,14 +58,22 @@ const ReelsCommentReplies = ({ comment, textColor, showAll, background }) => {
               marginTop: 10
             }}
           >
-            <Image
-              source={{ uri: reply?.user?.photoURL }}
-              style={{
-                width: 25,
-                height: 25,
-                borderRadius: 50,
+            <TouchableOpacity
+              onPress={() => {
+                comment?.user?.id != user?.uid ?
+                  navigation.navigate('UserProfile', { user: reply?.user }) :
+                  navigation.navigate('Profile')
               }}
-            />
+            >
+              <Image
+                source={{ uri: reply?.user?.photoURL }}
+                style={{
+                  width: 25,
+                  height: 25,
+                  borderRadius: 50,
+                }}
+              />
+            </TouchableOpacity>
             <View>
               <View
                 style={{
