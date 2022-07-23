@@ -247,7 +247,8 @@ const ViewReelsComments = () => {
               flexDirection: 'row',
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
-              marginVertical: 10
+              marginVertical: 10,
+              paddingHorizontal: 10
             }}
           >
             <TouchableOpacity
