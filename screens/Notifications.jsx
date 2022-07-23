@@ -6,10 +6,12 @@ import Header from '../components/Header'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-import { AntDesign, MaterialCommunityIcons, Fontisto } from '@expo/vector-icons'
-import { collection, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import { AntDesign, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons'
+import { collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
+
+import { SwipeListView } from 'react-native-swipe-list-view'
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -17,7 +19,7 @@ const wait = (timeout) => {
 
 const Notifications = () => {
   const navigation = useNavigation()
-  const { userProfile, notifications, user } = useAuth()
+  const { userProfile, notifications, user, setNotificationCount } = useAuth()
 
   const viewNotification = async notification => {
     if (!notification?.seen) {
@@ -36,13 +38,55 @@ const Notifications = () => {
   }
 
   const markAllAsRead = async () => {
-    const snapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '!=', false)))
+    const snapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)))
     snapshot?.forEach(async allDoc => {
       await updateDoc(doc(db, 'users', user?.uid, 'notifications', allDoc?.id), {
         seen: true
       })
     })
   }
+
+  const onRowDidOpen = rowKey => {
+    console.log('This row opened', rowKey)
+  }
+
+  const deleteNotification = async item => {
+    await deleteDoc(doc(db, 'users', user?.uid, 'notifications', item?.id))
+  }
+
+  const renderHiddenItem = ({ item }) => (
+    <View
+      style={{
+        alignItems: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingLeft: 15,
+      }}
+    >
+      <TouchableOpacity
+        onPress={() => deleteNotification(item)}
+        style={
+          [{
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            top: 10,
+            bottom: 0,
+            width: 45,
+            height: 45,
+            borderRadius: 12,
+          }, {
+            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            right: 20,
+          }]
+        }
+      >
+        <Feather name="trash-2" size={20} color={color.red} />
+      </TouchableOpacity>
+    </View >
+  )
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -59,7 +103,7 @@ const Notifications = () => {
     >
       <Header showBack showTitle title='Notifications' showAratar showNotification />
 
-      {/* <View
+      <View
         style={{
           flexDirection: 'row',
           justifyContent: 'flex-end',
@@ -87,15 +131,21 @@ const Notifications = () => {
             Mark all as read
           </Text>
         </TouchableOpacity>
-      </View> */}
-      <FlatList
+      </View>
+
+      <SwipeListView
         data={notifications}
-        keyExtractor={item => Math.random(item?.id)}
+        keyExtractor={item => item?.id}
         style={{
           flex: 1,
-          marginTop: 20,
           paddingHorizontal: 10
         }}
+        rightOpenValue={-90}
+        previewRowKey={'0'}
+        previewOpenValue={-40}
+        previewOpenDelay={3000}
+        renderHiddenItem={renderHiddenItem}
+        onRowDidOpen={onRowDidOpen}
         renderItem={({ item: notification }) => {
           return (
             <TouchableOpacity
@@ -108,7 +158,7 @@ const Notifications = () => {
                 paddingHorizontal: 10,
                 paddingVertical: 10,
                 borderRadius: 12,
-                backgroundColor: notification?.seen == false ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : color.transparent
+                backgroundColor: notification?.seen == false ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : userProfile?.theme == 'dark' ? color.black : color.white
               }}
             >
               <View

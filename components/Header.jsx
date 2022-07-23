@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import {
   View,
   Text,
@@ -15,13 +15,6 @@ import {
 } from '@expo/vector-icons'
 
 import { useNavigation } from '@react-navigation/native'
-
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu'
 
 import useAuth from '../hooks/useAuth'
 
@@ -61,15 +54,24 @@ const Header = ({
 
   const [notificationCount, setNotificationCount] = useState([])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
+      // const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')))
+
+      // setNotificatios(
+      //   querySnapshot?.docs?.map(doc => ({
+      //     notification: doc?.id,
+      //     ...doc?.data(),
+      //     id: doc?.id,
+      //   }))
+      // )
       onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')),
         snapshot => {
           setNotificatios(
             snapshot?.docs?.map(doc => ({
-              id: doc?.id,
               notification: doc?.id,
-              ...doc?.data()
+              ...doc?.data(),
+              id: doc?.id,
             }))
           )
         })
@@ -222,43 +224,48 @@ const Header = ({
           }
 
           {
-            showNotification &&
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Notifications')}
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'relative',
-                marginRight: 10
-              }}
-            >
-              <SimpleLineIcons name='bell' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
-
+            userProfile &&
+            <>
               {
-                notificationCount?.length > 0 &&
-                <View
+                showNotification &&
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Notifications')}
                   style={{
-                    borderRadius: 50,
-                    backgroundColor: color.red,
-                    paddingHorizontal: 5,
-                    position: 'absolute',
-                    top: 0,
-                    right: 0
+                    width: 40,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    position: 'relative',
+                    marginRight: 10
                   }}
                 >
-                  <Text
-                    style={{
-                      color: color.white,
-                      fontSize: 10
-                    }}
-                  >
-                    {notificationCount?.length}
-                  </Text>
-                </View>
+                  <SimpleLineIcons name='bell' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+
+                  {
+                    notificationCount?.length > 0 &&
+                    <View
+                      style={{
+                        borderRadius: 50,
+                        backgroundColor: color.red,
+                        paddingHorizontal: 5,
+                        position: 'absolute',
+                        top: 0,
+                        right: 0
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: color.white,
+                          fontSize: 10
+                        }}
+                      >
+                        {notificationCount?.length}
+                      </Text>
+                    </View>
+                  }
+                </TouchableOpacity>
               }
-            </TouchableOpacity>
+            </>
           }
 
           {

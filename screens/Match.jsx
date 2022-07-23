@@ -40,13 +40,6 @@ const Match = () => {
 
   const [stackSize, setStackSize] = useState(2)
 
-
-  useLayoutEffect(() =>
-    onSnapshot(doc(db, 'users', user?.uid), snapshot => {
-      if (!snapshot?.exists()) navigation.navigate('EditProfile')
-    })
-    , [])
-
   useLayoutEffect(() => {
     (async () => {
       const passes = await getDocs(collection(db, 'users', user?.uid, 'passes'))
