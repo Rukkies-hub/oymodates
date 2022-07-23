@@ -56,15 +56,6 @@ const Header = ({
 
   useLayoutEffect(() => {
     (async () => {
-      // const querySnapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')))
-
-      // setNotificatios(
-      //   querySnapshot?.docs?.map(doc => ({
-      //     notification: doc?.id,
-      //     ...doc?.data(),
-      //     id: doc?.id,
-      //   }))
-      // )
       onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')),
         snapshot => {
           setNotificatios(
@@ -78,7 +69,7 @@ const Header = ({
     })()
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
       onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)),
         snapshot => {
