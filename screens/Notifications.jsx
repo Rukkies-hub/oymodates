@@ -51,12 +51,15 @@ const Notifications = () => {
     console.log('This row opened', rowKey)
   }
 
-  const deleteNotification = async item => {
+  const deleteNotification = async item =>
     await deleteDoc(doc(db, 'users', user?.uid, 'notifications', item?.id))
-  }
+
 
   const markAsRead = async item => {
-    await updateDoc(doc(db, 'users', user?.uid, 'notifications', item?.id), { seen: true })
+    if (item?.seen)
+      await updateDoc(doc(db, 'users', user?.uid, 'notifications', item?.id), { seen: false })
+    else
+      await updateDoc(doc(db, 'users', user?.uid, 'notifications', item?.id), { seen: true })
   }
 
   const renderHiddenItem = ({ item }) => (
@@ -88,7 +91,7 @@ const Notifications = () => {
           }]
         }
       >
-        <Ionicons name='checkmark-done' size={24} color={color.blue} />
+        <Ionicons name='checkmark-done' size={24} color={item?.seen ? (userProfile?.theme == 'dark' ? color.white : color.dark) : color.blue} />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => deleteNotification(item)}
