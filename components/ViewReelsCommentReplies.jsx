@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native'
 
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
 
@@ -15,7 +15,9 @@ import useAuth from '../hooks/useAuth'
 import ReelsCommentReplyReply from './ReelsCommentReplyReply'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
-const ViewReelsCommentReplies = ({ comment, textColor, showAll, screen }) => {
+const { width } = Dimensions.get('window')
+
+const ViewReelsCommentReplies = ({ comment, screen }) => {
   const { userProfile, showExpand, setShowExpand } = useAuth()
   const navigation = useNavigation()
   const route = useRoute()
@@ -82,7 +84,7 @@ const ViewReelsCommentReplies = ({ comment, textColor, showAll, screen }) => {
               >
                 <Text
                   style={{
-                    color: textColor || color.white,
+                    color: color.white,
                     fontFamily: 'text',
                     fontSize: 13
                   }}
@@ -97,12 +99,14 @@ const ViewReelsCommentReplies = ({ comment, textColor, showAll, screen }) => {
                   <View
                     style={{
                       flexDirection: 'row',
-                      justifyContent: 'flex-start'
+                      justifyContent: 'flex-start',
+                      flexWrap: 'wrap',
+                      maxWidth: width - 120
                     }}
                   >
                     <Text
                       style={{
-                        color: textColor || color.white,
+                        color: color.white,
                         fontFamily: 'boldText',
                         marginRight: 5
                       }}
@@ -111,7 +115,7 @@ const ViewReelsCommentReplies = ({ comment, textColor, showAll, screen }) => {
                     </Text>
                     <Text
                       style={{
-                        color: textColor || color.white
+                        color: color.white
                       }}
                     >
                       {reply?.reply}

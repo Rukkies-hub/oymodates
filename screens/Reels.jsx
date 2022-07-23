@@ -222,7 +222,7 @@ const Reels = () => {
           maxToRenderPerBatch={1}
           removeClippedSubviews
           viewabilityConfig={{
-            itemVisiblePercentThreshold: 75
+            itemVisiblePercentThreshold: 95
           }}
           renderItem={renderItem}
           pagingEnabled

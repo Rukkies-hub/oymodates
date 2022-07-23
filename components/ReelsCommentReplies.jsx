@@ -11,7 +11,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import ReelsCommentReplyReply from './ReelsCommentReplyReply'
 import { Octicons } from '@expo/vector-icons'
 
-const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, background }) => {
+const ReelsCommentReplies = ({ comment, textColor, showAll, background }) => {
   const { userProfile, showExpand, setShowExpand } = useAuth()
   const [replies, setReplies] = useState([])
 
@@ -70,7 +70,7 @@ const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, bac
               <View
                 style={{
                   marginLeft: 10,
-                  backgroundColor: backgroundColor || color.lightBorderColor,
+                  backgroundColor: color.lightBorderColor,
                   borderRadius: 12,
                   paddingHorizontal: 10,
                   paddingVertical: 4,
@@ -118,19 +118,22 @@ const ReelsCommentReplies = ({ comment, textColor, backgroundColor, showAll, bac
                   </View>
                 </View>
               </View>
-              <View
-                style={{
-                  width: '100%',
-                  paddingHorizontal: 10,
-                  marginTop: 5,
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                }}
-              >
-                <LikeReelsReply reply={reply} />
-                <ReelsCommentReplyReply reply={reply} />
-              </View>
+              {
+                route.name != 'ReelsComment' &&
+                <View
+                  style={{
+                    width: '100%',
+                    paddingHorizontal: 10,
+                    marginTop: 5,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                  }}
+                >
+                  <LikeReelsReply reply={reply} />
+                  <ReelsCommentReplyReply reply={reply} />
+                </View>
+              }
 
               {
                 showExpand &&

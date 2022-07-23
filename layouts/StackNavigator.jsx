@@ -26,7 +26,7 @@ import ReelsComment from '../screens/ReelsComment'
 import ViewVideo from '../screens/modal/ViewVideo'
 import MessageOptions from '../screens/modal/MessageOptions'
 import MessageCamera from '../screens/modal/MessageCamera'
-import ViewReelsComments from '../screens/modal/ViewReelsComments'
+import ViewReelsComments from '../screens/ViewReelsComments'
 
 import useAuth from '../hooks/useAuth'
 
@@ -61,6 +61,7 @@ const StackNavigator = () => {
               <Stack.Screen name='MessageCamera' component={MessageCamera} />
               <Stack.Screen name='ReelsComment' component={ReelsComment} />
               <Stack.Screen name='PreviewMessageImage' component={PreviewMessageImage} />
+              <Stack.Screen name='ViewReelsComments' component={ViewReelsComments} />
             </Stack.Group>
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
@@ -82,7 +83,6 @@ const StackNavigator = () => {
               <Stack.Screen name='UserProfile' component={UserProfile} />
               <Stack.Screen name='Passion' component={Passion} />
               <Stack.Screen name='UserLocation' component={UserLocation} />
-              <Stack.Screen name='ViewReelsComments' component={ViewReelsComments} />
             </Stack.Group>
           </>
         ) : (

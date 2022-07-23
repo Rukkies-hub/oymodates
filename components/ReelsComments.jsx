@@ -6,28 +6,27 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   Image,
-  Keyboard
+  Keyboard,
+  TouchableOpacity
 } from 'react-native'
 
-import { addDoc, collection, onSnapshot, serverTimestamp } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 
 import { db } from '../hooks/firebase'
 
 import color from '../style/color'
 
-import useAuth from '../hooks/useAuth'
-
 import { useFonts } from 'expo-font'
 import LikeReelsComment from './LikeReelsComment'
 import ReelsCommentReplies from './ReelsCommentReplies'
 import ReelsCommentReply from './ReelsCommentReply'
+import { useNavigation } from '@react-navigation/native'
+import useAuth from '../hooks/useAuth'
 
 const ReelsComments = ({ reel, background }) => {
-  const { userProfile, user } = useAuth()
-
+  const { user } = useAuth()
   const [comments, setComments] = useState([])
-  const [height, setHeight] = useState(40)
-  const [input, setInput] = useState('')
+  const navigation = useNavigation()
 
   useEffect(() =>
     (() => {
@@ -44,7 +43,8 @@ const ReelsComments = ({ reel, background }) => {
     , [])
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -67,14 +67,22 @@ const ReelsComments = ({ reel, background }) => {
               marginBottom: 10
             }}
           >
-            <Image
-              source={{ uri: comment?.user?.photoURL }}
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 50
+            <TouchableOpacity
+              onPress={() => {
+                comment?.user?.id != user?.uid ?
+                  navigation.navigate('UserProfile', { user: comment?.user }) :
+                  navigation.navigate('Profile')
               }}
-            />
+            >
+              <Image
+                source={{ uri: comment?.user?.photoURL }}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 50
+                }}
+              />
+            </TouchableOpacity>
             <View
               style={{
                 width: '100%',
@@ -90,15 +98,23 @@ const ReelsComments = ({ reel, background }) => {
                   paddingVertical: 4,
                 }}
               >
-                <Text
-                  style={{
-                    color: color.white,
-                    fontFamily: 'text',
-                    fontSize: 13
+                <TouchableOpacity
+                  onPress={() => {
+                    comment?.user?.id != user?.uid ?
+                      navigation.navigate('UserProfile', { user: comment?.user }) :
+                      navigation.navigate('Profile')
                   }}
                 >
-                  {comment?.user?.username}
-                </Text>
+                  <Text
+                    style={{
+                      color: color.white,
+                      fontFamily: 'boldText',
+                      fontSize: 14
+                    }}
+                  >
+                    {comment?.user?.username}
+                  </Text>
+                </TouchableOpacity>
                 <Text
                   style={{
                     color: color.white,
