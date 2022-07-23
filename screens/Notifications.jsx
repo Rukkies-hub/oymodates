@@ -6,7 +6,7 @@ import Header from '../components/Header'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-import { AntDesign, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons'
+import { AntDesign, MaterialCommunityIcons, Fontisto, Feather, Ionicons } from '@expo/vector-icons'
 import { collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
@@ -46,12 +46,17 @@ const Notifications = () => {
     })
   }
 
+
   const onRowDidOpen = rowKey => {
     console.log('This row opened', rowKey)
   }
 
   const deleteNotification = async item => {
     await deleteDoc(doc(db, 'users', user?.uid, 'notifications', item?.id))
+  }
+
+  const markAsRead = async item => {
+    await updateDoc(doc(db, 'users', user?.uid, 'notifications', item?.id), { seen: true })
   }
 
   const renderHiddenItem = ({ item }) => (
@@ -65,6 +70,26 @@ const Notifications = () => {
         paddingLeft: 15,
       }}
     >
+      <TouchableOpacity
+        onPress={() => markAsRead(item)}
+        style={
+          [{
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            top: 10,
+            bottom: 0,
+            width: 45,
+            height: 45,
+            borderRadius: 12,
+          }, {
+            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            right: 80,
+          }]
+        }
+      >
+        <Ionicons name='checkmark-done' size={24} color={color.blue} />
+      </TouchableOpacity>
       <TouchableOpacity
         onPress={() => deleteNotification(item)}
         style={
@@ -83,7 +108,7 @@ const Notifications = () => {
           }]
         }
       >
-        <Feather name="trash-2" size={20} color={color.red} />
+        <Feather name='trash-2' size={20} color={color.red} />
       </TouchableOpacity>
     </View >
   )
@@ -140,9 +165,9 @@ const Notifications = () => {
           flex: 1,
           paddingHorizontal: 10
         }}
-        rightOpenValue={-90}
+        rightOpenValue={-140}
         previewRowKey={'0'}
-        previewOpenValue={-40}
+        previewOpenValue={-80}
         previewOpenDelay={3000}
         renderHiddenItem={renderHiddenItem}
         onRowDidOpen={onRowDidOpen}
@@ -150,6 +175,7 @@ const Notifications = () => {
           return (
             <TouchableOpacity
               onPress={() => viewNotification(notification)}
+              activeOpacity={1}
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
