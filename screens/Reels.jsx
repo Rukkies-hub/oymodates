@@ -48,9 +48,10 @@ const Reels = () => {
 
   const getReels = async () => {
     const queryReels = await getDocs(query(collection(db, 'reels'), limit(reelsLimit)))
+    const reels = queryReels?.docs?.sort(() => Math.random() - 0.5)
 
     setReels(
-      queryReels?.docs?.map(doc => ({
+      reels?.docs?.map(doc => ({
         id: doc?.id,
         ...doc?.data()
       }))

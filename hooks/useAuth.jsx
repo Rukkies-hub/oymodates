@@ -172,8 +172,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     (() => {
       onSnapshot(collection(db, 'reels'), limit(reelsLimit), doc => {
+        const reels = doc?.docs?.sort(() => Math.random() - 0.5)
+
         setReels(
-          doc?.docs?.map(doc => ({
+          reels?.map(doc => ({
             id: doc?.id,
             ...doc?.data()
           }))

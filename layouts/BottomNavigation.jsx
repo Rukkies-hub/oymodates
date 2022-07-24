@@ -58,27 +58,22 @@ const BottomNavigation = () => {
         />
 
         {
-          userProfile &&
-          <>
-            {
-              pendingSwipes?.length > 0 ?
-                <Tab.Screen
-                  name='Likes'
-                  component={LikesNavigation}
-                  options={{
-                    tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />,
-                    tabBarBadge: pendingSwipes?.length
-                  }}
-                /> :
-                <Tab.Screen
-                  name='Likes'
-                  component={LikesNavigation}
-                  options={{
-                    tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
-                  }}
-                />
-            }
-          </>
+          pendingSwipes?.length > 0 ?
+            <Tab.Screen
+              name='Likes'
+              component={LikesNavigation}
+              options={{
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />,
+                tabBarBadge: pendingSwipes?.length
+              }}
+            /> :
+            <Tab.Screen
+              name='Likes'
+              component={LikesNavigation}
+              options={{
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+              }}
+            />
         }
 
         <Tab.Screen

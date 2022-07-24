@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect, useRef } from 'react'
-import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
 
 import { useNavigation } from '@react-navigation/native'
 import useAuth from '../hooks/useAuth'
@@ -404,40 +404,19 @@ const Match = () => {
                   alignItems: 'center'
                 }}
               >
-                <View
-                  style={{
-                    position: 'relative',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  {
-                    userProfile?.theme == 'light' &&
-                    <Image
-                      source={require('../assets/rader.gif')}
-                      style={{
-                        position: 'absolute'
-                      }}
-                    />
-                  }
-                  <Image
-                    source={{ uri: userProfile?.photoURL || user?.photoURL }}
-                    style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: 100
-                    }}
-                  />
-                </View>
+                <ActivityIndicator
+                  size='large'
+                  color={color.red}
+                />
 
                 <Text
                   style={{
                     fontFamily: 'text',
                     color: userProfile?.theme == 'light' ? color.lightText : color.white,
-                    marginTop: 50
+                    marginTop: 30
                   }}
                 >
-                  There's is no one new around you
+                  Finding people near you
                 </Text>
               </View>
             )
