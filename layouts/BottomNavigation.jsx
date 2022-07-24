@@ -39,7 +39,7 @@ const BottomNavigation = () => {
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
-      <Header showLogo showAdd showNotification />
+      <Header showLogo showAdd showNotification showAratar />
 
       <Tab.Navigator
         initialRouteName='Match'
@@ -58,22 +58,27 @@ const BottomNavigation = () => {
         />
 
         {
-          pendingSwipes?.length > 0 ?
-            <Tab.Screen
-              name='Likes'
-              component={LikesNavigation}
-              options={{
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />,
-                tabBarBadge: pendingSwipes?.length
-              }}
-            /> :
-            <Tab.Screen
-              name='Likes'
-              component={LikesNavigation}
-              options={{
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
-              }}
-            />
+          userProfile &&
+          <>
+            {
+              pendingSwipes?.length > 0 ?
+                <Tab.Screen
+                  name='Likes'
+                  component={LikesNavigation}
+                  options={{
+                    tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />,
+                    tabBarBadge: pendingSwipes?.length
+                  }}
+                /> :
+                <Tab.Screen
+                  name='Likes'
+                  component={LikesNavigation}
+                  options={{
+                    tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+                  }}
+                />
+            }
+          </>
         }
 
         <Tab.Screen

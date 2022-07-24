@@ -109,9 +109,8 @@ const Match = () => {
     setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
   }
 
-  const disabled = () => {
-    console.log('not logged in')
-  }
+  const disabled = () => navigation.navigate('SetupModal')
+
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),

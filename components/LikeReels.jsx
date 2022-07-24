@@ -9,7 +9,7 @@ import useAuth from '../hooks/useAuth'
 import { db } from '../hooks/firebase'
 import axios from 'axios'
 
-const LikeReels = ({ reel }) => {
+const LikeReels = ({ reel, navigation }) => {
   const { auth, user, userProfile } = useAuth()
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reel?.likesCount })
@@ -89,9 +89,7 @@ const LikeReels = ({ reel }) => {
     updateLike()
   }
 
-  const disabled = () => {
-    console.log('not logged in')
-  }
+  const disabled = () => navigation.navigate('SetupModal')
 
   return (
     <TouchableOpacity

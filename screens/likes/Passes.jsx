@@ -39,9 +39,7 @@ const Passes = () => {
   const undoPass = async pass =>
     await deleteDoc(doc(db, "users", user?.uid, 'passes', pass?.id))
 
-  const disabled = () => {
-    console.log('not logged in')
-  }
+  const disabled = () => navigation.navigate('SetupModal')
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),

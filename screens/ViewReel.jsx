@@ -38,9 +38,7 @@ const ViewReel = (props) => {
     })
     , [navigation])
 
-  const disabled = () => {
-    console.log('not logged in')
-  }
+  const disabled = () => navigation.navigate('SetupModal')
 
   return (
     <ImageBackground

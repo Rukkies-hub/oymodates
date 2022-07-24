@@ -27,6 +27,7 @@ import ViewVideo from '../screens/modal/ViewVideo'
 import MessageOptions from '../screens/modal/MessageOptions'
 import MessageCamera from '../screens/modal/MessageCamera'
 import ViewReelsComments from '../screens/ViewReelsComments'
+import SetupModal from '../screens/modal/SetupModal'
 
 import useAuth from '../hooks/useAuth'
 
@@ -74,6 +75,14 @@ const StackNavigator = () => {
                 options={{
                   animationEnabled: true,
                   ...TransitionPresets.ModalSlideFromBottomIOS
+                }}
+              />
+              <Stack.Screen
+                name='SetupModal'
+                component={SetupModal}
+                options={{
+                  animationEnabled: true,
+                  ...TransitionPresets.FadeFromBottomAndroid
                 }}
               />
             </Stack.Group>

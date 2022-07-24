@@ -57,9 +57,7 @@ const Reels = () => {
     )
   }
 
-  const disabled = () => {
-    console.log('not logged in')
-  }
+  const disabled = () => navigation.navigate('SetupModal')
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -81,7 +79,7 @@ const Reels = () => {
           backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
           justifyContent: 'center',
           alignItems: 'center',
-          borderRadius: userProfile?.theme == 'dark' ? 8 : 0,
+          borderRadius: 8,
           overflow: 'hidden'
         }}
       >
@@ -107,19 +105,31 @@ const Reels = () => {
               marginLeft: 10
             }}
           >
-            <TouchableOpacity
-              onPress={() => item?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: item?.user })}
-            >
-              <Text
-                style={{
-                  color: color.white,
-                  fontFamily: 'text',
-                  fontSize: 16
-                }}
-              >
-                @{item?.user?.username}
-              </Text>
-            </TouchableOpacity>
+            {
+              userProfile ?
+                <TouchableOpacity
+                  onPress={() => item?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: item?.user })}
+                >
+                  <Text
+                    style={{
+                      color: color.white,
+                      fontFamily: 'text',
+                      fontSize: 16
+                    }}
+                  >
+                    {item?.user?.username}
+                  </Text>
+                </TouchableOpacity> :
+                <Text
+                  style={{
+                    color: color.white,
+                    fontFamily: 'text',
+                    fontSize: 16
+                  }}
+                >
+                  {item?.user?.username}
+                </Text>
+            }
             <Text
               style={{
                 color: color.white,
@@ -131,71 +141,74 @@ const Reels = () => {
           </View>
 
           {/* CONTROLS */}
-          <View
-            style={{
-              marginVertical: 30,
-              position: 'absolute',
-              right: 0,
-              bottom: 0,
-              margin: 20
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => item?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: item?.user })}
-              style={{
-                width: 50,
-                height: 50,
-                borderWidth: 4,
-                borderRadius: 100,
-                borderColor: color.white,
-                overflow: 'hidden'
-              }}
-            >
-              <Image
-                source={{ uri: item?.user?.photoURL }}
-                style={{
-                  width: 50,
-                  height: 50
-                }}
-              />
-            </TouchableOpacity>
-
+          {
+            userProfile &&
             <View
               style={{
-                paddingVertical: 10,
-                borderRadius: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 20
+                marginVertical: 30,
+                position: 'absolute',
+                right: 0,
+                bottom: 0,
+                margin: 20
               }}
             >
-              <LikeReels reel={item} />
-
               <TouchableOpacity
-                onPress={() => {
-                  userProfile ? setReelsProps(item) : null
-                  userProfile ? navigation.navigate('ReelsComment', { item }) : disabled()
-                }}
+                onPress={() => item?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: item?.user })}
                 style={{
-                  width: 40,
-                  height: 40,
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  width: 50,
+                  height: 50,
+                  borderWidth: 4,
+                  borderRadius: 100,
+                  borderColor: color.white,
+                  overflow: 'hidden'
                 }}
               >
-                <FontAwesome name='comment' size={24} color={color.white} />
-                <Text
+                <Image
+                  source={{ uri: item?.user?.photoURL }}
                   style={{
-                    color: color.white,
-                    fontFamily: 'text',
-                    marginTop: 5
+                    width: 50,
+                    height: 50
+                  }}
+                />
+              </TouchableOpacity>
+
+              <View
+                style={{
+                  paddingVertical: 10,
+                  borderRadius: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 20
+                }}
+              >
+                <LikeReels reel={item} />
+
+                <TouchableOpacity
+                  onPress={() => {
+                    userProfile ? setReelsProps(item) : null
+                    userProfile ? navigation.navigate('ReelsComment', { item }) : disabled()
+                  }}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
-                  {item?.commentsCount ? item?.commentsCount : '0'}
-                </Text>
-              </TouchableOpacity>
+                  <FontAwesome name='comment' size={24} color={color.white} />
+                  <Text
+                    style={{
+                      color: color.white,
+                      fontFamily: 'text',
+                      marginTop: 5
+                    }}
+                  >
+                    {item?.commentsCount ? item?.commentsCount : '0'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          }
         </LinearGradient>
       </ImageBackground>
     )
