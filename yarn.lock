@@ -7696,6 +7696,18 @@ rn-glitch-effect@^1.1.0:
   resolved "https://registry.yarnpkg.com/rn-glitch-effect/-/rn-glitch-effect-1.1.0.tgz#ee36fc21983fb5dc0011cbd8320231335edee2ef"
   integrity sha512-UzvxE4mFgnGPnJLMGK8Xw7tAlFWLAiCCDIqapn85iMcpvI0aZZXNcZ0qwq1xA7QJCGvHtnFA7qDTj7Cy3bXbGQ==
 
+rukkiecodes-expo-snackbar@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/rukkiecodes-expo-snackbar/-/rukkiecodes-expo-snackbar-0.0.1.tgz#765a87312cda2695f9dcc29077e63131d0504383"
+  integrity sha512-Sp2sPCnuU/UKB33R+6kpXFdy/nGme+5GamMbR6YMfIF79o2UnBKV/bif72xThRLVQvLeo+4lp6ki1vfLGfgIoA==
+  dependencies:
+    expo "~45.0.0"
+    expo-status-bar "~1.3.0"
+    react "17.0.2"
+    react-dom "17.0.2"
+    react-native "0.68.2"
+    react-native-web "0.17.7"
+
 run-parallel@^1.1.9:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/run-parallel/-/run-parallel-1.2.0.tgz#66d1368da7bdf921eb9d95bd1a9229e7f21a43ee"

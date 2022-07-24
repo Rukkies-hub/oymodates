@@ -155,7 +155,7 @@ export const AuthProvider = ({ children }) => {
 
   const recoverPassword = () => { }
 
-  useEffect(() =>
+  useEffect(() => {
     (() => {
       onAuthStateChanged(auth, user => {
         if (user) {
@@ -167,7 +167,7 @@ export const AuthProvider = ({ children }) => {
         setLoadingInitial(false)
       })
     })()
-    , [])
+  }, [])
 
   useEffect(() => {
     (() => {

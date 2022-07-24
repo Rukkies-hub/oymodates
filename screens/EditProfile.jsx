@@ -38,6 +38,7 @@ import uuid from 'uuid-random'
 
 import Constants from 'expo-constants'
 import AppTheme from '../components/AppTheme'
+import SnackBar from 'rukkiecodes-expo-snackbar'
 
 const EditProfile = () => {
   const {
@@ -71,6 +72,8 @@ const EditProfile = () => {
   const [height, setHeight] = useState(50)
   const [uploadLoading, setUploadLoading] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [snackMessage, setSnackMessage] = useState('')
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -114,7 +117,11 @@ const EditProfile = () => {
                       updateDoc(doc(db, 'users', user?.uid), {
                         photoURL: downloadURL,
                         photoLink: link
-                      }).finally(async () => setUploadLoading(false))
+                      }).finally(async () => {
+                        setSnackMessage('Display picture set successfully')
+                        setVisible(true)
+                        setUploadLoading(false)
+                      })
                     })
                 }
               )
@@ -134,7 +141,11 @@ const EditProfile = () => {
                   updateDoc(doc(db, 'users', user?.uid), {
                     photoURL: downloadURL,
                     photoLink: link
-                  }).finally(() => setUploadLoading(false))
+                  }).finally(async () => {
+                    setSnackMessage('Display picture set successfully')
+                    setVisible(true)
+                    setUploadLoading(false)
+                  })
                 })
             }
           )
@@ -155,8 +166,11 @@ const EditProfile = () => {
         school,
         city,
         about
-      }).then(() => setUpdateLoading(false))
-        .catch(() => setUpdateLoading(false))
+      }).then(() => {
+        setUpdateLoading(false)
+        setSnackMessage('Profile updated successfully')
+        setVisible(true)
+      }).catch(() => setUpdateLoading(false))
 
     else
       setDoc(doc(db, 'users', user?.uid), {
@@ -171,8 +185,11 @@ const EditProfile = () => {
         gender: '',
         theme: 'light',
         timestamp: serverTimestamp()
-      }).then(() => setUpdateLoading(false))
-        .catch(() => setUpdateLoading(false))
+      }).then(() => {
+        setUpdateLoading(false)
+        setUpdateLoading(false)
+        setSnackMessage('Profile updated successfully')
+      }).catch(() => setUpdateLoading(false))
   }
 
   const maleGender = () => {
@@ -219,9 +236,17 @@ const EditProfile = () => {
         backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
       }}
     >
-      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+      <SnackBar
+        visible={visible}
+        message={snackMessage}
+        background={userProfile?.theme == 'dark' ? color.dark : color.white}
+        textColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+        shadowColor={color.black}
+      />
 
+      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
       <Header showTitle showAratar showBack title='Edit Profile' />
+
 
       <ScrollView style={{ flex: 1 }}>
         <View

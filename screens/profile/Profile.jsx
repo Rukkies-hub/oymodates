@@ -42,7 +42,7 @@ const Profile = () => {
     >
       <>
         {
-          userProfile &&
+          userProfile && user &&
           <>
             <ProfileDetails userProfile={userProfile} user={user} />
 
