@@ -175,7 +175,7 @@ const UserDetails = ({ userProfile, user }) => {
                     fontSize: 20
                   }}
                 >
-                  @{user?.username}
+                  {user?.username}
                 </Text>
               </View>
             }
