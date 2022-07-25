@@ -26,7 +26,7 @@ import {
 
 import { auth, db } from './firebase'
 
-import { collection, doc, limit, onSnapshot, query, where } from 'firebase/firestore'
+import { collection, doc, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }) => {
   const [posts, setPosts] = useState([])
   const [postLimit, setPostLimit] = useState(3)
   const [reels, setReels] = useState([])
-  const [reelsLimit, setReelsLimit] = useState(2)
+  const [reelsLimit, setReelsLimit] = useState(10)
   const [viewUser, setViewUser] = useState(null)
   const [search, setSearch] = useState('')
   const [matches, setMatches] = useState([])
@@ -169,11 +169,11 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     (() => {
-      onSnapshot(collection(db, 'reels'), limit(reelsLimit), doc => {
-        const reels = doc?.docs?.sort(() => Math.random() - 0.5)
+      onSnapshot(query(collection(db, 'reels'), orderBy('timestamp', 'desc'), limit(reelsLimit)), doc => {
+        // const reels = doc?.docs?.sort(() => Math.random() - 0.5)
 
         setReels(
-          reels?.map(doc => ({
+          doc?.docs?.map(doc => ({
             id: doc?.id,
             ...doc?.data()
           }))
@@ -183,7 +183,7 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   const getPendingSwipes = (user) => {
-    onSnapshot(collection(db, 'users', user?.uid, 'pendingSwipes'),
+    onSnapshot(collection(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'pendingSwipes'),
       snapshot =>
         setPendingSwipes(
           snapshot?.docs?.map(doc => ({

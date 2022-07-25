@@ -50,14 +50,14 @@ const Header = ({
   const navigation = useNavigation()
 
   const { user, userProfile, madiaString, media, setMedia, notifications, setNotificatios } = useAuth()
-  const videoCallUser = getMatchedUserInfo(matchDetails?.users, user?.uid)
+  const videoCallUser = getMatchedUserInfo(matchDetails?.users, user?.uid == undefined ? user?.user?.uid : user?.uid)
 
   const [notificationCount, setNotificationCount] = useState([])
 
   useLayoutEffect(() => {
     (async () => {
       if (userProfile) {
-        onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')),
+        onSnapshot(query(collection(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'notifications'), orderBy('timestamp', 'desc')),
           snapshot => {
             setNotificatios(
               snapshot?.docs?.map(doc => ({
@@ -74,7 +74,7 @@ const Header = ({
   useLayoutEffect(() => {
     (async () => {
       if (userProfile) {
-        onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)),
+        onSnapshot(query(collection(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'notifications'), where('seen', '==', false)),
           snapshot => {
             setNotificationCount(
               snapshot?.docs?.map(doc => ({

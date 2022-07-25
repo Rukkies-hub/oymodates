@@ -81,13 +81,7 @@ const BottomNavigation = () => {
           component={Reels}
           options={{
             tabBarIcon: () =>
-              <Image
-                source={userProfile?.theme == 'dark' ? require('../assets/videoLight.png') : require('../assets/video.png')}
-                style={{
-                  width: 20,
-                  height: 20
-                }}
-              />
+              <Feather name='video' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
           }}
         />
 

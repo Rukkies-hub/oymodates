@@ -9,6 +9,8 @@ import useAuth from '../hooks/useAuth'
 import { db } from '../hooks/firebase'
 import axios from 'axios'
 
+import { appToken } from '@env'
+
 const LikeReels = ({ reel, navigation }) => {
   const { auth, user, userProfile } = useAuth()
 
@@ -16,7 +18,7 @@ const LikeReels = ({ reel, navigation }) => {
 
   useEffect(() =>
     (() => {
-      getLikesById(reel?.id, user?.uid)
+      getLikesById(reel?.id, user?.uid == undefined ? user?.user?.uid : user?.uid)
         .then(res => {
           setCurrentLikesState({
             ...currentLikesState,
@@ -28,7 +30,7 @@ const LikeReels = ({ reel, navigation }) => {
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid))
+      await deleteDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid == undefined ? user?.user?.uid : user?.uid))
       await updateDoc(doc(db, 'reels', reel?.id), {
         likesCount: increment(-1)
       })
@@ -36,7 +38,7 @@ const LikeReels = ({ reel, navigation }) => {
         likesCount: increment(-1)
       })
     } else {
-      await setDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid), {
+      await setDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid == undefined ? user?.user?.uid : user?.uid), {
         id: userProfile?.id,
         photoURL: userProfile?.photoURL,
         displayName: userProfile?.displayName,
@@ -48,7 +50,7 @@ const LikeReels = ({ reel, navigation }) => {
       await updateDoc(doc(db, 'users', reel?.user?.id), {
         likesCount: increment(1)
       })
-      if (reel?.user?.id != user?.uid)
+      if (reel?.user?.id != user?.uid == undefined ? user?.user?.uid : user?.uid)
         await addDoc(collection(db, 'users', reel?.user?.id, 'notifications'), {
           action: 'reel',
           activity: 'likes',
@@ -77,7 +79,7 @@ const LikeReels = ({ reel, navigation }) => {
   })
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid))
+    getDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid == undefined ? user?.user?.uid : user?.uid))
       .then(res => resolve(res?.exists()))
   })
 

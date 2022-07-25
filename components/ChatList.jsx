@@ -33,7 +33,9 @@ const ChatList = () => {
     , [user, db])
 
   const fetchMatches = () => {
-    onSnapshot(query(collection(db, 'matches'), where('usersMatched', 'array-contains', user?.uid)),
+    onSnapshot(query(collection(db, 'matches'),
+      where('usersMatched', 'array-contains', user?.uid == undefined ? user?.user?.uid : user?.uid),
+    ),
       snapshot => {
         setMatches(
           snapshot?.docs?.map(doc => ({

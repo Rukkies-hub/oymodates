@@ -19,7 +19,7 @@ const MyReels = () => {
 
   useLayoutEffect(() => {
     onSnapshot(query(collection(db, 'reels'),
-      where('user.id', '==', user?.uid), limit(reelsLimit)),
+      where('user.id', '==', user?.uid == undefined ? user?.user?.uid : user?.uid), limit(reelsLimit)),
       snapshot => setReels(
         snapshot?.docs?.map(doc => ({
           id: doc?.id,
@@ -29,7 +29,7 @@ const MyReels = () => {
   }, [reelsLimit, db])
 
   const getReels = async () => {
-    const queryPosts = await getDocs(query(collection(db, 'reels'), where('user.id', '==', user?.uid), limit(reelsLimit)))
+    const queryPosts = await getDocs(query(collection(db, 'reels'), where('user.id', '==', user?.uid == undefined ? user?.user?.uid : user?.uid), limit(reelsLimit)))
 
     setReels(
       queryPosts?.docs?.map(doc => ({

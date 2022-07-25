@@ -13,8 +13,8 @@ const SearchChat = () => {
   const searchFilter = text => {
     if (text) {
       const newData = matches.filter(item => {
-        const itemData = getMatchedUserInfo(item?.users, user?.uid)?.username ?
-          getMatchedUserInfo(item?.users, user?.uid)?.username?.toUpperCase() :
+        const itemData = getMatchedUserInfo(item?.users, user?.uid == undefined ? user?.user?.uid : user?.uid)?.username ?
+          getMatchedUserInfo(item?.users, user?.uid == undefined ? user?.user?.uid : user?.uid)?.username?.toUpperCase() :
           ''.toUpperCase()
 
         const textData = text.toUpperCase()

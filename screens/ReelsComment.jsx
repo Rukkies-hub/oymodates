@@ -71,7 +71,7 @@ const ReelsComment = () => {
         commentsCount: increment(1)
       })
 
-      if (item?.user?.id != user?.uid) {
+      if (item?.user?.id != user?.uid == undefined ? user?.user?.uid : user?.uid) {
         await addDoc(collection(db, 'users', item?.user?.id, 'notifications'), {
           action: 'reel',
           activity: 'comments',
