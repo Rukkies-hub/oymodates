@@ -125,7 +125,7 @@ const ViewReel = (props) => {
               fontSize: 16
             }}
           >
-            @{reel?.user?.username}
+            {reel?.user?.username}
           </Text>
           <Text
             style={{
@@ -207,3 +207,4 @@ const ViewReel = (props) => {
 }
 
 export default ViewReel
+// in use

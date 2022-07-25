@@ -16,7 +16,7 @@ if (
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const RecieverMessage = ({ messages, matchDetails }) => {
-  const { userProfile, user } = useAuth()
+  const { userProfile } = useAuth()
 
   const navigation = useNavigation()
 
@@ -428,3 +428,4 @@ const RecieverMessage = ({ messages, matchDetails }) => {
 }
 
 export default RecieverMessage
+// in use

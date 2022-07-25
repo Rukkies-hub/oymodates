@@ -11,21 +11,17 @@ import NewMatch from '../screens/modal/NewMatch'
 import Message from '../screens/Message'
 import AddReels from '../screens/AddReels'
 import SaveReels from '../screens/SaveReels'
-import ViewPost from '../screens/ViewPost'
 import UserProfile from '../screens/userProfile/UserProfile'
 import Passion from '../screens/modal/Passion'
-import UserLocation from '../screens/modal/UserLocation'
 import PreviewMessageImage from '../screens/PreviewMessageImage'
 import Profile from '../screens/profile/Profile'
-import VideoCall from '../screens/VideoCall'
 import Notifications from '../screens/Notifications'
-import AllPostLikes from '../screens/AllPostLikes'
 import ViewReel from '../screens/ViewReel'
 import ViewAvarar from '../screens/modal/ViewAvarar'
 import ReelsComment from '../screens/ReelsComment'
 import ViewVideo from '../screens/modal/ViewVideo'
 import MessageOptions from '../screens/modal/MessageOptions'
-import MessageCamera from '../screens/modal/MessageCamera'
+import MessageCamera from '../screens/MessageCamera'
 import ViewReelsComments from '../screens/ViewReelsComments'
 import SetupModal from '../screens/modal/SetupModal'
 
@@ -54,11 +50,8 @@ const StackNavigator = () => {
               <Stack.Screen name='EditProfile' component={EditProfile} />
               <Stack.Screen name='AddReels' component={AddReels} />
               <Stack.Screen name='SaveReels' component={SaveReels} />
-              <Stack.Screen name='ViewPost' component={ViewPost} />
               <Stack.Screen name='Profile' component={Profile} />
-              <Stack.Screen name='VideoCall' component={VideoCall} />
               <Stack.Screen name='Notifications' component={Notifications} />
-              <Stack.Screen name='AllPostLikes' component={AllPostLikes} />
               <Stack.Screen name='MessageCamera' component={MessageCamera} />
               <Stack.Screen name='ReelsComment' component={ReelsComment} />
               <Stack.Screen name='PreviewMessageImage' component={PreviewMessageImage} />
@@ -91,7 +84,6 @@ const StackNavigator = () => {
               <Stack.Screen name='ViewReel' component={ViewReel} />
               <Stack.Screen name='UserProfile' component={UserProfile} />
               <Stack.Screen name='Passion' component={Passion} />
-              <Stack.Screen name='UserLocation' component={UserLocation} />
             </Stack.Group>
           </>
         ) : (

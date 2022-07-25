@@ -25,8 +25,6 @@ import useAuth from '../hooks/useAuth'
 
 const AddReels = () => {
   const navigation = useNavigation()
-  const { userProfile } = useAuth()
-
   const [hasCameraPermission, setHasCameraPermission] = useState(false)
   const [hasAudioPermission, setHasAudioPermission] = useState(false)
   const [hasGalleryPermission, setHasGalleryPermissions] = useState(false)
@@ -70,7 +68,7 @@ const AddReels = () => {
           const source = data?.uri
           let thumbnail = await generateThumbnail(source)
           if (thumbnail)
-            navigation.navigate('SaveReels', { source, thumbnail })
+            navigation.navigate('SaveReels', { source, thumbnail, mediaType: 'video' })
         }
       } catch (error) {
         console.warn(error)
@@ -121,7 +119,7 @@ const AddReels = () => {
       <Bar color='light' />
 
       {
-        isFocused ?
+        isFocused &&
           <Camera
             ref={ref => setCameraRef(ref)}
             ratio={'16:9'}
@@ -133,7 +131,7 @@ const AddReels = () => {
               backgroundColor: color.black,
               aspectRatio: 9 / 16
             }}
-          /> : null
+          />
       }
 
       <TouchableOpacity
@@ -282,3 +280,4 @@ const AddReels = () => {
 }
 
 export default AddReels
+// in use

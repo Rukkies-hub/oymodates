@@ -46,6 +46,15 @@ const Notifications = () => {
     })
   }
 
+  const clearAll = async () => {
+    const snapshot = await getDocs(collection(db, 'users', user?.uid, 'notifications'))
+    snapshot?.forEach(async allDoc => {
+      await deleteDoc(doc(db, 'users', user?.uid, 'notifications', allDoc?.id), {
+        seen: true
+      })
+    })
+  }
+
 
   const onRowDidOpen = rowKey => {
     console.log('This row opened', rowKey)
@@ -136,7 +145,8 @@ const Notifications = () => {
           flexDirection: 'row',
           justifyContent: 'flex-end',
           alignItems: 'center',
-          marginVertical: 20
+          marginVertical: 20,
+          paddingHorizontal: 10
         }}
       >
         <TouchableOpacity
@@ -158,6 +168,23 @@ const Notifications = () => {
           >
             Mark all as read
           </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={clearAll}
+          style={{
+            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            height: 35,
+            paddingHorizontal: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 8,
+            marginLeft: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <Feather name='trash-2' size={20} color={color.red} />
         </TouchableOpacity>
       </View>
 
@@ -271,3 +298,4 @@ const Notifications = () => {
 }
 
 export default Notifications
+// in use

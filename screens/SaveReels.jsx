@@ -132,12 +132,12 @@ const SaveReels = (params) => {
           }}
         />
         <Image
+          source={{ uri: source }}
           style={{
             aspectRatio: 9 / 16,
             backgroundColor: color.black,
             width: 60
           }}
-          source={{ uri: source }}
         />
       </View>
 
@@ -174,7 +174,7 @@ const SaveReels = (params) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          disabled={loading == true}
+          disabled={loading}
           onPress={saveReel}
           style={{
             flexDirection: 'row',
@@ -199,7 +199,7 @@ const SaveReels = (params) => {
                     color: loading == true ? color.red : color.white
                   }}
                 >
-                  Post
+                  Save
                 </Text>
               </> :
               <ActivityIndicator color={color.white} size='small' />
@@ -211,3 +211,4 @@ const SaveReels = (params) => {
 }
 
 export default SaveReels
+// in use

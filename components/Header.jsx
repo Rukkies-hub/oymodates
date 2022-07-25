@@ -27,7 +27,6 @@ import { collection, getDocs, onSnapshot, orderBy, query, where } from 'firebase
 import { db } from '../hooks/firebase'
 
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
-import MessageSettings from './MessageSettings'
 
 const Header = ({
   showAratar,
@@ -38,19 +37,16 @@ const Header = ({
   showMatchAvatar,
   matchAvatar,
   showPhone,
-  showVideo,
   postDetails,
   showAdd,
   matchDetails,
   showNotification,
-  showChatMenu,
   backgroundColor,
   iconColor
 }) => {
   const navigation = useNavigation()
 
-  const { user, userProfile, madiaString, media, setMedia, notifications, setNotificatios } = useAuth()
-  const videoCallUser = getMatchedUserInfo(matchDetails?.users, user?.uid == undefined ? user?.user?.uid : user?.uid)
+  const { user, userProfile, notifications, setNotificatios } = useAuth()
 
   const [notificationCount, setNotificationCount] = useState([])
 
@@ -199,26 +195,6 @@ const Header = ({
           }
 
           {
-            showVideo &&
-            <TouchableOpacity
-              onPress={() => navigation.navigate('VideoCall', { videoCallUser })}
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <FontAwesome5 name='video' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
-            </TouchableOpacity>
-          }
-
-          {
-            showChatMenu &&
-            <MessageSettings matchDetails={matchDetails} iconColor={iconColor} />
-          }
-
-          {
             userProfile &&
             <>
               {
@@ -332,3 +308,4 @@ const Header = ({
 }
 
 export default Header
+// in use

@@ -9,3 +9,4 @@ const Bar = ({ color }) => {
 }
 
 export default Bar
+// in use

@@ -84,7 +84,7 @@ const Reels = () => {
           overflow: 'hidden'
         }}
       >
-        <ReelsSingle item={item} ref={PostSingleRef => (mediaRefs.current[item?.id] = PostSingleRef)} />
+        <ReelsSingle item={item} ref={ReelSingleRef => (mediaRefs.current[item?.id] = ReelSingleRef)} />
 
         <LinearGradient
           colors={['transparent', color.labelColor]}
@@ -259,3 +259,5 @@ const Reels = () => {
 }
 
 export default Reels
+
+// for reels

@@ -29,10 +29,10 @@ const UserReels = () => {
   }, [reelsLimit, db])
 
   const getReels = async () => {
-    const queryPosts = await getDocs(query(collection(db, 'reels'), where('user.id', '==', viewUser?.id), limit(reelsLimit)))
+    const queryReels = await getDocs(query(collection(db, 'reels'), where('user.id', '==', viewUser?.id), limit(reelsLimit)))
 
     setReels(
-      queryPosts?.docs?.map(doc => ({
+      queryReels?.docs?.map(doc => ({
         id: doc?.id,
         ...doc?.data()
       }))
@@ -58,47 +58,7 @@ const UserReels = () => {
               backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
             }}
           >
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <View style={{ position: 'relative' }}>
-                <Image
-                  source={{ uri: viewUser?.photoURL }}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    borderRadius: 100
-                  }}
-                />
-                <View
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 100,
-                    backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.white,
-                    position: 'absolute',
-                    top: -13,
-                    right: -13,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    shadowColor: color.black,
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-                    elevation: 5,
-                  }}
-                >
-                  <ActivityIndicator size='small' color={color.red} />
-                </View>
-              </View>
-            </View>
+            <ActivityIndicator size='large' color={color.red} />
           </View> :
           <FlatList
             data={reels}
@@ -234,3 +194,4 @@ const UserReels = () => {
 }
 
 export default UserReels
+// in use

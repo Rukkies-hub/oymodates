@@ -59,7 +59,6 @@ export const AuthProvider = ({ children }) => {
   const [screen, setScreen] = useState('default')
   const [about, setAbout] = useState('')
   const [passions, setPassions] = useState([])
-  const [media, setMedia] = useState('')
   const [pendingSwipes, setPendingSwipes] = useState([])
   const [profiles, setProfiles] = useState([])
   const [mediaVidiblity, setMediaVidiblity] = useState(false)
@@ -76,11 +75,8 @@ export const AuthProvider = ({ children }) => {
   const [showExpand, setShowExpand] = useState(true)
   const [reel, setReel] = useState(null)
   const [thumbnail, setThumbnail] = useState(null)
-  const [mediaType, setMediaType] = useState()
   const [googleLoadng, setGoogleLoading] = useState(false)
   const [facebookLoadng, setFacebookLoading] = useState(false)
-  const [posts, setPosts] = useState([])
-  const [postLimit, setPostLimit] = useState(3)
   const [reels, setReels] = useState([])
   const [reelsLimit, setReelsLimit] = useState(10)
   const [viewUser, setViewUser] = useState(null)
@@ -170,8 +166,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     (() => {
       onSnapshot(query(collection(db, 'reels'), orderBy('timestamp', 'desc'), limit(reelsLimit)), doc => {
-        // const reels = doc?.docs?.sort(() => Math.random() - 0.5)
-
         setReels(
           doc?.docs?.map(doc => ({
             id: doc?.id,
@@ -239,8 +233,6 @@ export const AuthProvider = ({ children }) => {
       })
   }
 
-  let madiaString = JSON.stringify(media)
-
   return (
     <AuthContext.Provider
       value={{
@@ -255,9 +247,6 @@ export const AuthProvider = ({ children }) => {
         displayName,
         setDisplayName,
         school,
-        media,
-        setMedia,
-        madiaString,
         company,
         setCompany,
         city,
@@ -327,15 +316,10 @@ export const AuthProvider = ({ children }) => {
         setReel,
         thumbnail,
         setThumbnail,
-        mediaType,
-        setMediaType,
         googleLoadng,
         setGoogleLoading,
         facebookLoadng,
         setFacebookLoading,
-        posts,
-        postLimit,
-        setPostLimit,
         reels,
         setReels,
         reelsLimit,

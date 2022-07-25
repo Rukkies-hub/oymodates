@@ -9,7 +9,6 @@ import Slider from '@react-native-community/slider'
 
 import { Audio, Video } from 'expo-av'
 import { useNavigation } from '@react-navigation/native'
-import AutoHeightImage from 'react-native-auto-height-image'
 
 if (
   Platform.OS === 'android' &&
@@ -437,3 +436,4 @@ const SenderMessage = ({ messages, matchDetails }) => {
 }
 
 export default SenderMessage
+// in use

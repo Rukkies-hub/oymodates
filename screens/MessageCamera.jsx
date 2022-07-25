@@ -7,11 +7,11 @@ import { Audio } from 'expo-av'
 
 import { useIsFocused } from '@react-navigation/core'
 
-import color from '../../style/color'
+import color from '../style/color'
 
 import { useNavigation, useRoute } from '@react-navigation/native'
-import useAuth from '../../hooks/useAuth'
-import Bar from '../../components/StatusBar'
+import useAuth from '../hooks/useAuth'
+import Bar from '../components/StatusBar'
 
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
@@ -19,7 +19,6 @@ import * as VideoThumbnails from 'expo-video-thumbnails'
 
 const MessageCamera = () => {
   const navigation = useNavigation()
-  const { setMedia, madiaString } = useAuth()
 
   const { params } = useRoute()
   const { matchDetails } = params
@@ -225,3 +224,4 @@ const MessageCamera = () => {
 }
 
 export default MessageCamera
+// in use

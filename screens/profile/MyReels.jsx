@@ -29,10 +29,10 @@ const MyReels = () => {
   }, [reelsLimit, db])
 
   const getReels = async () => {
-    const queryPosts = await getDocs(query(collection(db, 'reels'), where('user.id', '==', user?.uid == undefined ? user?.user?.uid : user?.uid), limit(reelsLimit)))
+    const queryReels = await getDocs(query(collection(db, 'reels'), where('user.id', '==', user?.uid == undefined ? user?.user?.uid : user?.uid), limit(reelsLimit)))
 
     setReels(
-      queryPosts?.docs?.map(doc => ({
+      queryReels?.docs?.map(doc => ({
         id: doc?.id,
         ...doc?.data()
       }))
@@ -195,3 +195,4 @@ const MyReels = () => {
 }
 
 export default MyReels
+// in use

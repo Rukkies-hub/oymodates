@@ -1,7 +1,7 @@
 import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
@@ -117,37 +117,13 @@ const ChatList = () => {
           alignItems: 'center'
         }}
       >
-        <View
-          style={{
-            position: 'relative',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          {
-            userProfile?.theme == 'light' &&
-            <Image
-              source={require('../assets/rader.gif')}
-              style={{
-                position: 'absolute'
-              }}
-            />
-          }
-          <Image
-            source={{ uri: userProfile?.photoURL || user?.photoURL }}
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 100
-            }}
-          />
-        </View>
+        <ActivityIndicator size='large' color={color.red} />
 
         <Text
           style={{
             fontFamily: 'text',
             color: userProfile?.theme == 'light' ? color.lightText : color.white,
-            marginTop: 50
+            marginTop: 20
           }}
         >
           No matches at the moment
@@ -158,3 +134,4 @@ const ChatList = () => {
 }
 
 export default ChatList
+// in use

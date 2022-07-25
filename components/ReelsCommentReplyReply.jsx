@@ -30,3 +30,4 @@ const ReelsCommentReplyReply = ({ reply }) => {
 }
 
 export default ReelsCommentReplyReply
+// for reels

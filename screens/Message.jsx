@@ -267,7 +267,6 @@ const Message = () => {
         matchDetails={matchDetails}
         title={getMatchedUserInfo(matchDetails?.users, user?.uid)?.username}
         matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid)?.photoURL}
-        // showChatMenu
         backgroundColor={color.transparent}
       />
 
@@ -637,3 +636,4 @@ const Message = () => {
 }
 
 export default Message
+// in use
