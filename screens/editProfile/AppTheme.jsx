@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
-import color from '../style/color'
+import color from '../../style/color'
 
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons'
-import useAuth from '../hooks/useAuth'
+import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
 import { doc, updateDoc } from 'firebase/firestore'
-import { db } from '../hooks/firebase'
+import { db } from '../../hooks/firebase'
 
 const { width } = Dimensions.get('window')
 
@@ -28,8 +28,8 @@ const AppTheme = () => {
   NavigationBar.setButtonStyleAsync(userProfile?.theme == 'dark' ? 'light' : 'dark')
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
-    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null

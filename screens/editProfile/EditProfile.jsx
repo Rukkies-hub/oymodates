@@ -37,7 +37,7 @@ import Bar from '../../components/StatusBar'
 import uuid from 'uuid-random'
 
 import Constants from 'expo-constants'
-import AppTheme from '../../components/AppTheme'
+import AppTheme from './AppTheme'
 import SnackBar from 'rukkiecodes-expo-snackbar'
 
 const EditProfile = () => {
@@ -78,7 +78,9 @@ const EditProfile = () => {
   const [disabled, setDisabled] = useState(true)
 
   useEffect(() => {
-    if (userProfile) return
+    if (userProfile) {
+      setDisabled(false)
+    }
     else {
       if (username != '' && displayName != '' && job != '' && company != '' && school != '' && city != '')
         setDisabled(false)
@@ -329,7 +331,7 @@ const EditProfile = () => {
           </View>
 
           {
-            userProfile?.displayName && userProfile?.displayName != '' &&
+            userProfile?.displayName != '' &&
             <TouchableOpacity
               onPress={pickImage}
               style={{
@@ -377,7 +379,7 @@ const EditProfile = () => {
           />
 
           {
-            !user?.displayName &&
+            !user?.displayName && !user?.displayName != '' &&
             <TextInput
               value={displayName}
               placeholder='Display name'
@@ -583,10 +585,16 @@ const EditProfile = () => {
 
               <View
                 style={{
+                  flex: 1,
                   flexDirection: 'row',
                   justifyContent: 'flex-start',
                   alignItems: 'center',
-                  flexWrap: 'wrap'
+                  flexWrap: 'wrap',
+                  backgroundColor: passions?.length < 1 ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
+                  borderRadius: 12,
+                  height: 45,
+                  marginBottom: 20,
+                  marginTop: 10
                 }}
               >
                 {
@@ -621,10 +629,7 @@ const EditProfile = () => {
             </TouchableOpacity>
           }
 
-          {
-            userProfile &&
-            <AppTheme />
-          }
+          {userProfile && <AppTheme />}
 
           <TouchableOpacity
             onPress={updateUserProfile}

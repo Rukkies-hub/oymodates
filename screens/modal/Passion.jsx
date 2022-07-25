@@ -90,14 +90,14 @@ const Passion = () => {
       setPassionLoading(true)
 
       if (userProfile)
-        updateDoc(doc(db, 'users', user?.uid), {
+        updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
           passions
         }).finally(() => {
           setPassionLoading(false)
           navigation.goBack()
         })
       else
-        setDoc(doc(db, 'users', user?.uid), {
+        setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
           passions
         }).finally(() => {
           setPassionLoading(false)

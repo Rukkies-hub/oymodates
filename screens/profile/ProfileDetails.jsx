@@ -180,7 +180,7 @@ const ProfileDetails = ({ userProfile, user }) => {
         </View>
 
         {
-          userProfile?.about != '' &&
+          userProfile?.about && userProfile?.about != '' &&
           <View
             style={{
               marginTop: 20
