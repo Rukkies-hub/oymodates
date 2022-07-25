@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import color from '../style/color'
 
 import { addDoc, collection, deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
-import axios from 'axios'
-import { appToken } from '@env'
 
 const LikeReelsComment = ({ comment }) => {
   const { user, userProfile } = useAuth()

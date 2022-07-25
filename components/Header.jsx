@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import {
   View,
   Text,
@@ -8,9 +8,7 @@ import {
 
 import {
   FontAwesome,
-  MaterialCommunityIcons,
   Entypo,
-  FontAwesome5,
   SimpleLineIcons
 } from '@expo/vector-icons'
 
@@ -22,7 +20,7 @@ import { useFonts } from 'expo-font'
 
 import color from '../style/color'
 
-import { collection, getDocs, onSnapshot, orderBy, query, where } from 'firebase/firestore'
+import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 
 import { db } from '../hooks/firebase'
 
@@ -37,16 +35,14 @@ const Header = ({
   showMatchAvatar,
   matchAvatar,
   showPhone,
-  postDetails,
   showAdd,
   matchDetails,
   showNotification,
-  backgroundColor,
-  iconColor
+  backgroundColor
 }) => {
   const navigation = useNavigation()
 
-  const { user, userProfile, notifications, setNotificatios } = useAuth()
+  const { user, userProfile, setNotificatios } = useAuth()
 
   const [notificationCount, setNotificationCount] = useState([])
 

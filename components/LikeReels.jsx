@@ -12,7 +12,7 @@ import axios from 'axios'
 import { appToken } from '@env'
 
 const LikeReels = ({ reel, navigation }) => {
-  const { auth, user, userProfile } = useAuth()
+  const { user, userProfile } = useAuth()
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reel?.likesCount })
 

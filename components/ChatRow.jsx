@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { View, Text, Pressable, Image } from 'react-native'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'

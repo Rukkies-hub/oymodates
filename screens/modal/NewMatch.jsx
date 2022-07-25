@@ -9,8 +9,7 @@ import color from '../../style/color'
 import { useFonts } from 'expo-font'
 
 import { Glitch } from 'rn-glitch-effect'
-
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const NewMatch = () => {
   const navigation = useNavigation()

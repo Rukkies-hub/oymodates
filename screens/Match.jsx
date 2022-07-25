@@ -27,8 +27,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import generateId from '../lib/generateId'
 
 import { useFonts } from 'expo-font'
-
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const { width, height } = Dimensions.get('window')
 

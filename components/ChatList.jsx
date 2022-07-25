@@ -1,7 +1,7 @@
-import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import React, { useEffect, useLayoutEffect } from 'react'
 
-import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
