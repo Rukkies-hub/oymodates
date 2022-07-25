@@ -141,7 +141,7 @@ const Match = () => {
               verticalSwipe={false}
               animateCardOpacity={true}
               backgroundColor={color.transparent}
-              cardHorizontalMargin={1}
+              cardHorizontalMargin={0}
               cardVerticalMargin={0}
               onSwipedLeft={cardIndex => userProfile ? swipeLeft(cardIndex) : disabled()}
               onSwipedRight={cardIndex => userProfile ? swipeRight(cardIndex) : disabled()}

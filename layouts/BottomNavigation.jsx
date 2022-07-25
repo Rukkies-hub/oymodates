@@ -39,7 +39,7 @@ const BottomNavigation = () => {
     >
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
 
-      <Header showLogo showAdd showNotification showAratar={userProfile ? false : true} />
+      <Header showLogo showAdd showNotification />
 
       <Tab.Navigator
         initialRouteName='Match'
@@ -81,7 +81,7 @@ const BottomNavigation = () => {
           component={Reels}
           options={{
             tabBarIcon: () =>
-              <Feather name='video' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+              <Ionicons name='videocam-outline' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
           }}
         />
 
@@ -94,47 +94,57 @@ const BottomNavigation = () => {
         />
 
         {
-          userProfile?.photoURL ?
-            <Tab.Screen
-              name='ProfileTab'
-              component={Profile}
-              listeners={({ navigation }) => ({
-                tabPress: event => {
-                  event.preventDefault()
-                  if (userProfile)
-                    navigation.navigate('Profile')
-                  else
-                    navigation.navigate('EditProfile')
-                }
-              })}
-              options={{
-                tabBarIcon: () =>
-                  <Image
-                    source={{ uri: userProfile?.photoURL || user?.photoURL }}
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50
-                    }}
-                  />,
-                tabBarLabel: false
-              }}
-            /> :
-            <Tab.Screen
-              name='ProfileTab'
-              component={Profile}
-              listeners={({ navigation }) => ({
-                tabPress: event => {
-                  event.preventDefault()
-                  navigation.navigate('Profile')
-                }
-              })}
-              options={{
-                tabBarIcon: () =>
-                  <SimpleLineIcons name='user' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />,
-                tabBarLabel: false
-              }}
-            />
+          !userProfile &&
+          <Tab.Screen
+            name='ProfileTab'
+            component={Profile}
+            listeners={({ navigation }) => ({
+              tabPress: event => {
+                event.preventDefault()
+                navigation.navigate('EditProfile')
+              }
+            })}
+            options={{
+              tabBarIcon: () => <SimpleLineIcons name='user' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />,
+              tabBarLabel: false
+            }}
+          />
+        }
+
+        {
+          userProfile &&
+          <Tab.Screen
+            name='ProfileTab'
+            component={Profile}
+            listeners={({ navigation }) => ({
+              tabPress: event => {
+                event.preventDefault()
+                navigation.navigate('Profile')
+              }
+            })}
+            options={{
+              tabBarIcon: () => (
+                <>
+                  {
+                    userProfile?.photoURL &&
+                    <Image
+                      source={{ uri: userProfile?.photoURL }}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 50
+                      }}
+                    />
+                  }
+                  {
+                    !userProfile?.photoURL &&
+                    <SimpleLineIcons name='user' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+                  }
+                </>
+              ),
+              tabBarLabel: false
+            }}
+          />
         }
       </Tab.Navigator>
     </SafeAreaView>

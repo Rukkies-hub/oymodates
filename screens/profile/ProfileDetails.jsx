@@ -30,8 +30,8 @@ const ProfileDetails = ({ userProfile, user }) => {
           showTitle
           title={userProfile?.username}
           backgroundColor={color.transparent}
-          showAratar
           showNotification
+          showAratar={userProfile?.photoURL ? true : false}
         />
 
         <View
@@ -60,7 +60,7 @@ const ProfileDetails = ({ userProfile, user }) => {
                   backgroundColor: userProfile?.theme == 'dark' ? color.black : color.offWhite
                 }}
               >
-                <SimpleLineIcons name='user' size={60} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
+                <SimpleLineIcons name='user' size={30} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
               </View>
           }
 
