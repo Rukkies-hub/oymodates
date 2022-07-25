@@ -56,31 +56,35 @@ const Header = ({
 
   useLayoutEffect(() => {
     (async () => {
-      onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')),
-        snapshot => {
-          setNotificatios(
-            snapshot?.docs?.map(doc => ({
-              notification: doc?.id,
-              ...doc?.data(),
-              id: doc?.id,
-            }))
-          )
-        })
+      if (userProfile) {
+        onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), orderBy('timestamp', 'desc')),
+          snapshot => {
+            setNotificatios(
+              snapshot?.docs?.map(doc => ({
+                notification: doc?.id,
+                ...doc?.data(),
+                id: doc?.id
+              }))
+            )
+          })
+      }
     })()
   }, [])
 
   useLayoutEffect(() => {
     (async () => {
-      onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)),
-        snapshot => {
-          setNotificationCount(
-            snapshot?.docs?.map(doc => ({
-              id: doc?.id,
-              notification: doc?.id,
-              ...doc?.data()
-            }))
-          )
-        })
+      if (userProfile) {
+        onSnapshot(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)),
+          snapshot => {
+            setNotificationCount(
+              snapshot?.docs?.map(doc => ({
+                id: doc?.id,
+                notification: doc?.id,
+                ...doc?.data()
+              }))
+            )
+          })
+      }
     })()
   }, [])
 

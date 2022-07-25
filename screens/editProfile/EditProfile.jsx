@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -10,11 +10,11 @@ import {
   Platform
 } from 'react-native'
 
-import Header from '../components/Header'
+import Header from '../../components/Header'
 
-import color from '../style/color'
+import color from '../../style/color'
 
-import useAuth from '../hooks/useAuth'
+import useAuth from '../../hooks/useAuth'
 
 import { useFonts } from 'expo-font'
 
@@ -22,7 +22,7 @@ import * as ImagePicker from 'expo-image-picker'
 
 import { useNavigation, useRoute } from '@react-navigation/native'
 
-import { db } from '../hooks/firebase'
+import { db } from '../../hooks/firebase'
 
 import { serverTimestamp, setDoc, doc, updateDoc } from 'firebase/firestore'
 
@@ -32,12 +32,12 @@ import { RadioButton } from 'react-native-paper'
 
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
 
-import Bar from '../components/StatusBar'
+import Bar from '../../components/StatusBar'
 
 import uuid from 'uuid-random'
 
 import Constants from 'expo-constants'
-import AppTheme from '../components/AppTheme'
+import AppTheme from '../../components/AppTheme'
 import SnackBar from 'rukkiecodes-expo-snackbar'
 
 const EditProfile = () => {
@@ -65,6 +65,7 @@ const EditProfile = () => {
     setAbout,
     passions,
   } = useAuth()
+
   const storage = getStorage()
   const navigation = useNavigation()
   const route = useRoute()
@@ -74,6 +75,15 @@ const EditProfile = () => {
   const [updateLoading, setUpdateLoading] = useState(false)
   const [visible, setVisible] = useState(false)
   const [snackMessage, setSnackMessage] = useState('')
+  const [disabled, setDisabled] = useState(true)
+
+  useEffect(() => {
+    if (userProfile) return
+    else {
+      if (username != '' && displayName != '' && job != '' && company != '' && school != '' && city != '')
+        setDisabled(false)
+    }
+  }, [username, displayName, job, company, school, city])
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -92,7 +102,7 @@ const EditProfile = () => {
         xhr.send(null)
       })
 
-      const link = `avatars/${user?.uid}/${uuid()}`
+      const link = `avatars/${user?.uid == undefined ? user?.user?.uid : user?.uid}/${uuid()}`
 
       const photoRef = ref(storage, link)
 
@@ -114,7 +124,7 @@ const EditProfile = () => {
                   getDownloadURL(uploadTask?.snapshot?.ref)
                     .then(downloadURL => {
                       setImage(downloadURL)
-                      updateDoc(doc(db, 'users', user?.uid), {
+                      updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
                         photoURL: downloadURL,
                         photoLink: link
                       }).finally(async () => {
@@ -138,7 +148,7 @@ const EditProfile = () => {
               getDownloadURL(uploadTask?.snapshot?.ref)
                 .then(downloadURL => {
                   setImage(downloadURL)
-                  updateDoc(doc(db, 'users', user?.uid), {
+                  updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
                     photoURL: downloadURL,
                     photoLink: link
                   }).finally(async () => {
@@ -155,10 +165,10 @@ const EditProfile = () => {
   }
 
   const updateUserProfile = () => {
-    setUpdateLoading(true)
-    if (userProfile)
-      updateDoc(doc(db, 'users', user?.uid), {
-        id: user?.uid,
+    if (userProfile) {
+      setUpdateLoading(true)
+      updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+        id: user?.uid == undefined ? user?.user?.uid : user?.uid,
         displayName: user?.displayName ? user?.displayName : displayName,
         job,
         company,
@@ -171,36 +181,36 @@ const EditProfile = () => {
         setSnackMessage('Profile updated successfully')
         setVisible(true)
       }).catch(() => setUpdateLoading(false))
-
-    else
-      setDoc(doc(db, 'users', user?.uid), {
-        id: user?.uid,
-        displayName: user?.displayName ? user?.displayName : displayName,
+    }
+    else {
+      setUpdateLoading(true)
+      setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+        id: user?.uid == undefined ? user?.user?.uid : user?.uid,
+        username,
+        displayName: user?.user?.displayName ? user?.user?.displayName : displayName,
         job,
         company,
-        username,
         school,
         city,
-        about,
-        gender: '',
         theme: 'light',
         timestamp: serverTimestamp()
       }).then(() => {
         setUpdateLoading(false)
-        setUpdateLoading(false)
         setSnackMessage('Profile updated successfully')
+        setVisible(true)
       }).catch(() => setUpdateLoading(false))
+    }
   }
 
   const maleGender = () => {
     if (userProfile)
-      updateDoc(doc(db, 'users', user?.uid), {
+      updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
         gender: 'male'
       }).finally(() => {
         setChecked('male')
       })
     else
-      setDoc(doc(db, 'users', user?.uid), {
+      setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
         gender: 'male'
       }).finally(() => {
         setChecked('male')
@@ -209,13 +219,13 @@ const EditProfile = () => {
 
   const femaleGender = () => {
     if (userProfile)
-      updateDoc(doc(db, 'users', user?.uid), {
+      updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
         gender: 'female'
       }).finally(() => {
         setChecked('female')
       })
     else
-      setDoc(doc(db, 'users', user?.uid), {
+      setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
         gender: 'female'
       }).finally(() => {
         setChecked('female')
@@ -223,8 +233,8 @@ const EditProfile = () => {
   }
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
-    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf'),
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf'),
   })
 
   if (!loaded) return null
@@ -245,8 +255,8 @@ const EditProfile = () => {
       />
 
       <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
-      <Header showTitle showAratar showBack title='Edit Profile' />
 
+      <Header showBack showTitle showAratar title='Edit Profile' />
 
       <ScrollView style={{ flex: 1 }}>
         <View
@@ -314,7 +324,7 @@ const EditProfile = () => {
                 color: userProfile?.theme == 'dark' ? color.white : color.dark
               }}
             >
-              {userProfile?.displayName ? userProfile?.displayName : user?.displayName ? user?.displayName : 'John Doe'}
+              {userProfile?.displayName ? userProfile?.displayName : user?.displayName ? user?.displayName : 'Display name'}
             </Text>
           </View>
 
@@ -618,12 +628,13 @@ const EditProfile = () => {
 
           <TouchableOpacity
             onPress={updateUserProfile}
+            disabled={disabled}
             style={{
               flex: 1,
               marginTop: 30,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: color.red,
+              backgroundColor: disabled ? (userProfile?.theme == 'dark' ? color.dark : color.labelColor) : color.red,
               borderRadius: 12,
               height: 50
             }}
@@ -676,7 +687,7 @@ const EditProfile = () => {
             }}
           >
             <Image
-              source={require('../assets/icon.png')}
+              source={require('../../assets/icon.png')}
               style={{
                 width: 50,
                 height: 50
@@ -690,7 +701,7 @@ const EditProfile = () => {
                 marginLeft: 10
               }}
             >
-              Version {Constants.manifest.version}
+              Version {Constants?.manifest?.version}
             </Text>
           </View>
         </View>

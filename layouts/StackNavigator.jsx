@@ -6,7 +6,7 @@ const Stack = createStackNavigator()
 
 import BottomNavigation from './BottomNavigation'
 import Login from '../screens/Login'
-import EditProfile from '../screens/EditProfile'
+import EditProfile from '../screens/editProfile/EditProfile'
 import NewMatch from '../screens/modal/NewMatch'
 import Message from '../screens/Message'
 import AddReels from '../screens/AddReels'

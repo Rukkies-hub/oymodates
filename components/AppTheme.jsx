@@ -15,9 +15,9 @@ import * as NavigationBar from 'expo-navigation-bar'
 const AppTheme = () => {
   const { user, userProfile } = useAuth()
 
-  const lightMode = () => updateDoc(doc(db, 'users', user?.uid), { theme: 'light' })
+  const lightMode = () => updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), { theme: 'light' })
 
-  const darkMode = () => updateDoc(doc(db, 'users', user?.uid), { theme: 'dark' })
+  const darkMode = () => updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), { theme: 'dark' })
 
   useEffect(() => {
     NavigationBar.setBackgroundColorAsync(userProfile?.theme == 'dark' ? color.black : color.white)

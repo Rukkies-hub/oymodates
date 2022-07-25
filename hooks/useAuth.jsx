@@ -30,7 +30,7 @@ import { collection, doc, limit, onSnapshot, query, where } from 'firebase/fires
 
 import { useNavigation } from '@react-navigation/native'
 
-import { webClientId, facebookClientId } from '@env'
+import { webClientId, facebookClientId, appToken } from '@env'
 import { ToastAndroid } from 'react-native'
 
 const AuthContext = createContext({})
@@ -156,17 +156,15 @@ export const AuthProvider = ({ children }) => {
   const recoverPassword = () => { }
 
   useEffect(() => {
-    (() => {
-      onAuthStateChanged(auth, user => {
-        if (user) {
-          setUser(user)
-          getUserProfile(user)
-          getPendingSwipes(user)
-        }
-        else setUser(null)
-        setLoadingInitial(false)
-      })
-    })()
+    return onAuthStateChanged(auth, user => {
+      if (user) {
+        setUser(user)
+        getUserProfile(user)
+        getPendingSwipes(user)
+      }
+      else setUser(null)
+      setLoadingInitial(false)
+    })
   }, [])
 
   useEffect(() => {
@@ -218,12 +216,11 @@ export const AuthProvider = ({ children }) => {
         if (profile?.school) setSchool(profile?.school)
         if (profile?.city) setCity(profile?.city)
         if (profile?.gender) setChecked(profile?.gender)
-        if (profile?.screen) setScreen(profile?.screen)
         if (profile?.about) setAbout(profile?.about)
         if (profile?.passions) setPassions([...profile?.passions])
       })
 
-    registerIndieID(user?.uid, 3167, 'ND7GyrPMrqE6c0PdboxvGF')
+    registerIndieID(user?.uid == undefined ? user?.user?.uid : user?.uid, 3167, appToken)
 
     setGoogleLoading(false)
     setFacebookLoading(false)

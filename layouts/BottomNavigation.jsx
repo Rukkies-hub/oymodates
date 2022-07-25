@@ -100,29 +100,47 @@ const BottomNavigation = () => {
         />
 
         {
-          userProfile?.photoURL &&
-          <Tab.Screen
-            name='ProfileTab'
-            component={Profile}
-            listeners={({ navigation }) => ({
-              tabPress: event => {
-                event.preventDefault()
-                navigation.navigate('Profile')
-              }
-            })}
-            options={{
-              tabBarIcon: () =>
-                <Image
-                  source={{ uri: userProfile?.photoURL || user?.photoURL }}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 50
-                  }}
-                />,
-              tabBarLabel: false
-            }}
-          />
+          userProfile?.photoURL ?
+            <Tab.Screen
+              name='ProfileTab'
+              component={Profile}
+              listeners={({ navigation }) => ({
+                tabPress: event => {
+                  event.preventDefault()
+                  if (userProfile)
+                    navigation.navigate('Profile')
+                  else
+                    navigation.navigate('EditProfile')
+                }
+              })}
+              options={{
+                tabBarIcon: () =>
+                  <Image
+                    source={{ uri: userProfile?.photoURL || user?.photoURL }}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: 50
+                    }}
+                  />,
+                tabBarLabel: false
+              }}
+            /> :
+            <Tab.Screen
+              name='ProfileTab'
+              component={Profile}
+              listeners={({ navigation }) => ({
+                tabPress: event => {
+                  event.preventDefault()
+                  navigation.navigate('Profile')
+                }
+              })}
+              options={{
+                tabBarIcon: () =>
+                  <SimpleLineIcons name='user' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />,
+                tabBarLabel: false
+              }}
+            />
         }
       </Tab.Navigator>
     </SafeAreaView>
