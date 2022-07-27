@@ -152,7 +152,7 @@ export const AuthProvider = ({ children }) => {
   const recoverPassword = () => { }
 
   useEffect(() => {
-    return onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, user => {
       if (user) {
         setUser(user)
         getUserProfile(user)

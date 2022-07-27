@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
 
 import { useNavigation } from '@react-navigation/native'
@@ -39,7 +39,7 @@ const Match = () => {
 
   const [stackSize, setStackSize] = useState(2)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     (async () => {
       const passes = await getDocs(collection(db, 'users', user?.uid, 'passes'))
         .then(snapshot => snapshot?.docs?.map(doc => doc?.id))

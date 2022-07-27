@@ -194,19 +194,19 @@ const Login = () => {
                   style={{
                     flex: 1,
                     height: 45,
-                    backgroundColor: color.red,
+                    backgroundColor: authType == 'login' ? color.red : color.white,
                     borderRadius: 12,
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}
                 >
                   {
-                    authLoading ? <ActivityIndicator size='small' color={color.white} /> :
+                    authLoading ? <ActivityIndicator size='small' color={authType == 'login' ? color.white : color.red} /> :
                       <Text
                         style={{
                           fontFamily: 'text',
                           fontSize: 16,
-                          color: color.white
+                          color: authType == 'login' ? color.white : color.red
                         }}
                       >
                         {authType == 'login' ? 'Login' : authType == 'signup' ? 'Sign Up' : 'Forgot Password'}
@@ -214,7 +214,7 @@ const Login = () => {
                   }
                 </TouchableOpacity>
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={() => {
                     setFacebookLoading(true)
                     fbPromptAsync()
@@ -240,9 +240,9 @@ const Login = () => {
                         }}
                       />
                   }
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={() => {
                     setGoogleLoading(true)
                     googlePromptAsync()
@@ -268,7 +268,7 @@ const Login = () => {
                         }}
                       />
                   }
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
 
               <View

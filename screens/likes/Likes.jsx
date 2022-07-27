@@ -34,8 +34,8 @@ const Likes = () => {
 
     const userSwiped = profiles[cardIndex]
 
-    setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'passes', userSwiped?.id), userSwiped)
-    await deleteDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'pendingSwipes', userSwiped?.id))
+    setDoc(doc(db, 'users', user?.uid, 'passes', userSwiped?.id), userSwiped)
+    await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped?.id))
   }
 
   const swipeRight = async cardIndex => {
@@ -45,20 +45,20 @@ const Likes = () => {
 
     const userSwiped = profiles[cardIndex]
 
-    getDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'pendingSwipes', userSwiped?.id))
+    getDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped?.id))
       .then(documentSnapshot => {
         if (documentSnapshot?.exists()) {
-          setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'swipes', userSwiped?.id), userSwiped)
+          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
 
           // CREAT A MATCH
-          setDoc(doc(db, 'matches', generateId(user?.uid == undefined ? user?.user?.uid : user?.uid, userSwiped?.id)), {
+          setDoc(doc(db, 'matches', generateId(user?.uid, userSwiped?.id)), {
             users: {
-              [user?.uid == undefined ? user?.user?.uid : user?.uid]: userProfile,
+              [user?.uid]: userProfile,
               [userSwiped?.id]: userSwiped
             },
-            usersMatched: [user?.uid == undefined ? user?.user?.uid : user?.uid, userSwiped?.id],
+            usersMatched: [user?.uid, userSwiped?.id],
             timestamp: serverTimestamp()
-          }).finally(async () => await deleteDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'pendingSwipes', userSwiped?.id)))
+          }).finally(async () => await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped?.id)))
 
           navigation.navigate('NewMatch', {
             loggedInProfile: userProfile,
@@ -67,7 +67,7 @@ const Likes = () => {
         }
       })
 
-    setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'swipes', userSwiped?.id), userSwiped)
+    setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
   }
 
   const disabled = () => navigation.navigate('SetupModal')

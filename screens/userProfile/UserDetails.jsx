@@ -17,21 +17,8 @@ import generateId from '../../lib/generateId'
 const UserDetails = ({ userProfile, user }) => {
   const { profiles } = useAuth()
   const navigation = useNavigation()
-
-  const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: user?.followersCount })
+  
   const [showMatch, setShowMatch] = useState(false)
-
-  useLayoutEffect(() => {
-    (() => {
-      getLikesById(user?.id, userProfile?.id)
-        .then(res => {
-          setCurrentLikesState({
-            ...currentLikesState,
-            state: res
-          })
-        })
-    })()
-  }, [user])
 
   useLayoutEffect(() => {
     const needle = user?.id
@@ -43,38 +30,6 @@ const UserDetails = ({ userProfile, user }) => {
 
     if (userSwiped) setShowMatch(true)
   }, [user])
-
-  // FOLLOW USER
-  const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'users', user?.id, 'following', userProfile?.id))
-      .then(res => resolve(res.exists()))
-  })
-
-  const updateLike = () => new Promise(async (resolve, reject) => {
-    if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'users', user?.id, 'following', userProfile?.id))
-      await updateDoc(doc(db, 'users', user?.id), {
-        followersCount: increment(-1)
-      })
-    } else {
-      await setDoc(doc(db, 'users', user?.id, 'following', userProfile?.id), {
-        id: userProfile?.id,
-        photoURL: userProfile?.photoURL,
-        username: userProfile?.username
-      })
-      await updateDoc(doc(db, 'users', user?.id), {
-        followersCount: increment(1)
-      })
-    }
-  })
-
-  const handleUpdateLikes = async () => {
-    setCurrentLikesState({
-      state: !currentLikesState.state,
-      counter: currentLikesState.counter + (currentLikesState.state ? -1 : 1)
-    })
-    updateLike()
-  }
 
   // MATCH WITH USER
   const swipeRight = async () => {
@@ -123,7 +78,7 @@ const UserDetails = ({ userProfile, user }) => {
 
   return (
     <ImageBackground
-      source={{ uri: user?.photoURL ? user?.photoURL : 'https://firebasestorage.googleapis.com/v0/b/oymo-16379.appspot.com/o/post%20image%2F1.jpg?alt=media&token=58bfeb2e-2316-4c9c-b8ba-513275ae85d1' }}
+      source={!user?.photoURL ? require('../../assets/background2.jpg') : {uri: user?.photoURL}}
       blurRadius={50}
     >
       <LinearGradient
@@ -193,28 +148,6 @@ const UserDetails = ({ userProfile, user }) => {
             }
           </View>
 
-          <TouchableOpacity
-            onPress={handleUpdateLikes}
-            style={{
-              backgroundColor: color.red,
-              paddingHorizontal: 10,
-              height: 35,
-              borderRadius: 8,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Text
-              style={{
-                color: color.white,
-                fontFamily: 'text',
-                fontSize: 12
-              }}
-            >
-              {currentLikesState.state ? 'Unfollow' : 'Follow'}
-            </Text>
-          </TouchableOpacity>
-
           {
             showMatch &&
             <TouchableOpacity
@@ -232,71 +165,6 @@ const UserDetails = ({ userProfile, user }) => {
               <MaterialCommunityIcons name='heart-multiple-outline' size={18} color={color.white} />
             </TouchableOpacity>
           }
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center'
-          }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              marginRight: 20
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: 'boldText',
-                fontSize: 18,
-                color: userProfile?.theme == 'light' ? color.black : color.white
-              }}
-            >
-              {currentLikesState?.counter ? currentLikesState?.counter : '0'}
-            </Text>
-            <Text
-              style={{
-                fontFamily: 'text',
-                fontSize: 16,
-                color: userProfile?.theme == 'light' ? color.lightText : color.white,
-                marginLeft: 5
-              }}
-            >
-              {currentLikesState?.counter == 1 ? 'Follower' : 'Followers'}
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center'
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: 'boldText',
-                fontSize: 18,
-                color: userProfile?.theme == 'light' ? color.black : color.white
-              }}
-            >
-              {user?.likesCount ? user?.likesCount : '0'}
-            </Text>
-            <Text
-              style={{
-                fontFamily: 'text',
-                fontSize: 16,
-                color: userProfile?.theme == 'light' ? color.lightText : color.white,
-                marginLeft: 5
-              }}
-            >
-              {user?.likesCount == 1 ? 'Like' : 'Likes'}
-            </Text>
-          </View>
         </View>
 
         {
