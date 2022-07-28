@@ -90,6 +90,7 @@ const ReelsComment = () => {
       }
 
       setComment('')
+      setHeight(40)
     }
   }
 
@@ -131,6 +132,7 @@ const ReelsComment = () => {
       })
 
     setReply('')
+    setHeight(40)
 
     await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
       repliesCount: increment(1)
@@ -180,6 +182,7 @@ const ReelsComment = () => {
       })
 
     setReply('')
+    setHeight(40)
 
     setReelsCommentType('comment')
 

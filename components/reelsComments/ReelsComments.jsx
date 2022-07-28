@@ -5,9 +5,8 @@ import {
   Text,
   TouchableWithoutFeedback,
   FlatList,
-  Image,
   Keyboard,
-  TouchableOpacity
+  Dimensions
 } from 'react-native'
 
 import { collection, onSnapshot } from 'firebase/firestore'
@@ -18,12 +17,16 @@ import color from '../../style/color'
 
 import { useFonts } from 'expo-font'
 import LikeReelsComment from '../LikeReelsComment'
-import ReelsCommentReplies from '../ReelsCommentReplies'
+import ReelsCommentReplies from '../reelsCommentReplies/ReelsCommentReplies'
 import ReelsCommentReply from '../ReelsCommentReply'
 import UserAvatar from './components/UserAvatar'
 import UserInfo from './components/UserInfo'
+import useAuth from '../../hooks/useAuth'
+
+const { width } = Dimensions.get('window')
 
 const ReelsComments = ({ reel, background }) => {
+  const { user } = useAuth()
   const [comments, setComments] = useState([])
 
   useEffect(() => {
@@ -38,7 +41,7 @@ const ReelsComments = ({ reel, background }) => {
           )
       )
     })()
-  }, [db])
+  }, [user, db])
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -69,7 +72,7 @@ const ReelsComments = ({ reel, background }) => {
 
             <View
               style={{
-                width: '100%',
+                maxWidth: width - 40,
                 alignItems: 'flex-start'
               }}
             >

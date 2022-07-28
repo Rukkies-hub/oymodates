@@ -58,12 +58,7 @@ const ViewReelsCommentsLikecomments = ({ comment }) => {
         id: comment?.id,
         seen: false,
         reel: comment?.reel,
-        user: {
-          id: userProfile?.id,
-          username: userProfile?.username,
-          displayName: userProfile?.displayName,
-          photoURL: userProfile?.photoURL
-        },
+        user: { id: userProfile?.id },
         timestamp: serverTimestamp()
       }).then(() => {
         axios.post(`https://app.nativenotify.com/api/indie/notification`, {

@@ -58,12 +58,7 @@ const LikeReelsComment = ({ comment }) => {
         id: comment?.id,
         seen: false,
         reel,
-        user: {
-          id: userProfile?.id,
-          username: userProfile?.username,
-          displayName: userProfile?.displayName,
-          photoURL: userProfile?.photoURL
-        },
+        user: { id: userProfile?.id },
         timestamp: serverTimestamp()
       })
     }

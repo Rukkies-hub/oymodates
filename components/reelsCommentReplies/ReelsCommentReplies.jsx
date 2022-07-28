@@ -3,13 +3,16 @@ import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
 
 import { useFonts } from 'expo-font'
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
-import { db } from '../hooks/firebase'
-import color from '../style/color'
-import LikeReelsReply from './LikeReelsReply'
-import useAuth from '../hooks/useAuth'
+import { db } from '../../hooks/firebase'
+import color from '../../style/color'
+import LikeReelsReply from '../LikeReelsReply'
+import useAuth from '../../hooks/useAuth'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import ReelsCommentReplyReply from './ReelsCommentReplyReply'
+import ReelsCommentReplyReply from '../ReelsCommentReplyReply'
 import { Octicons } from '@expo/vector-icons'
+import UserAvatar from './components/UserAvatar'
+import UserInfo from './components/UserInfo'
+import Reply from './components/Reply'
 
 const ReelsCommentReplies = ({ comment, textColor, showAll, background }) => {
   const { user, userProfile, showExpand, setShowExpand } = useAuth()
@@ -18,7 +21,7 @@ const ReelsCommentReplies = ({ comment, textColor, showAll, background }) => {
   const navigation = useNavigation()
   const route = useRoute()
 
-  useEffect(() =>
+  useEffect(() => {
     (() => {
       onSnapshot(query(collection(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'replies'), orderBy('timestamp', 'asc')),
         snapshot =>
@@ -30,11 +33,11 @@ const ReelsCommentReplies = ({ comment, textColor, showAll, background }) => {
           )
       )
     })()
-    , [])
+  }, [user, db])
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
-    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -58,22 +61,7 @@ const ReelsCommentReplies = ({ comment, textColor, showAll, background }) => {
               marginTop: 10
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                comment?.user?.id != user?.uid ?
-                  navigation.navigate('UserProfile', { user: reply?.user }) :
-                  navigation.navigate('Profile')
-              }}
-            >
-              <Image
-                source={{ uri: reply?.user?.photoURL }}
-                style={{
-                  width: 25,
-                  height: 25,
-                  borderRadius: 50,
-                }}
-              />
-            </TouchableOpacity>
+            <UserAvatar user={reply?.user?.id} />
             <View>
               <View
                 style={{
@@ -84,15 +72,7 @@ const ReelsCommentReplies = ({ comment, textColor, showAll, background }) => {
                   paddingVertical: 4,
                 }}
               >
-                <Text
-                  style={{
-                    color: color.white,
-                    fontFamily: 'text',
-                    fontSize: 13
-                  }}
-                >
-                  {reply?.user?.username}
-                </Text>
+                <UserInfo user={reply?.user?.id} />
                 <View
                   style={{
                     flexDirection: 'row',
@@ -101,29 +81,7 @@ const ReelsCommentReplies = ({ comment, textColor, showAll, background }) => {
                     flexWrap: 'wrap'
                   }}
                 >
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start'
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: color.white,
-                        fontFamily: 'boldText',
-                        marginRight: 5
-                      }}
-                    >
-                      @{reply?.reelComment?.user?.username}
-                    </Text>
-                    <Text
-                      style={{
-                        color: color.white
-                      }}
-                    >
-                      {reply?.reply}
-                    </Text>
-                  </View>
+                  <Reply user={reply?.reelComment?.user?.id} reply={reply?.reply} />
                 </View>
               </View>
               {

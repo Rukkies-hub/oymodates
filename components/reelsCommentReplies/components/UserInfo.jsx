@@ -1,11 +1,13 @@
-import { TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import useAuth from '../../../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../../hooks/firebase'
+import color from '../../../style/color'
+import { useFonts } from 'expo-font'
 
-const UserAvatar = ({ user }) => {
+const UserInfo = ({ user }) => {
   const { userProfile } = useAuth()
   const navigation = useNavigation()
   const [userInfo, setUserInfo] = useState(null)
@@ -17,6 +19,12 @@ const UserAvatar = ({ user }) => {
     })()
   }, [])
 
+  const [loaded] = useFonts({
+    boldText: require('../../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
+  })
+
+  if (!loaded) return null
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -25,17 +33,18 @@ const UserAvatar = ({ user }) => {
           navigation.navigate('Profile')
       }}
     >
-      <Image
-        source={{ uri: userInfo?.photoURL }}
+      <Text
         style={{
-          width: 30,
-          height: 30,
-          borderRadius: 50
+          color: color.white,
+          fontFamily: 'boldText',
+          fontSize: 14
         }}
-      />
+      >
+        {userInfo?.username}
+      </Text>
     </TouchableOpacity>
   )
 }
 
-export default UserAvatar
+export default UserInfo
 // in use

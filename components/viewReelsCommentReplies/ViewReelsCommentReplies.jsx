@@ -3,17 +3,19 @@ import { View, Text, FlatList, Image, TouchableOpacity, Dimensions } from 'react
 
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
 
-import { db } from '../hooks/firebase'
+import { db } from '../../hooks/firebase'
 
-import color from '../style/color'
+import color from '../../style/color'
 
 import { useFonts } from 'expo-font'
 
 import { Octicons } from '@expo/vector-icons'
-import LikeReelsReply from './LikeReelsReply'
-import useAuth from '../hooks/useAuth'
-import ReelsCommentReplyReply from './ReelsCommentReplyReply'
+import LikeReelsReply from '../LikeReelsReply'
+import useAuth from '../../hooks/useAuth'
+import ReelsCommentReplyReply from '../ReelsCommentReplyReply'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import UserAvatar from './components/UserAvatar'
+import UserInfo from './components/UserInfo'
 
 const { width } = Dimensions.get('window')
 
@@ -24,7 +26,7 @@ const ViewReelsCommentReplies = ({ comment, screen }) => {
 
   const [replies, setReplies] = useState([])
 
-  useEffect(() =>
+  useEffect(() => {
     (() => {
       onSnapshot(query(collection(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'replies'), orderBy('timestamp', 'asc')),
         snapshot =>
@@ -36,11 +38,11 @@ const ViewReelsCommentReplies = ({ comment, screen }) => {
           )
       )
     })()
-    , [])
+  }, [user, db])
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
-    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -64,22 +66,7 @@ const ViewReelsCommentReplies = ({ comment, screen }) => {
               marginTop: 10
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                comment?.user?.id != user?.uid ?
-                  navigation.navigate('UserProfile', { user: reply?.user }) :
-                  navigation.navigate('Profile')
-              }}
-            >
-              <Image
-                source={{ uri: reply?.user?.photoURL }}
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 50,
-                }}
-              />
-            </TouchableOpacity>
+            <UserAvatar user={reply?.user?.id} />
             <View>
               <View
                 style={{
@@ -90,15 +77,7 @@ const ViewReelsCommentReplies = ({ comment, screen }) => {
                   paddingVertical: 4,
                 }}
               >
-                <Text
-                  style={{
-                    color: color.white,
-                    fontFamily: 'text',
-                    fontSize: 13
-                  }}
-                >
-                  @{reply?.user?.username}
-                </Text>
+                <UserInfo user={reply?.user?.id} />
                 <View
                   style={{
                     flexDirection: 'row'
@@ -112,15 +91,7 @@ const ViewReelsCommentReplies = ({ comment, screen }) => {
                       maxWidth: width - 120
                     }}
                   >
-                    <Text
-                      style={{
-                        color: color.white,
-                        fontFamily: 'boldText',
-                        marginRight: 5
-                      }}
-                    >
-                      @{reply?.reelComment?.user?.username}
-                    </Text>
+                    <UserInfo user={reply?.reelComment?.user?.id} />
                     <Text
                       style={{
                         color: color.white

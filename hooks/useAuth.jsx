@@ -83,6 +83,8 @@ export const AuthProvider = ({ children }) => {
   const [search, setSearch] = useState('')
   const [matches, setMatches] = useState([])
   const [matchesFilter, setMatchesFilter] = useState([])
+  const [reply, setReply] = useState('')
+  const [height, setHeight] = useState(40)
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -331,7 +333,11 @@ export const AuthProvider = ({ children }) => {
         matches,
         setMatches,
         matchesFilter,
-        setMatchesFilter
+        setMatchesFilter,
+        reply,
+        setReply,
+        height,
+        setHeight
       }}
     >
       {!loadingInitial && children}

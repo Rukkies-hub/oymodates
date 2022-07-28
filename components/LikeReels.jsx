@@ -59,19 +59,14 @@ const LikeReels = ({ reel, navigation }) => {
           id: reel?.id,
           seen: false,
           reel,
-          user: {
-            id: userProfile?.id,
-            username: userProfile?.username,
-            displayName: userProfile?.displayName,
-            photoURL: userProfile?.photoURL
-          },
+          user: { id: userProfile?.id },
           timestamp: serverTimestamp()
         }).then(() => {
           axios.post(`https://app.nativenotify.com/api/indie/notification`, {
             subID: reel?.user?.id,
             appId: 3167,
             appToken,
-            title: '👍',
+            title: '❤️❤️❤️❤️',
             message: `@${userProfile?.username} likes to your comment (${reel?.description?.slice(0, 100)})`
           })
         })

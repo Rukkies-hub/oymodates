@@ -1,4 +1,4 @@
-import { TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import useAuth from '../../../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
@@ -28,8 +28,8 @@ const UserAvatar = ({ user }) => {
       <Image
         source={{ uri: userInfo?.photoURL }}
         style={{
-          width: 30,
-          height: 30,
+          width: 25,
+          height: 25,
           borderRadius: 50
         }}
       />

@@ -2,14 +2,14 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { addDoc, collection, doc, getDoc, increment, onSnapshot, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { db } from '../hooks/firebase'
-import color from '../style/color'
-import useAuth from '../hooks/useAuth'
+import { db } from '../../hooks/firebase'
+import color from '../../style/color'
+import useAuth from '../../hooks/useAuth'
 
-import Bar from '../components/StatusBar'
-import ViewReelsCommentsLikecomments from '../components/ViewReelsCommentsLikecomments'
-import PostCommentReply from '../components/PostCommentReply'
-import ViewReelsCommentReplies from '../components/ViewReelsCommentReplies'
+import Bar from '../../components/StatusBar'
+import ViewReelsCommentsLikecomments from '../../components/ViewReelsCommentsLikecomments'
+import PostCommentReply from '../../components/PostCommentReply'
+import ViewReelsCommentReplies from '../../components/viewReelsCommentReplies/ViewReelsCommentReplies'
 
 import { FontAwesome5, Entypo } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
@@ -17,6 +17,9 @@ import { useFonts } from 'expo-font'
 import { appToken } from '@env'
 import axios from 'axios'
 import { BlurView } from 'expo-blur'
+import UserAvatar from './components/UserAvatar'
+import Reply from './components/Reply'
+import Input from './components/Input'
 
 const ViewReelsComments = () => {
   const {
@@ -27,15 +30,17 @@ const ViewReelsComments = () => {
     setReplyCommentProps,
     reelsCommentType,
     replyCommentProps,
-    setReelsCommentType
+    setReelsCommentType,
+    reply,
+    setReply,
+    height,
+    setHeight
   } = useAuth()
 
   const navigation = useNavigation()
   const { comment, background } = useRoute().params
 
   const [_comment, _setComment] = useState('')
-  const [reply, setReply] = useState('')
-  const [height, setHeight] = useState(40)
   const [commentsCount, setCommentsCount] = useState('')
 
   navigation.addListener('blur', () => {
@@ -48,14 +53,14 @@ const ViewReelsComments = () => {
 
   useLayoutEffect(() => setReelsCommentType('reply'), [])
 
-  useLayoutEffect(() =>
+  useLayoutEffect(() => {
     (() => {
       onSnapshot(doc(db, 'reels', comment?.reel?.id),
         doc => {
           setCommentsCount(doc?.data().commentsCount)
         })
     })()
-    , [])
+  }, [user, db])
 
   const sendCommentReply = async () => {
     if (reply != '')
@@ -66,12 +71,7 @@ const ViewReelsComments = () => {
         reelComment: comment,
         likesCount: 0,
         repliesCount: 0,
-        user: {
-          id: userProfile?.id,
-          displayName: userProfile?.displayName,
-          username: userProfile?.username,
-          photoURL: userProfile?.photoURL
-        },
+        user: { id: userProfile?.id },
         timestamp: serverTimestamp()
       }).then(async () => {
         if (comment?.reel?.user?.id != userProfile?.id) {
@@ -83,12 +83,7 @@ const ViewReelsComments = () => {
             id: comment?.reel?.id,
             seen: false,
             reel: comment?.reel,
-            user: {
-              id: userProfile?.id,
-              username: userProfile?.username,
-              displayName: userProfile?.displayName,
-              photoURL: userProfile?.photoURL
-            },
+            user: { id: userProfile?.id },
             timestamp: serverTimestamp()
           })
 
@@ -123,12 +118,7 @@ const ViewReelsComments = () => {
         reelComment: comment,
         likesCount: 0,
         repliesCount: 0,
-        user: {
-          id: userProfile?.id,
-          displayName: userProfile?.displayName,
-          username: userProfile?.username,
-          photoURL: userProfile?.photoURL
-        },
+        user: { id: userProfile?.id },
         timestamp: serverTimestamp()
       }).then(async () => {
         if (comment?.reel?.user?.id != userProfile?.id) {
@@ -140,12 +130,7 @@ const ViewReelsComments = () => {
             id: comment?.reel?.id,
             seen: false,
             reel: comment?.reel,
-            user: {
-              id: userProfile?.id,
-              username: userProfile?.username,
-              displayName: userProfile?.displayName,
-              photoURL: userProfile?.photoURL
-            },
+            user: { id: userProfile?.id },
             timestamp: serverTimestamp()
           })
 
@@ -172,7 +157,7 @@ const ViewReelsComments = () => {
   }
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
@@ -251,54 +236,14 @@ const ViewReelsComments = () => {
               paddingHorizontal: 10
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                comment?.user?.id != user?.uid ?
-                  navigation.navigate('UserProfile', { user: comment?.user }) :
-                  navigation.navigate('Profile')
-              }}
-            >
-              <Image
-                source={{ uri: comment?.user?.photoURL }}
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 50
-                }}
-              />
-            </TouchableOpacity>
+            <UserAvatar user={comment?.user?.id} />
             <View
               style={{
                 width: '100%',
                 alignItems: 'flex-start'
               }}
             >
-              <View
-                style={{
-                  marginLeft: 10,
-                  backgroundColor: color.lightBorderColor,
-                  borderRadius: 12,
-                  paddingHorizontal: 10,
-                  paddingVertical: 4,
-                }}
-              >
-                <Text
-                  style={{
-                    color: color.white,
-                    fontFamily: 'text',
-                    fontSize: 13
-                  }}
-                >
-                  @{comment?.user?.username}
-                </Text>
-                <Text
-                  style={{
-                    color: color.white
-                  }}
-                >
-                  {comment?.comment}
-                </Text>
-              </View>
+              <Reply user={comment?.user?.id} comment={comment?.comment} />
 
               <View
                 style={{
@@ -374,27 +319,7 @@ const ViewReelsComments = () => {
             overflow: 'hidden'
           }}
         >
-          <TextInput
-            multiline
-            value={reelsCommentType == 'reply' ? reply : reply}
-            onChangeText={reelsCommentType == 'reply' ? setReply : setReply}
-            placeholder={reelsCommentType == 'reply' ? `Reply @${comment?.user?.username}` : `Reply @${comment?.user?.username}'s comment`}
-            placeholderTextColor={color.lightText}
-            onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-            style={{
-              fontSize: 18,
-              flex: 1,
-              width: '100%',
-              height,
-              minHeight: 50,
-              maxHeight: 150,
-              fontFamily: 'text',
-              paddingRight: 40 + 50,
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-              backgroundColor: color.white,
-            }}
-          />
+          <Input user={comment?.user?.id} />
 
           <TouchableOpacity
             onPress={reelsCommentType == 'reply' ? sendCommentReply : sendCommentReplyReply}

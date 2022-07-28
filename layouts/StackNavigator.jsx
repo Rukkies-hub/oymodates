@@ -22,7 +22,7 @@ import ReelsComment from '../screens/ReelsComment'
 import ViewVideo from '../screens/modal/ViewVideo'
 import MessageOptions from '../screens/modal/MessageOptions'
 import MessageCamera from '../screens/MessageCamera'
-import ViewReelsComments from '../screens/ViewReelsComments'
+import ViewReelsComments from '../screens/viewReelsComments/ViewReelsComments'
 import SetupModal from '../screens/modal/SetupModal'
 
 import useAuth from '../hooks/useAuth'

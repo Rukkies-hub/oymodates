@@ -28,8 +28,8 @@ const UserAvatar = ({ user }) => {
       <Image
         source={{ uri: userInfo?.photoURL }}
         style={{
-          width: 30,
-          height: 30,
+          width: 25,
+          height: 25,
           borderRadius: 50
         }}
       />
