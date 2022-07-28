@@ -210,7 +210,7 @@ const Reels = () => {
           style={{ flex: 1 }}
           onEndReachedThreshold={0.1}
           onEndReached={() => {
-            if (reels?.length <= 1) return
+            if (reels?.length <= 10) return
             setReelsLimit(reelsLimit + 3)
             getReels()
           }}

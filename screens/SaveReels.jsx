@@ -54,9 +54,9 @@ const SaveReels = (params) => {
         xhr.send(null)
       })
 
-      const sourceRef = ref(storage, `reels/${user?.uid}/video/${uuid()}`)
+      const sourceRef = ref(storage, `reels/${userProfile?.id}/video/${uuid()}`)
 
-      const thumbnailRef = ref(storage, `reels/${user?.uid}/thumbnail/${uuid()}`)
+      const thumbnailRef = ref(storage, `reels/${userProfile?.id}/thumbnail/${uuid()}`)
 
       uploadBytes(sourceRef, blob)
         .then(snapshot => {
@@ -67,7 +67,7 @@ const SaveReels = (params) => {
                   getDownloadURL(thumbnailSnapshot.ref)
                     .then(thumbnailDownloadURL => {
                       addDoc(collection(db, 'reels'), {
-                        user: { id: user?.uid },
+                        user: { id: userProfile?.id },
                         media: downloadURL,
                         mediaLink: snapshot?.ref?._location?.path,
                         thumbnail: thumbnailDownloadURL,
