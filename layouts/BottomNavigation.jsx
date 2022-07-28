@@ -42,7 +42,7 @@ const BottomNavigation = () => {
       <Header showLogo showAdd showNotification />
 
       <Tab.Navigator
-        initialRouteName='Match'
+        initialRouteName='Reels'
         barStyle={{
           backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
           height: 54,

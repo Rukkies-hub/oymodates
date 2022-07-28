@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, SafeAreaView, FlatList, Dimensions, TouchableOpacity, Image, ImageBackground } from 'react-native'
+import { View, Text, SafeAreaView, FlatList, Dimensions, TouchableOpacity, Image, ImageBackground, RefreshControl } from 'react-native'
 
 import { arrayRemove, arrayUnion, collection, doc, getDocs, limit, onSnapshot, query, updateDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
@@ -21,6 +21,10 @@ import { useNavigation } from '@react-navigation/native'
 import UserInfo from './components/UserInfo'
 import UserAvatar from './components/UserAvatar'
 
+const wait = timeout => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const Reels = () => {
   const {
     userProfile,
@@ -32,6 +36,8 @@ const Reels = () => {
     reelsLimit,
     setReelsLimit } = useAuth()
   const mediaRefs = useRef([])
+
+  const [refreshing, setRefreshing] = useState(false)
 
   const navigation = useNavigation()
 
@@ -50,15 +56,22 @@ const Reels = () => {
 
   const getReels = async () => {
     const queryReels = await getDocs(query(collection(db, 'reels'), limit(reelsLimit)))
-    const reels = queryReels?.docs?.sort(() => Math.random() - 0.5)
 
     setReels(
-      reels?.docs?.map(doc => ({
+      queryReels?.docs?.map(doc => ({
         id: doc?.id,
         ...doc?.data()
       }))
     )
   }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true)
+    wait(2000).then(() => {
+      getReels()
+      setRefreshing(false)
+    })
+  }, []);
 
   const disabled = () => navigation.navigate('SetupModal')
 
@@ -209,6 +222,15 @@ const Reels = () => {
           scrollEnabled={true}
           style={{ flex: 1 }}
           onEndReachedThreshold={0.1}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                setReelsLimit(10)
+                onRefresh()
+              }}
+            />
+          }
           onEndReached={() => {
             if (reels?.length <= 10) return
             setReelsLimit(reelsLimit + 3)

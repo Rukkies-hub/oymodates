@@ -2,6 +2,7 @@ import React, {
   createContext,
   useContext,
   useEffect,
+  useLayoutEffect,
   useState
 } from 'react'
 
@@ -26,7 +27,7 @@ import {
 
 import { auth, db } from './firebase'
 
-import { collection, doc, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
+import { collection, doc, getDocs, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 
 import { useNavigation } from '@react-navigation/native'
 
@@ -165,16 +166,16 @@ export const AuthProvider = ({ children }) => {
     })
   }, [])
 
-  useEffect(() => {
-    (() => {
-      onSnapshot(query(collection(db, 'reels'), orderBy('timestamp', 'desc'), limit(reelsLimit)), doc => {
-        setReels(
-          doc?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data()
-          }))
-        )
-      })
+  useLayoutEffect(() => {
+    (async () => {
+      const queryReels = await getDocs(query(collection(db, 'reels'), limit(reelsLimit)))
+
+      setReels(
+        queryReels?.docs?.map(doc => ({
+          id: doc?.id,
+          ...doc?.data()
+        }))
+      )
     })()
   }, [])
 
