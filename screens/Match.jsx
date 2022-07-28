@@ -71,41 +71,41 @@ const Match = () => {
 
     const userSwiped = profiles[cardIndex]
 
-    setDoc(doc(db, 'users', user?.uid, 'passes', userSwiped?.id), userSwiped)
+    setDoc(doc(db, 'users', userProfile?.id, 'passes', userSwiped?.id), userSwiped)
   }
 
-  const swipeRight = async (cardIndex) => {
+  const swipeRight = async cardIndex => {
     setStackSize(stackSize + 1)
     if (!profiles[cardIndex]) return
 
     const userSwiped = profiles[cardIndex]
 
-    getDoc(doc(db, 'users', userSwiped?.id, 'swipes', user?.uid))
+    getDoc(doc(db, 'users', userSwiped?.id, 'swipes', userProfile?.id))
       .then(documentSnapshot => {
         if (documentSnapshot?.exists()) {
-          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
+          setDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped?.id), userSwiped)
 
           // CREAT A MATCH
-          setDoc(doc(db, 'matches', generateId(user?.uid, userSwiped?.id)), {
+          setDoc(doc(db, 'matches', generateId(userProfile?.id, userSwiped?.id)), {
             users: {
-              [user?.uid]: userProfile,
+              [userProfile?.id]: userProfile,
               [userSwiped?.id]: userSwiped
             },
-            usersMatched: [user?.uid, userSwiped?.id],
+            usersMatched: [userProfile?.id, userSwiped?.id],
             timestamp: serverTimestamp()
-          }).finally(async () => await deleteDoc(doc(db, 'users', user?.uid, 'pendingSwipes', userSwiped?.id)))
+          }).finally(async () => await deleteDoc(doc(db, 'users', userProfile?.id, 'pendingSwipes', userSwiped?.id)))
 
           navigation.navigate('NewMatch', {
             loggedInProfile: userProfile,
             userSwiped
           })
         } else {
-          setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
+          setDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped?.id), userSwiped)
         }
       })
 
-    setDoc(doc(db, 'users', userSwiped?.id, 'pendingSwipes', user?.uid), userProfile)
-    setDoc(doc(db, 'users', user?.uid, 'swipes', userSwiped?.id), userSwiped)
+    setDoc(doc(db, 'users', userSwiped?.id, 'pendingSwipes', userProfile?.id), userProfile)
+    setDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped?.id), userSwiped)
   }
 
   const disabled = () => navigation.navigate('SetupModal')

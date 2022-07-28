@@ -130,7 +130,6 @@ const LikesNavigation = ({ navigation }) => {
             name="PendingLikes"
             component={Likes}
             options={{
-              swipeEnabled: pendingSwipes?.length ? false : true,
               title: 'Likes'
             }}
           />

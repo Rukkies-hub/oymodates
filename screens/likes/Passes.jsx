@@ -127,7 +127,7 @@ const Passes = () => {
                         <TouchableOpacity
                           onPress={() => userProfile ? undoPass(pass) : disabled()}
                           style={{
-                            backgroundColor: color.red,
+                            backgroundColor: color.white,
                             width: 40,
                             height: 40,
                             borderRadius: 50,
@@ -136,7 +136,7 @@ const Passes = () => {
                             marginRight: 10
                           }}
                         >
-                          <Feather name='x' size={24} color={color.white} />
+                          <Feather name='x' size={24} color={color.red} />
                         </TouchableOpacity>
                       </View>
                     </View>
