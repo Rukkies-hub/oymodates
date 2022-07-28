@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 const UserInfo = ({ user }) => {
   const { userProfile } = useAuth()
   const navigation = useNavigation()
-  
+
   const [userInfo, setUserInfo] = useState(null)
 
   useEffect(() => {
@@ -59,3 +59,4 @@ const UserInfo = ({ user }) => {
 }
 
 export default UserInfo
+// for reels
