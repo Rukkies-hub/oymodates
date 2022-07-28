@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, SafeAreaView, FlatList, Dimensions, TouchableOpacity, Image, ImageBackground } from 'react-native'
 
 import { arrayRemove, arrayUnion, collection, doc, getDocs, limit, onSnapshot, query, updateDoc } from 'firebase/firestore'
-import { db } from '../hooks/firebase'
+import { db } from '../../hooks/firebase'
 
-import color from '../style/color'
-import ReelsSingle from '../components/ReelsSingle'
+import color from '../../style/color'
+import ReelsSingle from '../../components/ReelsSingle'
 
 const { width, height } = Dimensions.get('window')
 
@@ -15,9 +15,11 @@ import { useFonts } from 'expo-font'
 
 import { LinearGradient } from 'expo-linear-gradient'
 
-import useAuth from '../hooks/useAuth'
-import LikeReels from '../components/LikeReels'
+import useAuth from '../../hooks/useAuth'
+import LikeReels from '../../components/LikeReels'
 import { useNavigation } from '@react-navigation/native'
+import UserInfo from './components/UserInfo'
+import UserAvatar from './components/UserAvatar'
 
 const Reels = () => {
   const {
@@ -61,8 +63,8 @@ const Reels = () => {
   const disabled = () => navigation.navigate('SetupModal')
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
-    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -106,31 +108,8 @@ const Reels = () => {
               marginLeft: 10
             }}
           >
-            {
-              userProfile ?
-                <TouchableOpacity
-                  onPress={() => item?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: item?.user })}
-                >
-                  <Text
-                    style={{
-                      color: color.white,
-                      fontFamily: 'text',
-                      fontSize: 16
-                    }}
-                  >
-                    {item?.user?.username}
-                  </Text>
-                </TouchableOpacity> :
-                <Text
-                  style={{
-                    color: color.white,
-                    fontFamily: 'text',
-                    fontSize: 16
-                  }}
-                >
-                  {item?.user?.username}
-                </Text>
-            }
+            <UserInfo user={item?.user?.id} />
+
             <Text
               style={{
                 color: color.white,
@@ -153,25 +132,7 @@ const Reels = () => {
                 margin: 20
               }}
             >
-              <TouchableOpacity
-                onPress={() => item?.user?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: item?.user })}
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderWidth: 4,
-                  borderRadius: 100,
-                  borderColor: color.white,
-                  overflow: 'hidden'
-                }}
-              >
-                <Image
-                  source={{ uri: item?.user?.photoURL }}
-                  style={{
-                    width: 50,
-                    height: 50
-                  }}
-                />
-              </TouchableOpacity>
+              <UserAvatar user={item?.user?.id} />
 
               <View
                 style={{
@@ -249,6 +210,7 @@ const Reels = () => {
           style={{ flex: 1 }}
           onEndReachedThreshold={0.1}
           onEndReached={() => {
+            if (reels?.length <= 1) return
             setReelsLimit(reelsLimit + 3)
             getReels()
           }}

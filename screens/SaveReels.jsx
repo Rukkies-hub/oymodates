@@ -67,12 +67,7 @@ const SaveReels = (params) => {
                   getDownloadURL(thumbnailSnapshot.ref)
                     .then(thumbnailDownloadURL => {
                       addDoc(collection(db, 'reels'), {
-                        user: {
-                          id: user?.uid,
-                          photoURL: userProfile?.photoURL,
-                          displayName: userProfile?.displayName,
-                          username: userProfile?.username,
-                        },
+                        user: { id: user?.uid },
                         media: downloadURL,
                         mediaLink: snapshot?.ref?._location?.path,
                         thumbnail: thumbnailDownloadURL,

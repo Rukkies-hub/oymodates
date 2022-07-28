@@ -10,7 +10,7 @@ import * as NavigationBar from 'expo-navigation-bar'
 import Match from '../screens/Match'
 import Chat from '../screens/Chat'
 import LikesNavigation from '../screens/likes/LikesNavigation'
-import Reels from '../screens/Reels'
+import Reels from '../screens/reels/Reels'
 import Profile from '../screens/profile/Profile'
 
 import useAuth from '../hooks/useAuth'
