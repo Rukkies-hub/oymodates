@@ -12,23 +12,21 @@ import {
 
 import { collection, onSnapshot } from 'firebase/firestore'
 
-import { db } from '../hooks/firebase'
+import { db } from '../../hooks/firebase'
 
-import color from '../style/color'
+import color from '../../style/color'
 
 import { useFonts } from 'expo-font'
-import LikeReelsComment from './LikeReelsComment'
-import ReelsCommentReplies from './ReelsCommentReplies'
-import ReelsCommentReply from './ReelsCommentReply'
-import { useNavigation } from '@react-navigation/native'
-import useAuth from '../hooks/useAuth'
+import LikeReelsComment from '../LikeReelsComment'
+import ReelsCommentReplies from '../ReelsCommentReplies'
+import ReelsCommentReply from '../ReelsCommentReply'
+import UserAvatar from './components/UserAvatar'
+import UserInfo from './components/UserInfo'
 
 const ReelsComments = ({ reel, background }) => {
-  const { user } = useAuth()
   const [comments, setComments] = useState([])
-  const navigation = useNavigation()
 
-  useEffect(() =>
+  useEffect(() => {
     (() => {
       onSnapshot(collection(db, 'reels', reel?.id, 'comments'),
         snapshot =>
@@ -40,11 +38,11 @@ const ReelsComments = ({ reel, background }) => {
           )
       )
     })()
-    , [])
+  }, [db])
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
-    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -67,22 +65,8 @@ const ReelsComments = ({ reel, background }) => {
               marginBottom: 10
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                comment?.user?.id != user?.uid ?
-                  navigation.navigate('UserProfile', { user: comment?.user }) :
-                  navigation.navigate('Profile')
-              }}
-            >
-              <Image
-                source={{ uri: comment?.user?.photoURL }}
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 50
-                }}
-              />
-            </TouchableOpacity>
+            <UserAvatar user={comment?.user?.id} />
+
             <View
               style={{
                 width: '100%',
@@ -98,23 +82,8 @@ const ReelsComments = ({ reel, background }) => {
                   paddingVertical: 4,
                 }}
               >
-                <TouchableOpacity
-                  onPress={() => {
-                    comment?.user?.id != user?.uid ?
-                      navigation.navigate('UserProfile', { user: comment?.user }) :
-                      navigation.navigate('Profile')
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: color.white,
-                      fontFamily: 'boldText',
-                      fontSize: 14
-                    }}
-                  >
-                    {comment?.user?.username}
-                  </Text>
-                </TouchableOpacity>
+                <UserInfo user={comment?.user?.id} />
+
                 <Text
                   style={{
                     color: color.white,

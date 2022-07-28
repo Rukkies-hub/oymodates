@@ -16,7 +16,7 @@ import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 import { useNavigation, useIsFocused, useRoute } from '@react-navigation/native'
 
-import ReelsComments from '../components/ReelsComments'
+import ReelsComments from '../components/reelsComments/ReelsComments'
 
 import { FontAwesome5, Entypo } from '@expo/vector-icons'
 
@@ -58,12 +58,7 @@ const ReelsComment = () => {
         reel: item,
         commentsCount: 0,
         likesCount: 0,
-        user: {
-          id: userProfile?.id,
-          displayName: userProfile?.displayName,
-          photoURL: userProfile?.photoURL,
-          username: userProfile?.username,
-        },
+        user: { id: userProfile?.id },
         timestamp: serverTimestamp()
       })
 
@@ -80,12 +75,7 @@ const ReelsComment = () => {
           id: item?.id,
           seen: false,
           reel: item,
-          user: {
-            id: userProfile?.id,
-            username: userProfile?.username,
-            displayName: userProfile?.displayName,
-            photoURL: userProfile?.photoURL
-          },
+          user: { id: userProfile?.id },
           timestamp: serverTimestamp()
         }).then(() => {
           axios.post(`https://app.nativenotify.com/api/indie/notification`, {
@@ -114,12 +104,7 @@ const ReelsComment = () => {
         reelComment: comment,
         likesCount: 0,
         repliesCount: 0,
-        user: {
-          id: userProfile?.id,
-          displayName: userProfile?.displayName,
-          username: userProfile?.username,
-          photoURL: userProfile?.photoURL
-        },
+        user: { id: userProfile?.id },
         timestamp: serverTimestamp()
       }).then(async () => {
         if (comment?.reel?.user?.id != userProfile?.id) {
@@ -131,12 +116,7 @@ const ReelsComment = () => {
             id: comment?.reel?.id,
             seen: false,
             reel: comment?.reel,
-            user: {
-              id: userProfile?.id,
-              username: userProfile?.username,
-              displayName: userProfile?.displayName,
-              photoURL: userProfile?.photoURL
-            },
+            user: { id: userProfile?.id },
             timestamp: serverTimestamp()
           }).then(() => {
             axios.post(`https://app.nativenotify.com/api/indie/notification`, {
@@ -169,12 +149,7 @@ const ReelsComment = () => {
         id: comment?.id,
         seen: false,
         reel: comment?.reel,
-        user: {
-          id: userProfile?.id,
-          username: userProfile?.username,
-          displayName: userProfile?.displayName,
-          photoURL: userProfile?.photoURL
-        },
+        user: { id: userProfile?.id },
         timestamp: serverTimestamp()
       }).then(() => {
         axios.post(`https://app.nativenotify.com/api/indie/notification`, {
@@ -200,12 +175,7 @@ const ReelsComment = () => {
         reelReply: comment,
         likesCount: 0,
         repliesCount: 0,
-        user: {
-          id: userProfile?.id,
-          displayName: userProfile?.displayName,
-          username: userProfile?.username,
-          photoURL: userProfile?.photoURL
-        },
+        user: { id: userProfile?.id },
         timestamp: serverTimestamp()
       })
 
