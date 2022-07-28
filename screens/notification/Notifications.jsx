@@ -2,16 +2,18 @@ import { useFonts } from 'expo-font'
 import React, { useState } from 'react'
 import { View, Text, SafeAreaView, FlatList, Pressable, Image, TouchableOpacity } from 'react-native'
 
-import Header from '../components/Header'
-import useAuth from '../hooks/useAuth'
-import color from '../style/color'
+import Header from '../../components/Header'
+import useAuth from '../../hooks/useAuth'
+import color from '../../style/color'
 
 import { AntDesign, MaterialCommunityIcons, Fontisto, Feather, Ionicons } from '@expo/vector-icons'
 import { collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
-import { db } from '../hooks/firebase'
+import { db } from '../../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 
 import { SwipeListView } from 'react-native-swipe-list-view'
+import UserInfo from './components/UserInfo'
+import UserAvatar from './components/UserAvatar'
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -26,12 +28,12 @@ const Notifications = () => {
       await updateDoc(doc(db, 'users', user?.uid, 'notifications', notification?.notification), {
         seen: true
       }).then(() => {
-        if (notification?.activity == 'likes') navigation.navigate('ViewReel', { reel: notification?.reel })
+        if (notification?.activity == 'likes' || notification?.activity == 'comment likes') navigation.navigate('ViewReel', { reel: notification?.reel })
         else if (notification?.activity == 'comment') navigation.navigate('ReelsComment', { item: notification?.reel })
         else if (notification?.activity == 'reply') navigation.navigate('ReelsComment', { item: notification?.reel })
       })
     } else {
-      if (notification?.activity == 'likes') navigation.navigate('ViewReel', { reel: notification?.reel })
+      if (notification?.activity == 'likes' || notification?.activity == 'comment likes') navigation.navigate('ViewReel', { reel: notification?.reel })
       else if (notification?.activity == 'comment') navigation.navigate('ReelsComment', { item: notification?.reel })
       else if (notification?.activity == 'reply') navigation.navigate('ReelsComment', { item: notification?.reel })
     }
@@ -126,7 +128,7 @@ const Notifications = () => {
   )
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
@@ -223,20 +225,13 @@ const Notifications = () => {
                   marginRight: 10
                 }}
               >
-                <Image
-                  source={{ uri: notification?.user?.photoURL }}
-                  style={{
-                    width: 45,
-                    height: 45,
-                    borderRadius: 50
-                  }}
-                />
+                <UserAvatar user={notification?.user?.id} />
                 <View
                   style={{
                     position: 'absolute',
                     bottom: 0,
                     right: -4,
-                    backgroundColor: notification?.activity == 'likes' ? color.red : color.green,
+                    backgroundColor: notification?.activity == 'likes' || notification?.activity == 'comment likes' ? color.red : color.green,
                     borderRadius: 50,
                     width: 20,
                     height: 20,
@@ -245,7 +240,7 @@ const Notifications = () => {
                   }}
                 >
                   {
-                    notification?.activity == 'likes' ?
+                    notification?.activity == 'likes' || notification?.activity == 'comment likes' ?
                       <AntDesign name='heart' size={10} color={color.white} /> :
                       <Fontisto name='comment' size={10} color={color.white} />
                   }
@@ -261,15 +256,7 @@ const Notifications = () => {
                     flexDirection: 'row'
                   }}
                 >
-                  <Text
-                    style={{
-                      color: userProfile?.theme == 'light' ? color.dark : color.white,
-                      fontFamily: 'text',
-                      fontSize: 14
-                    }}
-                  >
-                    {notification?.user?.username}
-                  </Text>
+                  <UserInfo user={notification?.user?.id} />
                   <Text
                     style={{
                       color: userProfile?.theme == 'light' ? color.dark : color.white,

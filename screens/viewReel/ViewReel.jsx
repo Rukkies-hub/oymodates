@@ -1,23 +1,25 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { View, Text, TouchableOpacity, Dimensions, Image, ImageBackground } from 'react-native'
-import color from '../style/color'
-import useAuth from '../hooks/useAuth'
+import color from '../../style/color'
+import useAuth from '../../hooks/useAuth'
 
 import { Video } from 'expo-av'
 
 import { LinearGradient } from 'expo-linear-gradient'
-import LikeReels from '../components/LikeReels'
+import LikeReels from '../../components/LikeReels'
 
 const { width, height } = Dimensions.get('window')
 
 import { FontAwesome, Entypo } from '@expo/vector-icons'
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 
-import Bar from '../components/StatusBar'
+import Bar from '../../components/StatusBar'
 
 import * as NavigationBar from 'expo-navigation-bar'
+import UserInfo from './components/UserInfo'
+import UserAvatar from './components/UserAvatar'
 
-const ViewReel = (props) => {
+const ViewReel = () => {
   const navigation = useNavigation()
   const focus = useIsFocused()
   const { reel } = useRoute().params
@@ -118,15 +120,7 @@ const ViewReel = (props) => {
             marginLeft: 10
           }}
         >
-          <Text
-            style={{
-              color: color.white,
-              fontFamily: 'text',
-              fontSize: 16
-            }}
-          >
-            {reel?.user?.username}
-          </Text>
+          <UserInfo user={reel?.user?.id} />
           <Text
             style={{
               color: color.white,
@@ -146,24 +140,7 @@ const ViewReel = (props) => {
             margin: 20
           }}
         >
-          <TouchableOpacity
-            style={{
-              width: 50,
-              height: 50,
-              borderWidth: 4,
-              borderRadius: 100,
-              borderColor: color.white,
-              overflow: 'hidden'
-            }}
-          >
-            <Image
-              source={{ uri: reel?.user?.photoURL }}
-              style={{
-                width: 50,
-                height: 50
-              }}
-            />
-          </TouchableOpacity>
+          <UserAvatar user={reel?.user?.id} />
 
           <View
             style={{
