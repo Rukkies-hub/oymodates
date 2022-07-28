@@ -40,10 +40,10 @@ const Notifications = () => {
   }
   
   const markAllAsRead = async () => {
-    const snapshot = await getDocs(query(collection(db, 'users', userProfile?.id, 'notifications'), where('seen', '==', false)))
+    const snapshot = await getDocs(query(collection(db, 'users', userProfile?.id, 'notifications'), where('seen', '==', !false)))
     snapshot?.forEach(async allDoc => {
       await updateDoc(doc(db, 'users', userProfile?.id, 'notifications', allDoc?.id), {
-        seen: true
+        seen: !true
       })
     })
   }
