@@ -5,9 +5,12 @@ import { db } from '../../../hooks/firebase'
 import useAuth from '../../../hooks/useAuth'
 import color from '../../../style/color'
 import { useFonts } from 'expo-font'
+import { useNavigation } from '@react-navigation/native'
 
-const UserInfo = ({ user, navigation }) => {
+const UserInfo = ({ user }) => {
   const { userProfile } = useAuth()
+  const navigation = useNavigation()
+  
   const [userInfo, setUserInfo] = useState(null)
 
   useEffect(() => {

@@ -5,9 +5,12 @@ import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../../hooks/firebase'
 import { useFonts } from 'expo-font'
 import color from '../../../style/color'
+import { useNavigation } from '@react-navigation/native'
 
-const UserAvatar = ({ user, navigation }) => {
+const UserAvatar = ({ user }) => {
   const { userProfile } = useAuth()
+  const navigation = useNavigation()
+
   const [userInfo, setUserInfo] = useState(null)
 
   useEffect(() => {
@@ -29,6 +32,7 @@ const UserAvatar = ({ user, navigation }) => {
       {
         userProfile ?
           <TouchableOpacity
+            onPress={() => userInfo?.id == userProfile?.id ? navigation.navigate('Profile') : navigation.navigate('UserProfile', { user: userInfo })}
             style={{
               width: 50,
               height: 50,
