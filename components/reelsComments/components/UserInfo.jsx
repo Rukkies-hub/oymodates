@@ -40,5 +40,4 @@ const UserInfo = ({ user }) => {
 }
 
 export default UserInfo
-
 // in use
