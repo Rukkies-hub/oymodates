@@ -1,4 +1,4 @@
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import React, { useEffect, useLayoutEffect } from 'react'
 
 import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
@@ -33,9 +33,7 @@ const ChatList = () => {
     , [user, db])
 
   const fetchMatches = () => {
-    onSnapshot(query(collection(db, 'matches'),
-      where('usersMatched', 'array-contains', user?.uid == undefined ? user?.user?.uid : user?.uid)
-    ),
+    onSnapshot(query(collection(db, 'matches'), where('usersMatched', 'array-contains', userProfile?.id), orderBy('timestamp', 'desc')),
       snapshot => {
         setMatches(
           snapshot?.docs?.map(doc => ({
