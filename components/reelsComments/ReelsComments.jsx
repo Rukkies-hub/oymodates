@@ -111,7 +111,7 @@ const ReelsComments = ({ reel, background }) => {
                     marginTop: 4
                   }}
                 >
-                  <LikeReelsComment comment={comment} />
+                  <LikeReelsComment comment={comment} reelId={reel?.id} />
 
                   <ReelsCommentReply comment={comment} />
                 </View>

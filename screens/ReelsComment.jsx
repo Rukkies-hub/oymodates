@@ -148,7 +148,7 @@ const ReelsComment = () => {
         activity: 'comment likes',
         text: 'likes your comment',
         notify: comment?.user,
-        id: comment?.id,
+        id: comment?.reel?.id,
         seen: false,
         reel: comment?.reel,
         user: { id: userProfile?.id },

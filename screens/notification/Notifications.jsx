@@ -25,33 +25,33 @@ const Notifications = () => {
 
   const viewNotification = async notification => {
     if (!notification?.seen) {
-      await updateDoc(doc(db, 'users', user?.uid, 'notifications', notification?.notification), {
+      await updateDoc(doc(db, 'users', userProfile?.id, 'notifications', notification?.notification), {
         seen: true
       }).then(() => {
         if (notification?.activity == 'likes' || notification?.activity == 'comment likes') navigation.navigate('ViewReel', { reel: notification?.reel })
-        else if (notification?.activity == 'comment') navigation.navigate('ReelsComment', { item: notification?.reel })
+        else if (notification?.activity == 'comment' || notification?.activity == 'comments') navigation.navigate('ReelsComment', { item: notification?.reel })
         else if (notification?.activity == 'reply') navigation.navigate('ReelsComment', { item: notification?.reel })
       })
     } else {
       if (notification?.activity == 'likes' || notification?.activity == 'comment likes') navigation.navigate('ViewReel', { reel: notification?.reel })
-      else if (notification?.activity == 'comment') navigation.navigate('ReelsComment', { item: notification?.reel })
+      else if (notification?.activity == 'comment' || notification?.activity == 'comments') navigation.navigate('ReelsComment', { item: notification?.reel })
       else if (notification?.activity == 'reply') navigation.navigate('ReelsComment', { item: notification?.reel })
     }
   }
-
+  
   const markAllAsRead = async () => {
-    const snapshot = await getDocs(query(collection(db, 'users', user?.uid, 'notifications'), where('seen', '==', false)))
+    const snapshot = await getDocs(query(collection(db, 'users', userProfile?.id, 'notifications'), where('seen', '==', false)))
     snapshot?.forEach(async allDoc => {
-      await updateDoc(doc(db, 'users', user?.uid, 'notifications', allDoc?.id), {
+      await updateDoc(doc(db, 'users', userProfile?.id, 'notifications', allDoc?.id), {
         seen: true
       })
     })
   }
 
   const clearAll = async () => {
-    const snapshot = await getDocs(collection(db, 'users', user?.uid, 'notifications'))
+    const snapshot = await getDocs(collection(db, 'users', userProfile?.id, 'notifications'))
     snapshot?.forEach(async allDoc => {
-      await deleteDoc(doc(db, 'users', user?.uid, 'notifications', allDoc?.id), {
+      await deleteDoc(doc(db, 'users', userProfile?.id, 'notifications', allDoc?.id), {
         seen: true
       })
     })
@@ -63,14 +63,14 @@ const Notifications = () => {
   }
 
   const deleteNotification = async item =>
-    await deleteDoc(doc(db, 'users', user?.uid, 'notifications', item?.id))
+    await deleteDoc(doc(db, 'users', userProfile?.id, 'notifications', item?.id))
 
 
   const markAsRead = async item => {
     if (item?.seen)
-      await updateDoc(doc(db, 'users', user?.uid, 'notifications', item?.id), { seen: false })
+      await updateDoc(doc(db, 'users', userProfile?.id, 'notifications', item?.id), { seen: false })
     else
-      await updateDoc(doc(db, 'users', user?.uid, 'notifications', item?.id), { seen: true })
+      await updateDoc(doc(db, 'users', userProfile?.id, 'notifications', item?.id), { seen: true })
   }
 
   const renderHiddenItem = ({ item }) => (

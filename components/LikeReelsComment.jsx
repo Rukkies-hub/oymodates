@@ -7,7 +7,7 @@ import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import { useFonts } from 'expo-font'
 
-const LikeReelsComment = ({ comment }) => {
+const LikeReelsComment = ({ comment, reelId }) => {
   const { user, userProfile } = useAuth()
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
@@ -55,7 +55,7 @@ const LikeReelsComment = ({ comment }) => {
         activity: 'comment likes',
         text: 'likes your comment',
         notify: comment?.user,
-        id: comment?.id,
+        id: reelId,
         seen: false,
         reel,
         user: { id: userProfile?.id },
