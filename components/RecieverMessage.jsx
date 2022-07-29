@@ -240,7 +240,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 delayLongPress={100}
                 style={{ maxHeight: 250 }}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
-                onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvarar', { avatar: messages?.media }) : null}
+                onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvatar', { avatar: messages?.media }) : null}
               >
                 <Image
                   source={{ uri: messages?.media }}

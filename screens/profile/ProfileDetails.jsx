@@ -14,7 +14,7 @@ const ProfileDetails = ({ userProfile, user }) => {
 
   return (
     <ImageBackground
-      source={{ uri: userProfile?.photoURL ? userProfile?.photoURL : 'https://firebasestorage.googleapis.com/v0/b/oymo-16379.appspot.com/o/post%20image%2F1.jpg?alt=media&token=58bfeb2e-2316-4c9c-b8ba-513275ae85d1' }}
+      source={!userProfile?.photoURL ? require('../../assets/background2.jpg') : { uri: userProfile?.photoURL }}
       blurRadius={50}
     >
       <LinearGradient
@@ -42,14 +42,18 @@ const ProfileDetails = ({ userProfile, user }) => {
         >
           {
             userProfile?.photoURL || user?.photoURL ?
-              <Image
-                source={{ uri: userProfile?.photoURL ? userProfile?.photoURL : user?.photoURL }}
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 100
-                }}
-              /> :
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ViewAvatar', { avatar: userProfile?.photoURL })}
+              >
+                <Image
+                  source={{ uri: userProfile?.photoURL ? userProfile?.photoURL : user?.photoURL }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 100
+                  }}
+                />
+              </TouchableOpacity> :
               <View
                 style={{
                   width: 80,

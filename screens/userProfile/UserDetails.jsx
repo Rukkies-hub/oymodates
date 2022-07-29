@@ -17,7 +17,7 @@ import generateId from '../../lib/generateId'
 const UserDetails = ({ userProfile, user }) => {
   const { profiles } = useAuth()
   const navigation = useNavigation()
-  
+
   const [showMatch, setShowMatch] = useState(false)
 
   useLayoutEffect(() => {
@@ -78,7 +78,7 @@ const UserDetails = ({ userProfile, user }) => {
 
   return (
     <ImageBackground
-      source={!user?.photoURL ? require('../../assets/background2.jpg') : {uri: user?.photoURL}}
+      source={!user?.photoURL ? require('../../assets/background2.jpg') : { uri: user?.photoURL }}
       blurRadius={50}
     >
       <LinearGradient
@@ -97,14 +97,18 @@ const UserDetails = ({ userProfile, user }) => {
             alignItems: 'center'
           }}
         >
-          <Image
-            source={{ uri: user?.photoURL }}
-            style={{
-              width: 80,
-              height: 80,
-              borderRadius: 100
-            }}
-          />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ViewAvatar', { avatar: user?.photoURL })}
+          >
+            <Image
+              source={{ uri: user?.photoURL }}
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 100
+              }}
+            />
+          </TouchableOpacity>
 
           <View
             style={{

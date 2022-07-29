@@ -17,7 +17,7 @@ import PreviewMessageImage from '../screens/PreviewMessageImage'
 import Profile from '../screens/profile/Profile'
 import Notifications from '../screens/notification/Notifications'
 import ViewReel from '../screens/viewReel/ViewReel'
-import ViewAvarar from '../screens/modal/ViewAvarar'
+import ViewAvatar from '../screens/modal/ViewAvatar'
 import ReelsComment from '../screens/ReelsComment'
 import ViewVideo from '../screens/modal/ViewVideo'
 import MessageOptions from '../screens/modal/MessageOptions'
@@ -61,7 +61,7 @@ const StackNavigator = () => {
 
             <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
               <Stack.Screen name='NewMatch' component={NewMatch} />
-              <Stack.Screen name='ViewAvarar' component={ViewAvarar} />
+              <Stack.Screen name='ViewAvatar' component={ViewAvatar} />
               <Stack.Screen name='ViewVideo' component={ViewVideo} />
               <Stack.Screen
                 name='ReelsOption'

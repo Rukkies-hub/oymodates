@@ -4,10 +4,10 @@ import color from '../../style/color'
 
 import AutoHeightImage from 'react-native-auto-height-image'
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
-const ViewAvarar = (props) => {
-  const avatar = props?.route?.params?.avatar
+const ViewAvatar = () => {
+  const { avatar } = useRoute().params
   const navigation = useNavigation()
 
   return (
@@ -21,12 +21,12 @@ const ViewAvarar = (props) => {
     >
       <AutoHeightImage
         source={{ uri: avatar }}
-        width={Dimensions.get('window').width - 20}
+        width={Dimensions.get('window').width}
         resizeMode='cover'
       />
     </View>
   )
 }
 
-export default ViewAvarar
+export default ViewAvatar
 // in use

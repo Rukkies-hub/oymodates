@@ -238,7 +238,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
               <Pressable
                 delayLongPress={100}
                 style={{ maxHeight: 250 }}
-                onPress={() => navigation.navigate('ViewAvarar', { avatar: messages?.media })}
+                onPress={() => navigation.navigate('ViewAvatar', { avatar: messages?.media })}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
                 <Image
