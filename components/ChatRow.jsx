@@ -21,7 +21,7 @@ const ChatRow = ({ matchDetails }) => {
 
   useLayoutEffect(() => {
     (() => {
-      setMatchedUserInfo(getMatchedUserInfo(matchDetails?.users, user?.uid == undefined ? user?.user?.uid : user?.uid))
+      setMatchedUserInfo(getMatchedUserInfo(matchDetails?.users, userProfile?.id))
     })()
   }, [matchDetails, user])
 

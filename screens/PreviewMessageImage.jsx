@@ -78,9 +78,9 @@ const PreviewMessageImage = () => {
           getDownloadURL(snapshot?.ref)
             .then(downloadURL => {
               addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
-                userId: user?.uid,
+                userId: userProfile?.id,
                 username: userProfile?.username,
-                photoURL: matchDetails?.users[user?.uid].photoURL,
+                photoURL: matchDetails?.users[userProfile?.id].photoURL,
                 mediaLink: snapshot?.ref?._location?.path,
                 mediaType: media?.type,
                 media: downloadURL,
@@ -134,9 +134,9 @@ const PreviewMessageImage = () => {
                   getDownloadURL(thumbnailSnapshot?.ref)
                     .then(thumbnailDownloadURL => {
                       addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
-                        userId: user?.uid,
+                        userId: userProfile?.id,
                         username: userProfile?.username,
-                        photoURL: matchDetails?.users[user?.uid].photoURL,
+                        photoURL: matchDetails?.users[userProfile?.id].photoURL,
                         mediaLink: snapshot?.ref?._location?.path,
                         mediaType: media?.type,
                         media: downloadURL,

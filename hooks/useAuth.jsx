@@ -86,6 +86,9 @@ export const AuthProvider = ({ children }) => {
   const [matchesFilter, setMatchesFilter] = useState([])
   const [reply, setReply] = useState('')
   const [height, setHeight] = useState(40)
+  const [showError, setShowError] = useState(false)
+  const [signInSnack, setSignInSnack] = useState(false)
+  const [signInSnackMessage, setSignInSnackMessage] = useState('')
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -116,38 +119,34 @@ export const AuthProvider = ({ children }) => {
       setGoogleLoading(false)
       setFacebookLoading(false)
     }
-  }, [fbResponse]);
+  }, [fbResponse])
+
+  let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
   const signup = () => {
-    if (signinEmail != '' || signinPassword != '') {
+    if (signinEmail.match(regexEmail) && signinPassword != '') {
       setAuthLoading(true)
       createUserWithEmailAndPassword(auth, signinEmail, signinPassword)
         .then(userCredential => {
           setUser(userCredential)
           setAuthLoading(false)
         }).catch(error => {
-          ToastAndroid.showWithGravity(
-            'Sign up Error. Seems like you already have an account',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP
-          )
+          setSignInSnack(true)
+          setSignInSnackMessage('Email already in use')
         }).finally(() => setAuthLoading(false))
     }
   }
 
   const signin = () => {
-    if (signinEmail != '' || signinPassword != '') {
+    if (signinEmail.match(regexEmail) && signinPassword != '') {
       setAuthLoading(true)
       signInWithEmailAndPassword(auth, signinEmail, signinPassword)
         .then(userCredential => {
           setUser(userCredential)
           setAuthLoading(false)
         }).catch(error => {
-          ToastAndroid.showWithGravity(
-            'Signin Error. Seems like you don`t have an account',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP
-          )
+          setSignInSnack(true)
+          setSignInSnackMessage('Signin Error. Seems like you don`t have an account')
         }).finally(() => setAuthLoading(false))
     }
   }
@@ -338,7 +337,12 @@ export const AuthProvider = ({ children }) => {
         reply,
         setReply,
         height,
-        setHeight
+        setHeight,
+        showError,
+        setShowError,
+        signInSnack,
+        setSignInSnack,
+        signInSnackMessage
       }}
     >
       {!loadingInitial && children}

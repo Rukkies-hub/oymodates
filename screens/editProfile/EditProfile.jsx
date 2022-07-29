@@ -37,8 +37,9 @@ import Bar from '../../components/StatusBar'
 import uuid from 'uuid-random'
 
 import Constants from 'expo-constants'
-import AppTheme from './AppTheme'
+import AppTheme from './components/AppTheme'
 import SnackBar from 'rukkiecodes-expo-snackbar'
+import Payment from './components/Payment'
 
 const EditProfile = () => {
   const {
@@ -194,6 +195,7 @@ const EditProfile = () => {
         company,
         school,
         city,
+        gender: 'male',
         theme: 'light',
         timestamp: serverTimestamp()
       }).then(() => {
@@ -331,7 +333,7 @@ const EditProfile = () => {
           </View>
 
           {
-            userProfile?.displayName != '' &&
+            userProfile &&
             <TouchableOpacity
               onPress={pickImage}
               style={{
@@ -630,6 +632,8 @@ const EditProfile = () => {
           }
 
           {userProfile && <AppTheme />}
+
+          {/* {userProfile && <Payment />} */}
 
           <TouchableOpacity
             onPress={updateUserProfile}

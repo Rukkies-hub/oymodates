@@ -155,9 +155,9 @@ const Message = () => {
     if (input != '') {
       addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
         timestamp: serverTimestamp(),
-        userId: user?.uid,
+        userId: userProfile?.id,
         username: userProfile?.username,
-        photoURL: matchDetails?.users[user?.uid]?.photoURL,
+        photoURL: matchDetails?.users[userProfile?.id]?.photoURL,
         message: input,
         reply: messageReply ? messageReply : null,
         seen: false
@@ -216,7 +216,7 @@ const Message = () => {
       xhr.send(null)
     })
 
-    const sourceRef = ref(storage, `messages/${user?.uid}/audio/${uuid()}`)
+    const sourceRef = ref(storage, `messages/${userProfile?.id}/audio/${uuid()}`)
 
     setRecordingLoading(true)
 
@@ -225,9 +225,9 @@ const Message = () => {
         getDownloadURL(snapshot?.ref)
           .then(downloadURL => {
             addDoc(collection(db, 'matches', matchDetails?.id, 'messages'), {
-              userId: user?.uid,
+              userId: userProfile?.id,
               username: userProfile?.username,
-              photoURL: matchDetails?.users[user?.uid]?.photoURL,
+              photoURL: matchDetails?.users[userProfile?.id]?.photoURL,
               voiceNote: downloadURL,
               mediaLink: snapshot?.ref?._location?.path,
               duration: getDurationFormated(status?.durationMillis),
@@ -265,8 +265,8 @@ const Message = () => {
         showTitle
         showMatchAvatar
         matchDetails={matchDetails}
-        title={getMatchedUserInfo(matchDetails?.users, user?.uid)?.username}
-        matchAvatar={getMatchedUserInfo(matchDetails?.users, user?.uid)?.photoURL}
+        title={getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.username}
+        matchAvatar={getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.photoURL}
         backgroundColor={color.transparent}
       />
 
@@ -286,7 +286,7 @@ const Message = () => {
                 }}
               >
                 <Image
-                  source={{ uri: getMatchedUserInfo(matchDetails?.users, user?.uid)?.photoURL }}
+                  source={{ uri: getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.photoURL }}
                   style={{
                     width: 100,
                     height: 100,
@@ -338,7 +338,7 @@ const Message = () => {
                     fontFamily: 'boldText'
                   }}
                 >
-                  {` ${getMatchedUserInfo(matchDetails?.users, user?.uid)?.username}`}
+                  {` ${getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.username}`}
                 </Text>
               </Text>
             </View> :
@@ -352,7 +352,7 @@ const Message = () => {
               showsVerticalScrollIndicator={false}
               keyExtractor={item => item?.id}
               renderItem={({ item: message }) => (
-                message?.userId === user?.uid ? (
+                message?.userId === userProfile?.id ? (
                   <SenderMessage key={message?.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
                 ) : (
                   <RecieverMessage key={message?.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />

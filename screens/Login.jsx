@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import {
   View,
   Text,
@@ -25,6 +25,8 @@ import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 import * as NavigationBar from 'expo-navigation-bar'
 
+import SnackBar from 'rukkiecodes-expo-snackbar'
+
 const Login = () => {
   const {
     signinEmail,
@@ -44,7 +46,12 @@ const Login = () => {
     googleLoadng,
     setGoogleLoading,
     facebookLoadng,
-    setFacebookLoading
+    setFacebookLoading,
+    showError,
+    setShowError,
+    signInSnack,
+    setSignInSnack,
+    signInSnackMessage
   } = useAuth()
 
   const isFocused = useIsFocused()
@@ -60,6 +67,15 @@ const Login = () => {
   navigation.addListener('blur', () => {
     NavigationBar.setPositionAsync('relative')
   })
+
+  let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+
+  useEffect(() => {
+    if (!signinEmail.match(regexEmail))
+      setShowError(true)
+    else
+      setShowError(false)
+  }, [signinEmail])
 
   const [loaded] = useFonts({
     logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
@@ -77,12 +93,17 @@ const Login = () => {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: color.white,
+        backgroundColor: color.black,
         paddingHorizontal: 10,
         width: Dimensions.get('window').width
       }}
     >
       <Bar color='light' />
+      <SnackBar
+        visible={signInSnack}
+        textColor={color.black}
+        message={signInSnackMessage}
+      />
 
       <KeyboardAvoidingView
         style={{
@@ -136,6 +157,19 @@ const Login = () => {
                   }}
                 />
               </View>
+
+              {
+                signinEmail.length >= 2 &&
+                <Text
+                  style={{
+                    color: color.red,
+                    marginHorizontal: 20,
+                    display: !showError ? 'none' : 'flex'
+                  }}
+                >
+                  Please, enter a valid email
+                </Text>
+              }
 
               {
                 authType != 'forgotPassword' &&

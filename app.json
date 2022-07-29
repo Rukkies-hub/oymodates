@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "host.exp.exponent"
+      "package": "com.rukkiecodes.oymo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
