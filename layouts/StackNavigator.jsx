@@ -26,6 +26,7 @@ import ViewReelsComments from '../screens/viewReelsComments/ViewReelsComments'
 import SetupModal from '../screens/modal/SetupModal'
 
 import useAuth from '../hooks/useAuth'
+import ReelsOption from '../screens/modal/ReelsOption'
 
 const StackNavigator = () => {
   const { user, userProfile } = useAuth()
@@ -62,6 +63,14 @@ const StackNavigator = () => {
               <Stack.Screen name='NewMatch' component={NewMatch} />
               <Stack.Screen name='ViewAvarar' component={ViewAvarar} />
               <Stack.Screen name='ViewVideo' component={ViewVideo} />
+              <Stack.Screen
+                name='ReelsOption'
+                component={ReelsOption}
+                options={{
+                  animationEnabled: true,
+                  ...TransitionPresets.ModalSlideFromBottomIOS
+                }}
+              />
               <Stack.Screen
                 name='MessageOptions'
                 component={MessageOptions}

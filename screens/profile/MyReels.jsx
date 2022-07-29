@@ -88,6 +88,8 @@ const MyReels = () => {
             renderItem={({ item: reel }) => (
               <Pressable
                 onPress={() => navigation.navigate('ViewReel', { reel })}
+                onLongPress={() => navigation.navigate('ReelsOption', { reel })}
+                delayLongPress={100}
                 style={{
                   padding: 5,
                   flexDirection: 'row',
@@ -106,11 +108,7 @@ const MyReels = () => {
                   }}
                 />
 
-                <View
-                  style={{
-                    flex: 1,
-                  }}
-                >
+                <View style={{ flex: 1 }}>
                   <Text
                     numberOfLines={1}
                     style={{
@@ -127,7 +125,7 @@ const MyReels = () => {
                       fontSize: 13
                     }}
                   >
-                    Video - {reel?.user?.username}
+                    Video - {userProfile?.username}
                   </Text>
                   <View
                     style={{
