@@ -165,17 +165,19 @@ export const AuthProvider = ({ children }) => {
     })
   }, [])
 
-  useLayoutEffect(() => {
-    (async () => {
-      const queryReels = await getDocs(query(collection(db, 'reels'), limit(reelsLimit)))
+  const getReels = async () => {
+    const queryReels = await getDocs(query(collection(db, 'reels'), limit(reelsLimit), orderBy('timestamp', 'desc')))
 
-      setReels(
-        queryReels?.docs?.map(doc => ({
-          id: doc?.id,
-          ...doc?.data()
-        }))
-      )
-    })()
+    setReels(
+      queryReels?.docs?.map(doc => ({
+        id: doc?.id,
+        ...doc?.data()
+      }))
+    )
+  }
+
+  useLayoutEffect(() => {
+    getReels()
   }, [])
 
   const getPendingSwipes = (user) => {
@@ -342,7 +344,8 @@ export const AuthProvider = ({ children }) => {
         setShowError,
         signInSnack,
         setSignInSnack,
-        signInSnackMessage
+        signInSnackMessage,
+        getReels
       }}
     >
       {!loadingInitial && children}

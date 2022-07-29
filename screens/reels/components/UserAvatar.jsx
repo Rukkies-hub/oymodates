@@ -6,6 +6,7 @@ import { db } from '../../../hooks/firebase'
 import { useFonts } from 'expo-font'
 import color from '../../../style/color'
 import { useNavigation } from '@react-navigation/native'
+import { SimpleLineIcons } from '@expo/vector-icons'
 
 const UserAvatar = ({ user }) => {
   const { userProfile } = useAuth()
@@ -36,27 +37,40 @@ const UserAvatar = ({ user }) => {
             style={{
               width: 50,
               height: 50,
-              borderWidth: 4,
+              borderWidth: userInfo?.photoURL ? 4 : 2,
               borderRadius: 100,
               borderColor: color.white,
-              overflow: 'hidden'
+              overflow: 'hidden',
+              backgroundColor: color.faintBlack,
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
-            <Image
-              source={{ uri: userInfo?.photoURL }}
-              style={{
-                width: 50,
-                height: 50
-              }}
-            />
+            {
+              userInfo?.photoURL ?
+                <Image
+                  source={{ uri: userInfo?.photoURL }}
+                  style={{
+                    width: 50,
+                    height: 50
+                  }}
+                /> :
+                <SimpleLineIcons name='user' size={20} color={color.white} />
+            }
           </TouchableOpacity> :
-          <Image
-            source={{ uri: userInfo?.photoURL }}
-            style={{
-              width: 50,
-              height: 50
-            }}
-          />
+          <>
+            {
+              userInfo?.photoURL ?
+                <Image
+                  source={{ uri: userInfo?.photoURL }}
+                  style={{
+                    width: 50,
+                    height: 50
+                  }}
+                /> :
+                <SimpleLineIcons name='user' size={20} color={color.white} />
+            }
+          </>
       }
     </>
   )

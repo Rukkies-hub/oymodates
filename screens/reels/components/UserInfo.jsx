@@ -41,7 +41,7 @@ const UserInfo = ({ user }) => {
                 fontSize: 16
               }}
             >
-              {userInfo?.username}
+              @{userInfo?.username}
             </Text>
           </TouchableOpacity> :
           <Text
@@ -51,7 +51,7 @@ const UserInfo = ({ user }) => {
               fontSize: 16
             }}
           >
-            {userInfo?.username}
+            @{userInfo?.username}
           </Text>
       }
     </>

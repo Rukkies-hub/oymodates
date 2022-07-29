@@ -52,12 +52,11 @@ const Match = () => {
       const swipededUserIds = (await swipes).length > 0 ? swipes : ['test']
 
 
-      onSnapshot(query(collection(db, 'users'),
-        where('id', 'not-in', [...passeedUserIds, ...swipededUserIds])
-      ),
+      onSnapshot(query(collection(db, 'users'), where('id', 'not-in', [...passeedUserIds, ...swipededUserIds])),
         snapshot => {
           setProfiles(
-            snapshot?.docs?.filter(doc => doc?.id !== user?.uid)
+            snapshot?.docs?.filter(doc => doc?.data()?.photoURL != null)
+              .filter(doc => doc?.id !== user?.uid)
               .map(doc => ({
                 id: doc?.id,
                 ...doc?.data()

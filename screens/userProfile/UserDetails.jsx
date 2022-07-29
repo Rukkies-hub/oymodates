@@ -6,13 +6,14 @@ import color from '../../style/color'
 import Bar from '../../components/StatusBar'
 import Header from '../../components/Header'
 
-import { Feather, Fontisto, MaterialCommunityIcons } from '@expo/vector-icons'
+import { Feather, Fontisto, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import useAuth from '../../hooks/useAuth'
 import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import generateId from '../../lib/generateId'
+import { BlurView } from 'expo-blur'
 
 const UserDetails = ({ userProfile, user }) => {
   const { profiles } = useAuth()
@@ -97,18 +98,35 @@ const UserDetails = ({ userProfile, user }) => {
             alignItems: 'center'
           }}
         >
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ViewAvatar', { avatar: user?.photoURL })}
-          >
-            <Image
-              source={{ uri: user?.photoURL }}
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: 100
-              }}
-            />
-          </TouchableOpacity>
+          {
+            user?.photoURL ?
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ViewAvatar', { avatar: user?.photoURL })}
+            >
+              <Image
+                source={{ uri: user?.photoURL }}
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 100
+                }}
+              />
+              </TouchableOpacity> :
+              <BlurView
+                intensity={50}
+                tint={userProfile?.theme == 'dark' ? 'dark' : 'light'}
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 100,
+                  backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <SimpleLineIcons name='user' size={30} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+              </BlurView>
+          }
 
           <View
             style={{

@@ -631,7 +631,7 @@ const EditProfile = () => {
             </TouchableOpacity>
           }
 
-          {userProfile && <AppTheme />}
+          {/* {userProfile && <AppTheme />} */}
 
           {/* {userProfile && <Payment />} */}
 

@@ -55,7 +55,7 @@ const Likes = () => {
           })
         }
       })
-    
+
     setDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped?.id), userSwiped)
   }
 
@@ -110,6 +110,17 @@ const Likes = () => {
                         }}
                       />
 
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('UserProfile', { user: like })}
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%'
+                        }}
+                      />
+
                       <View
                         style={{
                           position: 'absolute',
@@ -118,7 +129,8 @@ const Likes = () => {
                           width: '100%',
                           flexDirection: 'row',
                           justifyContent: 'space-evenly',
-                          marginBottom: 10
+                          marginBottom: 10,
+                          zIndex: 10
                         }}
                       >
                         <TouchableOpacity

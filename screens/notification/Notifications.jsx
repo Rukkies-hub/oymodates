@@ -16,7 +16,7 @@ import UserInfo from './components/UserInfo'
 import UserAvatar from './components/UserAvatar'
 
 const wait = (timeout) => {
-  return new Promise(resolve => setTimeout(resolve, timeout));
+  return new Promise(resolve => setTimeout(resolve, timeout))
 }
 
 const Notifications = () => {
@@ -38,7 +38,7 @@ const Notifications = () => {
       else if (notification?.activity == 'reply') navigation.navigate('ReelsComment', { item: notification?.reel })
     }
   }
-  
+
   const markAllAsRead = async () => {
     const snapshot = await getDocs(query(collection(db, 'users', userProfile?.id, 'notifications'), where('seen', '==', !false)))
     snapshot?.forEach(async allDoc => {
@@ -151,43 +151,48 @@ const Notifications = () => {
           paddingHorizontal: 10
         }}
       >
-        <TouchableOpacity
-          onPress={markAllAsRead}
-          style={{
-            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
-            height: 35,
-            paddingHorizontal: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 8
-          }}
-        >
-          <Text
-            style={{
-              color: userProfile?.theme == 'dark' ? color.white : color.dark,
-              fontFamily: 'text'
-            }}
-          >
-            Mark all as read
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={clearAll}
-          style={{
-            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
-            height: 35,
-            paddingHorizontal: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 8,
-            marginLeft: 10,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <Feather name='trash-2' size={20} color={color.red} />
-        </TouchableOpacity>
+        {
+          notifications.length >= 1 &&
+          <>
+            <TouchableOpacity
+              onPress={markAllAsRead}
+              style={{
+                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                height: 35,
+                paddingHorizontal: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 8
+              }}
+            >
+              <Text
+                style={{
+                  color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                  fontFamily: 'text'
+                }}
+              >
+                Mark all as read
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={clearAll}
+              style={{
+                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                height: 35,
+                paddingHorizontal: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 8,
+                marginLeft: 10,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <Feather name='trash-2' size={20} color={color.red} />
+            </TouchableOpacity>
+          </>
+        }
       </View>
 
       <SwipeListView

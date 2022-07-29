@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import Bar from '../../components/StatusBar'
 import Header from '../../components/Header'
+import { BlurView } from 'expo-blur'
 
 const ProfileDetails = ({ userProfile, user }) => {
   const navigation = useNavigation()
@@ -54,7 +55,9 @@ const ProfileDetails = ({ userProfile, user }) => {
                   }}
                 />
               </TouchableOpacity> :
-              <View
+              <BlurView
+                intensity={50}
+                tint={userProfile?.theme == 'dark' ? 'dark' : 'light'}
                 style={{
                   width: 80,
                   height: 80,
@@ -65,7 +68,7 @@ const ProfileDetails = ({ userProfile, user }) => {
                 }}
               >
                 <SimpleLineIcons name='user' size={30} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
-              </View>
+              </BlurView>
           }
 
           <View

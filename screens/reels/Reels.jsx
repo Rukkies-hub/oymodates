@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, SafeAreaView, FlatList, Dimensions, TouchableOpacity, Image, ImageBackground, RefreshControl } from 'react-native'
 
-import { arrayRemove, arrayUnion, collection, doc, getDocs, limit, onSnapshot, query, updateDoc } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, collection, doc, getDocs, limit, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 
 import color from '../../style/color'
@@ -34,7 +34,9 @@ const Reels = () => {
     reels,
     setReels,
     reelsLimit,
-    setReelsLimit } = useAuth()
+    getReels,
+    setReelsLimit
+  } = useAuth()
   const mediaRefs = useRef([])
 
   const [refreshing, setRefreshing] = useState(false)
@@ -53,17 +55,6 @@ const Reels = () => {
       }
     })
   })
-
-  const getReels = async () => {
-    const queryReels = await getDocs(query(collection(db, 'reels'), limit(reelsLimit)))
-
-    setReels(
-      queryReels?.docs?.map(doc => ({
-        id: doc?.id,
-        ...doc?.data()
-      }))
-    )
-  }
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true)
@@ -123,14 +114,17 @@ const Reels = () => {
           >
             <UserInfo user={item?.user?.id} />
 
-            <Text
-              style={{
-                color: color.white,
-                fontSize: 16
-              }}
-            >
-              {item?.description}
-            </Text>
+            {
+              item?.description != '' &&
+              <Text
+                style={{
+                  color: color.white,
+                  fontSize: 16
+                }}
+              >
+                {item?.description}
+              </Text>
+            }
           </View>
 
           {/* CONTROLS */}
@@ -150,10 +144,10 @@ const Reels = () => {
               <View
                 style={{
                   paddingVertical: 10,
-                  borderRadius: 50,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginTop: 20
+                  marginTop: 20,
+                  marginBottom: 50
                 }}
               >
                 <LikeReels reel={item} />
