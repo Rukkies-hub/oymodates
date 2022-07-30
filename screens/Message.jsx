@@ -53,7 +53,7 @@ import Slider from '@react-native-community/slider'
 
 const Message = () => {
   const navigation = useNavigation()
-  const { user, userProfile, messageReply, setMessageReply } = useAuth()
+  const { user, userProfile, messageReply, setMessageReply, theme } = useAuth()
 
   const { matchDetails } = useRoute().params
 
@@ -257,7 +257,7 @@ const Message = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
       <Header
@@ -298,7 +298,7 @@ const Message = () => {
                     width: 40,
                     height: 40,
                     borderWidth: 2,
-                    borderColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                    borderColor: theme == 'dark' ? color.dark : color.offWhite,
                     borderRadius: 100,
                     overflow: 'hidden',
                     position: 'absolute',
@@ -329,7 +329,7 @@ const Message = () => {
                   marginTop: 20,
                   fontFamily: 'text',
                   fontSize: 16,
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark
+                  color: theme == 'dark' ? color.white : color.dark
                 }}
               >
                 You matched with
@@ -371,7 +371,7 @@ const Message = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginHorizontal: 10,
-                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
                 marginTop: 10,
                 borderTopLeftRadius: 12,
                 borderTopRightRadius: 12,
@@ -384,7 +384,7 @@ const Message = () => {
                   flexDirection: 'row',
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+                  backgroundColor: theme == 'dark' ? color.black : color.white,
                   flex: 1,
                   borderRadius: 12,
                   overflow: 'hidden',
@@ -436,14 +436,14 @@ const Message = () => {
                       minimumValue={0}
                       maximumValue={100}
                       style={{ flex: 1 }}
-                      minimumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
-                      maximumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
-                      thumbTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                      minimumTrackTintColor={theme == 'dark' ? color.white : color.blue}
+                      maximumTrackTintColor={theme == 'dark' ? color.white : color.blue}
+                      thumbTintColor={theme == 'dark' ? color.white : color.blue}
                     />
                     <TouchableOpacity
                       activeOpacity={1}
                       style={{
-                        backgroundColor: userProfile?.theme == 'dark' ? color.white : color.faintBlue,
+                        backgroundColor: theme == 'dark' ? color.white : color.faintBlue,
                         width: 30,
                         height: 30,
                         borderRadius: 50,
@@ -451,7 +451,7 @@ const Message = () => {
                         alignItems: 'center'
                       }}
                     >
-                      <AntDesign name='caretright' size={20} color={userProfile?.theme == 'dark' ? color.black : color.blue} />
+                      <AntDesign name='caretright' size={20} color={theme == 'dark' ? color.black : color.blue} />
                     </TouchableOpacity>
                   </View>
                 }
@@ -460,7 +460,7 @@ const Message = () => {
                   <Text
                     numberOfLines={3}
                     style={{
-                      color: userProfile?.theme == 'light' ? color.dark : color.white,
+                      color: theme == 'light' ? color.dark : color.white,
                       marginLeft: messageReply?.media ? 10 : 0
                     }}
                   >
@@ -472,7 +472,7 @@ const Message = () => {
                   <Text
                     numberOfLines={3}
                     style={{
-                      color: userProfile?.theme == 'light' ? color.dark : color.white,
+                      color: theme == 'light' ? color.dark : color.white,
                       marginLeft: messageReply?.media ? 10 : 0,
                       marginVertical: 10
                     }}
@@ -493,7 +493,7 @@ const Message = () => {
                     borderRadius: 12
                   }}
                 >
-                  <AntDesign name='close' size={24} color={userProfile?.theme == 'light' ? color.dark : color.white} />
+                  <AntDesign name='close' size={24} color={theme == 'light' ? color.dark : color.white} />
                 </TouchableOpacity>
               }
             </TouchableOpacity>
@@ -504,7 +504,7 @@ const Message = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
               paddingHorizontal: 10,
-              backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
               minHeight: 50,
               overflow: 'hidden',
               position: 'relative',
@@ -525,7 +525,7 @@ const Message = () => {
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}>
-                  <MaterialCommunityIcons name='camera-outline' color={userProfile?.theme == 'light' ? color.lightText : color.white} size={26} />
+                  <MaterialCommunityIcons name='camera-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -536,7 +536,7 @@ const Message = () => {
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}>
-                  <MaterialCommunityIcons name='image-outline' color={userProfile?.theme == 'light' ? color.lightText : color.white} size={26} />
+                  <MaterialCommunityIcons name='image-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
                 </TouchableOpacity>
               </>
             }
@@ -558,7 +558,7 @@ const Message = () => {
                     style={{
                       fontSize: 18,
                       fontFamily: 'text',
-                      color: userProfile?.theme == 'light' ? color.lightText : color.white
+                      color: theme == 'light' ? color.lightText : color.white
                     }}
                   >
                     Recording...
@@ -571,14 +571,14 @@ const Message = () => {
                   onSubmitEditing={sendMessage}
                   onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                   placeholder='Aa..'
-                  placeholderTextColor={userProfile?.theme == 'light' ? color.lightText : color.white}
+                  placeholderTextColor={theme == 'light' ? color.lightText : color.white}
                   style={{
                     fontSize: 18,
                     flex: 1,
                     height,
                     maxHeight: 70,
                     fontFamily: 'text',
-                    color: userProfile?.theme == 'light' ? color.dark : color.white
+                    color: theme == 'light' ? color.dark : color.white
                   }}
                 />
             }
@@ -595,7 +595,7 @@ const Message = () => {
                 }}>
                 <FontAwesome5
                   name='paper-plane'
-                  color={userProfile?.theme == 'light' ? color.lightText : color.white}
+                  color={theme == 'light' ? color.lightText : color.white}
                   size={20}
                 />
               </TouchableOpacity>
@@ -620,11 +620,11 @@ const Message = () => {
               }}>
               {
                 recordingLoading ?
-                  <ActivityIndicator size='small' color={userProfile?.theme == 'light' ? color.lightText : color.white} /> :
+                  <ActivityIndicator size='small' color={theme == 'light' ? color.lightText : color.white} /> :
                   <FontAwesome5
                     size={20}
                     name='microphone-alt'
-                    color={userProfile?.theme == 'light' ? color.lightText : color.white}
+                    color={theme == 'light' ? color.lightText : color.white}
                   />
               }
             </TouchableOpacity>

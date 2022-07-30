@@ -33,7 +33,7 @@ const { width, height } = Dimensions.get('window')
 
 const Match = () => {
   const navigation = useNavigation()
-  const { user, userProfile, profiles, setProfiles } = useAuth()
+  const { user, userProfile, profiles, setProfiles, theme } = useAuth()
 
   const swipeRef = useRef(null)
 
@@ -124,7 +124,7 @@ const Match = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
       <View style={{ flex: 1, marginTop: -5 }}>
@@ -188,7 +188,7 @@ const Match = () => {
                 <View
                   key={card?.id}
                   style={{
-                    backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+                    backgroundColor: color.transparent,
                     width,
                     height: height - 112,
                     marginTop: -25,
@@ -399,7 +399,7 @@ const Match = () => {
               <View
                 style={{
                   flex: 1,
-                  backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+                  backgroundColor: color.transparent,
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}
@@ -412,7 +412,7 @@ const Match = () => {
                 <Text
                   style={{
                     fontFamily: 'text',
-                    color: userProfile?.theme == 'light' ? color.lightText : color.white,
+                    color: theme == 'light' ? color.lightText : color.white,
                     marginTop: 30
                   }}
                 >

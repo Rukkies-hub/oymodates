@@ -65,6 +65,7 @@ const EditProfile = () => {
     about,
     setAbout,
     passions,
+    theme
   } = useAuth()
 
   const storage = getStorage()
@@ -93,6 +94,7 @@ const EditProfile = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
+      aspect: [16, 9]
     })
 
     if (!result?.cancelled) {
@@ -195,7 +197,6 @@ const EditProfile = () => {
         company,
         school,
         city,
-        gender: 'male',
         theme: 'light',
         timestamp: serverTimestamp()
       }).then(() => {
@@ -204,36 +205,6 @@ const EditProfile = () => {
         setVisible(true)
       }).catch(() => setUpdateLoading(false))
     }
-  }
-
-  const maleGender = () => {
-    if (userProfile)
-      updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-        gender: 'male'
-      }).finally(() => {
-        setChecked('male')
-      })
-    else
-      setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-        gender: 'male'
-      }).finally(() => {
-        setChecked('male')
-      })
-  }
-
-  const femaleGender = () => {
-    if (userProfile)
-      updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-        gender: 'female'
-      }).finally(() => {
-        setChecked('female')
-      })
-    else
-      setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-        gender: 'female'
-      }).finally(() => {
-        setChecked('female')
-      })
   }
 
   const [loaded] = useFonts({
@@ -247,18 +218,18 @@ const EditProfile = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
       <SnackBar
         visible={visible}
         message={snackMessage}
-        background={userProfile?.theme == 'dark' ? color.dark : color.white}
-        textColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+        background={theme == 'dark' ? color.dark : color.white}
+        textColor={theme == 'dark' ? color.white : color.dark}
         shadowColor={color.black}
       />
 
-      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+      <Bar color={theme == 'dark' ? 'light' : 'dark'} />
 
       <Header showBack showTitle showAratar title='Edit Profile' />
 
@@ -288,10 +259,10 @@ const EditProfile = () => {
                   borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: userProfile?.theme == 'dark' ? color.black : color.offWhite
+                  backgroundColor: theme == 'dark' ? color.black : color.offWhite
                 }}
               >
-                <SimpleLineIcons name='user' size={30} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
+                <SimpleLineIcons name='user' size={30} color={theme == 'dark' ? color.white : color.lightText} />
               </View>
           }
 
@@ -312,7 +283,7 @@ const EditProfile = () => {
             >
               <Text
                 style={{
-                  color: userProfile?.theme == 'dark' ? (userProfile?.username ? color.white : color.offWhite) : (userProfile?.username ? color.dark : color.lightText),
+                  color: theme == 'dark' ? (userProfile?.username ? color.white : color.offWhite) : (userProfile?.username ? color.dark : color.lightText),
                   fontFamily: 'boldText',
                   fontSize: 20
                 }}
@@ -325,7 +296,7 @@ const EditProfile = () => {
               style={{
                 fontFamily: 'text',
                 fontSize: !userProfile?.username ? 18 : null,
-                color: userProfile?.theme == 'dark' ? color.white : color.dark
+                color: theme == 'dark' ? color.white : color.dark
               }}
             >
               {userProfile?.displayName ? userProfile?.displayName : user?.displayName ? user?.displayName : 'Display name'}
@@ -341,15 +312,15 @@ const EditProfile = () => {
                 height: 40,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
                 borderRadius: 12,
                 marginLeft: 10
               }}
             >
               {
                 uploadLoading ?
-                  <ActivityIndicator size='small' color={userProfile?.theme == 'dark' ? color.white : color.dark} /> :
-                  <AntDesign name='picture' size={24} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+                  <ActivityIndicator size='small' color={theme == 'dark' ? color.white : color.dark} /> :
+                  <AntDesign name='picture' size={24} color={theme == 'dark' ? color.white : color.dark} />
               }
             </TouchableOpacity>
           }
@@ -367,16 +338,16 @@ const EditProfile = () => {
             autoCapitalize='none'
             textContentType='username'
             autoCorrect={false}
-            placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+            placeholderTextColor={theme == 'dark' ? color.white : color.dark}
             onChangeText={setUsername}
             style={{
-              backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
               paddingHorizontal: 10,
               borderRadius: 12,
               height: 45,
               fontFamily: 'text',
               marginBottom: 20,
-              color: userProfile?.theme == 'dark' ? color.white : color.dark
+              color: theme == 'dark' ? color.white : color.dark
             }}
           />
 
@@ -385,16 +356,16 @@ const EditProfile = () => {
             <TextInput
               value={displayName}
               placeholder='Display name'
-              placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+              placeholderTextColor={theme == 'dark' ? color.white : color.dark}
               onChangeText={setDisplayName}
               style={{
-                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
                 paddingHorizontal: 10,
                 borderRadius: 12,
                 height: 45,
                 fontFamily: 'text',
                 marginBottom: 20,
-                color: userProfile?.theme == 'dark' ? color.white : color.dark
+                color: theme == 'dark' ? color.white : color.dark
               }}
             />
           }
@@ -403,15 +374,15 @@ const EditProfile = () => {
             value={job}
             onChangeText={setJob}
             placeholder='Enter your occupation'
-            placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+            placeholderTextColor={theme == 'dark' ? color.white : color.dark}
             style={{
-              backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
               paddingHorizontal: 10,
               borderRadius: 12,
               height: 45,
               fontFamily: 'text',
               marginBottom: 20,
-              color: userProfile?.theme == 'dark' ? color.white : color.dark
+              color: theme == 'dark' ? color.white : color.dark
             }}
           />
 
@@ -419,15 +390,15 @@ const EditProfile = () => {
             value={company}
             onChangeText={setCompany}
             placeholder='Where do you work'
-            placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+            placeholderTextColor={theme == 'dark' ? color.white : color.dark}
             style={{
-              backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
               paddingHorizontal: 10,
               borderRadius: 12,
               height: 45,
               fontFamily: 'text',
               marginBottom: 20,
-              color: userProfile?.theme == 'dark' ? color.white : color.dark
+              color: theme == 'dark' ? color.white : color.dark
             }}
           />
 
@@ -435,15 +406,15 @@ const EditProfile = () => {
             value={school}
             onChangeText={setSchool}
             placeholder='School'
-            placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+            placeholderTextColor={theme == 'dark' ? color.white : color.dark}
             style={{
-              backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
               paddingHorizontal: 10,
               borderRadius: 12,
               height: 45,
               fontFamily: 'text',
               marginBottom: 20,
-              color: userProfile?.theme == 'dark' ? color.white : color.dark
+              color: theme == 'dark' ? color.white : color.dark
             }}
           />
 
@@ -451,14 +422,14 @@ const EditProfile = () => {
             value={city}
             onChangeText={setCity}
             placeholder='I live in (City)'
-            placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+            placeholderTextColor={theme == 'dark' ? color.white : color.dark}
             style={{
-              backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
               paddingHorizontal: 10,
               borderRadius: 12,
               height: 45,
               fontFamily: 'text',
-              color: userProfile?.theme == 'dark' ? color.white : color.dark
+              color: theme == 'dark' ? color.white : color.dark
             }}
           />
 
@@ -485,21 +456,50 @@ const EditProfile = () => {
                 onChangeText={setAbout}
                 placeholder='About me'
                 onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-                placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+                placeholderTextColor={theme == 'dark' ? color.white : color.dark}
                 style={{
-                  backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                  backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
                   paddingHorizontal: 10,
                   borderRadius: 12,
                   height: 45,
                   fontFamily: 'text',
                   marginBottom: 20,
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark
+                  color: theme == 'dark' ? color.white : color.dark
                 }}
               />
             </View>
           }
 
           {
+            !userProfile?.gender &&
+            <View
+              style={{
+                minHeight: 45
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Gender')}
+                style={{
+                  backgroundColor: color.red,
+                  height: 50,
+                  borderRadius: 12,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Text
+                  style={{
+                    color: color.white,
+                    fontFamily: 'text'
+                  }}
+                >
+                  Set your gender
+                </Text>
+              </TouchableOpacity>
+            </View>
+          }
+
+          {/* {
             userProfile &&
             <View
               style={{
@@ -527,13 +527,13 @@ const EditProfile = () => {
                     value='male'
                     color={color.red}
                     status={checked === 'male' ? 'checked' : 'unchecked'}
-                    uncheckedColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+                    uncheckedColor={theme == 'dark' ? color.white : color.dark}
                     onPress={maleGender}
                   />
                   <Text
                     style={{
                       fontFamily: 'text',
-                      color: userProfile?.theme == 'dark' ? color.white : color.dark
+                      color: theme == 'dark' ? color.white : color.dark
                     }}
                   >
                     Male
@@ -550,14 +550,14 @@ const EditProfile = () => {
                   <RadioButton
                     value='female'
                     color={color.red}
-                    uncheckedColor={userProfile?.theme == 'dark' ? color.white : color.dark}
+                    uncheckedColor={theme == 'dark' ? color.white : color.dark}
                     status={checked === 'female' ? 'checked' : 'unchecked'}
                     onPress={femaleGender}
                   />
                   <Text
                     style={{
                       fontFamily: 'text',
-                      color: userProfile?.theme == 'dark' ? color.white : color.dark
+                      color: theme == 'dark' ? color.white : color.dark
                     }}
                   >
                     Female
@@ -565,7 +565,7 @@ const EditProfile = () => {
                 </View>
               </View>
             </View>
-          }
+          } */}
 
           {
             userProfile &&
@@ -592,7 +592,7 @@ const EditProfile = () => {
                   justifyContent: 'flex-start',
                   alignItems: 'center',
                   flexWrap: 'wrap',
-                  backgroundColor: passions?.length < 1 ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
+                  backgroundColor: passions?.length < 1 ? (theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
                   borderRadius: 12,
                   height: 45,
                   marginBottom: 20,
@@ -607,7 +607,7 @@ const EditProfile = () => {
                         style={{
                           paddingHorizontal: 10,
                           paddingVertical: 5,
-                          backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                          backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
                           borderRadius: 100,
                           marginBottom: 10,
                           marginRight: 10
@@ -615,7 +615,7 @@ const EditProfile = () => {
                       >
                         <Text
                           style={{
-                            color: userProfile?.theme == 'dark' ? color.white : color.lightText,
+                            color: theme == 'dark' ? color.white : color.lightText,
                             fontSize: 12,
                             fontFamily: 'text',
                             textTransform: 'capitalize'
@@ -631,7 +631,7 @@ const EditProfile = () => {
             </TouchableOpacity>
           }
 
-          {/* {userProfile && <AppTheme />} */}
+          {userProfile && <AppTheme />}
 
           {/* {userProfile && <Payment />} */}
 
@@ -643,7 +643,7 @@ const EditProfile = () => {
               marginTop: 30,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: disabled ? (userProfile?.theme == 'dark' ? color.dark : color.labelColor) : color.red,
+              backgroundColor: disabled ? (theme == 'dark' ? color.dark : color.labelColor) : color.red,
               borderRadius: 12,
               height: 50
             }}
@@ -671,7 +671,7 @@ const EditProfile = () => {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
               borderRadius: 12,
               height: 50
             }}
@@ -704,7 +704,7 @@ const EditProfile = () => {
             />
             <Text
               style={{
-                color: userProfile?.theme == 'dark' ? color.offWhite : color.lightText,
+                color: theme == 'dark' ? color.offWhite : color.lightText,
                 fontFamily: 'text',
                 fontSize: 18,
                 marginLeft: 10

@@ -8,7 +8,7 @@ import { useFonts } from 'expo-font'
 import getMatchedUserInfo from '../lib/getMatchedUserInfo'
 
 const SearchChat = () => {
-  const { user, userProfile, search, setSearch, matches, setMatchesFilter } = useAuth()
+  const { user, userProfile, search, setSearch, matches, setMatchesFilter, theme } = useAuth()
 
   const searchFilter = text => {
     if (text) {
@@ -38,7 +38,7 @@ const SearchChat = () => {
     <View
       style={{
         height: 40,
-        backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+        backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
         borderRadius: 12,
         overflow: 'hidden',
         flexDirection: 'row',
@@ -48,17 +48,17 @@ const SearchChat = () => {
         paddingHorizontal: 10
       }}
     >
-      <Entypo name='magnifying-glass' size={24} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
+      <Entypo name='magnifying-glass' size={24} color={theme == 'dark' ? color.white : color.lightText} />
       <TextInput
         value={search}
         placeholder='Search'
         onChangeText={text => searchFilter(text)}
-        placeholderTextColor={userProfile?.theme == 'dark' ? color.white : color.lightText}
+        placeholderTextColor={theme == 'dark' ? color.white : color.lightText}
         style={{
           flex: 1,
           marginLeft: 10,
           fontFamily: 'text',
-          color: userProfile?.theme == 'dark' ? color.white : color.dark
+          color: theme == 'dark' ? color.white : color.dark
         }}
       />
     </View>

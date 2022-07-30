@@ -15,11 +15,17 @@ import { appToken } from '@env'
 
 LogBox.ignoreAllLogs()
 
+const theme = {
+  colors: {
+    background: color.transparent,
+  },
+}
+
 export default function App () {
   registerNNPushToken(3167, appToken)
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={theme}>
       <AuthProvider>
         <MenuProvider>
           <StackNavigator />

@@ -12,7 +12,7 @@ import { db } from '../hooks/firebase'
 import { collection, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 
 const ChatRow = ({ matchDetails }) => {
-  const { user, userProfile } = useAuth()
+  const { user, userProfile, theme } = useAuth()
   const navigation = useNavigation()
 
   const [matchedUserInfo, setMatchedUserInfo] = useState({})
@@ -73,8 +73,9 @@ const ChatRow = ({ matchDetails }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 10,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
-        borderRadius: 12
+        backgroundColor: theme == 'dark' ? color.black : color.white,
+        borderRadius: 12,
+        paddingHorizontal: 5
       }}
     >
       <View
@@ -130,7 +131,7 @@ const ChatRow = ({ matchDetails }) => {
             style={{
               fontSize: 18,
               fontFamily: 'text',
-              color: userProfile?.theme == 'light' ? color.dark : color.white
+              color: theme == 'light' ? color.dark : color.white
             }}
           >
             {matchedUserInfo?.username}
@@ -139,7 +140,7 @@ const ChatRow = ({ matchDetails }) => {
             numberOfLines={1}
             style={{
               fontSize: 12,
-              color: userProfile?.theme == 'light' ? color.dark : color.white,
+              color: theme == 'light' ? color.dark : color.white,
               fontFamily: 'text'
             }}
           >

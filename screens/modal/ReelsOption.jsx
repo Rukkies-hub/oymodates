@@ -9,7 +9,7 @@ import { deleteDoc, doc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 
 const ReelsOption = () => {
-  const { userProfile } = useAuth()
+  const { userProfile, theme } = useAuth()
   const navigation = useNavigation()
   const { reel } = useRoute().params
 
@@ -42,7 +42,7 @@ const ReelsOption = () => {
       <View
         style={{
           minWidth: Dimensions.get('window').width,
-          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+          backgroundColor: theme == 'dark' ? color.black : color.white,
           padding: 20,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20
@@ -55,7 +55,7 @@ const ReelsOption = () => {
             justifyContent: 'flex-start',
             alignItems: 'center',
             marginBottom: 10,
-            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
             borderRadius: 12,
             paddingBottom: 10
           }}
@@ -74,7 +74,7 @@ const ReelsOption = () => {
             <Text
               numberOfLines={1}
               style={{
-                color: userProfile?.theme == 'dark' ? color.white : color.black,
+                color: theme == 'dark' ? color.white : color.black,
                 fontSize: 18
               }}
             >
@@ -83,7 +83,7 @@ const ReelsOption = () => {
 
             <Text
               style={{
-                color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                color: theme == 'dark' ? color.white : color.dark,
                 fontSize: 13
               }}
             >

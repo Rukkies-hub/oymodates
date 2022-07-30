@@ -53,7 +53,7 @@ const Passes = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
       {
@@ -63,7 +63,7 @@ const Passes = () => {
               flex: 1,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+              backgroundColor: color.transparent
             }}
           >
             <View
@@ -79,7 +79,7 @@ const Passes = () => {
           <ScrollView
             style={{
               flex: 1,
-              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+              backgroundColor: color.transparent,
               marginTop: 20
             }}
           >

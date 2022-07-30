@@ -35,7 +35,7 @@ import uuid from 'uuid-random'
 import Bar from '../components/StatusBar'
 
 const PreviewMessageImage = () => {
-  const { userProfile, user } = useAuth()
+  const { userProfile, user, theme } = useAuth()
 
   const { matchDetails, media } = useRoute().params
   const navigation = useNavigation()
@@ -171,10 +171,10 @@ const PreviewMessageImage = () => {
       <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+          backgroundColor: color.transparent
         }}
       >
-        <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+        <Bar color={theme == 'dark' ? 'light' : 'dark'} />
 
         <Header showBack showTitle title={`Preview ${media?.type}`} />
 
@@ -211,12 +211,13 @@ const PreviewMessageImage = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingHorizontal: 10,
-            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
             minHeight: 50,
             overflow: 'hidden',
             position: 'relative',
             marginHorizontal: 10,
-            borderRadius: 12
+            borderRadius: 12,
+            marginBottom: 15
           }}
         >
           <TextInput
@@ -226,14 +227,14 @@ const PreviewMessageImage = () => {
             onSubmitEditing={sendMessage}
             onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
             placeholder='Aa..'
-            placeholderTextColor={userProfile?.theme == 'light' ? color.lightText : color.white}
+            placeholderTextColor={theme == 'light' ? color.lightText : color.white}
             style={{
               fontSize: 18,
               flex: 1,
               height,
               maxHeight: 70,
               fontFamily: 'text',
-              color: userProfile?.theme == 'light' ? color.dark : color.white
+              color: theme == 'light' ? color.dark : color.white
             }}
           />
 
@@ -248,10 +249,10 @@ const PreviewMessageImage = () => {
             }}>
             {
               sendLoading ?
-                <ActivityIndicator color={userProfile?.theme == 'light' ? color.lightText : color.white} size='small' /> :
+                <ActivityIndicator color={theme == 'light' ? color.lightText : color.white} size='small' /> :
                 <FontAwesome5
                   name='paper-plane'
-                  color={userProfile?.theme == 'light' ? color.lightText : color.white}
+                  color={theme == 'light' ? color.lightText : color.white}
                   size={20}
                 />
             }

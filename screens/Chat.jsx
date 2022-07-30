@@ -16,7 +16,7 @@ const { width } = Dimensions.get('window')
 
 const Chat = () => {
   const navigation = useNavigation()
-  const { pendingSwipes, userProfile } = useAuth()
+  const { pendingSwipes, userProfile, theme } = useAuth()
 
   const [loaded] = useFonts({
     text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -28,7 +28,7 @@ const Chat = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
       {
@@ -115,7 +115,8 @@ const Chat = () => {
               style={{
                 paddingHorizontal: 10,
                 flexDirection: 'row',
-                justifyContent: 'flex-start'
+                justifyContent: 'flex-start',
+                marginVertical: 20
               }}
             >
               <Image
@@ -148,7 +149,7 @@ const Chat = () => {
                         style={{
                           fontFamily: 'text',
                           fontSize: 18,
-                          color: userProfile?.theme == 'light' ? color.lightText : color.white
+                          color: theme == 'light' ? color.lightText : color.white
                         }}
                       >
                         {pendingSwipes[0]?.username}
@@ -179,7 +180,7 @@ const Chat = () => {
                 <Text
                   style={{
                     fontFamily: 'text',
-                    color: userProfile?.theme == 'light' ? color.lightText : color.white
+                    color: theme == 'light' ? color.lightText : color.white
                   }}
                 >
                   Recently active, match now!

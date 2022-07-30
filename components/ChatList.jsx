@@ -19,7 +19,8 @@ const ChatList = () => {
     matches,
     setMatches,
     matchesFilter,
-    setMatchesFilter
+    setMatchesFilter,
+    theme
   } = useAuth()
 
   useEffect(() => {
@@ -78,7 +79,7 @@ const ChatList = () => {
             height: 45,
             borderRadius: 12,
           }, {
-            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
             right: 20,
           }]
         }
@@ -96,7 +97,7 @@ const ChatList = () => {
         style={{
           flex: 1,
           height: 70,
-          paddingHorizontal: 10
+          paddingHorizontal: 5
         }}
         renderItem={({ item }) => <ChatRow matchDetails={item} />}
         renderHiddenItem={renderHiddenItem}
@@ -110,7 +111,7 @@ const ChatList = () => {
       <View
         style={{
           flex: 1,
-          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+          backgroundColor: theme == 'dark' ? color.black : color.white,
           justifyContent: 'center',
           alignItems: 'center'
         }}
@@ -120,7 +121,7 @@ const ChatList = () => {
         <Text
           style={{
             fontFamily: 'text',
-            color: userProfile?.theme == 'light' ? color.lightText : color.white,
+            color: theme == 'light' ? color.lightText : color.white,
             marginTop: 20
           }}
         >

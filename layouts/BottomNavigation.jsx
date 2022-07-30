@@ -20,31 +20,31 @@ import color from '../style/color'
 
 const BottomNavigation = () => {
   const Tab = createMaterialBottomTabNavigator()
-  const { pendingSwipes, userProfile, user } = useAuth()
+  const { pendingSwipes, userProfile, user, theme } = useAuth()
 
   useEffect(() => {
-    NavigationBar.setBackgroundColorAsync(userProfile?.theme == 'dark' ? color.black : color.white)
-    NavigationBar.setButtonStyleAsync(userProfile?.theme == 'dark' ? 'light' : 'dark')
+    NavigationBar.setBackgroundColorAsync(theme == 'dark' ? color.black : color.white)
+    NavigationBar.setButtonStyleAsync(theme == 'dark' ? 'light' : 'dark')
   }, [])
 
-  NavigationBar.setBackgroundColorAsync(userProfile?.theme == 'dark' ? color.black : color.white)
-  NavigationBar.setButtonStyleAsync(userProfile?.theme == 'dark' ? 'light' : 'dark')
+  NavigationBar.setBackgroundColorAsync(theme == 'dark' ? color.black : color.white)
+  NavigationBar.setButtonStyleAsync(theme == 'dark' ? 'light' : 'dark')
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
-      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+      <Bar color={theme == 'dark' ? 'light' : 'dark'} />
 
       <Header showLogo showAdd showNotification />
 
       <Tab.Navigator
         initialRouteName='Match'
         barStyle={{
-          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+          backgroundColor: color.transparent,
           height: 54,
           elevation: 0
         }}
@@ -53,7 +53,7 @@ const BottomNavigation = () => {
           name='Match'
           component={Match}
           options={{
-            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+            tabBarIcon: () => <MaterialCommunityIcons name='heart-multiple-outline' size={20} color={theme == 'dark' ? color.white : color.black} />
           }}
         />
 
@@ -63,7 +63,7 @@ const BottomNavigation = () => {
               name='Likes'
               component={LikesNavigation}
               options={{
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />,
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={theme == 'dark' ? color.white : color.black} />,
                 tabBarBadge: pendingSwipes?.length
               }}
             /> :
@@ -71,7 +71,7 @@ const BottomNavigation = () => {
               name='Likes'
               component={LikesNavigation}
               options={{
-                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+                tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={theme == 'dark' ? color.white : color.black} />
               }}
             />
         }
@@ -81,7 +81,7 @@ const BottomNavigation = () => {
           component={Reels}
           options={{
             tabBarIcon: () =>
-              <Ionicons name='videocam-outline' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+              <Ionicons name='videocam-outline' size={20} color={theme == 'dark' ? color.white : color.black} />
           }}
         />
 
@@ -89,7 +89,7 @@ const BottomNavigation = () => {
           name='Chat'
           component={Chat}
           options={{
-            tabBarIcon: () => <Ionicons name='chatbubbles-outline' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+            tabBarIcon: () => <Ionicons name='chatbubbles-outline' size={20} color={theme == 'dark' ? color.white : color.black} />
           }}
         />
 
@@ -105,7 +105,7 @@ const BottomNavigation = () => {
               }
             })}
             options={{
-              tabBarIcon: () => <SimpleLineIcons name='user' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />,
+              tabBarIcon: () => <SimpleLineIcons name='user' size={20} color={theme == 'dark' ? color.white : color.dark} />,
               tabBarLabel: false
             }}
           />
@@ -138,7 +138,7 @@ const BottomNavigation = () => {
                   }
                   {
                     !userProfile?.photoURL &&
-                    <SimpleLineIcons name='user' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+                    <SimpleLineIcons name='user' size={20} color={theme == 'dark' ? color.white : color.dark} />
                   }
                 </>
               ),

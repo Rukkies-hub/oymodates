@@ -9,8 +9,10 @@ import { useNavigation } from '@react-navigation/native'
 import Bar from '../../components/StatusBar'
 import Header from '../../components/Header'
 import { BlurView } from 'expo-blur'
+import useAuth from '../../hooks/useAuth'
 
 const ProfileDetails = ({ userProfile, user }) => {
+  const { theme } = useAuth()
   const navigation = useNavigation()
 
   return (
@@ -19,12 +21,12 @@ const ProfileDetails = ({ userProfile, user }) => {
       blurRadius={50}
     >
       <LinearGradient
-        colors={[color.transparent, userProfile?.theme == 'dark' ? color.black : color.white]}
+        colors={[color.transparent, theme == 'dark' ? color.black : color.white]}
         style={{
           paddingHorizontal: 10
         }}
       >
-        <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+        <Bar color={theme == 'dark' ? 'light' : 'dark'} />
 
         <Header
           showBack
@@ -57,17 +59,17 @@ const ProfileDetails = ({ userProfile, user }) => {
               </TouchableOpacity> :
               <BlurView
                 intensity={50}
-                tint={userProfile?.theme == 'dark' ? 'dark' : 'light'}
+                tint={theme == 'dark' ? 'dark' : 'light'}
                 style={{
                   width: 80,
                   height: 80,
                   borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: userProfile?.theme == 'dark' ? color.black : color.offWhite
+                  backgroundColor: theme == 'dark' ? color.black : color.offWhite
                 }}
               >
-                <SimpleLineIcons name='user' size={30} color={userProfile?.theme == 'dark' ? color.white : color.lightText} />
+                <SimpleLineIcons name='user' size={30} color={theme == 'dark' ? color.white : color.lightText} />
               </BlurView>
           }
 
@@ -89,7 +91,7 @@ const ProfileDetails = ({ userProfile, user }) => {
               >
                 <Text
                   style={{
-                    color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                    color: theme == 'dark' ? color.white : color.dark,
                     fontFamily: 'boldText',
                     fontSize: 20
                   }}
@@ -101,7 +103,7 @@ const ProfileDetails = ({ userProfile, user }) => {
             <Text
               style={{
                 fontFamily: 'text',
-                color: userProfile?.theme == 'dark' ? color.white : color.lightText
+                color: theme == 'dark' ? color.white : color.lightText
               }}
             >
               {userProfile?.displayName}
@@ -118,7 +120,7 @@ const ProfileDetails = ({ userProfile, user }) => {
               width: 40,
             }}
           >
-            <FontAwesome name='edit' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+            <FontAwesome name='edit' size={20} color={theme == 'dark' ? color.white : color.dark} />
           </TouchableOpacity>
         </View>
 
@@ -133,7 +135,7 @@ const ProfileDetails = ({ userProfile, user }) => {
               style={{
                 fontFamily: 'text',
                 fontSize: 16,
-                color: userProfile?.theme == 'dark' ? color.white : color.dark
+                color: theme == 'dark' ? color.white : color.dark
               }}
             >
               {userProfile?.about}
@@ -160,7 +162,7 @@ const ProfileDetails = ({ userProfile, user }) => {
                     style={{
                       paddingHorizontal: 10,
                       paddingVertical: 5,
-                      backgroundColor: userProfile?.theme == 'dark' ? color.faintBlack : color.faintWhite,
+                      backgroundColor: theme == 'dark' ? color.faintBlack : color.faintWhite,
                       borderRadius: 100,
                       marginBottom: 10,
                       marginRight: 5
@@ -168,7 +170,7 @@ const ProfileDetails = ({ userProfile, user }) => {
                   >
                     <Text
                       style={{
-                        color: userProfile?.theme == 'dark' ? color.white : color.lightText,
+                        color: theme == 'dark' ? color.white : color.lightText,
                         fontSize: 12,
                         fontFamily: 'text',
                         textTransform: 'capitalize'
@@ -191,7 +193,7 @@ const ProfileDetails = ({ userProfile, user }) => {
             alignItems: 'center'
           }}
         >
-          <Feather name='home' size={14} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+          <Feather name='home' size={14} color={theme == 'dark' ? color.white : color.dark} />
 
           <View
             style={{
@@ -205,7 +207,7 @@ const ProfileDetails = ({ userProfile, user }) => {
               style={{
                 fontFamily: 'text',
                 fontSize: 16,
-                color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                color: theme == 'dark' ? color.white : color.dark,
                 marginLeft: 5
               }}
             >
@@ -215,7 +217,7 @@ const ProfileDetails = ({ userProfile, user }) => {
               style={{
                 fontFamily: 'boldText',
                 fontSize: 16,
-                color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                color: theme == 'dark' ? color.white : color.dark,
                 marginLeft: 5
               }}
             >
@@ -232,7 +234,7 @@ const ProfileDetails = ({ userProfile, user }) => {
             alignItems: 'center'
           }}
         >
-          <Fontisto name='date' size={14} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+          <Fontisto name='date' size={14} color={theme == 'dark' ? color.white : color.dark} />
 
           <View
             style={{
@@ -246,7 +248,7 @@ const ProfileDetails = ({ userProfile, user }) => {
               style={{
                 fontFamily: 'text',
                 fontSize: 16,
-                color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                color: theme == 'dark' ? color.white : color.dark,
                 marginLeft: 5
               }}
             >
@@ -256,7 +258,7 @@ const ProfileDetails = ({ userProfile, user }) => {
               style={{
                 fontFamily: 'boldText',
                 fontSize: 16,
-                color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                color: theme == 'dark' ? color.white : color.dark,
                 marginLeft: 5
               }}
             >
@@ -274,13 +276,13 @@ const ProfileDetails = ({ userProfile, user }) => {
             alignItems: 'center'
           }}
         >
-          <Feather name='briefcase' size={14} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+          <Feather name='briefcase' size={14} color={theme == 'dark' ? color.white : color.dark} />
 
           <Text
             style={{
               fontFamily: 'text',
               fontSize: 16,
-              color: userProfile?.theme == 'dark' ? color.white : color.dark,
+              color: theme == 'dark' ? color.white : color.dark,
               marginLeft: 10
             }}
           >

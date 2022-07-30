@@ -83,7 +83,7 @@ const Reels = () => {
           flex: 1,
           width,
           height: height - 108,
-          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+          backgroundColor: color.transparent,
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: 8,
@@ -187,7 +187,7 @@ const Reels = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
 

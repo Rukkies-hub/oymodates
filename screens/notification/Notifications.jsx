@@ -21,7 +21,7 @@ const wait = (timeout) => {
 
 const Notifications = () => {
   const navigation = useNavigation()
-  const { userProfile, notifications, user, setNotificationCount } = useAuth()
+  const { userProfile, notifications, user, setNotificationCount, theme } = useAuth()
 
   const viewNotification = async notification => {
     if (!notification?.seen) {
@@ -97,12 +97,12 @@ const Notifications = () => {
             height: 45,
             borderRadius: 12,
           }, {
-            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
             right: 80,
           }]
         }
       >
-        <Ionicons name='checkmark-done' size={24} color={item?.seen ? (userProfile?.theme == 'dark' ? color.white : color.dark) : color.blue} />
+        <Ionicons name='checkmark-done' size={24} color={item?.seen ? (theme == 'dark' ? color.white : color.dark) : color.blue} />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => deleteNotification(item)}
@@ -117,7 +117,7 @@ const Notifications = () => {
             height: 45,
             borderRadius: 12,
           }, {
-            backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+            backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
             right: 20,
           }]
         }
@@ -136,7 +136,7 @@ const Notifications = () => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+        backgroundColor: color.transparent,
         flex: 1
       }}
     >
@@ -157,7 +157,7 @@ const Notifications = () => {
             <TouchableOpacity
               onPress={markAllAsRead}
               style={{
-                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
                 height: 35,
                 paddingHorizontal: 10,
                 justifyContent: 'center',
@@ -167,7 +167,7 @@ const Notifications = () => {
             >
               <Text
                 style={{
-                  color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                  color: theme == 'dark' ? color.white : color.dark,
                   fontFamily: 'text'
                 }}
               >
@@ -177,7 +177,7 @@ const Notifications = () => {
             <TouchableOpacity
               onPress={clearAll}
               style={{
-                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
                 height: 35,
                 paddingHorizontal: 10,
                 justifyContent: 'center',
@@ -221,7 +221,7 @@ const Notifications = () => {
                 paddingHorizontal: 10,
                 paddingVertical: 10,
                 borderRadius: 12,
-                backgroundColor: notification?.seen == false ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : userProfile?.theme == 'dark' ? color.black : color.white
+                backgroundColor: notification?.seen == false ? (theme == 'dark' ? color.dark : color.offWhite) : theme == 'dark' ? color.black : color.white
               }}
             >
               <View
@@ -264,7 +264,7 @@ const Notifications = () => {
                   <UserInfo user={notification?.user?.id} />
                   <Text
                     style={{
-                      color: userProfile?.theme == 'light' ? color.dark : color.white,
+                      color: theme == 'light' ? color.dark : color.white,
                       marginLeft: 6,
                       fontSize: 14
                     }}

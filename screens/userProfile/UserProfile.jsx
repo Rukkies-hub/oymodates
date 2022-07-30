@@ -13,7 +13,7 @@ import * as NavigationBar from 'expo-navigation-bar'
 import UserReels from './UserReels'
 
 const UserProfile = () => {
-  const { userProfile, setViewUser, viewUser } = useAuth()
+  const { userProfile, setViewUser, viewUser, theme } = useAuth()
   const { user: viewingUser } = useRoute().params
   const focus = useIsFocused()
   const navigation = useNavigation()
@@ -35,8 +35,8 @@ const UserProfile = () => {
 
   navigation.addListener('blur', () => {
     NavigationBar.setPositionAsync('relative')
-    NavigationBar.setBackgroundColorAsync(userProfile?.theme == 'dark' ? color.black : color.white)
-    NavigationBar.setButtonStyleAsync(userProfile?.theme == 'dark' ? 'light' : 'dark')
+    NavigationBar.setBackgroundColorAsync(theme == 'dark' ? color.black : color.white)
+    NavigationBar.setButtonStyleAsync(theme == 'dark' ? 'light' : 'dark')
   })
 
   const [loaded] = useFonts({
@@ -50,7 +50,7 @@ const UserProfile = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
       {

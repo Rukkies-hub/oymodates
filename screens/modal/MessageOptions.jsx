@@ -4,17 +4,17 @@ import color from '../../style/color'
 
 import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import { deleteObject, getStorage, ref } from 'firebase/storage'
 
-const MessageOptions = (props) => {
-  const messages = props?.route?.params?.messages
-  const matchDetails = props?.route?.params?.matchDetails
+const MessageOptions = () => {
+  const { messages, matchDetails } = useRoute().params
   const {
     userProfile,
-    setMessageReply
+    setMessageReply,
+    theme
   } = useAuth()
   const navigation = useNavigation()
 
@@ -60,7 +60,7 @@ const MessageOptions = (props) => {
       <View
         style={{
           minWidth: Dimensions.get('window').width,
-          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+          backgroundColor: theme == 'dark' ? color.black : color.white,
           padding: 20,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20
@@ -76,14 +76,14 @@ const MessageOptions = (props) => {
             height: 50,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.dark : color.black,
+            backgroundColor: theme == 'light' ? color.offWhite : theme == 'dark' ? color.dark : color.black,
             borderRadius: 12
           }}
         >
           <Text
             style={{
               fontFamily: 'text',
-              color: userProfile?.theme == 'light' ? color.dark : color.white
+              color: theme == 'light' ? color.dark : color.white
             }}
           >
             Reply
@@ -99,7 +99,7 @@ const MessageOptions = (props) => {
               height: 50,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.dark : color.black,
+              backgroundColor: theme == 'light' ? color.offWhite : theme == 'dark' ? color.dark : color.black,
               borderRadius: 12,
               marginTop: 10
             }}

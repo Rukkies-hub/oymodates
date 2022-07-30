@@ -23,7 +23,7 @@ const ViewReel = () => {
   const navigation = useNavigation()
   const focus = useIsFocused()
   const { reel } = useRoute().params
-  const { userProfile, setReelsProps } = useAuth()
+  const { userProfile, setReelsProps, theme } = useAuth()
 
   const ref = useRef(null)
 
@@ -49,7 +49,7 @@ const ViewReel = () => {
       blurRadius={50}
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+        backgroundColor: theme == 'dark' ? color.black : color.white,
         justifyContent: 'center',
         alignItems: 'center'
       }}

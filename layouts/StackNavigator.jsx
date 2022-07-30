@@ -28,6 +28,9 @@ import SetupModal from '../screens/modal/SetupModal'
 import useAuth from '../hooks/useAuth'
 import ReelsOption from '../screens/modal/ReelsOption'
 
+import color from '../style/color'
+import Gender from '../screens/editProfile/components/Gender'
+
 const StackNavigator = () => {
   const { user, userProfile } = useAuth()
 
@@ -39,7 +42,10 @@ const StackNavigator = () => {
         gestureDirection: 'horizontal',
         keyboardHandlingEnabled: true,
         animationEnabled: true,
-        ...TransitionPresets.SlideFromRightIOS
+        ...TransitionPresets.SlideFromRightIOS,
+        cardStyle: {
+          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        }
       }}
     >
       {
@@ -68,7 +74,10 @@ const StackNavigator = () => {
                 component={ReelsOption}
                 options={{
                   animationEnabled: true,
-                  ...TransitionPresets.ModalSlideFromBottomIOS
+                  ...TransitionPresets.ModalSlideFromBottomIOS,
+                  cardStyle: {
+                    backgroundColor: color.transparent
+                  }
                 }}
               />
               <Stack.Screen
@@ -76,7 +85,10 @@ const StackNavigator = () => {
                 component={MessageOptions}
                 options={{
                   animationEnabled: true,
-                  ...TransitionPresets.ModalSlideFromBottomIOS
+                  ...TransitionPresets.ModalSlideFromBottomIOS,
+                  cardStyle: {
+                    backgroundColor: color.transparent
+                  }
                 }}
               />
               <Stack.Screen
@@ -84,7 +96,21 @@ const StackNavigator = () => {
                 component={SetupModal}
                 options={{
                   animationEnabled: true,
-                  ...TransitionPresets.FadeFromBottomAndroid
+                  ...TransitionPresets.FadeFromBottomAndroid,
+                  cardStyle: {
+                    backgroundColor: color.transparent
+                  }
+                }}
+              />
+              <Stack.Screen
+                name='Gender'
+                component={Gender}
+                options={{
+                  animationEnabled: true,
+                  ...TransitionPresets.FadeFromBottomAndroid,
+                  cardStyle: {
+                    backgroundColor: color.transparent
+                  }
                 }}
               />
             </Stack.Group>

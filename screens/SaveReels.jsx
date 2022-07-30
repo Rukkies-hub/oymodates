@@ -24,7 +24,7 @@ import uuid from 'uuid-random'
 import Bar from '../components/StatusBar'
 
 const SaveReels = (params) => {
-  const { userProfile, user } = useAuth()
+  const { userProfile, user, theme } = useAuth()
   const navigation = useNavigation()
   const { source, thumbnail, mediaType } = useRoute().params
 
@@ -66,6 +66,7 @@ const SaveReels = (params) => {
                 .then(thumbnailSnapshot => {
                   getDownloadURL(thumbnailSnapshot.ref)
                     .then(thumbnailDownloadURL => {
+                      navigation.navigate('Reels')
                       addDoc(collection(db, 'reels'), {
                         user: { id: userProfile?.id },
                         media: downloadURL,
@@ -79,7 +80,6 @@ const SaveReels = (params) => {
                       }).finally(() => {
                         setLoading(false)
                         setDescription('')
-                        navigation.navigate('Reels')
                       })
                     })
                 })
@@ -98,10 +98,10 @@ const SaveReels = (params) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
-      <Bar color={userProfile?.theme == 'dark' ? 'light' : 'dark'} />
+      <Bar color={theme == 'dark' ? 'light' : 'dark'} />
 
       <Header showBack showTitle title='Save reel' />
 
@@ -117,13 +117,13 @@ const SaveReels = (params) => {
           multiline
           maxLength={150}
           placeholder="What's on your mind..."
-          placeholderTextColor={userProfile?.theme == 'light' ? color.dark : color.white}
+          placeholderTextColor={theme == 'light' ? color.dark : color.white}
           style={{
             paddingVertical: 10,
             marginRight: 20,
             fontSize: 18,
             flex: 1,
-            color: userProfile?.theme == 'light' ? color.dark : color.white
+            color: theme == 'light' ? color.dark : color.white
           }}
         />
         <Image
@@ -151,7 +151,7 @@ const SaveReels = (params) => {
             justifyContent: 'center',
             alignItems: 'center',
             flex: 1,
-            borderColor: userProfile?.theme == 'light' ? color.borderColor : color.lightBorderColor,
+            borderColor: theme == 'light' ? color.borderColor : color.lightBorderColor,
             borderWidth: 1,
             borderRadius: 8,
             height: 45,
@@ -161,7 +161,7 @@ const SaveReels = (params) => {
           <Text
             style={{
               fontFamily: 'text',
-              color: userProfile?.theme == 'light' ? color.dark : color.white
+              color: theme == 'light' ? color.dark : color.white
             }}
           >
             Cancel

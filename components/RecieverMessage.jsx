@@ -16,7 +16,7 @@ if (
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const RecieverMessage = ({ messages, matchDetails }) => {
-  const { userProfile } = useAuth()
+  const { userProfile, theme } = useAuth()
 
   const navigation = useNavigation()
 
@@ -89,7 +89,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 messages?.reply ?
                   <View
                     style={{
-                      backgroundColor: messages?.message ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
+                      backgroundColor: messages?.message ? (theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
                       padding: messages?.reply ? 5 : 10,
                       borderTopRightRadius: 12,
                       borderBottomRightRadius: 12,
@@ -104,7 +104,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                         borderTopRightRadius: 8,
                         borderBottomRightRadius: 8,
                         borderBottomLeftRadius: 8,
-                        backgroundColor: messages?.message ? (userProfile?.theme == 'light' ? color.white : userProfile?.theme == 'dark' ? color.lightText : color.black) : color.transparent,
+                        backgroundColor: messages?.message ? (theme == 'light' ? color.white : theme == 'dark' ? color.lightText : color.black) : color.transparent,
                         flexDirection: 'row',
                         justifyContent: 'flex-start',
                         alignItems: 'flex-start',
@@ -148,9 +148,9 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                             minimumValue={0}
                             maximumValue={100}
                             style={{ flex: 1 }}
-                            minimumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
-                            maximumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
-                            thumbTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                            minimumTrackTintColor={theme == 'dark' ? color.white : color.blue}
+                            maximumTrackTintColor={theme == 'dark' ? color.white : color.blue}
+                            thumbTintColor={theme == 'dark' ? color.white : color.blue}
                           />
                         </View>
                       }
@@ -159,7 +159,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                         <Text
                           numberOfLines={3}
                           style={{
-                            color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                            color: theme == 'dark' ? color.white : color.dark,
                             marginLeft: messages?.reply?.media ? 10 : 0
                           }}
                         >
@@ -171,7 +171,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                         <Text
                           numberOfLines={3}
                           style={{
-                            color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                            color: theme == 'dark' ? color.white : color.dark,
                             marginLeft: messages?.reply?.media ? 10 : 0
                           }}
                         >
@@ -182,7 +182,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                        color: theme == 'dark' ? color.white : color.dark,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -192,7 +192,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                   </View> :
                   <View
                     style={{
-                      backgroundColor: messages?.message ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
+                      backgroundColor: messages?.message ? (theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
                       paddingVertical: 8,
                       paddingHorizontal: 8,
                       borderTopLeftRadius: 0,
@@ -204,7 +204,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.theme == 'light' ? color.dark : color.white,
+                        color: theme == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -218,7 +218,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
+                    <Text style={{ color: theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
                       {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                     </Text>
                   }
@@ -231,7 +231,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             <View
               style={{
                 position: 'relative',
-                backgroundColor: messages?.mediaType == 'image' ? (userProfile?.theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
+                backgroundColor: messages?.mediaType == 'image' ? (theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
                 borderRadius: 20,
                 overflow: 'hidden'
               }}
@@ -264,7 +264,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                       alignItems: 'flex-start',
                       padding: 5,
                       margin: 5,
-                      backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+                      backgroundColor: theme == 'dark' ? color.black : color.white,
                       borderRadius: 4,
                       borderBottomLeftRadius: 20,
                       borderBottomRightRadius: 20
@@ -273,7 +273,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.theme == 'light' ? color.dark : color.white,
+                        color: theme == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -286,7 +286,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <>
                       {
                         showTime &&
-                        <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left', marginLeft: 10, marginBottom: 10 }}>
+                        <Text style={{ color: theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left', marginLeft: 10, marginBottom: 10 }}>
                           {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                         </Text>
                       }
@@ -302,7 +302,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             <View
               style={{
                 position: 'relative',
-                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
                 borderRadius: 20,
                 overflow: 'hidden'
               }}
@@ -335,7 +335,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                       alignItems: 'flex-start',
                       padding: 5,
                       margin: 5,
-                      backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+                      backgroundColor: theme == 'dark' ? color.black : color.white,
                       borderRadius: 4,
                       borderBottomLeftRadius: 20,
                       borderBottomRightRadius: 20
@@ -344,7 +344,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                     <Text
                       numberOfLines={numberOfLines}
                       style={{
-                        color: userProfile?.theme == 'light' ? color.dark : color.white,
+                        color: theme == 'light' ? color.dark : color.white,
                         fontSize: 16,
                         textAlign: 'left'
                       }}
@@ -385,7 +385,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 height: 35,
                 borderRadius: 20,
                 overflow: 'hidden',
-                backgroundColor: userProfile?.theme == 'dark' ? color.dark : color.offWhite,
+                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',

@@ -69,7 +69,7 @@ const Likes = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
       {
@@ -171,7 +171,7 @@ const Likes = () => {
           <View
             style={{
               flex: 1,
-              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+              backgroundColor: color.transparent,
               justifyContent: 'center',
               alignItems: 'center'
             }}

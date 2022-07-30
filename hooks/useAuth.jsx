@@ -89,6 +89,7 @@ export const AuthProvider = ({ children }) => {
   const [showError, setShowError] = useState(false)
   const [signInSnack, setSignInSnack] = useState(false)
   const [signInSnackMessage, setSignInSnackMessage] = useState('')
+  const [theme, setTheme] = useState('light')
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -216,6 +217,7 @@ export const AuthProvider = ({ children }) => {
         if (profile?.gender) setChecked(profile?.gender)
         if (profile?.about) setAbout(profile?.about)
         if (profile?.passions) setPassions([...profile?.passions])
+        if (profile?.theme) setTheme(profile?.theme)
       })
 
     registerIndieID(user?.uid == undefined ? user?.user?.uid : user?.uid, 3167, appToken)
@@ -345,7 +347,9 @@ export const AuthProvider = ({ children }) => {
         signInSnack,
         setSignInSnack,
         signInSnackMessage,
-        getReels
+        getReels,
+        theme,
+        setTheme
       }}
     >
       {!loadingInitial && children}

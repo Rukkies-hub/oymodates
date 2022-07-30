@@ -14,7 +14,7 @@ const Tab = createMaterialTopTabNavigator()
 const { width } = Dimensions.get('window')
 
 const LikesNavigation = ({ navigation }) => {
-  const { userProfile, pendingSwipes } = useAuth()
+  const { userProfile, pendingSwipes, theme } = useAuth()
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -27,7 +27,7 @@ const LikesNavigation = ({ navigation }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+        backgroundColor: color.transparent
       }}
     >
       {
@@ -102,6 +102,7 @@ const LikesNavigation = ({ navigation }) => {
           </View>
         </View>
       }
+
       {
         userProfile &&
         <Tab.Navigator
@@ -110,17 +111,17 @@ const LikesNavigation = ({ navigation }) => {
           screenOptions={{
             lazy: false,
             tabBarIndicatorStyle: {
-              backgroundColor: userProfile?.theme == 'dark' ? color.offWhite : color.dark,
+              backgroundColor: theme == 'dark' ? color.offWhite : color.dark,
               borderBottomLeftRadius: 50,
               borderBottomRightRadius: 50
             },
             tabBarStyle: {
-              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+              backgroundColor: color.transparent,
               height: 45,
               elevation: 0
             },
             tabBarLabelStyle: {
-              color: userProfile?.theme == 'dark' ? color.white : color.lightText,
+              color: theme == 'dark' ? color.white : color.lightText,
               fontFamily: 'text',
               textTransform: 'capitalize'
             }

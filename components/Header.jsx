@@ -42,7 +42,7 @@ const Header = ({
 }) => {
   const navigation = useNavigation()
 
-  const { user, userProfile, setNotificatios } = useAuth()
+  const { user, userProfile, setNotificatios, theme } = useAuth()
 
   const [notificationCount, setNotificationCount] = useState([])
 
@@ -91,7 +91,7 @@ const Header = ({
     <View>
       <View
         style={{
-          backgroundColor: backgroundColor ? backgroundColor : userProfile?.theme == 'dark' ? color.black : color.white,
+          backgroundColor: backgroundColor ? backgroundColor : color.transparent,
           height: 50,
           marginTop: 40,
           paddingHorizontal: 10,
@@ -120,7 +120,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <Entypo name='chevron-left' size={24} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+              <Entypo name='chevron-left' size={24} color={theme == 'dark' ? color.white : color.black} />
             </TouchableOpacity>
           }
           {
@@ -131,7 +131,7 @@ const Header = ({
                 fontSize: 30,
                 margin: 0,
                 marginTop: -10,
-                color: userProfile?.theme == 'dark' ? color.white : color.black
+                color: theme == 'dark' ? color.white : color.black
               }}
             >
               Oymo
@@ -160,7 +160,7 @@ const Header = ({
                 fontFamily: 'text',
                 fontSize: 18,
                 textTransform: 'capitalize',
-                color: userProfile?.theme == 'dark' ? color.white : color.black
+                color: theme == 'dark' ? color.white : color.black
               }}
             >
               {title}
@@ -186,7 +186,7 @@ const Header = ({
                 marginRight: 10
               }}
             >
-              <Entypo name='phone' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+              <Entypo name='phone' size={20} color={theme == 'dark' ? color.white : color.black} />
             </TouchableOpacity>
           }
 
@@ -206,7 +206,7 @@ const Header = ({
                     marginRight: 10
                   }}
                 >
-                  <SimpleLineIcons name='bell' size={20} color={userProfile?.theme == 'dark' ? color.white : color.black} />
+                  <SimpleLineIcons name='bell' size={20} color={theme == 'dark' ? color.white : color.black} />
 
                   {
                     notificationCount?.length > 0 &&
@@ -249,7 +249,7 @@ const Header = ({
                     alignItems: 'center'
                   }}
                 >
-                  <FontAwesome name='plus-square-o' color={userProfile?.theme == 'dark' ? color.white : color.black} size={26} />
+                  <FontAwesome name='plus-square-o' color={theme == 'dark' ? color.white : color.black} size={26} />
                 </TouchableOpacity>
               }
             </>
@@ -270,7 +270,7 @@ const Header = ({
                     marginLeft: 10
                   }}
                 >
-                  <SimpleLineIcons name='user' size={20} color={userProfile?.theme == 'dark' ? color.white : color.dark} />
+                  <SimpleLineIcons name='user' size={20} color={theme == 'dark' ? color.white : color.dark} />
                 </TouchableOpacity>
               }
               {

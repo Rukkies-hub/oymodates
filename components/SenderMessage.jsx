@@ -16,7 +16,7 @@ if (
 ) UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const SenderMessage = ({ messages, matchDetails }) => {
-  const { userProfile, user } = useAuth()
+  const { userProfile, user, theme } = useAuth()
 
   const navigation = useNavigation()
   const video = useRef(null)
@@ -147,9 +147,9 @@ const SenderMessage = ({ messages, matchDetails }) => {
                             minimumValue={0}
                             maximumValue={100}
                             style={{ flex: 1 }}
-                            minimumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
-                            maximumTrackTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
-                            thumbTintColor={userProfile?.theme == 'dark' ? color.white : color.blue}
+                            minimumTrackTintColor={theme == 'dark' ? color.white : color.blue}
+                            maximumTrackTintColor={theme == 'dark' ? color.white : color.blue}
+                            thumbTintColor={theme == 'dark' ? color.white : color.blue}
                           />
                         </View>
                       }
@@ -217,7 +217,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: userProfile?.theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right', marginRight: 10, marginBottom: 10 }}>
+                    <Text style={{ color: theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right', marginRight: 10, marginBottom: 10 }}>
                       {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                     </Text>
                   }

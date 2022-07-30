@@ -11,7 +11,7 @@ import { db } from '../../hooks/firebase'
 
 
 const UserReels = () => {
-  const { userProfile, viewUser } = useAuth()
+  const { userProfile, viewUser, theme } = useAuth()
   const navigation = useNavigation()
 
   const [reels, setReels] = useState([])
@@ -55,7 +55,7 @@ const UserReels = () => {
               flex: 1,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+              backgroundColor: color.transparent
             }}
           >
             <ActivityIndicator size='large' color={color.red} />
@@ -68,7 +68,7 @@ const UserReels = () => {
               flex: 1,
               paddingHorizontal: 10,
               paddingTop: 10,
-              backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+              backgroundColor: color.transparent
             }}
             onEndReached={() => {
               setLimit(reelsLimit + 4)
@@ -115,7 +115,7 @@ const UserReels = () => {
                   <Text
                     numberOfLines={1}
                     style={{
-                      color: userProfile?.theme == 'dark' ? color.white : color.black,
+                      color: theme == 'dark' ? color.white : color.black,
                       fontSize: 18
                     }}
                   >
@@ -124,7 +124,7 @@ const UserReels = () => {
 
                   <Text
                     style={{
-                      color: userProfile?.theme == 'dark' ? color.white : color.dark,
+                      color: theme == 'dark' ? color.white : color.dark,
                       fontSize: 13
                     }}
                   >
@@ -147,14 +147,14 @@ const UserReels = () => {
                         style={{
                           marginRight: 5,
                           fontFamily: 'text',
-                          color: userProfile?.theme == 'dark' ? color.white : color.dark
+                          color: theme == 'dark' ? color.white : color.dark
                         }}
                       >
                         {reel?.likesCount}
                       </Text>
                       <Text
                         style={{
-                          color: userProfile?.theme == 'dark' ? color.white : color.lightText,
+                          color: theme == 'dark' ? color.white : color.lightText,
                           fontFamily: 'text'
                         }}
                       >
@@ -171,14 +171,14 @@ const UserReels = () => {
                         style={{
                           marginRight: 5,
                           fontFamily: 'text',
-                          color: userProfile?.theme == 'dark' ? color.white : color.dark
+                          color: theme == 'dark' ? color.white : color.dark
                         }}
                       >
                         {reel?.commentsCount}
                       </Text>
                       <Text
                         style={{
-                          color: userProfile?.theme == 'dark' ? color.white : color.lightText,
+                          color: theme == 'dark' ? color.white : color.lightText,
                           fontFamily: 'text'
                         }}
                       >

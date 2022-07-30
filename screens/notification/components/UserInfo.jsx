@@ -8,7 +8,7 @@ import { useFonts } from 'expo-font'
 import color from '../../../style/color'
 
 const UserInfo = ({ user }) => {
-  const { userProfile } = useAuth()
+  const { userProfile, theme } = useAuth()
   const navigation = useNavigation()
   const [userInfo, setUserInfo] = useState(null)
 
@@ -28,7 +28,7 @@ const UserInfo = ({ user }) => {
   return (
     <Text
       style={{
-        color: userProfile?.theme == 'light' ? color.dark : color.white,
+        color: theme == 'light' ? color.dark : color.white,
         fontFamily: 'text',
         fontSize: 14
       }}
