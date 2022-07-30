@@ -11,17 +11,12 @@ const LookingFor = () => {
 
   const lookingForMen = () => {
     setLookingFor('men')
-    updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'men' })
+    updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'male' })
   }
 
   const lookingForWomen = () => {
     setLookingFor('women')
-    updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'women' })
-  }
-
-  const lookingForAll = () => {
-    setLookingFor('all')
-    updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'all' })
+    updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'female' })
   }
 
   const [loaded] = useFonts({
@@ -54,7 +49,7 @@ const LookingFor = () => {
           onPress={lookingForMen}
           style={{
             flex: 1,
-            backgroundColor: lookingFor == 'men' ? color.red : theme == 'dark' ? color.dark : color.offWhite,
+            backgroundColor: lookingFor == 'male' ? color.red : theme == 'dark' ? color.dark : color.offWhite,
             justifyContent: 'center',
             alignItems: 'center',
             height: 45,
@@ -65,7 +60,7 @@ const LookingFor = () => {
           <Text
             style={{
               fontFamily: 'text',
-              color: lookingFor == 'men' ? color.white : theme == 'dark' ? color.white : color.dark
+              color: lookingFor == 'male' ? color.white : theme == 'dark' ? color.white : color.dark
             }}
           >
             Men
@@ -76,7 +71,7 @@ const LookingFor = () => {
           onPress={lookingForWomen}
           style={{
             flex: 1,
-            backgroundColor: lookingFor == 'women' ? color.red : theme == 'dark' ? color.dark : color.offWhite,
+            backgroundColor: lookingFor == 'female' ? color.red : theme == 'dark' ? color.dark : color.offWhite,
             justifyContent: 'center',
             alignItems: 'center',
             height: 45
@@ -85,32 +80,10 @@ const LookingFor = () => {
           <Text
             style={{
               fontFamily: 'text',
-              color: lookingFor == 'women' ? color.white : theme == 'dark' ? color.white : color.dark
+              color: lookingFor == 'female' ? color.white : theme == 'dark' ? color.white : color.dark
             }}
           >
             Women
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={lookingForAll}
-          style={{
-            flex: 1,
-            backgroundColor: lookingFor == 'all' ? color.red : theme == 'dark' ? color.dark : color.offWhite,
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 45,
-            borderTopRightRadius: 12,
-            borderBottomRightRadius: 12
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'text',
-              color: lookingFor == 'all' ? color.white : theme == 'dark' ? color.white : color.dark
-            }}
-          >
-            Everyone
           </Text>
         </TouchableOpacity>
       </View>

@@ -33,7 +33,7 @@ const { width, height } = Dimensions.get('window')
 
 const Match = () => {
   const navigation = useNavigation()
-  const { user, userProfile, profiles, setProfiles, theme } = useAuth()
+  const { user, userProfile, profiles, setProfiles, theme, lookingFor } = useAuth()
 
   const swipeRef = useRef(null)
 
@@ -51,20 +51,35 @@ const Match = () => {
 
       const swipededUserIds = (await swipes).length > 0 ? swipes : ['test']
 
-
-      onSnapshot(query(collection(db, 'users'), where('id', 'not-in', [...passeedUserIds, ...swipededUserIds])),
-        snapshot => {
-          setProfiles(
-            snapshot?.docs?.filter(doc => doc?.data()?.photoURL != null)
-              .filter(doc => doc?.id !== user?.uid)
-              .map(doc => ({
-                id: doc?.id,
-                ...doc?.data()
-              }))
-          )
-        })
+      if (lookingFor != undefined)
+        onSnapshot(query(collection(db, 'users'),
+          where('id', 'not-in', [...passeedUserIds, ...swipededUserIds]),
+          where('gender', '==', lookingFor)
+        ),
+          snapshot => {
+            setProfiles(
+              snapshot?.docs?.filter(doc => doc?.data()?.photoURL != null)
+                .filter(doc => doc?.id !== user?.uid)
+                .map(doc => ({
+                  id: doc?.id,
+                  ...doc?.data()
+                }))
+            )
+          })
+      else
+        onSnapshot(query(collection(db, 'users'), where('id', 'not-in', [...passeedUserIds, ...swipededUserIds])),
+          snapshot => {
+            setProfiles(
+              snapshot?.docs?.filter(doc => doc?.data()?.photoURL != null)
+                .filter(doc => doc?.id !== user?.uid)
+                .map(doc => ({
+                  id: doc?.id,
+                  ...doc?.data()
+                }))
+            )
+          })
     })()
-  }, [db])
+  }, [lookingFor, db])
 
   const swipeLeft = async (cardIndex) => {
     setStackSize(stackSize + 1)
