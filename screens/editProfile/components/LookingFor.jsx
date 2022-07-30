@@ -74,7 +74,9 @@ const LookingFor = () => {
             backgroundColor: lookingFor == 'female' ? color.red : theme == 'dark' ? color.dark : color.offWhite,
             justifyContent: 'center',
             alignItems: 'center',
-            height: 45
+            height: 45,
+            borderTopRightRadius: 12,
+            borderBottomRightRadius: 12
           }}
         >
           <Text
