@@ -90,6 +90,7 @@ export const AuthProvider = ({ children }) => {
   const [signInSnack, setSignInSnack] = useState(false)
   const [signInSnackMessage, setSignInSnackMessage] = useState('')
   const [theme, setTheme] = useState('light')
+  const [lookingFor, setLookingFor] = useState('all')
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -349,7 +350,9 @@ export const AuthProvider = ({ children }) => {
         signInSnackMessage,
         getReels,
         theme,
-        setTheme
+        setTheme,
+        lookingFor,
+        setLookingFor
       }}
     >
       {!loadingInitial && children}

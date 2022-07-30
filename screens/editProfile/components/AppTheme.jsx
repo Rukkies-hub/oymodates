@@ -15,12 +15,12 @@ const AppTheme = () => {
 
   const lightMode = async () => {
     setTheme('light')
-    await updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), { theme: 'light' })
+    await updateDoc(doc(db, 'users', userProfile?.id), { theme: 'light' })
   }
 
   const darkMode = async () => {
     setTheme('dark')
-    await updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), { theme: 'dark' })
+    await updateDoc(doc(db, 'users', userProfile?.id), { theme: 'dark' })
   }
 
   useEffect(() => {
@@ -92,8 +92,7 @@ const AppTheme = () => {
           <Text
             style={{
               fontFamily: 'text',
-              color: theme == 'dark' ? color.white : color.dark,
-              fontSize: 18
+              color: theme == 'dark' ? color.white : color.dark
             }}
           >
             Light
@@ -136,8 +135,7 @@ const AppTheme = () => {
           <Text
             style={{
               fontFamily: 'text',
-              color: theme == 'dark' ? color.white : color.dark,
-              fontSize: 18
+              color: theme == 'dark' ? color.white : color.dark
             }}
           >
             Dark

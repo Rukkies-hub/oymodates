@@ -32,7 +32,7 @@ import color from '../style/color'
 import Gender from '../screens/editProfile/components/Gender'
 
 const StackNavigator = () => {
-  const { user, userProfile } = useAuth()
+  const { user, userProfile, theme } = useAuth()
 
   return (
     <Stack.Navigator
@@ -44,7 +44,7 @@ const StackNavigator = () => {
         animationEnabled: true,
         ...TransitionPresets.SlideFromRightIOS,
         cardStyle: {
-          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white
+          backgroundColor: theme == 'dark' ? color.black : color.white
         }
       }}
     >

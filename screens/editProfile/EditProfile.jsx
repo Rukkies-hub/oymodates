@@ -40,6 +40,7 @@ import Constants from 'expo-constants'
 import AppTheme from './components/AppTheme'
 import SnackBar from 'rukkiecodes-expo-snackbar'
 import Payment from './components/Payment'
+import LookingFor from './components/LookingFor'
 
 const EditProfile = () => {
   const {
@@ -499,74 +500,6 @@ const EditProfile = () => {
             </View>
           }
 
-          {/* {
-            userProfile &&
-            <View
-              style={{
-                minHeight: 45
-              }}
-            >
-              <Text
-                style={{
-                  color: color.red,
-                  fontFamily: 'boldText'
-                }}
-              >
-                Gender
-              </Text>
-
-              <View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                  }}
-                >
-                  <RadioButton
-                    value='male'
-                    color={color.red}
-                    status={checked === 'male' ? 'checked' : 'unchecked'}
-                    uncheckedColor={theme == 'dark' ? color.white : color.dark}
-                    onPress={maleGender}
-                  />
-                  <Text
-                    style={{
-                      fontFamily: 'text',
-                      color: theme == 'dark' ? color.white : color.dark
-                    }}
-                  >
-                    Male
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                  }}
-                >
-                  <RadioButton
-                    value='female'
-                    color={color.red}
-                    uncheckedColor={theme == 'dark' ? color.white : color.dark}
-                    status={checked === 'female' ? 'checked' : 'unchecked'}
-                    onPress={femaleGender}
-                  />
-                  <Text
-                    style={{
-                      fontFamily: 'text',
-                      color: theme == 'dark' ? color.white : color.dark
-                    }}
-                  >
-                    Female
-                  </Text>
-                </View>
-              </View>
-            </View>
-          } */}
-
           {
             userProfile &&
             <TouchableOpacity
@@ -630,6 +563,9 @@ const EditProfile = () => {
               </View>
             </TouchableOpacity>
           }
+
+          
+          {userProfile && <LookingFor />}
 
           {userProfile && <AppTheme />}
 
