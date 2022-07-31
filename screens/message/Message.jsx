@@ -30,7 +30,7 @@ import { db } from '../../hooks/firebase'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
-import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons'
+import { MaterialCommunityIcons, AntDesign, SimpleLineIcons } from '@expo/vector-icons'
 
 import { useFonts } from 'expo-font'
 
@@ -68,8 +68,7 @@ const Message = () => {
   const [recording, setRecording] = useState()
   const [recordings, setRecordings] = useState([])
   const [recordingLoading, setRecordingLoading] = useState(false)
-  const [chatTheme, setChatTheme] = useState()
-  const [chatThemeIndex, setChatThemeIndex] = useState()
+  const [showMedia, setShowMedia] = useState(false)
 
   useLayoutEffect(() =>
     (() => {
@@ -81,15 +80,6 @@ const Message = () => {
           ...doc?.data()
         })))
       )
-    })()
-    , [matchDetails, db])
-
-  useLayoutEffect(() =>
-    (() => {
-      onSnapshot(doc(db, 'matches', matchDetails?.id), doc => {
-        setChatTheme(doc?.data()?.chatTheme)
-        setChatThemeIndex(doc?.data()?.chatThemeIndex)
-      })
     })()
     , [matchDetails, db])
 
@@ -344,9 +334,9 @@ const Message = () => {
               keyExtractor={item => item?.id}
               renderItem={({ item: message }) => (
                 message?.userId === userProfile?.id ? (
-                  <SenderMessage key={message?.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
+                  <SenderMessage key={message?.id} messages={message} matchDetails={matchDetails} />
                 ) : (
-                  <RecieverMessage key={message?.id} messages={message} matchDetails={matchDetails} chatThemeIndex={chatThemeIndex} />
+                  <RecieverMessage key={message?.id} messages={message} matchDetails={matchDetails} />
                 )
               )}
             />
@@ -494,42 +484,82 @@ const Message = () => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              paddingHorizontal: 10,
+              // paddingHorizontal: 10,
               backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
               minHeight: 50,
-              overflow: 'hidden',
+              // overflow: 'hidden',
               position: 'relative',
               marginHorizontal: 10,
               borderRadius: 12,
               borderTopLeftRadius: messageReply ? 0 : 12,
               borderTopRightRadius: messageReply ? 0 : 12,
-              marginBottom: 10
+              // marginBottom: 10,
             }}
           >
             {
-              mediaVidiblity && <>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('MessageCamera', { matchDetails })}
-                  style={{
-                    width: 40,
-                    height: 50,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}>
-                  <MaterialCommunityIcons name='camera-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
-                </TouchableOpacity>
+              mediaVidiblity &&
+              <View
+                style={{
+                  position: 'relative',
+                  width: 40,
+                  height: 50,
+                  backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                  borderBottomLeftRadius: 12,
+                  borderTopLeftRadius: showMedia ? 0 : 12
+                }}
+              >
+                {
+                  showMedia &&
+                  <View
+                    style={{
+                      position: 'absolute',
+                      zIndex: 100,
+                      backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                      bottom: 50,
+                      left: 0,
+                      borderTopLeftRadius: 12,
+                      borderTopRightRadius: 12
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('MessageCamera', { matchDetails })}
+                      style={{
+                        width: 50,
+                        height: 50,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}>
+                      <MaterialCommunityIcons name='camera-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={pickImage}
+                      style={{
+                        width: 50,
+                        height: 50,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}>
+                      <MaterialCommunityIcons name='image-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
+                    </TouchableOpacity>
+                  </View>
+                }
 
                 <TouchableOpacity
-                  onPress={pickImage}
+                  onPress={() => {
+                    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+                    setShowMedia(!showMedia)
+                  }}
                   style={{
-                    width: 40,
+                    width: 50,
                     height: 50,
                     justifyContent: 'center',
                     alignItems: 'center'
-                  }}>
-                  <MaterialCommunityIcons name='image-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
+                  }}
+                >
+                  <SimpleLineIcons name="paper-clip" size={20} color={theme == 'light' ? color.lightText : color.white} />
                 </TouchableOpacity>
-              </>
+              </View>
             }
 
             {
@@ -569,7 +599,8 @@ const Message = () => {
                     height,
                     maxHeight: 70,
                     fontFamily: 'text',
-                    color: theme == 'light' ? color.dark : color.white
+                    color: theme == 'light' ? color.dark : color.white,
+                    paddingLeft: 10
                   }}
                 />
             }

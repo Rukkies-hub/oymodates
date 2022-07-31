@@ -3,7 +3,7 @@ import { Image, SafeAreaView } from 'react-native'
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 
-import { Ionicons, Feather, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
+import { Ionicons, Feather, MaterialCommunityIcons, SimpleLineIcons, Octicons } from '@expo/vector-icons'
 
 import * as NavigationBar from 'expo-navigation-bar'
 
@@ -81,7 +81,7 @@ const BottomNavigation = () => {
           component={Reels}
           options={{
             tabBarIcon: () =>
-              <Ionicons name='videocam-outline' size={20} color={theme == 'dark' ? color.white : color.black} />
+              <Octicons name='video' size={24} color={theme == 'dark' ? color.white : color.black} />
           }}
         />
 

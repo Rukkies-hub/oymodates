@@ -3,7 +3,7 @@ import { View, Text, Pressable, Image, TouchableOpacity, UIManager, LayoutAnimat
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-import { AntDesign } from '@expo/vector-icons'
+import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons'
 
 import Slider from '@react-native-community/slider'
 
@@ -63,10 +63,16 @@ const SenderMessage = ({ messages, matchDetails }) => {
 
   return (
     <View style={{ flexDirection: 'row-reverse', marginBottom: 10 }}>
+      <Ionicons
+        size={16}
+        name={messages?.seen ? 'checkmark-done-circle' : 'checkmark-done-circle-outline'}
+        color={!messages?.seen ? (theme == 'dark' ? color.offWhite : color.lightText) : color.blue}
+      />
       <View
         style={{
           alignSelf: 'flex-end',
-          maxWidth: '80%'
+          maxWidth: '80%',
+          marginRight: 5
         }}
       >
         <Pressable

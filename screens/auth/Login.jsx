@@ -345,9 +345,9 @@ const Login = () => {
                   <Text style={{ color: color.white, fontSize: 12 }}>Don't have an account?</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => setAuthType(authType == 'forgotPassword' ? 'signin' : 'forgotPassword')}>
+                {/* <TouchableOpacity onPress={() => setAuthType(authType == 'forgotPassword' ? 'signin' : 'forgotPassword')}>
                   <Text style={{ color: color.white, fontSize: 12 }}>Forgot your password?</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
           </>

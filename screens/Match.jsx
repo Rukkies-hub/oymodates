@@ -227,7 +227,7 @@ const Match = () => {
                   />
 
                   <LinearGradient
-                    colors={['transparent', color.dark]}
+                    colors={['transparent', theme == 'dark' ? color.black : color.dark]}
                     style={{
                       width: '100%',
                       minHeight: 60,
