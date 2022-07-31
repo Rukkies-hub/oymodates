@@ -47,16 +47,6 @@ const MessageCamera = () => {
   if (!hasCameraPermission || !hasAudioPermission)
     return <View />
 
-  //   Object {
-  //   "cancelled": false,
-  //   "duration": 17020,
-  //   "height": 1280,
-  //   "rotation": 0,
-  //   "thumbnail": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540rukkiecodes%252Foymo/VideoThumbnails/5b1298c7-67ea-4141-b615-f784e8fbda36.jpg",
-  //   "type": "video",
-  //   "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540rukkiecodes%252Foymo/ImagePicker/2d7af7b7-52fd-4e29-b080-090ad5936bdc.mp4",
-  //   "width": 720,
-  // }
   const recordVideo = async () => {
     if (cameraRef)
       try {
