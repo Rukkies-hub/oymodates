@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
 
 import { Camera } from 'expo-camera'
 
@@ -17,11 +17,12 @@ import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
 import * as VideoThumbnails from 'expo-video-thumbnails'
 
+const { width } = Dimensions.get('window')
+
 const MessageCamera = () => {
   const navigation = useNavigation()
 
-  const { params } = useRoute()
-  const { matchDetails } = params
+  const { matchDetails } = useRoute().params
 
   const [hasCameraPermission, setHasCameraPermission] = useState(false)
   const [hasAudioPermission, setHasAudioPermission] = useState(false)
@@ -46,23 +47,39 @@ const MessageCamera = () => {
   if (!hasCameraPermission || !hasAudioPermission)
     return <View />
 
+  //   Object {
+  //   "cancelled": false,
+  //   "duration": 17020,
+  //   "height": 1280,
+  //   "rotation": 0,
+  //   "thumbnail": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540rukkiecodes%252Foymo/VideoThumbnails/5b1298c7-67ea-4141-b615-f784e8fbda36.jpg",
+  //   "type": "video",
+  //   "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540rukkiecodes%252Foymo/ImagePicker/2d7af7b7-52fd-4e29-b080-090ad5936bdc.mp4",
+  //   "width": 720,
+  // }
   const recordVideo = async () => {
     if (cameraRef)
       try {
-        const options = { maxDuration: 30, quality: Camera?.Constants?.VideoQuality['480'] }
+        const options = { maxDuration: 10, quality: Camera?.Constants?.VideoQuality['480'] }
         const videoRecordPromise = cameraRef?.recordAsync(options)
 
         if (videoRecordPromise) {
           const data = await videoRecordPromise
-          const { uri } = await VideoThumbnails.getThumbnailAsync(data?.uri, { time: 2000 })
-          navigation.navigate('PreviewMessageImage', {
-            matchDetails,
-            media: {
-              uri: data?.uri,
-              thumbnail: uri,
-              type: 'video'
-            }
-          })
+          const { uri } = await VideoThumbnails.getThumbnailAsync(data?.uri, { time: 1000 })
+          if (uri) {
+            navigation.navigate('PreviewMessageImage', {
+              matchDetails,
+              media: {
+                uri: data?.uri,
+                thumbnail: uri,
+                type: 'video',
+                width,
+                height: null,
+                duration: null,
+                rotation: 1
+              }
+            })
+          }
         }
       } catch (error) {
         console.warn('Oymo camera error: ', error)

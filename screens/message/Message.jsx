@@ -88,6 +88,7 @@ const Message = () => {
       Keyboard.addListener('keyboardDidShow', () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setMediaVidiblity(false)
+        setShowMedia(false)
       })
     })()
     , [])
@@ -97,6 +98,7 @@ const Message = () => {
       Keyboard.addListener('keyboardDidHide', () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setMediaVidiblity(true)
+        setShowMedia(false)
       })
     })()
     , [])
@@ -127,7 +129,10 @@ const Message = () => {
     if (!result?.cancelled) {
       if (result?.type === 'video') {
         const { uri } = await VideoThumbnails.getThumbnailAsync(result?.uri, { time: 1000 })
-        if (uri)
+        if (uri) {
+          setMediaVidiblity(false)
+          setShowMedia(false)
+          Keyboard.dismiss
           navigation.navigate('PreviewMessageImage', {
             matchDetails,
             media: {
@@ -135,7 +140,11 @@ const Message = () => {
               thumbnail: uri
             }
           })
+        }
       } else {
+        setMediaVidiblity(false)
+        setShowMedia(false)
+        Keyboard.dismiss
         navigation.navigate('PreviewMessageImage', {
           matchDetails,
           media: result
@@ -484,16 +493,14 @@ const Message = () => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              // paddingHorizontal: 10,
               backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
               minHeight: 50,
-              // overflow: 'hidden',
               position: 'relative',
               marginHorizontal: 10,
               borderRadius: 12,
               borderTopLeftRadius: messageReply ? 0 : 12,
               borderTopRightRadius: messageReply ? 0 : 12,
-              // marginBottom: 10,
+              marginBottom: 10,
             }}
           >
             {
@@ -522,7 +529,12 @@ const Message = () => {
                     }}
                   >
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('MessageCamera', { matchDetails })}
+                      onPress={() => {
+                        setMediaVidiblity(false)
+                        setShowMedia(false)
+                        Keyboard.dismiss
+                        navigation.navigate('MessageCamera', { matchDetails })
+                      }}
                       style={{
                         width: 50,
                         height: 50,

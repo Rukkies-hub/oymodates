@@ -51,9 +51,7 @@ const PreviewMessageImage = () => {
 
   useEffect(() =>
     (() => {
-      Keyboard.addListener('keyboardDidHide', () => {
-        Keyboard.dismiss
-      })
+      Keyboard.addListener('keyboardDidHide', () => Keyboard.dismiss)
     })()
     , [])
 
@@ -100,7 +98,9 @@ const PreviewMessageImage = () => {
             })
         })
     }
-    else if (media?.type == 'video') {
+
+
+    if (media?.type == 'video') {
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
         xhr.onload = () => resolve(xhr.response)
