@@ -325,7 +325,10 @@ const SenderMessage = ({ messages, matchDetails }) => {
               <Pressable
                 style={{ flex: 1 }}
                 delayLongPress={100}
-                onPress={() => navigation.navigate('ViewVideo', { video: messages?.media })}
+                  onPress={() => navigation.navigate('ViewVideo', {
+                    video: messages?.media,
+                    thumbnail: messages?.thumbnail
+                  })}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >
                 <Image
