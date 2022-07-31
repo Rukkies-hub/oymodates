@@ -21,6 +21,7 @@ const MessageHeader = ({ user, matchDetails }) => {
       title={userInfo?.username}
       matchDetails={matchDetails}
       matchAvatar={userInfo?.photoURL}
+      // showMessageOptions
     />
   )
 }

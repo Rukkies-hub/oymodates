@@ -9,7 +9,8 @@ import {
 import {
   FontAwesome,
   Entypo,
-  SimpleLineIcons
+  SimpleLineIcons,
+  MaterialCommunityIcons
 } from '@expo/vector-icons'
 
 import { useNavigation } from '@react-navigation/native'
@@ -38,7 +39,8 @@ const Header = ({
   showAdd,
   matchDetails,
   showNotification,
-  backgroundColor
+  backgroundColor,
+  showMessageOptions
 }) => {
   const navigation = useNavigation()
 
@@ -296,6 +298,21 @@ const Header = ({
                 </TouchableOpacity>
               }
             </>
+          }
+
+          {
+            showMessageOptions &&
+            <TouchableOpacity
+              onPress={() => navigation.navigate('MessageOptions', { matchDetails })}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <MaterialCommunityIcons name="dots-vertical" size={24} color={theme == 'dark' ? color.white : color.dark} />
+            </TouchableOpacity>
           }
         </View>
       </View>

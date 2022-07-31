@@ -20,10 +20,10 @@ import ViewReel from '../screens/viewReel/ViewReel'
 import ViewAvatar from '../screens/modal/ViewAvatar'
 import ReelsComment from '../screens/ReelsComment'
 import ViewVideo from '../screens/modal/ViewVideo'
-import MessageOptions from '../screens/modal/MessageOptions'
 import MessageCamera from '../screens/MessageCamera'
 import ViewReelsComments from '../screens/viewReelsComments/ViewReelsComments'
 import SetupModal from '../screens/modal/SetupModal'
+import MessageOptions from '../screens/messageOptions/MessageOptions'
 
 import useAuth from '../hooks/useAuth'
 import ReelsOption from '../screens/modal/ReelsOption'
@@ -82,17 +82,6 @@ const StackNavigator = () => {
                 }}
               />
               <Stack.Screen
-                name='MessageOptions'
-                component={MessageOptions}
-                options={{
-                  animationEnabled: true,
-                  ...TransitionPresets.ModalSlideFromBottomIOS,
-                  cardStyle: {
-                    backgroundColor: color.transparent
-                  }
-                }}
-              />
-              <Stack.Screen
                 name='SetupModal'
                 component={SetupModal}
                 options={{
@@ -106,6 +95,17 @@ const StackNavigator = () => {
               <Stack.Screen
                 name='Gender'
                 component={Gender}
+                options={{
+                  animationEnabled: true,
+                  ...TransitionPresets.FadeFromBottomAndroid,
+                  cardStyle: {
+                    backgroundColor: color.transparent
+                  }
+                }}
+              />
+              <Stack.Screen
+                name='MessageOptions'
+                component={MessageOptions}
                 options={{
                   animationEnabled: true,
                   ...TransitionPresets.FadeFromBottomAndroid,
