@@ -28,6 +28,7 @@ import generateId from '../lib/generateId'
 
 import { useFonts } from 'expo-font'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import LoadingIndicator from '../components/LoadingIndicator'
 
 const { width, height } = Dimensions.get('window')
 
@@ -419,20 +420,7 @@ const Match = () => {
                   alignItems: 'center'
                 }}
               >
-                <ActivityIndicator
-                  size='large'
-                  color={color.red}
-                />
-
-                <Text
-                  style={{
-                    fontFamily: 'text',
-                    color: theme == 'light' ? color.lightText : color.white,
-                    marginTop: 30
-                  }}
-                >
-                  Finding people near you
-                </Text>
+                <LoadingIndicator size={50} theme={theme} />
               </View>
             )
         }

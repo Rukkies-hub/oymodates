@@ -15,11 +15,13 @@ import { useNavigation } from '@react-navigation/native'
 
 import { AntDesign, Feather } from '@expo/vector-icons'
 
+import LoadingIndicator from '../../components/LoadingIndicator'
+
 const Likes = () => {
-  const { pendingSwipes, user, profiles, setProfiles, userProfile } = useAuth()
+  const { pendingSwipes, profiles, theme, userProfile } = useAuth()
   const navigation = useNavigation()
 
-  const { width, height } = Dimensions.get('window')
+  const { width } = Dimensions.get('window')
 
   const swipeLeft = async like => {
     setDoc(doc(db, 'users', userProfile?.id, 'passes', like.id), like)
@@ -176,7 +178,7 @@ const Likes = () => {
               alignItems: 'center'
             }}
           >
-            <ActivityIndicator size='large' color={color.red} />
+            <LoadingIndicator size={50} theme={theme} />
           </View>
       }
     </SafeAreaView>

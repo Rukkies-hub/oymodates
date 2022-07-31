@@ -44,7 +44,7 @@ const BottomNavigation = () => {
       <Tab.Navigator
         initialRouteName='Match'
         barStyle={{
-          backgroundColor: color.transparent,
+          backgroundColor: theme == 'dark' ? color.black : color.white,
           height: 54,
           elevation: 0
         }}

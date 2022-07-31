@@ -5,10 +5,10 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 const Stack = createStackNavigator()
 
 import BottomNavigation from './BottomNavigation'
-import Login from '../screens/Login'
+import Login from '../screens/auth/Login'
 import EditProfile from '../screens/editProfile/EditProfile'
 import NewMatch from '../screens/modal/NewMatch'
-import Message from '../screens/Message'
+import Message from '../screens/message/Message'
 import AddReels from '../screens/AddReels'
 import SaveReels from '../screens/SaveReels'
 import UserProfile from '../screens/userProfile/UserProfile'
@@ -30,9 +30,10 @@ import ReelsOption from '../screens/modal/ReelsOption'
 
 import color from '../style/color'
 import Gender from '../screens/editProfile/components/Gender'
+import GoogleAuth from '../screens/auth/GoogleAuth'
 
 const StackNavigator = () => {
-  const { user, userProfile, theme } = useAuth()
+  const { user, theme } = useAuth()
 
   return (
     <Stack.Navigator
@@ -44,7 +45,7 @@ const StackNavigator = () => {
         animationEnabled: true,
         ...TransitionPresets.SlideFromRightIOS,
         cardStyle: {
-          backgroundColor: theme == 'dark' ? color.black : color.white
+          backgroundColor: !user ? color.transparent : theme == 'dark' ? color.black : color.white
         }
       }}
     >
@@ -122,7 +123,12 @@ const StackNavigator = () => {
             </Stack.Group>
           </>
         ) : (
-          <Stack.Screen name='Login' component={Login} />
+          <>
+            <Stack.Screen name='Login' component={Login} />
+            <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
+              <Stack.Screen name='GoogleAuth' component={GoogleAuth} />
+            </Stack.Group>
+          </>
         )
       }
     </Stack.Navigator>

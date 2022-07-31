@@ -1,27 +1,28 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
-import { PayWithFlutterwave } from 'flutterwave-react-native'
-
-import { publicKey, email } from '@env'
-import color from '../../../style/color'
-import { useFonts } from 'expo-font'
-
+// import Rave from 'react-native-rave-webview'
+import Rave from '.'
 import uuid from 'uuid-random'
 
-const Payment = () => {
+import { publicKey } from '@env'
+import color from '../../../style/color'
+import { useFonts } from 'expo-font'
+import useAuth from '../../../hooks/useAuth'
 
-  const handleOnRedirect = () => {
-    console.log('tx_ref: ', tx_ref)
+const Payment = () => {
+  const { userProfile } = useAuth()
+
+  const onSuccess = (data) => {
+    console.log('success', data)
+    // You can get the transaction reference from successful transaction charge response returned and handle your transaction verification here
   }
 
-  const generateRef = (length) => {
-    var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
-    var b = [];
-    for (var i = 0; i < length; i++) {
-      var j = (Math.random() * (a.length - 1)).toFixed(0);
-      b[i] = a[j];
-    }
-    return b.join("");
+  const onCancel = () => {
+    console.log('error', 'Transaction was Cancelled!')
+  }
+
+  const onError = () => {
+    // an error occoured
   }
 
   const [loaded] = useFonts({
@@ -32,49 +33,33 @@ const Payment = () => {
   if (!loaded) return null
 
   return (
-    <View
-      style={{
-        marginTop: 20
-      }}
-    >
-      <PayWithFlutterwave
-        onRedirect={handleOnRedirect}
-        style={{
-          backgroundColor: 'red'
+    <View style={{ marginTop: 20 }}>
+      <Rave
+        buttonText='Pay Now'
+        raveKey={publicKey}
+        amount={5}
+        billingEmail='ayoshokz@gmail.com'
+        billingName={userProfile?.displayName}
+        ActivityIndicatorColor='green'
+        onCancel={() => this.onCancel()}
+        onSuccess={transactionRef => this.onSuccess(transactionRef)}
+        btnStyles={{
+          backgroundColor: color.goldDark,
+          width: '100%',
+          height: 50,
+          borderRadius: 12,
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
-        options={{
-          tx_ref: uuid(),
-          authorization: publicKey,
-          customer: {
-            email: 'rukkiecodes2@gmail.com'
-          },
-          amount: 5,
-          currency: 'USD',
-          payment_options: 'card'
+        textStyles={{
+          color: color.white,
+          alignSelf: 'center',
+          fontFamily: 'boldText'
         }}
-        customButton={(props) => (
-          <TouchableOpacity
-            style={{
-              backgroundColor: color.goldDark,
-              height: 50,
-              borderRadius: 12,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-            onPress={props.onPress}
-            isBusy={props.isInitializing}
-            disabled={props.disabled}>
-            <Text
-              style={{
-                color: color.white,
-                fontFamily: 'boldText',
-                fontSize: 18
-              }}
-            >
-              Pay $5
-            </Text>
-          </TouchableOpacity>
-        )}
+        onError={() => {
+          alert('something went wrong')
+        }}
+        txref={uuid()}
       />
     </View>
   )

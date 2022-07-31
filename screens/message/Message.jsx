@@ -15,20 +15,18 @@ import {
   Image
 } from 'react-native'
 
-import color from '../style/color'
-
-import Header from '../components/Header'
+import color from '../../style/color'
 
 import { useRoute, useNavigation } from '@react-navigation/native'
 
-import useAuth from '../hooks/useAuth'
+import useAuth from '../../hooks/useAuth'
 
-import getMatchedUserInfo from '../lib/getMatchedUserInfo'
+import getMatchedUserInfo from '../../lib/getMatchedUserInfo'
 
-import SenderMessage from '../components/SenderMessage'
-import RecieverMessage from '../components/RecieverMessage'
+import SenderMessage from '../../components/SenderMessage'
+import RecieverMessage from '../../components/recieverMessage/RecieverMessage'
 import { addDoc, collection, doc, getDocs, onSnapshot, orderBy, query, serverTimestamp, updateDoc, where } from 'firebase/firestore'
-import { db } from '../hooks/firebase'
+import { db } from '../../hooks/firebase'
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
@@ -50,6 +48,8 @@ import * as ImagePicker from 'expo-image-picker'
 
 import * as VideoThumbnails from 'expo-video-thumbnails'
 import Slider from '@react-native-community/slider'
+import MessageHeader from './components/MessageHeader'
+import Avatar from './components/Avatar'
 
 const Message = () => {
   const navigation = useNavigation()
@@ -112,7 +112,10 @@ const Message = () => {
     , [])
 
   const updateSeen = async () => {
-    const snapshot = await getDocs(query(collection(db, 'matches', matchDetails?.id, 'messages'), where('seen', '==', false)))
+    const snapshot = await getDocs(query(collection(db, 'matches', matchDetails?.id, 'messages'),
+      where('userId', '!=', userProfile?.id),
+      where('seen', '==', false)
+    ))
     snapshot.forEach(async allDoc => {
       await updateDoc(doc(db, 'matches', matchDetails?.id, 'messages', allDoc?.id), {
         seen: true
@@ -247,8 +250,8 @@ const Message = () => {
   }
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
-    boldText: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
+    boldText: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Bold.ttf')
   })
 
   if (!loaded) return null
@@ -260,14 +263,9 @@ const Message = () => {
         backgroundColor: color.transparent
       }}
     >
-      <Header
-        showBack
-        showTitle
-        showMatchAvatar
+      <MessageHeader
         matchDetails={matchDetails}
-        title={getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.username}
-        matchAvatar={getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.photoURL}
-        backgroundColor={color.transparent}
+        user={getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.id}
       />
 
       <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -285,14 +283,7 @@ const Message = () => {
                   position: 'relative'
                 }}
               >
-                <Image
-                  source={{ uri: getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.photoURL }}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    borderRadius: 100
-                  }}
-                />
+                <Avatar user={getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.id} />
                 <View
                   style={{
                     width: 40,

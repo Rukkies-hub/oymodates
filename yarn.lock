@@ -1193,7 +1193,7 @@
     node-forge "^1.2.1"
     nullthrows "^1.1.1"
 
-"@expo/config-plugins@4.1.5", "@expo/config-plugins@^4.0.14", "@expo/config-plugins@^4.0.2", "@expo/config-plugins@~4.1.4":
+"@expo/config-plugins@4.1.5", "@expo/config-plugins@^4.0.14", "@expo/config-plugins@^4.0.2", "@expo/config-plugins@^4.1.4", "@expo/config-plugins@~4.1.4":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-4.1.5.tgz#9d357d2cda9c095e511b51583ede8a3b76174068"
   integrity sha512-RVvU40RtZt12HavuDAe+LDIq9lHj7sheOfMEHdmpJ/uTA8pgvkbc56XF6JHQD+yRr6+uhhb+JnAasGq49dsQbw==
@@ -2424,6 +2424,13 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
+
+"@stripe/stripe-react-native@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.6.1.tgz#a9fa76bcb51af35a7e29aeff8ad58b2bfac22d35"
+  integrity sha512-FCZV6htmFNmDmH2n4TQT3inA/ApaLbb85wgHqftiweYpPMq2bXzmfWPiubExrVL0W8XLLnuip5+tRP+DTWaC+g==
+  dependencies:
+    "@expo/config-plugins" "^4.1.4"
 
 "@types/graceful-fs@^4.1.2":
   version "4.1.5"
@@ -7228,6 +7235,11 @@ react-native-popup-menu@^0.15.12:
   resolved "https://registry.yarnpkg.com/react-native-popup-menu/-/react-native-popup-menu-0.15.12.tgz#386852f4245f8d661a5003776989b9b55c9ce381"
   integrity sha512-33zMqHW+7rt5m2Bgg7xM8jy1guIdUCE8qJfznYYNRlIt4+fJX/rDcwmJIrkSGrvfhlhhEaG3otW6h25uFZLFfg==
 
+react-native-rave-webview@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-rave-webview/-/react-native-rave-webview-1.0.0.tgz#0ee486de4213ce52d015be994c78d18b68c1e66a"
+  integrity sha512-yY/jLtHkQ85vCnujNZEem0WdQv9UUs3lms2zJSeVDyVj0Yd+A5YlavMkqg9LAaIa6jNrBBTGJUGMWpbC24ihzQ==
+
 react-native-raw-bottom-sheet@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/react-native-raw-bottom-sheet/-/react-native-raw-bottom-sheet-2.2.0.tgz#d11dabb86aadb014273767ef7b554924b13633c5"
@@ -7304,7 +7316,7 @@ react-native-web@0.17.7:
     normalize-css-color "^1.0.2"
     prop-types "^15.6.0"
 
-react-native-webview@>=6.0.2:
+react-native-webview@>=6.0.2, react-native-webview@^11.23.0:
   version "11.23.0"
   resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.23.0.tgz#603a584236da2e993906e6a094f165dcac3a1fdb"
   integrity sha512-mGrgsMnYcQONvQy59xpBn87sKqkCsSkqIDRo+c2Ov4ISYl1j90wFBs+qViVJRWdoNHVuoCAZ4nZkJ65mhDpHhA==

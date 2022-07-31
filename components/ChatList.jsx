@@ -1,16 +1,18 @@
 import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import React, { useEffect, useLayoutEffect } from 'react'
 
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
 
-import ChatRow from './ChatRow'
+import ChatRow from './chatRow/ChatRow'
 
 import { SwipeListView } from 'react-native-swipe-list-view'
 
 import { Feather } from '@expo/vector-icons'
+
+import LoadingIndicator from './LoadingIndicator'
 
 const ChatList = () => {
   const {
@@ -116,17 +118,7 @@ const ChatList = () => {
           alignItems: 'center'
         }}
       >
-        <ActivityIndicator size='large' color={color.red} />
-
-        <Text
-          style={{
-            fontFamily: 'text',
-            color: theme == 'light' ? color.lightText : color.white,
-            marginTop: 20
-          }}
-        >
-          No matches at the moment
-        </Text>
+        <LoadingIndicator size={50} theme={theme} />
       </View>
     )
   )

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Image, Pressable, TouchableOpacity, UIManager, LayoutAnimation, Platform } from 'react-native'
-import color from '../style/color'
+import color from '../../style/color'
 
 import { AntDesign } from '@expo/vector-icons'
 
 import Slider from '@react-native-community/slider'
 
 import { Audio, Video } from 'expo-av'
-import useAuth from '../hooks/useAuth'
+import useAuth from '../../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
+import Avatar from './components/Avatar'
 
 if (
   Platform.OS === 'android' &&
@@ -62,10 +63,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
 
   return (
     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-      <Image
-        style={{ width: 25, height: 25, borderRadius: 50 }}
-        source={{ uri: messages?.photoURL }}
-      />
+      <Avatar user={messages?.userId} />
       <View
         style={{
           alignSelf: 'flex-end',

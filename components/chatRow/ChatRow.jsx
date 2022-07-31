@@ -1,15 +1,17 @@
 import React, { useState, useLayoutEffect } from 'react'
 import { View, Text, Pressable, Image } from 'react-native'
-import useAuth from '../hooks/useAuth'
-import color from '../style/color'
+import useAuth from '../../hooks/useAuth'
+import color from '../../style/color'
 
-import getMatchedUserInfo from '../lib/getMatchedUserInfo'
+import getMatchedUserInfo from '../../lib/getMatchedUserInfo'
 
 import { useNavigation } from '@react-navigation/native'
 
 import { useFonts } from 'expo-font'
-import { db } from '../hooks/firebase'
+import { db } from '../../hooks/firebase'
 import { collection, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore'
+import Avatar from './components/Avatar'
+import Username from './components/Username'
 
 const ChatRow = ({ matchDetails }) => {
   const { user, userProfile, theme } = useAuth()
@@ -43,7 +45,9 @@ const ChatRow = ({ matchDetails }) => {
   useLayoutEffect(() => {
     (async () => {
       onSnapshot(query(collection(db, 'matches', matchDetails?.id, 'messages'),
-        where('seen', '==', false)),
+        where('userId', '!=', userProfile?.id),
+        where('seen', '==', false)
+      ),
         snapshot => {
           setUnreadMessage(
             snapshot?.docs?.map(doc => ({
@@ -55,7 +59,7 @@ const ChatRow = ({ matchDetails }) => {
   }, [db])
 
   const [loaded] = useFonts({
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
@@ -97,10 +101,7 @@ const ChatRow = ({ matchDetails }) => {
               borderRadius: 100
             }}
           >
-            <Image
-              style={{ width: 45, height: 45, borderRadius: 50 }}
-              source={{ uri: matchedUserInfo?.photoURL }}
-            />
+            <Avatar user={matchedUserInfo?.id} />
           </View>
           {
             unreadMessage?.length > 0 &&
@@ -126,16 +127,7 @@ const ChatRow = ({ matchDetails }) => {
           }
         </View>
         <View style={{ marginLeft: 10, flex: 1 }}>
-          <Text
-            numberOfLines={1}
-            style={{
-              fontSize: 18,
-              fontFamily: 'text',
-              color: theme == 'light' ? color.dark : color.white
-            }}
-          >
-            {matchedUserInfo?.username}
-          </Text>
+          <Username user={matchedUserInfo?.id} />
           <Text
             numberOfLines={1}
             style={{

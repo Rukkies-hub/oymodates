@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator, Dimensions, ScrollView } from 'react-native'
+import { View, TouchableOpacity, SafeAreaView, Dimensions, ScrollView } from 'react-native'
 
 import useAuth from '../../hooks/useAuth'
 
@@ -13,11 +13,12 @@ import { useNavigation } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
 
 import AutoHeightImage from 'react-native-auto-height-image'
+import LoadingIndicator from '../../components/LoadingIndicator'
 
 const { width } = Dimensions.get('window')
 
 const Passes = () => {
-  const { user, userProfile } = useAuth()
+  const { user, userProfile, theme } = useAuth()
   const navigation = useNavigation()
 
   const [passes, setPasses] = useState([])
@@ -66,7 +67,8 @@ const Passes = () => {
               backgroundColor: color.transparent
             }}
           >
-            <View
+            <LoadingIndicator size={50} theme={theme} />
+            {/* <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
@@ -74,7 +76,7 @@ const Passes = () => {
               }}
             >
               <ActivityIndicator size='large' color={color.red} />
-            </View>
+            </View> */}
           </View> :
           <ScrollView
             style={{

@@ -11,11 +11,11 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback
 } from 'react-native'
-import useAuth from '../hooks/useAuth'
+import useAuth from '../../hooks/useAuth'
 
-import color from '../style/color'
+import color from '../../style/color'
 
-import Bar from '../components/StatusBar'
+import Bar from '../../components/StatusBar'
 
 import { useFonts } from 'expo-font'
 
@@ -78,15 +78,15 @@ const Login = () => {
   }, [signinEmail])
 
   const [loaded] = useFonts({
-    logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
-    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    logo: require('../../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
+    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
 
   return (
     <ImageBackground
-      source={require('../assets/background.jpg')}
+      source={require('../../assets/background.jpg')}
       resizeMode='cover'
       blurRadius={10}
       style={{
@@ -247,6 +247,31 @@ const Login = () => {
                       </Text>
                   }
                 </TouchableOpacity>
+
+                {/* <TouchableOpacity 
+                  onPress={() => navigation.navigate('GoogleAuth')}
+                  style={{
+                    width: 45,
+                    height: 45,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: color.white,
+                    borderRadius: 12,
+                    marginLeft: 20
+                  }}
+                >
+                  {
+                    googleLoadng ?
+                      <ActivityIndicator size='small' color={color.red} /> :
+                      <Image
+                        source={require('../../assets/google.png')}
+                        style={{
+                          width: 25,
+                          height: 25
+                        }}
+                      />
+                  }
+                </TouchableOpacity> */}
 
                 {/* <TouchableOpacity
                   onPress={() => {

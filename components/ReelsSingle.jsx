@@ -83,7 +83,8 @@ export const ReelsSingle = forwardRef(({ item }, parentRef) => {
         posterSource={{ uri: item?.thumbnail }}
         posterStyle={{
           resizeMode: 'contain',
-          height: '100%'
+          height: '100%',
+          overflow: 'hidden'
         }}
         shouldPlay={false}
         source={{ uri: item?.media }}
