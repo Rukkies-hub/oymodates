@@ -194,8 +194,9 @@ export const AuthProvider = ({ children }) => {
     )
   }
 
-  const getUserProfile = async user => {
-    const unsub = onSnapshot(doc(db, 'users', user?.uid),
+  const getUserProfile = user => {
+    // const unsub =
+    onSnapshot(doc(db, 'users', user?.uid),
       doc => {
         let profile = doc?.data()
         setUserProfile(profile)
@@ -224,9 +225,9 @@ export const AuthProvider = ({ children }) => {
 
     registerIndieID(user?.uid == undefined ? user?.user?.uid : user?.uid, 3167, appToken)
 
-    setGoogleLoading(false)
-    setFacebookLoading(false)
-    return unsub
+    // setGoogleLoading(false)
+    // setFacebookLoading(false)
+    // return unsub
   }
 
   const logout = () => {

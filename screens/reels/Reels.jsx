@@ -5,7 +5,7 @@ import { arrayRemove, arrayUnion, collection, doc, getDocs, limit, onSnapshot, o
 import { db } from '../../hooks/firebase'
 
 import color from '../../style/color'
-import ReelsSingle from '../../components/ReelsSingle'
+import ReelsSingle from './components/ReelsSingle'
 
 const { width, height } = Dimensions.get('window')
 
@@ -28,14 +28,12 @@ const wait = timeout => {
 const Reels = () => {
   const {
     userProfile,
-    user,
-    reelsProps,
     setReelsProps,
     reels,
-    setReels,
     reelsLimit,
     getReels,
-    setReelsLimit
+    setReelsLimit,
+    theme
   } = useAuth()
   const mediaRefs = useRef([])
 
@@ -82,7 +80,7 @@ const Reels = () => {
         style={{
           flex: 1,
           width,
-          height: height - 109,
+          height: height - 108,
           backgroundColor: color.transparent,
           justifyContent: 'center',
           alignItems: 'center',
@@ -93,7 +91,7 @@ const Reels = () => {
         <ReelsSingle item={item} ref={ReelSingleRef => (mediaRefs.current[item?.id] = ReelSingleRef)} />
 
         <LinearGradient
-          colors={['transparent', color.labelColor]}
+          colors={['transparent', theme == 'dark' ? color.black : color.labelColor]}
           style={{
             position: 'absolute',
             bottom: 0,

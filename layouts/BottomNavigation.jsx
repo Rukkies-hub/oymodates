@@ -81,7 +81,7 @@ const BottomNavigation = () => {
           component={Reels}
           options={{
             tabBarIcon: () =>
-              <Octicons name='video' size={24} color={theme == 'dark' ? color.white : color.black} />
+              <Ionicons name='videocam-outline' size={20} color={theme == 'dark' ? color.white : color.black} />
           }}
         />
 

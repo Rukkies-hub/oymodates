@@ -1,16 +1,14 @@
-import React, { forwardRef, useRef, useImperativeHandle, useEffect, useState, useLayoutEffect } from 'react'
+import React, { forwardRef, useRef, useImperativeHandle, useEffect, useState } from 'react'
 
-import { View, TouchableOpacity, Dimensions, ImageBackground } from 'react-native'
+import { TouchableOpacity, Dimensions } from 'react-native'
 
 import { Video } from 'expo-av'
-import color from '../style/color'
 import { useNavigation } from '@react-navigation/native'
-import useAuth from '../hooks/useAuth'
+import color from '../../../style/color'
 
 const { width } = Dimensions.get('window')
 
 export const ReelsSingle = forwardRef(({ item }, parentRef) => {
-  const { userProfile } = useAuth()
   const ref = useRef(null)
 
   const navigation = useNavigation()

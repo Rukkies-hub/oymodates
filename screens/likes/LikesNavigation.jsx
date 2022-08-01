@@ -14,7 +14,7 @@ const Tab = createMaterialTopTabNavigator()
 const { width } = Dimensions.get('window')
 
 const LikesNavigation = ({ navigation }) => {
-  const { userProfile, pendingSwipes, theme } = useAuth()
+  const { userProfile, theme } = useAuth()
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -109,7 +109,7 @@ const LikesNavigation = ({ navigation }) => {
           initialRouteName='PendingLikes'
           keyboardDismissMode='auto'
           screenOptions={{
-            lazy: false,
+            lazy: true,
             tabBarIndicatorStyle: {
               backgroundColor: theme == 'dark' ? color.offWhite : color.dark,
               borderBottomLeftRadius: 50,

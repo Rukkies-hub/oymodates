@@ -116,8 +116,10 @@ const Message = () => {
   }
 
   useLayoutEffect(() => {
-    updateSeen()
-  }, [matchDetails])
+    setInterval(() => {
+      updateSeen()
+    }, 1000)
+  }, [])
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
