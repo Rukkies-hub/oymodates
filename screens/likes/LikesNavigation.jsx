@@ -105,60 +105,65 @@ const LikesNavigation = ({ navigation }) => {
         </View>
       }
 
-      <View
-        style={{
-          width: '100%',
-          height: 45,
-          flexDirection: 'row',
-          borderBottomWidth: 1,
-          borderBottomColor: theme == 'dark' ? color.lightBorderColor : color.borderColor
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => setVisible('likes')}
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <Text
+      {
+        userProfile &&
+        <>
+          <View
             style={{
-              color: visible == 'likes' ? color.red : theme == 'dark' ? color.white : color.dark,
-              fontFamily: 'text'
+              width: '100%',
+              height: 45,
+              flexDirection: 'row',
+              borderBottomWidth: 1,
+              borderBottomColor: theme == 'dark' ? color.lightBorderColor : color.borderColor
             }}
           >
-            Likes
-          </Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setVisible('likes')}
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  color: visible == 'likes' ? color.red : theme == 'dark' ? color.white : color.dark,
+                  fontFamily: 'text'
+                }}
+              >
+                Likes
+              </Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => setVisible('passes')}
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <Text
-            style={{
-              color: visible == 'passes' ? color.red : theme == 'dark' ? color.white : color.dark,
-              fontFamily: 'text'
-            }}
-          >
-            Passes
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity
+              onPress={() => setVisible('passes')}
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Text
+                style={{
+                  color: visible == 'passes' ? color.red : theme == 'dark' ? color.white : color.dark,
+                  fontFamily: 'text'
+                }}
+              >
+                Passes
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-      {
-        visible == 'likes' &&
-        <Likes />
-      }
+          {
+            visible == 'likes' &&
+            <Likes />
+          }
 
-      {
-        visible == 'passes' &&
-        <Passes />
+          {
+            visible == 'passes' &&
+            <Passes />
+          }
+        </>
       }
     </View>
   )
