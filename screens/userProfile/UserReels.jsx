@@ -88,7 +88,7 @@ const UserReels = () => {
               <Pressable
                 onPress={() => navigation.navigate('ViewReel', { reel })}
                 onLongPress={() => navigation.navigate('ReelsOption', { reel })}
-                delayLongPress={100}
+                delayLongPress={500}
                 style={{
                   padding: 5,
                   flexDirection: 'row',

@@ -77,7 +77,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             setShowTime(!showTime)
             setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
           }}
-          delayLongPress={100}
+          delayLongPress={500}
           onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
         >
           {
@@ -235,7 +235,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
               }}
             >
               <Pressable
-                delayLongPress={100}
+                delayLongPress={500}
                 style={{ maxHeight: 250 }}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
                 onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvatar', { avatar: messages?.media }) : null}
@@ -307,7 +307,7 @@ const RecieverMessage = ({ messages, matchDetails }) => {
             >
               <Pressable
                 style={{ flex: 1 }}
-                delayLongPress={100}
+                delayLongPress={500}
                 onPress={() => messages?.mediaType == 'video' ? navigation.navigate('ViewVideo', { video: messages?.media }) : null}
                 onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
               >

@@ -1,7 +1,7 @@
 import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import React, { useEffect, useLayoutEffect } from 'react'
 
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import { db } from '../hooks/firebase'
 import useAuth from '../hooks/useAuth'
 import color from '../style/color'
@@ -93,7 +93,7 @@ const ChatList = () => {
 
   return (
     matches?.length > 0 ? (
-      <SwipeListView
+      <FlatList
         data={matchesFilter}
         keyExtractor={item => item?.id}
         style={{
@@ -102,13 +102,23 @@ const ChatList = () => {
           paddingHorizontal: 5
         }}
         renderItem={({ item }) => <ChatRow matchDetails={item} />}
-        renderHiddenItem={renderHiddenItem}
-        rightOpenValue={-90}
-        previewRowKey={'0'}
-        previewOpenValue={-40}
-        previewOpenDelay={3000}
-        onRowDidOpen={onRowDidOpen}
       />
+      // <SwipeListView
+      //   data={matchesFilter}
+      //   keyExtractor={item => item?.id}
+      //   style={{
+      //     flex: 1,
+      //     height: 70,
+      //     paddingHorizontal: 5
+      //   }}
+      //   renderItem={({ item }) => <ChatRow matchDetails={item} />}
+      //   renderHiddenItem={renderHiddenItem}
+      //   rightOpenValue={-90}
+      //   previewRowKey={'0'}
+      //   previewOpenValue={-40}
+      //   previewOpenDelay={3000}
+      //   onRowDidOpen={onRowDidOpen}
+      // />
     ) : (
       <View
         style={{
