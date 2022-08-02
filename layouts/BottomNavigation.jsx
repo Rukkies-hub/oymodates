@@ -60,11 +60,12 @@ const BottomNavigation = () => {
         {
           pendingSwipes?.length > 0 ?
             <Tab.Screen
-              name='Likes'
+              name='LikesNavigation'
               component={LikesNavigation}
               options={{
                 tabBarIcon: () => <SimpleLineIcons name='like' size={20} color={theme == 'dark' ? color.white : color.black} />,
-                tabBarBadge: pendingSwipes?.length
+                tabBarBadge: pendingSwipes?.length,
+                title: 'Likes'
               }}
             /> :
             <Tab.Screen
@@ -80,8 +81,7 @@ const BottomNavigation = () => {
           name='Reels'
           component={Reels}
           options={{
-            tabBarIcon: () =>
-              <Ionicons name='videocam-outline' size={20} color={theme == 'dark' ? color.white : color.black} />
+            tabBarIcon: () => <Ionicons name='videocam-outline' size={20} color={theme == 'dark' ? color.white : color.black} />
           }}
         />
 

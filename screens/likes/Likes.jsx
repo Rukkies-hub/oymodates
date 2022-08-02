@@ -68,7 +68,7 @@ const Likes = () => {
   if (!loaded) return null
 
   return (
-    <SafeAreaView
+    <View
       style={{
         flex: 1,
         backgroundColor: color.transparent
@@ -181,7 +181,7 @@ const Likes = () => {
             <LoadingIndicator size={50} theme={theme} />
           </View>
       }
-    </SafeAreaView>
+    </View>
   )
 }
 

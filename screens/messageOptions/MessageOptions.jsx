@@ -1,13 +1,38 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { View, Text, Dimensions, TouchableOpacity } from 'react-native'
 import color from '../../style/color'
-import { useNavigation } from '@react-navigation/native'
+
 import useAuth from '../../hooks/useAuth'
 import { useFonts } from 'expo-font'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore'
+import { db } from '../../hooks/firebase'
+import { deleteObject, getStorage, ref } from 'firebase/storage'
 
 const MessageOptions = () => {
-  const { theme } = useAuth()
+  const { messages, matchDetails } = useRoute().params
+  const {
+    userProfile,
+    setMessageReply
+  } = useAuth()
   const navigation = useNavigation()
+
+  const storage = getStorage()
+
+  const deleteMessage = async () => {
+    if (messages?.mediaLink) {
+      const mediaRef = ref(storage, messages?.mediaLink)
+
+      deleteObject(mediaRef)
+        .then(async () => {
+          await deleteDoc(doc(db, 'matches', matchDetails?.id, 'messages', messages?.id))
+            .then(() => navigation.goBack())
+        })
+    } else {
+      navigation.goBack()
+      await deleteDoc(doc(db, 'matches', matchDetails?.id, 'messages', messages?.id))
+    }
+  }
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
@@ -17,9 +42,9 @@ const MessageOptions = () => {
 
   return (
     <View
+      intensity={100}
       style={{
         flex: 1,
-        backgroundColor: color.faintBlack,
         justifyContent: 'flex-end',
         alignItems: 'center'
       }}
@@ -28,66 +53,70 @@ const MessageOptions = () => {
         onPress={() => navigation.goBack()}
         style={{
           flex: 1,
-          backgroundColor: color.red
+          width: '100%'
         }}
       />
       <View
         style={{
-          backgroundColor: theme == 'dark' ? color.black : color.white,
-          width: '100%',
-          paddingVertical: 10
+          minWidth: Dimensions.get('window').width,
+          backgroundColor: userProfile?.theme == 'dark' ? color.black : color.white,
+          padding: 20,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20
         }}
       >
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack()
+            setMessageReply(messages)
+          }}
+          activeOpacity={0.5}
           style={{
-            flexDirection: 'row',
-            paddingHorizontal: 10
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.dark : color.black,
+            borderRadius: 12
           }}
         >
-          <TouchableOpacity
+          <Text
             style={{
-              flex: 1,
+              fontFamily: 'text',
+              color: userProfile?.theme == 'light' ? color.dark : color.white
+            }}
+          >
+            Reply
+          </Text>
+        </TouchableOpacity>
+
+        {
+          messages?.userId == userProfile?.id &&
+          <TouchableOpacity
+            onPress={deleteMessage}
+            activeOpacity={0.5}
+            style={{
               height: 50,
-              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
               justifyContent: 'center',
               alignItems: 'center',
+              backgroundColor: userProfile?.theme == 'light' ? color.offWhite : userProfile?.theme == 'dark' ? color.dark : color.black,
               borderRadius: 12,
-              marginRight: 5
+              marginTop: 10
             }}
           >
             <Text
               style={{
-                color: theme == 'dark' ? color.white : color.dark,
-                fontFamily: 'text'
+                fontFamily: 'text',
+                color: color.red
               }}
             >
-              Block
+              Delete message
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              height: 50,
-              backgroundColor: color.red,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 12,
-              marginLeft: 5
-            }}
-          >
-            <Text
-              style={{
-                color: theme == 'dark' ? color.white : color.dark,
-                fontFamily: 'text'
-              }}
-            >
-              Unmatch
-            </Text>
-          </TouchableOpacity>
-        </View>
+        }
       </View>
     </View>
   )
 }
 
 export default MessageOptions
+// in use

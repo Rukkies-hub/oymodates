@@ -98,7 +98,7 @@ const EditProfile = () => {
       aspect: [9, 16]
     })
 
-    if (!result?.cancelled) {
+    if (!result?.cancelled && result?.type == 'image') {
       const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
         xhr.onload = () => resolve(xhr.response)
@@ -170,41 +170,51 @@ const EditProfile = () => {
     }
   }
 
-  const updateUserProfile = () => {
+  const updateUserProfile = async () => {
     if (userProfile) {
       setUpdateLoading(true)
-      updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-        id: user?.uid == undefined ? user?.user?.uid : user?.uid,
-        displayName: user?.displayName ? user?.displayName : displayName,
-        job,
-        company,
-        username,
-        school,
-        city,
-        about
-      }).then(() => {
+
+      try {
+        await updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+          id: user?.uid == undefined ? user?.user?.uid : user?.uid,
+          displayName: user?.displayName ? user?.displayName : displayName,
+          job,
+          company,
+          username,
+          school,
+          city,
+          about
+        })
         setUpdateLoading(false)
         setSnackMessage('Profile updated successfully')
         setVisible(true)
-      }).catch(() => setUpdateLoading(false))
+      } catch (error) {
+        setUpdateLoading(false)
+        return
+      }
     }
     else {
       setUpdateLoading(true)
-      setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-        id: user?.uid == undefined ? user?.user?.uid : user?.uid,
-        username,
-        displayName: user?.user?.displayName ? user?.user?.displayName : displayName,
-        job,
-        company,
-        school,
-        city,
-        theme: 'light',
-        timestamp: serverTimestamp()
-      }).then(() => {
+
+      try {
+        await setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+          id: user?.uid == undefined ? user?.user?.uid : user?.uid,
+          username,
+          displayName: user?.user?.displayName ? user?.user?.displayName : displayName,
+          job,
+          company,
+          school,
+          city,
+          theme: 'light',
+          timestamp: serverTimestamp()
+        })
         setUpdateLoading(false)
         setSnackMessage('Profile updated successfully')
         setVisible(true)
-      }).catch(() => setUpdateLoading(false))
+      } catch (error) {
+        setUpdateLoading(false)
+        return
+      }
     }
   }
 
@@ -564,7 +574,7 @@ const EditProfile = () => {
             </TouchableOpacity>
           }
 
-          
+
           {userProfile && <LookingFor />}
 
           {userProfile && <AppTheme />}
@@ -632,7 +642,7 @@ const EditProfile = () => {
             }}
           >
             <Image
-              source={require('../../assets/icon.png')}
+              source={require('../../assets/adaptive-icon.png')}
               style={{
                 width: 50,
                 height: 50

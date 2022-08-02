@@ -9,14 +9,16 @@ import { db } from '../../../hooks/firebase'
 const LookingFor = () => {
   const { lookingFor, setLookingFor, userProfile, theme } = useAuth()
 
-  const lookingForMen = () => {
-    setLookingFor('men')
-    updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'male' })
+  const lookingForMen = async () => {
+    try {
+      await updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'male' })
+    } catch (error) { return }
   }
 
-  const lookingForWomen = () => {
-    setLookingFor('women')
-    updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'female' })
+  const lookingForWomen = async () => {
+    try {
+      await updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'female' })
+    } catch (error) { return }
   }
 
   const [loaded] = useFonts({

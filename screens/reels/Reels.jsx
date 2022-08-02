@@ -17,7 +17,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 import useAuth from '../../hooks/useAuth'
 import LikeReels from '../../components/LikeReels'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import UserInfo from './components/UserInfo'
 import UserAvatar from './components/UserAvatar'
 
@@ -40,6 +40,7 @@ const Reels = () => {
   const [refreshing, setRefreshing] = useState(false)
 
   const navigation = useNavigation()
+  const focus = useIsFocused()
 
   const onViewableItemsChanged = useRef(({ changed }) => {
     changed?.forEach(element => {
@@ -77,16 +78,37 @@ const Reels = () => {
         source={{ uri: item?.thumbnail }}
         resizeMode='cover'
         blurRadius={50}
-        style={{
-          flex: 1,
-          width,
-          height: height - 108,
-          backgroundColor: color.transparent,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 8,
-          overflow: 'hidden'
-        }}
+        style={[
+          {
+            flex: 1,
+            width,
+            height: height - 108,
+            backgroundColor: color.transparent,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 8,
+            overflow: 'hidden'
+          },
+          index % 2 ? {
+            flex: 1,
+            width,
+            height: height - 108,
+            backgroundColor: color.transparent,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 8,
+            overflow: 'hidden'
+          } : {
+            flex: 1,
+            width,
+            height: height - 108,
+            backgroundColor: color.transparent,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 8,
+            overflow: 'hidden'
+          }
+        ]}
       >
         <ReelsSingle item={item} ref={ReelSingleRef => (mediaRefs.current[item?.id] = ReelSingleRef)} />
 

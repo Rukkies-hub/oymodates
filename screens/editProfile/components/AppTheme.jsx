@@ -73,8 +73,8 @@ const AppTheme = () => {
         >
           <View
             style={{
-              width: 100,
-              height: 100,
+              width: 80,
+              height: 80,
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: color.red,
@@ -87,7 +87,7 @@ const AppTheme = () => {
               paddingLeft: 20
             }}
           >
-            <Entypo name='light-down' size={50} color={color.white} />
+            <Entypo name='light-down' size={30} color={color.white} />
           </View>
           <Text
             style={{
@@ -116,8 +116,8 @@ const AppTheme = () => {
         >
           <View
             style={{
-              width: 100,
-              height: 100,
+              width: 80,
+              height: 80,
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: color.red,
@@ -130,7 +130,7 @@ const AppTheme = () => {
               paddingLeft: 20
             }}
           >
-            <MaterialCommunityIcons name='theme-light-dark' size={35} color={color.white} />
+            <MaterialCommunityIcons name='theme-light-dark' size={25} color={color.white} />
           </View>
           <Text
             style={{

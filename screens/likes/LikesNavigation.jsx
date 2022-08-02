@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
 
 import useAuth from '../../hooks/useAuth'
@@ -15,6 +15,8 @@ const { width } = Dimensions.get('window')
 
 const LikesNavigation = ({ navigation }) => {
   const { userProfile, theme } = useAuth()
+
+  const [visible, setVisible] = useState('likes')
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -103,43 +105,60 @@ const LikesNavigation = ({ navigation }) => {
         </View>
       }
 
-      {
-        userProfile &&
-        <Tab.Navigator
-          initialRouteName='PendingLikes'
-          keyboardDismissMode='auto'
-          screenOptions={{
-            lazy: true,
-            tabBarIndicatorStyle: {
-              backgroundColor: theme == 'dark' ? color.offWhite : color.dark,
-              borderBottomLeftRadius: 50,
-              borderBottomRightRadius: 50
-            },
-            tabBarStyle: {
-              backgroundColor: color.transparent,
-              height: 45,
-              elevation: 0
-            },
-            tabBarLabelStyle: {
-              color: theme == 'dark' ? color.white : color.lightText,
-              fontFamily: 'text',
-              textTransform: 'capitalize'
-            }
+      <View
+        style={{
+          width: '100%',
+          height: 45,
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          borderBottomColor: theme == 'dark' ? color.lightBorderColor : color.borderColor
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => setVisible('likes')}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
         >
-          <Tab.Screen
-            name="PendingLikes"
-            component={Likes}
-            options={{
-              title: 'Likes'
+          <Text
+            style={{
+              color: visible == 'likes' ? color.red : theme == 'dark' ? color.white : color.dark,
+              fontFamily: 'text'
             }}
-          />
+          >
+            Likes
+          </Text>
+        </TouchableOpacity>
 
-          <Tab.Screen
-            name="Passes"
-            component={Passes}
-          />
-        </Tab.Navigator>
+        <TouchableOpacity
+          onPress={() => setVisible('passes')}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              color: visible == 'passes' ? color.red : theme == 'dark' ? color.white : color.dark,
+              fontFamily: 'text'
+            }}
+          >
+            Passes
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {
+        visible == 'likes' &&
+        <Likes />
+      }
+
+      {
+        visible == 'passes' &&
+        <Passes />
       }
     </View>
   )
