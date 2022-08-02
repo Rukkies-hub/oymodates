@@ -14,8 +14,8 @@ import UserAvatar from './components/UserAvatar'
 import UserInfo from './components/UserInfo'
 import Reply from './components/Reply'
 
-const ReelsCommentReplies = ({ comment, textColor, showAll, background }) => {
-  const { user, userProfile, showExpand, setShowExpand } = useAuth()
+const ReelsCommentReplies = ({ comment, background }) => {
+  const { user, showExpand } = useAuth()
   const [replies, setReplies] = useState([])
 
   const navigation = useNavigation()

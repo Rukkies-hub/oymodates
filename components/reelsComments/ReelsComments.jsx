@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 
 import {
   View,
@@ -29,7 +29,7 @@ const ReelsComments = ({ reel, background }) => {
   const { user } = useAuth()
   const [comments, setComments] = useState([])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (() => {
       onSnapshot(collection(db, 'reels', reel?.id, 'comments'),
         snapshot =>
