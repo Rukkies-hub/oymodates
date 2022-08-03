@@ -6,13 +6,10 @@ import color from '../../style/color'
 import Bar from '../../components/StatusBar'
 import Header from '../../components/Header'
 
-import { Feather, Fontisto, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons'
+import { Feather, Fontisto, SimpleLineIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import useAuth from '../../hooks/useAuth'
-import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
-import { db } from '../../hooks/firebase'
-import generateId from '../../lib/generateId'
 import { BlurView } from 'expo-blur'
 
 const UserDetails = ({ userProfile, user }) => {
@@ -31,44 +28,6 @@ const UserDetails = ({ userProfile, user }) => {
 
     if (userSwiped) setShowMatch(true)
   }, [user])
-
-  // MATCH WITH USER
-  const swipeRight = async () => {
-    const needle = user?.id
-    const cardIndex = profiles?.findIndex(item => item.id === needle)
-
-    if (!profiles[cardIndex]) return
-
-    const userSwiped = profiles[cardIndex]
-
-    getDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped.id))
-      .then(documentSnapshot => {
-        if (documentSnapshot.exists()) {
-          setDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped.id), userSwiped)
-
-          // CREAT A MATCH
-          setDoc(doc(db, 'matches', generateId(userProfile?.id, userSwiped.id)), {
-            users: {
-              [userProfile?.id]: userProfile,
-              [userSwiped.id]: userSwiped
-            },
-            usersMatched: [userProfile?.id, userSwiped.id],
-            timestamp: serverTimestamp()
-          }).finally(async () => await deleteDoc(doc(db, 'users', userProfile?.id, 'pendingSwipes', userSwiped.id)))
-
-          navigation.navigate('NewMatch', {
-            loggedInProfile: userProfile,
-            userSwiped
-          })
-        } else {
-          setDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped.id), userSwiped)
-          setShowMatch(false)
-        }
-      })
-
-    setDoc(doc(db, 'users', userSwiped.id, 'pendingSwipes', user?.id), userProfile)
-    setDoc(doc(db, 'users', user?.id, 'swipes', userSwiped.id), userSwiped)
-  }
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -176,24 +135,6 @@ const UserDetails = ({ userProfile, user }) => {
               </Text>
             }
           </View>
-
-          {
-            showMatch &&
-            <TouchableOpacity
-              onPress={swipeRight}
-              style={{
-                backgroundColor: color.red,
-                width: 35,
-                height: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginLeft: 5,
-                borderRadius: 8
-              }}
-            >
-              <MaterialCommunityIcons name='heart-multiple-outline' size={18} color={color.white} />
-            </TouchableOpacity>
-          }
         </View>
 
         {

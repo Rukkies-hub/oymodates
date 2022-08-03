@@ -38,7 +38,7 @@ const Match = () => {
 
   const swipeRef = useRef(null)
 
-  const [stackSize, setStackSize] = useState(2)
+  const [stackSize, setStackSize] = useState(20)
 
   useEffect(() => {
     (async () => {
@@ -94,7 +94,7 @@ const Match = () => {
   }
 
   const swipeRight = async cardIndex => {
-    setStackSize(stackSize + 1)
+    if(profiles?.length >= 20) setStackSize(stackSize + 10)
     if (!profiles[cardIndex]) return
 
     const userSwiped = profiles[cardIndex]
@@ -112,7 +112,7 @@ const Match = () => {
             },
             usersMatched: [userProfile?.id, userSwiped?.id],
             timestamp: serverTimestamp()
-          }).finally(async () => await deleteDoc(doc(db, 'users', userProfile?.id, 'pendingSwipes', userSwiped?.id)))
+          }).then(async () => await deleteDoc(doc(db, 'users', userProfile?.id, 'pendingSwipes', userSwiped?.id)))
 
           navigation.navigate('NewMatch', {
             loggedInProfile: userProfile,

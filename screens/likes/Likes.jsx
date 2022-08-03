@@ -49,7 +49,7 @@ const Likes = () => {
             },
             usersMatched: [userProfile?.id, userSwiped.id],
             timestamp: serverTimestamp()
-          }).finally(async () => await deleteDoc(doc(db, 'users', userProfile?.id, 'pendingSwipes', userSwiped.id)))
+          }).then(async () => await deleteDoc(doc(db, 'users', userProfile?.id, 'pendingSwipes', userSwiped.id)))
 
           navigation.navigate('NewMatch', {
             loggedInProfile: userProfile,
