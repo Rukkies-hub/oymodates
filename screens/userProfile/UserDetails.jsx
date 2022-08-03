@@ -90,7 +90,14 @@ const UserDetails = ({ userProfile, user }) => {
       >
         <Bar color={theme == 'dark' ? 'light' : 'dark'} />
 
-        <Header showBack showTitle title={user?.username} backgroundColor={color.transparent} showAratar showNotification />
+        <Header
+          showBack
+          showTitle
+          title={user?.username}
+          backgroundColor={color.transparent}
+          showAratar={userProfile?.photoURL ? true : false}
+          showNotification
+        />
 
         <View
           style={{
@@ -100,17 +107,17 @@ const UserDetails = ({ userProfile, user }) => {
         >
           {
             user?.photoURL ?
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ViewAvatar', { avatar: user?.photoURL })}
-            >
-              <Image
-                source={{ uri: user?.photoURL }}
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 100
-                }}
-              />
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ViewAvatar', { avatar: user?.photoURL })}
+              >
+                <Image
+                  source={{ uri: user?.photoURL }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 100
+                  }}
+                />
               </TouchableOpacity> :
               <BlurView
                 intensity={50}
@@ -190,7 +197,7 @@ const UserDetails = ({ userProfile, user }) => {
         </View>
 
         {
-          user?.about != '' &&
+          user?.about && user?.about != '' &&
           <View
             style={{
               marginTop: 20
@@ -209,7 +216,7 @@ const UserDetails = ({ userProfile, user }) => {
         }
 
         {
-          user?.passions?.length > 1 &&
+          user?.passions && user?.passions?.length > 1 &&
           <View
             style={{
               flexDirection: 'row',
@@ -332,27 +339,30 @@ const UserDetails = ({ userProfile, user }) => {
           </View>
         </View>
 
-        <View
-          style={{
-            marginTop: 10,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center'
-          }}
-        >
-          <Feather name='briefcase' size={14} color={theme == 'light' ? color.dark : color.white} />
-
-          <Text
+        {
+          user?.job && user?.job != '' &&
+          <View
             style={{
-              fontFamily: 'text',
-              fontSize: 16,
-              color: theme == 'light' ? color.dark : color.white,
-              marginLeft: 10
+              marginTop: 10,
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center'
             }}
           >
-            {user?.job} {user?.job ? 'at' : null} {user?.company}
-          </Text>
-        </View>
+            <Feather name='briefcase' size={14} color={theme == 'light' ? color.dark : color.white} />
+
+            <Text
+              style={{
+                fontFamily: 'text',
+                fontSize: 16,
+                color: theme == 'light' ? color.dark : color.white,
+                marginLeft: 10
+              }}
+            >
+              {user?.job} {user?.job ? 'at' : null} {user?.company}
+            </Text>
+          </View>
+        }
       </LinearGradient>
     </ImageBackground>
   )

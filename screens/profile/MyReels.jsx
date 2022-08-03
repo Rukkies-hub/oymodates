@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { View, Text, Pressable, Image, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, Pressable, Image, FlatList } from 'react-native'
 
 import useAuth from '../../hooks/useAuth'
 import color from '../../style/color'
@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import { collection, getDocs, limit, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 
+import LoadingIndicator from '../../components/LoadingIndicator'
 
 const MyReels = () => {
   const { user, userProfile, theme } = useAuth()
@@ -58,7 +59,7 @@ const MyReels = () => {
               backgroundColor: color.transparent
             }}
           >
-            <ActivityIndicator size='large' color={color.red} />
+            <LoadingIndicator size={50} theme={theme} />
           </View> :
           <FlatList
             data={reels}

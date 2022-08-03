@@ -31,9 +31,9 @@ const ProfileDetails = ({ userProfile, user }) => {
         <Header
           showBack
           showTitle
+          showNotification
           title={userProfile?.username}
           backgroundColor={color.transparent}
-          showNotification
           showAratar={userProfile?.photoURL ? true : false}
         />
 
@@ -144,7 +144,7 @@ const ProfileDetails = ({ userProfile, user }) => {
         }
 
         {
-          userProfile?.passions?.length > 1 &&
+          userProfile?.passions && userProfile?.passions?.length > 1 &&
           <View
             style={{
               flexDirection: 'row',
@@ -267,28 +267,31 @@ const ProfileDetails = ({ userProfile, user }) => {
           </View>
         </View>
 
-        <View
-          style={{
-            marginTop: 10,
-            marginBottom: 20,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center'
-          }}
-        >
-          <Feather name='briefcase' size={14} color={theme == 'dark' ? color.white : color.dark} />
-
-          <Text
+        {
+          userProfile?.job || userProfile?.job != '' &&
+          <View
             style={{
-              fontFamily: 'text',
-              fontSize: 16,
-              color: theme == 'dark' ? color.white : color.dark,
-              marginLeft: 10
+              marginTop: 10,
+              marginBottom: 20,
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center'
             }}
           >
-            {userProfile?.job} {userProfile?.company != '' && 'at'} {userProfile?.company}
-          </Text>
-        </View>
+            <Feather name='briefcase' size={14} color={theme == 'dark' ? color.white : color.dark} />
+
+            <Text
+              style={{
+                fontFamily: 'text',
+                fontSize: 16,
+                color: theme == 'dark' ? color.white : color.dark,
+                marginLeft: 10
+              }}
+            >
+              {userProfile?.job} {userProfile?.company != '' && 'at'} {userProfile?.company}
+            </Text>
+          </View>
+        }
       </LinearGradient>
     </ImageBackground>
   )

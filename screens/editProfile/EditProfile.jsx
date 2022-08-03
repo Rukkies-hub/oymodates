@@ -85,7 +85,7 @@ const EditProfile = () => {
       setDisabled(false)
     }
     else {
-      if (username != '' && displayName != '' && job != '' && company != '' && school != '' && city != '')
+      if (username != '' && displayName != '' && city != '')
         setDisabled(false)
     }
   }, [username, displayName, job, company, school, city])
@@ -381,53 +381,62 @@ const EditProfile = () => {
             />
           }
 
-          <TextInput
-            value={job}
-            onChangeText={setJob}
-            placeholder='Enter your occupation'
-            placeholderTextColor={theme == 'dark' ? color.white : color.dark}
-            style={{
-              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-              paddingHorizontal: 10,
-              borderRadius: 12,
-              height: 45,
-              fontFamily: 'text',
-              marginBottom: 20,
-              color: theme == 'dark' ? color.white : color.dark
-            }}
-          />
+          {
+            userProfile &&
+            <TextInput
+              value={job}
+              onChangeText={setJob}
+              placeholder='Enter your occupation'
+              placeholderTextColor={theme == 'dark' ? color.white : color.dark}
+              style={{
+                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                paddingHorizontal: 10,
+                borderRadius: 12,
+                height: 45,
+                fontFamily: 'text',
+                marginBottom: 20,
+                color: theme == 'dark' ? color.white : color.dark
+              }}
+            />
+          }
 
-          <TextInput
-            value={company}
-            onChangeText={setCompany}
-            placeholder='Where do you work'
-            placeholderTextColor={theme == 'dark' ? color.white : color.dark}
-            style={{
-              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-              paddingHorizontal: 10,
-              borderRadius: 12,
-              height: 45,
-              fontFamily: 'text',
-              marginBottom: 20,
-              color: theme == 'dark' ? color.white : color.dark
-            }}
-          />
+          {
+            userProfile &&
+            <TextInput
+              value={company}
+              onChangeText={setCompany}
+              placeholder='Where do you work'
+              placeholderTextColor={theme == 'dark' ? color.white : color.dark}
+              style={{
+                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                paddingHorizontal: 10,
+                borderRadius: 12,
+                height: 45,
+                fontFamily: 'text',
+                marginBottom: 20,
+                color: theme == 'dark' ? color.white : color.dark
+              }}
+            />
+          }
 
-          <TextInput
-            value={school}
-            onChangeText={setSchool}
-            placeholder='School'
-            placeholderTextColor={theme == 'dark' ? color.white : color.dark}
-            style={{
-              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-              paddingHorizontal: 10,
-              borderRadius: 12,
-              height: 45,
-              fontFamily: 'text',
-              marginBottom: 20,
-              color: theme == 'dark' ? color.white : color.dark
-            }}
-          />
+          {
+            userProfile &&
+            <TextInput
+              value={school}
+              onChangeText={setSchool}
+              placeholder='School'
+              placeholderTextColor={theme == 'dark' ? color.white : color.dark}
+              style={{
+                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                paddingHorizontal: 10,
+                borderRadius: 12,
+                height: 45,
+                fontFamily: 'text',
+                marginBottom: 20,
+                color: theme == 'dark' ? color.white : color.dark
+              }}
+            />
+          }
 
           <TextInput
             value={city}
@@ -482,32 +491,38 @@ const EditProfile = () => {
           }
 
           {
-            !userProfile?.gender &&
-            <View
-              style={{
-                minHeight: 45
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Gender')}
-                style={{
-                  backgroundColor: color.red,
-                  height: 50,
-                  borderRadius: 12,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Text
+            userProfile &&
+            <>
+              {
+                !userProfile?.gender &&
+                <View
                   style={{
-                    color: color.white,
-                    fontFamily: 'text'
+                    minHeight: 45,
+                    marginTop: 20
                   }}
                 >
-                  Set your gender
-                </Text>
-              </TouchableOpacity>
-            </View>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Gender')}
+                    style={{
+                      backgroundColor: color.red,
+                      height: 50,
+                      borderRadius: 12,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: color.white,
+                        fontFamily: 'text'
+                      }}
+                    >
+                      Set your gender
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              }
+            </>
           }
 
           {

@@ -85,24 +85,30 @@ const Passion = () => {
 
   const [passionsLoading, setPassionLoading] = useState(false)
 
-  const updateIntrests = () => {
+  const updateIntrests = async () => {
     if (passions?.length >= 3) {
       setPassionLoading(true)
 
-      if (userProfile)
-        updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-          passions
-        }).finally(() => {
-          setPassionLoading(false)
+      if (userProfile) {
+        try {
           navigation.goBack()
-        })
-      else
-        setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-          passions
-        }).finally(() => {
-          setPassionLoading(false)
+          await updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+            passions
+          }).finally(() => setPassionLoading(false))
+        } catch (error) {
+          return
+        }
+      }
+      else {
+        try {
           navigation.goBack()
-        })
+          setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+            passions
+          }).finally(() => setPassionLoading(false))
+        } catch (error) {
+          return
+        }
+      }
     }
   }
 
