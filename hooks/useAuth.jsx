@@ -215,6 +215,7 @@ export const AuthProvider = ({ children }) => {
         if (profile?.job) setJob(profile?.job)
         if (profile?.company) setCompany(profile?.company)
         if (profile?.username) setUsername(profile?.username)
+        if (profile?.displayName) setDisplayName(profile?.displayName)
         if (profile?.school) setSchool(profile?.school)
         if (profile?.city) setCity(profile?.city)
         if (profile?.gender) setChecked(profile?.gender)

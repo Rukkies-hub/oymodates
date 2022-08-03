@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   View,
   Text,
@@ -6,8 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  ActivityIndicator,
-  Platform
+  ActivityIndicator
 } from 'react-native'
 
 import Header from '../../components/Header'
@@ -28,7 +27,8 @@ import { serverTimestamp, setDoc, doc, updateDoc } from 'firebase/firestore'
 
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 
-import { RadioButton } from 'react-native-paper'
+import * as Notifications from 'expo-notifications'
+import * as Device from 'expo-device'
 
 import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
 
@@ -41,6 +41,14 @@ import AppTheme from './components/AppTheme'
 import SnackBar from 'rukkiecodes-expo-snackbar'
 import Payment from './components/Payment'
 import LookingFor from './components/LookingFor'
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+})
 
 const EditProfile = () => {
   const {
@@ -71,14 +79,34 @@ const EditProfile = () => {
 
   const storage = getStorage()
   const navigation = useNavigation()
-  const route = useRoute()
+
+  const notificationListener = useRef()
+  const responseListener = useRef()
 
   const [height, setHeight] = useState(50)
   const [uploadLoading, setUploadLoading] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
-  const [visible, setVisible] = useState(false)
-  const [snackMessage, setSnackMessage] = useState('')
   const [disabled, setDisabled] = useState(true)
+
+  const [expoPushToken, setExpoPushToken] = useState('')
+  const [notification, setNotification] = useState(false)
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification)
+    })
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response)
+    })
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current)
+      Notifications.removeNotificationSubscription(responseListener.current)
+    }
+  }, [])
 
   useEffect(() => {
     if (userProfile) {
@@ -134,8 +162,7 @@ const EditProfile = () => {
                         photoURL: downloadURL,
                         photoLink: link
                       }).finally(async () => {
-                        setSnackMessage('Display picture set successfully')
-                        setVisible(true)
+                        schedulePushNotification('Update successful', 'Your display picture has been updated successfully')
                         setUploadLoading(false)
                       })
                     })
@@ -158,8 +185,7 @@ const EditProfile = () => {
                     photoURL: downloadURL,
                     photoLink: link
                   }).finally(async () => {
-                    setSnackMessage('Display picture set successfully')
-                    setVisible(true)
+                    schedulePushNotification('Update successful', 'Your display picture has been updated successfully')
                     setUploadLoading(false)
                   })
                 })
@@ -171,51 +197,50 @@ const EditProfile = () => {
   }
 
   const updateUserProfile = async () => {
-    if (userProfile) {
-      setUpdateLoading(true)
+    schedulePushNotification('Update successful', 'Your profile has been updated successfully')
+    // if (userProfile) {
+    //   setUpdateLoading(true)
 
-      try {
-        await updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-          id: user?.uid == undefined ? user?.user?.uid : user?.uid,
-          displayName: user?.displayName ? user?.displayName : displayName,
-          job,
-          company,
-          username,
-          school,
-          city,
-          about
-        })
-        setUpdateLoading(false)
-        setSnackMessage('Profile updated successfully')
-        setVisible(true)
-      } catch (error) {
-        setUpdateLoading(false)
-        return
-      }
-    }
-    else {
-      setUpdateLoading(true)
+    //   try {
+    //     await updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+    //       id: user?.uid == undefined ? user?.user?.uid : user?.uid,
+    //       displayName,
+    //       job,
+    //       company,
+    //       username,
+    //       school,
+    //       city,
+    //       about
+    //     })
+    //     schedulePushNotification('Update successful', 'Your profile has been updated successfully')
+    //     setUpdateLoading(false)
+    //   } catch (error) {
+    //     setUpdateLoading(false)
+    //     return
+    //   }
+    // }
+    // else {
+    //   setUpdateLoading(true)
 
-      try {
-        await setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-          id: user?.uid == undefined ? user?.user?.uid : user?.uid,
-          username,
-          displayName: user?.user?.displayName ? user?.user?.displayName : displayName,
-          job,
-          company,
-          school,
-          city,
-          theme: 'light',
-          timestamp: serverTimestamp()
-        })
-        setUpdateLoading(false)
-        setSnackMessage('Profile updated successfully')
-        setVisible(true)
-      } catch (error) {
-        setUpdateLoading(false)
-        return
-      }
-    }
+    //   try {
+    //     await setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+    //       id: user?.uid == undefined ? user?.user?.uid : user?.uid,
+    //       username,
+    //       displayName: user?.user?.displayName ? user?.user?.displayName : displayName,
+    //       job,
+    //       company,
+    //       school,
+    //       city,
+    //       theme: 'light',
+    //       timestamp: serverTimestamp()
+    //     })
+    //     schedulePushNotification('Update successful', 'Your profile has been updated successfully')
+    //     setUpdateLoading(false)
+    //   } catch (error) {
+    //     setUpdateLoading(false)
+    //     return
+    //   }
+    // }
   }
 
   const [loaded] = useFonts({
@@ -232,14 +257,6 @@ const EditProfile = () => {
         backgroundColor: color.transparent
       }}
     >
-      <SnackBar
-        visible={visible}
-        message={snackMessage}
-        background={theme == 'dark' ? color.dark : color.white}
-        textColor={theme == 'dark' ? color.white : color.dark}
-        shadowColor={color.black}
-      />
-
       <Bar color={theme == 'dark' ? 'light' : 'dark'} />
 
       <Header showBack showTitle showAratar title='Edit Profile' />
@@ -678,6 +695,48 @@ const EditProfile = () => {
       </ScrollView>
     </View>
   )
+}
+
+async function schedulePushNotification (title, body) {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title,
+      body,
+      sound: require('../../assets/newMessage.mp3')
+    },
+    trigger: { seconds: 1 },
+  })
+}
+
+async function registerForPushNotificationsAsync () {
+  let token
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync()
+    let finalStatus = existingStatus
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync()
+      finalStatus = status
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!')
+      return
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data
+    console.log(token)
+  } else {
+    alert('Must use physical device for Push Notifications')
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    })
+  }
+
+  return token
 }
 
 export default EditProfile
