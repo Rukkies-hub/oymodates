@@ -10,12 +10,14 @@ const LookingFor = () => {
   const { lookingFor, setLookingFor, userProfile, theme } = useAuth()
 
   const lookingForMen = async () => {
+    setLookingFor('male')
     try {
       await updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'male' })
     } catch (error) { return }
   }
 
   const lookingForWomen = async () => {
+    setLookingFor('female')
     try {
       await updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'female' })
     } catch (error) { return }
@@ -36,7 +38,7 @@ const LookingFor = () => {
           fontFamily: 'boldText'
         }}
       >
-        Looking for
+        Interested in
       </Text>
 
       <View

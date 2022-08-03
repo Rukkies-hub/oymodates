@@ -61,6 +61,7 @@ const Match = () => {
             setProfiles(
               snapshot?.docs?.filter(doc => doc?.data()?.photoURL != null)
                 .filter(doc => doc?.id !== user?.uid)
+                .filter(doc => doc?.data()?.username != null || doc?.data()?.username != '')
                 .map(doc => ({
                   id: doc?.id,
                   ...doc?.data()
@@ -72,6 +73,7 @@ const Match = () => {
           snapshot => {
             setProfiles(
               snapshot?.docs?.filter(doc => doc?.data()?.photoURL != null)
+                .filter(doc => doc?.data()?.username != null || doc?.data()?.username != '')
                 .filter(doc => doc?.id !== user?.uid)
                 .map(doc => ({
                   id: doc?.id,
