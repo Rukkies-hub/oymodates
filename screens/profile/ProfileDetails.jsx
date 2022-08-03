@@ -44,7 +44,7 @@ const ProfileDetails = ({ userProfile, user }) => {
           }}
         >
           {
-            userProfile?.photoURL || user?.photoURL ?
+            userProfile?.photoURL ?
               <TouchableOpacity
                 onPress={() => navigation.navigate('ViewAvatar', { avatar: userProfile?.photoURL })}
               >
@@ -81,7 +81,7 @@ const ProfileDetails = ({ userProfile, user }) => {
             }}
           >
             {
-              userProfile?.username &&
+              userProfile?.username != '' &&
               <View
                 style={{
                   flexDirection: 'row',
@@ -100,14 +100,17 @@ const ProfileDetails = ({ userProfile, user }) => {
                 </Text>
               </View>
             }
-            <Text
-              style={{
-                fontFamily: 'text',
-                color: theme == 'dark' ? color.white : color.lightText
-              }}
-            >
-              {userProfile?.displayName}
-            </Text>
+            {
+              userProfile?.displayName != '' &&
+              <Text
+                style={{
+                  fontFamily: 'text',
+                  color: theme == 'dark' ? color.white : color.lightText
+                }}
+              >
+                {userProfile?.displayName}
+              </Text>
+            }
           </View>
           <TouchableOpacity
             onPress={() => navigation.navigate('EditProfile')}
@@ -125,7 +128,7 @@ const ProfileDetails = ({ userProfile, user }) => {
         </View>
 
         {
-          userProfile?.about && userProfile?.about != '' &&
+          userProfile?.about != '' &&
           <View
             style={{
               marginTop: 20
@@ -268,7 +271,7 @@ const ProfileDetails = ({ userProfile, user }) => {
         </View>
 
         {
-          userProfile?.job || userProfile?.job != '' &&
+          userProfile?.job != '' &&
           <View
             style={{
               marginTop: 10,

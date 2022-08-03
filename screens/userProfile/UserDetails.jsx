@@ -143,7 +143,7 @@ const UserDetails = ({ userProfile, user }) => {
             }}
           >
             {
-              user?.username &&
+              user?.username && user?.username != '' &&
               <View
                 style={{
                   flexDirection: 'row',
@@ -197,7 +197,7 @@ const UserDetails = ({ userProfile, user }) => {
         </View>
 
         {
-          user?.about && user?.about != '' &&
+          user?.about != '' &&
           <View
             style={{
               marginTop: 20
@@ -340,7 +340,7 @@ const UserDetails = ({ userProfile, user }) => {
         </View>
 
         {
-          user?.job && user?.job != '' &&
+          user?.job != '' &&
           <View
             style={{
               marginTop: 10,

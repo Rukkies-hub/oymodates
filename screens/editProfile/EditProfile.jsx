@@ -197,50 +197,49 @@ const EditProfile = () => {
   }
 
   const updateUserProfile = async () => {
-    schedulePushNotification('Update successful', 'Your profile has been updated successfully')
-    // if (userProfile) {
-    //   setUpdateLoading(true)
+    if (userProfile) {
+      setUpdateLoading(true)
 
-    //   try {
-    //     await updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-    //       id: user?.uid == undefined ? user?.user?.uid : user?.uid,
-    //       displayName,
-    //       job,
-    //       company,
-    //       username,
-    //       school,
-    //       city,
-    //       about
-    //     })
-    //     schedulePushNotification('Update successful', 'Your profile has been updated successfully')
-    //     setUpdateLoading(false)
-    //   } catch (error) {
-    //     setUpdateLoading(false)
-    //     return
-    //   }
-    // }
-    // else {
-    //   setUpdateLoading(true)
+      try {
+        await updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+          id: user?.uid == undefined ? user?.user?.uid : user?.uid,
+          displayName,
+          job,
+          company,
+          username,
+          school,
+          city,
+          about
+        })
+        schedulePushNotification('Update successful', 'Your profile has been updated successfully')
+        setUpdateLoading(false)
+      } catch (error) {
+        setUpdateLoading(false)
+        return
+      }
+    }
+    else {
+      setUpdateLoading(true)
 
-    //   try {
-    //     await setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-    //       id: user?.uid == undefined ? user?.user?.uid : user?.uid,
-    //       username,
-    //       displayName: user?.user?.displayName ? user?.user?.displayName : displayName,
-    //       job,
-    //       company,
-    //       school,
-    //       city,
-    //       theme: 'light',
-    //       timestamp: serverTimestamp()
-    //     })
-    //     schedulePushNotification('Update successful', 'Your profile has been updated successfully')
-    //     setUpdateLoading(false)
-    //   } catch (error) {
-    //     setUpdateLoading(false)
-    //     return
-    //   }
-    // }
+      try {
+        await setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+          id: user?.uid == undefined ? user?.user?.uid : user?.uid,
+          username,
+          displayName: user?.user?.displayName ? user?.user?.displayName : displayName,
+          job,
+          company,
+          school,
+          city,
+          theme: 'light',
+          timestamp: serverTimestamp()
+        })
+        schedulePushNotification('Update successful', 'Your profile has been updated successfully')
+        setUpdateLoading(false)
+      } catch (error) {
+        setUpdateLoading(false)
+        return
+      }
+    }
   }
 
   const [loaded] = useFonts({
