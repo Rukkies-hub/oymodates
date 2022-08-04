@@ -31,6 +31,7 @@ import ReelsOption from '../screens/modal/ReelsOption'
 import color from '../style/color'
 import Gender from '../screens/editProfile/components/Gender'
 import GoogleAuth from '../screens/auth/GoogleAuth'
+import Overlay from '../screens/editProfile/components/Overlay'
 
 const StackNavigator = () => {
   const { user, theme } = useAuth()
@@ -107,6 +108,18 @@ const StackNavigator = () => {
                 name='MessageOptions'
                 component={MessageOptions}
                 options={{
+                  animationEnabled: true,
+                  ...TransitionPresets.FadeFromBottomAndroid,
+                  cardStyle: {
+                    backgroundColor: color.transparent
+                  }
+                }}
+              />
+              <Stack.Screen
+                name='Overlay'
+                component={Overlay}
+                options={{
+                  gestureEnabled: false,
                   animationEnabled: true,
                   ...TransitionPresets.FadeFromBottomAndroid,
                   cardStyle: {

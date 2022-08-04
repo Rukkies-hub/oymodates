@@ -5,21 +5,30 @@ import color from '../../../style/color'
 import useAuth from '../../../hooks/useAuth'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../hooks/firebase'
+import { useNavigation } from '@react-navigation/native'
 
 const LookingFor = () => {
-  const { lookingFor, setLookingFor, userProfile, theme } = useAuth()
+  const { lookingFor, setLookingFor, userProfile, theme, setOverlay } = useAuth()
+
+  const navigation = useNavigation()
 
   const lookingForMen = async () => {
     setLookingFor('male')
+    setOverlay(true)
+    navigation.navigate('Overlay')
     try {
       await updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'male' })
+      setOverlay(false)
     } catch (error) { return }
   }
 
   const lookingForWomen = async () => {
     setLookingFor('female')
+    setOverlay(true)
+    navigation.navigate('Overlay')
     try {
       await updateDoc(doc(db, 'users', userProfile?.id), { lookingFor: 'female' })
+      setOverlay(false)
     } catch (error) { return }
   }
 

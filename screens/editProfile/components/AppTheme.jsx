@@ -9,18 +9,27 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../hooks/firebase'
 
 import * as NavigationBar from 'expo-navigation-bar'
+import { useNavigation } from '@react-navigation/native'
 
 const AppTheme = () => {
-  const { user, userProfile, theme, setTheme } = useAuth()
+  const { user, userProfile, theme, setTheme, setOverlay } = useAuth()
+
+  const navigation = useNavigation()
 
   const lightMode = async () => {
     setTheme('light')
+    setOverlay(true)
+    navigation.navigate('Overlay')
     await updateDoc(doc(db, 'users', userProfile?.id), { theme: 'light' })
+    setOverlay(false)
   }
 
   const darkMode = async () => {
     setTheme('dark')
+    setOverlay(true)
+    navigation.navigate('Overlay')
     await updateDoc(doc(db, 'users', userProfile?.id), { theme: 'dark' })
+    setOverlay(false)
   }
 
   useEffect(() => {

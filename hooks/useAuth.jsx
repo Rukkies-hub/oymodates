@@ -57,7 +57,6 @@ export const AuthProvider = ({ children }) => {
   const [displayName, setDisplayName] = useState('')
   const [school, setSchool] = useState('')
   const [city, setCity] = useState('')
-  const [checked, setChecked] = useState('male')
   const [screen, setScreen] = useState('default')
   const [about, setAbout] = useState('')
   const [passions, setPassions] = useState([])
@@ -92,6 +91,7 @@ export const AuthProvider = ({ children }) => {
   const [signInSnackMessage, setSignInSnackMessage] = useState('')
   const [theme, setTheme] = useState('light')
   const [lookingFor, setLookingFor] = useState()
+  const [overlay, setOverlay] = useState(false)
 
   const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientId
@@ -209,7 +209,6 @@ export const AuthProvider = ({ children }) => {
         setUsername('')
         setSchool('')
         setCity('')
-        setChecked('male')
         setScreen('default')
         setAbout('')
         setPassions([])
@@ -220,7 +219,6 @@ export const AuthProvider = ({ children }) => {
         if (profile?.displayName) setDisplayName(profile?.displayName)
         if (profile?.school) setSchool(profile?.school)
         if (profile?.city) setCity(profile?.city)
-        if (profile?.gender) setChecked(profile?.gender)
         if (profile?.about) setAbout(profile?.about)
         if (profile?.passions) setPassions([...profile?.passions])
         if (profile?.theme) setTheme(profile?.theme)
@@ -262,8 +260,6 @@ export const AuthProvider = ({ children }) => {
     setCompany,
     city,
     setCity,
-    checked,
-    setChecked,
     about,
     setAbout,
     passions,
@@ -356,7 +352,9 @@ export const AuthProvider = ({ children }) => {
     theme,
     setTheme,
     lookingFor,
-    setLookingFor
+    setLookingFor,
+    overlay,
+    setOverlay
   }
 
   const memoValue = useMemo(() => ({

@@ -69,12 +69,12 @@ const EditProfile = () => {
     setCompany,
     city,
     setCity,
-    checked,
-    setChecked,
     about,
     setAbout,
     passions,
-    theme
+    theme,
+    overlay,
+    setOverlay
   } = useAuth()
 
   const storage = getStorage()
@@ -199,6 +199,8 @@ const EditProfile = () => {
   const updateUserProfile = async () => {
     if (userProfile) {
       setUpdateLoading(true)
+      setOverlay(true)
+      navigation.navigate('Overlay')
 
       try {
         await updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
@@ -213,13 +215,17 @@ const EditProfile = () => {
         })
         schedulePushNotification('Update successful', 'Your profile has been updated successfully')
         setUpdateLoading(false)
+        setOverlay(false)
       } catch (error) {
         setUpdateLoading(false)
+        setOverlay(false)
         return
       }
     }
     else {
       setUpdateLoading(true)
+      setOverlay(true)
+      navigation.navigate('Overlay')
 
       try {
         await setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
@@ -235,8 +241,10 @@ const EditProfile = () => {
         })
         schedulePushNotification('Update successful', 'Your profile has been updated successfully')
         setUpdateLoading(false)
+        setOverlay(false)
       } catch (error) {
         setUpdateLoading(false)
+        setOverlay(false)
         return
       }
     }
