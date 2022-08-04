@@ -12,7 +12,9 @@ import {
   ActivityIndicator,
   Platform,
   KeyboardAvoidingView,
-  Image
+  Image,
+  ImageBackground,
+  Dimensions
 } from 'react-native'
 
 import color from '../../style/color'
@@ -50,6 +52,9 @@ import * as VideoThumbnails from 'expo-video-thumbnails'
 import Slider from '@react-native-community/slider'
 import MessageHeader from './components/MessageHeader'
 import Avatar from './components/Avatar'
+import { BlurView } from 'expo-blur'
+
+const { width } = Dimensions.get('window')
 
 const Message = () => {
   const navigation = useNavigation()
@@ -249,6 +254,7 @@ const Message = () => {
     const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds
     return `${minutesDisplay}:${secondsDisplay}`
   }
+  // chatBG
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -261,7 +267,9 @@ const Message = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: color.transparent
+        backgroundColor: theme == 'dark' ? color.black : color.white,
+        borderRadius: 8,
+        overflow: 'hidden'
       }}
     >
       <MessageHeader
@@ -269,404 +277,424 @@ const Message = () => {
         user={getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.id}
       />
 
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        {
-          !messages?.length ?
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <View
-                style={{
-                  position: 'relative'
-                }}
-              >
-                <Avatar user={getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.id} />
+      <ImageBackground
+        source={require('../../assets/chatBG.png')}
+        style={{
+          flex: 1,
+          borderRadius: 8,
+          overflow: 'hidden'
+        }}
+      >
+        <BlurView
+          intensity={120}
+          tint={theme == 'dark' ? 'dark' : 'light'}
+          style={{
+            flex: 1,
+            borderRadius: 8,
+            overflow: 'hidden'
+          }}
+        >
+          <KeyboardAvoidingView style={{ flex: 1 }}>
+            {
+              !messages?.length ?
                 <View
                   style={{
-                    width: 40,
-                    height: 40,
-                    borderWidth: 2,
-                    borderColor: theme == 'dark' ? color.dark : color.offWhite,
-                    borderRadius: 100,
-                    overflow: 'hidden',
-                    position: 'absolute',
-                    top: -10,
-                    right: -10,
-                    shadowColor: color.black,
-                    shadowOffset: {
-                      width: 0,
-                      height: 4,
-                    },
-                    shadowOpacity: 0.30,
-                    shadowRadius: 4.65,
-                    elevation: 8
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
-                  <Image
-                    source={{ uri: userProfile?.photoURL }}
+                  <View
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 100
+                      position: 'relative'
                     }}
-                  />
-                </View>
-              </View>
-              <Text
-                style={{
-                  marginTop: 20,
-                  fontFamily: 'text',
-                  fontSize: 16,
-                  color: theme == 'dark' ? color.white : color.dark
-                }}
-              >
-                You matched with
-                <Text
+                  >
+                    <Avatar user={getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.id} />
+                    <View
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderWidth: 2,
+                        borderColor: theme == 'dark' ? color.dark : color.offWhite,
+                        borderRadius: 100,
+                        overflow: 'hidden',
+                        position: 'absolute',
+                        top: -10,
+                        right: -10,
+                        shadowColor: color.black,
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
+                        shadowOpacity: 0.30,
+                        shadowRadius: 4.65,
+                        elevation: 8
+                      }}
+                    >
+                      <Image
+                        source={{ uri: userProfile?.photoURL }}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 100
+                        }}
+                      />
+                    </View>
+                  </View>
+                  <Text
+                    style={{
+                      marginTop: 20,
+                      fontFamily: 'text',
+                      fontSize: 16,
+                      color: theme == 'dark' ? color.white : color.dark
+                    }}
+                  >
+                    You matched with
+                    <Text
+                      style={{
+                        fontFamily: 'boldText'
+                      }}
+                    >
+                      {` ${getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.username}`}
+                    </Text>
+                  </Text>
+                </View> :
+                <FlatList
+                  inverted={-1}
                   style={{
-                    fontFamily: 'boldText'
+                    flex: 1,
+                    paddingHorizontal: 10
+                  }}
+                  data={messages}
+                  showsVerticalScrollIndicator={false}
+                  keyExtractor={item => item?.id}
+                  renderItem={({ item: message }) => (
+                    message?.userId === userProfile?.id ? (
+                      <SenderMessage key={message?.id} messages={message} matchDetails={matchDetails} />
+                    ) : (
+                      <RecieverMessage key={message?.id} messages={message} matchDetails={matchDetails} />
+                    )
+                  )}
+                />
+            }
+
+            <View>
+              {
+                messageReply &&
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginHorizontal: 10,
+                    backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                    marginTop: 10,
+                    borderTopLeftRadius: 12,
+                    borderTopRightRadius: 12,
+                    overflow: 'hidden',
+                    padding: 5
                   }}
                 >
-                  {` ${getMatchedUserInfo(matchDetails?.users, userProfile?.id)?.username}`}
-                </Text>
-              </Text>
-            </View> :
-            <FlatList
-              inverted={-1}
-              style={{
-                flex: 1,
-                paddingHorizontal: 10
-              }}
-              data={messages}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={item => item?.id}
-              renderItem={({ item: message }) => (
-                message?.userId === userProfile?.id ? (
-                  <SenderMessage key={message?.id} messages={message} matchDetails={matchDetails} />
-                ) : (
-                  <RecieverMessage key={message?.id} messages={message} matchDetails={matchDetails} />
-                )
-              )}
-            />
-        }
-
-        <View>
-          {
-            messageReply &&
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginHorizontal: 10,
-                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-                marginTop: 10,
-                borderTopLeftRadius: 12,
-                borderTopRightRadius: 12,
-                overflow: 'hidden',
-                padding: 5
-              }}
-            >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
+                      backgroundColor: theme == 'dark' ? color.black : color.white,
+                      flex: 1,
+                      borderRadius: 12,
+                      overflow: 'hidden',
+                      padding: 5
+                    }}
+                  >
+                    {
+                      messageReply?.mediaType == 'video' &&
+                      <Image
+                        source={{ uri: messageReply?.thumbnail }}
+                        resizeMode='cover'
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 6
+                        }}
+                      />
+                    }
+                    {
+                      messageReply?.mediaType == 'image' &&
+                      <Image
+                        source={{ uri: messageReply?.media }}
+                        resizeMode='cover'
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 6
+                        }}
+                      />
+                    }
+                    {
+                      messageReply?.voiceNote &&
+                      <View
+                        style={{
+                          flex: 1,
+                          position: 'relative',
+                          height: 35,
+                          borderRadius: 20,
+                          overflow: 'hidden',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          paddingHorizontal: 2,
+                          paddingLeft: 10
+                        }}
+                      >
+                        <Slider
+                          value={0}
+                          minimumValue={0}
+                          maximumValue={100}
+                          style={{ flex: 1 }}
+                          minimumTrackTintColor={theme == 'dark' ? color.white : color.blue}
+                          maximumTrackTintColor={theme == 'dark' ? color.white : color.blue}
+                          thumbTintColor={theme == 'dark' ? color.white : color.blue}
+                        />
+                        <TouchableOpacity
+                          activeOpacity={1}
+                          style={{
+                            backgroundColor: theme == 'dark' ? color.white : color.faintBlue,
+                            width: 30,
+                            height: 30,
+                            borderRadius: 50,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <AntDesign name='caretright' size={20} color={theme == 'dark' ? color.black : color.blue} />
+                        </TouchableOpacity>
+                      </View>
+                    }
+                    {
+                      messageReply?.caption != '' &&
+                      <Text
+                        numberOfLines={3}
+                        style={{
+                          color: theme == 'light' ? color.dark : color.white,
+                          marginLeft: messageReply?.media ? 10 : 0
+                        }}
+                      >
+                        {messageReply?.caption}
+                      </Text>
+                    }
+                    {
+                      messageReply?.message &&
+                      <Text
+                        numberOfLines={3}
+                        style={{
+                          color: theme == 'light' ? color.dark : color.white,
+                          marginLeft: messageReply?.media ? 10 : 0,
+                          marginVertical: 10
+                        }}
+                      >
+                        {messageReply?.message}
+                      </Text>
+                    }
+                  </View>
+                  {
+                    messageReply &&
+                    <TouchableOpacity
+                      onPress={() => setMessageReply(null)}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 12
+                      }}
+                    >
+                      <AntDesign name='close' size={24} color={theme == 'light' ? color.dark : color.white} />
+                    </TouchableOpacity>
+                  }
+                </TouchableOpacity>
+              }
               <View
                 style={{
                   flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  backgroundColor: theme == 'dark' ? color.black : color.white,
-                  flex: 1,
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                  minHeight: 50,
+                  position: 'relative',
+                  marginHorizontal: 10,
                   borderRadius: 12,
-                  overflow: 'hidden',
-                  padding: 5
+                  borderTopLeftRadius: messageReply ? 0 : 12,
+                  borderTopRightRadius: messageReply ? 0 : 12,
+                  marginBottom: 10,
                 }}
               >
                 {
-                  messageReply?.mediaType == 'video' &&
-                  <Image
-                    source={{ uri: messageReply?.thumbnail }}
-                    resizeMode='cover'
-                    style={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: 6
-                    }}
-                  />
-                }
-                {
-                  messageReply?.mediaType == 'image' &&
-                  <Image
-                    source={{ uri: messageReply?.media }}
-                    resizeMode='cover'
-                    style={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: 6
-                    }}
-                  />
-                }
-                {
-                  messageReply?.voiceNote &&
+                  mediaVidiblity &&
                   <View
                     style={{
-                      flex: 1,
                       position: 'relative',
-                      height: 35,
-                      borderRadius: 20,
-                      overflow: 'hidden',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      paddingHorizontal: 2,
-                      paddingLeft: 10
+                      width: 40,
+                      height: 50,
+                      backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                      borderBottomLeftRadius: 12,
+                      borderTopLeftRadius: showMedia ? 0 : 12
                     }}
                   >
-                    <Slider
-                      value={0}
-                      minimumValue={0}
-                      maximumValue={100}
-                      style={{ flex: 1 }}
-                      minimumTrackTintColor={theme == 'dark' ? color.white : color.blue}
-                      maximumTrackTintColor={theme == 'dark' ? color.white : color.blue}
-                      thumbTintColor={theme == 'dark' ? color.white : color.blue}
-                    />
+                    {
+                      showMedia &&
+                      <View
+                        style={{
+                          position: 'absolute',
+                          zIndex: 100,
+                          backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                          bottom: 50,
+                          left: 0,
+                          borderTopLeftRadius: 12,
+                          borderTopRightRadius: 12
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            setMediaVidiblity(false)
+                            setShowMedia(false)
+                            Keyboard.dismiss
+                            navigation.navigate('MessageCamera', { matchDetails })
+                          }}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}>
+                          <MaterialCommunityIcons name='camera-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          onPress={pickImage}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}>
+                          <MaterialCommunityIcons name='image-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
+                        </TouchableOpacity>
+                      </View>
+                    }
+
                     <TouchableOpacity
-                      activeOpacity={1}
+                      onPress={() => {
+                        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+                        setShowMedia(!showMedia)
+                      }}
                       style={{
-                        backgroundColor: theme == 'dark' ? color.white : color.faintBlue,
-                        width: 30,
-                        height: 30,
-                        borderRadius: 50,
+                        width: 50,
+                        height: 50,
                         justifyContent: 'center',
                         alignItems: 'center'
                       }}
                     >
-                      <AntDesign name='caretright' size={20} color={theme == 'dark' ? color.black : color.blue} />
+                      <SimpleLineIcons name="paper-clip" size={20} color={theme == 'light' ? color.lightText : color.white} />
                     </TouchableOpacity>
                   </View>
                 }
+
                 {
-                  messageReply?.caption != '' &&
-                  <Text
-                    numberOfLines={3}
-                    style={{
-                      color: theme == 'light' ? color.dark : color.white,
-                      marginLeft: messageReply?.media ? 10 : 0
-                    }}
-                  >
-                    {messageReply?.caption}
-                  </Text>
-                }
-                {
-                  messageReply?.message &&
-                  <Text
-                    numberOfLines={3}
-                    style={{
-                      color: theme == 'light' ? color.dark : color.white,
-                      marginLeft: messageReply?.media ? 10 : 0,
-                      marginVertical: 10
-                    }}
-                  >
-                    {messageReply?.message}
-                  </Text>
-                }
-              </View>
-              {
-                messageReply &&
-                <TouchableOpacity
-                  onPress={() => setMessageReply(null)}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 12
-                  }}
-                >
-                  <AntDesign name='close' size={24} color={theme == 'light' ? color.dark : color.white} />
-                </TouchableOpacity>
-              }
-            </TouchableOpacity>
-          }
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-              minHeight: 50,
-              position: 'relative',
-              marginHorizontal: 10,
-              borderRadius: 12,
-              borderTopLeftRadius: messageReply ? 0 : 12,
-              borderTopRightRadius: messageReply ? 0 : 12,
-              marginBottom: 10,
-            }}
-          >
-            {
-              mediaVidiblity &&
-              <View
-                style={{
-                  position: 'relative',
-                  width: 40,
-                  height: 50,
-                  backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-                  borderBottomLeftRadius: 12,
-                  borderTopLeftRadius: showMedia ? 0 : 12
-                }}
-              >
-                {
-                  showMedia &&
-                  <View
-                    style={{
-                      position: 'absolute',
-                      zIndex: 100,
-                      backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-                      bottom: 50,
-                      left: 0,
-                      borderTopLeftRadius: 12,
-                      borderTopRightRadius: 12
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        setMediaVidiblity(false)
-                        setShowMedia(false)
-                        Keyboard.dismiss
-                        navigation.navigate('MessageCamera', { matchDetails })
+                  showRecording ?
+                    <View
+                      style={{
+                        flex: 1,
+                        width: '100%',
+                        height: '100%',
+                        maxHeight: 70,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center'
                       }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontFamily: 'text',
+                          color: theme == 'light' ? color.lightText : color.white
+                        }}
+                      >
+                        Recording...
+                      </Text>
+                    </View> :
+                    <TextInput
+                      multiline
+                      value={input}
+                      onChangeText={setInput}
+                      onSubmitEditing={sendMessage}
+                      onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+                      placeholder='Aa..'
+                      placeholderTextColor={theme == 'light' ? color.lightText : color.white}
                       style={{
-                        width: 50,
-                        height: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}>
-                      <MaterialCommunityIcons name='camera-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
-                    </TouchableOpacity>
+                        fontSize: 18,
+                        flex: 1,
+                        height,
+                        maxHeight: 70,
+                        fontFamily: 'text',
+                        color: theme == 'light' ? color.dark : color.white,
+                        paddingLeft: 10
+                      }}
+                    />
+                }
 
-                    <TouchableOpacity
-                      onPress={pickImage}
-                      style={{
-                        width: 50,
-                        height: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}>
-                      <MaterialCommunityIcons name='image-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
-                    </TouchableOpacity>
-                  </View>
+                {
+                  showSend &&
+                  <TouchableOpacity
+                    onPress={sendMessage}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}>
+                    <FontAwesome5
+                      name='paper-plane'
+                      color={theme == 'light' ? color.lightText : color.white}
+                      size={20}
+                    />
+                  </TouchableOpacity>
                 }
 
                 <TouchableOpacity
-                  onPress={() => {
-                    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-                    setShowMedia(!showMedia)
+                  onLongPress={() => {
+                    setShowRecording(true)
+                    setShowSend(false)
+                    startRecording()
+                  }}
+                  onPressOut={() => {
+                    setShowRecording(false)
+                    setShowSend(true)
+                    stopRecording()
                   }}
                   style={{
                     width: 50,
                     height: 50,
                     justifyContent: 'center',
                     alignItems: 'center'
-                  }}
-                >
-                  <SimpleLineIcons name="paper-clip" size={20} color={theme == 'light' ? color.lightText : color.white} />
+                  }}>
+                  {
+                    recordingLoading ?
+                      <ActivityIndicator size='small' color={theme == 'light' ? color.lightText : color.white} /> :
+                      <FontAwesome5
+                        size={20}
+                        name='microphone-alt'
+                        color={theme == 'light' ? color.lightText : color.white}
+                      />
+                  }
                 </TouchableOpacity>
               </View>
-            }
+            </View>
+          </KeyboardAvoidingView>
+        </BlurView>
+      </ImageBackground>
 
-            {
-              showRecording ?
-                <View
-                  style={{
-                    flex: 1,
-                    width: '100%',
-                    height: '100%',
-                    maxHeight: 70,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontFamily: 'text',
-                      color: theme == 'light' ? color.lightText : color.white
-                    }}
-                  >
-                    Recording...
-                  </Text>
-                </View> :
-                <TextInput
-                  multiline
-                  value={input}
-                  onChangeText={setInput}
-                  onSubmitEditing={sendMessage}
-                  onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-                  placeholder='Aa..'
-                  placeholderTextColor={theme == 'light' ? color.lightText : color.white}
-                  style={{
-                    fontSize: 18,
-                    flex: 1,
-                    height,
-                    maxHeight: 70,
-                    fontFamily: 'text',
-                    color: theme == 'light' ? color.dark : color.white,
-                    paddingLeft: 10
-                  }}
-                />
-            }
-
-            {
-              showSend &&
-              <TouchableOpacity
-                onPress={sendMessage}
-                style={{
-                  width: 50,
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                <FontAwesome5
-                  name='paper-plane'
-                  color={theme == 'light' ? color.lightText : color.white}
-                  size={20}
-                />
-              </TouchableOpacity>
-            }
-
-            <TouchableOpacity
-              onLongPress={() => {
-                setShowRecording(true)
-                setShowSend(false)
-                startRecording()
-              }}
-              onPressOut={() => {
-                setShowRecording(false)
-                setShowSend(true)
-                stopRecording()
-              }}
-              style={{
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-              {
-                recordingLoading ?
-                  <ActivityIndicator size='small' color={theme == 'light' ? color.lightText : color.white} /> :
-                  <FontAwesome5
-                    size={20}
-                    name='microphone-alt'
-                    color={theme == 'light' ? color.lightText : color.white}
-                  />
-              }
-            </TouchableOpacity>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
     </View>
   )
 }
