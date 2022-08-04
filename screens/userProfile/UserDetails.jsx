@@ -16,18 +16,7 @@ const UserDetails = ({ userProfile, user }) => {
   const { profiles, theme } = useAuth()
   const navigation = useNavigation()
 
-  const [showMatch, setShowMatch] = useState(false)
-
-  useLayoutEffect(() => {
-    const needle = user?.id
-    const cardIndex = profiles?.findIndex(item => item.id === needle)
-
-    if (!profiles[cardIndex]) return
-
-    const userSwiped = profiles[cardIndex]
-
-    if (userSwiped) setShowMatch(true)
-  }, [user])
+  const [aboutLimit, setAboutLimit] = useState(2)
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -145,6 +134,7 @@ const UserDetails = ({ userProfile, user }) => {
             }}
           >
             <Text
+              numberOfLines={aboutLimit}
               style={{
                 fontFamily: 'text',
                 fontSize: 16,
@@ -153,6 +143,39 @@ const UserDetails = ({ userProfile, user }) => {
             >
               {user?.about}
             </Text>
+            {
+              user?.about?.length >= 100 &&
+              <>
+                {
+                  aboutLimit == 2 &&
+                  <TouchableOpacity onPress={() => setAboutLimit(100)}>
+                    <Text
+                      style={{
+                        fontFamily: 'text',
+                        fontSize: 16,
+                        color: theme == 'light' ? color.dark : color.white
+                      }}
+                    >
+                      Read more
+                    </Text>
+                  </TouchableOpacity>
+                }
+                {
+                  aboutLimit > 2 &&
+                  <TouchableOpacity onPress={() => setAboutLimit(2)}>
+                    <Text
+                      style={{
+                        fontFamily: 'text',
+                        fontSize: 16,
+                        color: theme == 'light' ? color.dark : color.white
+                      }}
+                    >
+                      Show less
+                    </Text>
+                  </TouchableOpacity>
+                }
+              </>
+            }
           </View>
         }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, ImageBackground, Image, TouchableOpacity } from 'react-native'
 
 import { LinearGradient } from 'expo-linear-gradient'
@@ -14,6 +14,8 @@ import useAuth from '../../hooks/useAuth'
 const ProfileDetails = ({ userProfile, user }) => {
   const { theme } = useAuth()
   const navigation = useNavigation()
+
+  const [aboutLimit, setAboutLimit] = useState(2)
 
   return (
     <ImageBackground
@@ -135,6 +137,7 @@ const ProfileDetails = ({ userProfile, user }) => {
             }}
           >
             <Text
+              numberOfLines={aboutLimit}
               style={{
                 fontFamily: 'text',
                 fontSize: 16,
@@ -143,6 +146,39 @@ const ProfileDetails = ({ userProfile, user }) => {
             >
               {userProfile?.about}
             </Text>
+            {
+              userProfile?.about?.length >= 100 &&
+              <>
+                {
+                  aboutLimit == 2 &&
+                  <TouchableOpacity onPress={() => setAboutLimit(100)}>
+                    <Text
+                      style={{
+                        fontFamily: 'text',
+                        fontSize: 16,
+                        color: theme == 'light' ? color.dark : color.white
+                      }}
+                    >
+                      Read more
+                    </Text>
+                  </TouchableOpacity>
+                }
+                {
+                  aboutLimit > 2 &&
+                  <TouchableOpacity onPress={() => setAboutLimit(2)}>
+                    <Text
+                      style={{
+                        fontFamily: 'text',
+                        fontSize: 16,
+                        color: theme == 'light' ? color.dark : color.white
+                      }}
+                    >
+                      Show less
+                    </Text>
+                  </TouchableOpacity>
+                }
+              </>
+            }
           </View>
         }
 

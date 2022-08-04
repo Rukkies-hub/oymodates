@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
 import color from '../../../style/color'
 import useAuth from '../../../hooks/useAuth'
@@ -10,6 +10,17 @@ import { db } from '../../../hooks/firebase'
 
 const { width } = Dimensions.get('window')
 
+import * as Device from 'expo-device'
+import * as Notifications from 'expo-notifications'
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  })
+})
+
 const Gender = () => {
   const { theme, userProfile } = useAuth()
   const navigation = useNavigation()
@@ -17,22 +28,42 @@ const Gender = () => {
   const [maleLoading, setMaleLoading] = useState(false)
   const [femaleLoading, setFemaleLoading] = useState(false)
 
-  const maleGender = () => {
+  const [expoPushToken, setExpoPushToken] = useState('')
+  const [notification, setNotification] = useState(false)
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
+  const maleGender = async () => {
     setMaleLoading(true)
-    updateDoc(doc(db, 'users', userProfile?.id), { gender: 'male' })
-      .finally(() => {
-        setMaleLoading(false)
-        navigation.goBack()
-      })
+    await updateDoc(doc(db, 'users', userProfile?.id), { gender: 'male' })
+    setMaleLoading(false)
+    schedulePushNotification()
+    navigation.goBack()
   }
 
-  const femaleGender = () => {
+  const femaleGender = async () => {
     setFemaleLoading(true)
-    updateDoc(doc(db, 'users', userProfile?.id), { gender: 'female' })
-      .finally(() => {
-        setFemaleLoading(false)
-        navigation.goBack()
-      })
+    await updateDoc(doc(db, 'users', userProfile?.id), { gender: 'female' })
+    setFemaleLoading(false)
+    schedulePushNotification()
+    navigation.goBack()
   }
 
   const [loaded] = useFonts({
@@ -157,6 +188,47 @@ const Gender = () => {
       </View>
     </View>
   )
+}
+
+async function schedulePushNotification () {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Update successful",
+      body: 'Your profile has been updated successfully'
+    },
+    trigger: { seconds: 1 },
+  });
+}
+
+async function registerForPushNotificationsAsync () {
+  let token;
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
 }
 
 export default Gender
