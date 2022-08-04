@@ -17,7 +17,7 @@ const UserReels = () => {
   const navigation = useNavigation()
 
   const [reels, setReels] = useState([])
-  const [reelsLimit, setLimit] = useState(4)
+  const [reelsLimit, setLimit] = useState(20)
 
   useLayoutEffect(() => {
     onSnapshot(query(collection(db, 'reels'),

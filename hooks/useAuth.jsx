@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
   const [googleLoadng, setGoogleLoading] = useState(false)
   const [facebookLoadng, setFacebookLoading] = useState(false)
   const [reels, setReels] = useState([])
-  const [reelsLimit, setReelsLimit] = useState(10)
+  const [reelsLimit, setReelsLimit] = useState(20)
   const [viewUser, setViewUser] = useState(null)
   const [search, setSearch] = useState('')
   const [matches, setMatches] = useState([])

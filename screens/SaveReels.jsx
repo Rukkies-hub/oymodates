@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   View,
   Text,
@@ -6,7 +6,8 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform
 } from 'react-native'
 import color from '../style/color'
 import Header from '../components/Header'
@@ -23,15 +24,50 @@ import useAuth from '../hooks/useAuth'
 import uuid from 'uuid-random'
 import Bar from '../components/StatusBar'
 
-const SaveReels = (params) => {
+import * as Notifications from 'expo-notifications'
+
+import * as Device from 'expo-device'
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  })
+})
+
+const SaveReels = () => {
   const { userProfile, user, theme } = useAuth()
   const navigation = useNavigation()
   const { source, thumbnail, mediaType } = useRoute().params
 
-  const storage = getStorage()
 
   const [description, setDescription] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const [expoPushToken, setExpoPushToken] = useState('')
+  const [notification, setNotification] = useState(false)
+  const notificationListener = useRef()
+  const responseListener = useRef()
+
+  const storage = getStorage()
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification)
+    })
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response)
+    })
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current)
+      Notifications.removeNotificationSubscription(responseListener.current)
+    }
+  }, [])
 
   const saveReel = async () => {
     if (mediaType === 'video') {
@@ -80,6 +116,7 @@ const SaveReels = (params) => {
                       }).finally(() => {
                         setLoading(false)
                         setDescription('')
+                        schedulePushNotification()
                       })
                     })
                 })
@@ -203,6 +240,48 @@ const SaveReels = (params) => {
       </View>
     </SafeAreaView>
   )
+}
+
+async function schedulePushNotification () {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Post saved",
+      body: 'Yippee!! Your post has been saved successfully',
+      data: { data: 'goes here' },
+    },
+    trigger: { seconds: 1 },
+  })
+}
+
+async function registerForPushNotificationsAsync () {
+  let token;
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
 }
 
 export default SaveReels
