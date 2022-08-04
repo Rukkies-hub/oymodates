@@ -184,7 +184,9 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   const getPendingSwipes = (user) => {
-    onSnapshot(collection(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'pendingSwipes'),
+    onSnapshot(query(collection(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'pendingSwipes'),
+      where('photoURL', '!=', null)
+    ),
       snapshot =>
         setPendingSwipes(
           snapshot?.docs?.map(doc => ({

@@ -1,11 +1,9 @@
 import React from 'react'
-import { View, Text, Image, Dimensions, TouchableOpacity, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 
 import useAuth from '../../hooks/useAuth'
 
 import color from '../../style/color'
-
-import AutoHeightImage from 'react-native-auto-height-image'
 
 import { useFonts } from 'expo-font'
 import { deleteDoc, doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
@@ -13,15 +11,15 @@ import { db } from '../../hooks/firebase'
 import generateId from '../../lib/generateId'
 import { useNavigation } from '@react-navigation/native'
 
-import { AntDesign, Feather } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 
 import LoadingIndicator from '../../components/LoadingIndicator'
+import Avatar from './Avatar'
+import Username from './Username'
 
 const Likes = () => {
   const { pendingSwipes, profiles, theme, userProfile } = useAuth()
   const navigation = useNavigation()
-
-  const { width } = Dimensions.get('window')
 
   const swipeLeft = async like => {
     setDoc(doc(db, 'users', userProfile?.id, 'passes', like.id), like)
@@ -71,105 +69,178 @@ const Likes = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: color.transparent
+        backgroundColor: color.transparent,
+        padding: 10
       }}
     >
       {
         pendingSwipes?.length > 0 ?
-          <ScrollView
-            style={{
-              flex: 1,
-              marginTop: 20
-            }}
-          >
-            <View
-              style={{
-                paddingHorizontal: 10,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                flexWrap: 'wrap'
-              }}
-            >
-              {
-                pendingSwipes.map((like, index) => {
-                  return (
+          <FlatList
+            data={pendingSwipes}
+            keyExtractor={item => item?.id}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item: like }) => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginBottom: 20
+                }}
+              >
+                <TouchableOpacity onPress={() => navigation.navigate('UserProfile', { user: like })}>
+                  <Avatar user={like?.id} />
+                </TouchableOpacity>
+                <View
+                  style={{
+                    flex: 1,
+                    marginLeft: 10
+                  }}
+                >
+                  <TouchableOpacity onPress={() => navigation.navigate('UserProfile', { user: like })}>
+                    <Username user={like?.id} />
+                  </TouchableOpacity>
+
+                  {
+                    like?.about && like?.about != '' &&
                     <View
-                      key={index}
                       style={{
-                        width: (width / 2) - 18,
-                        position: 'relative',
-                        borderRadius: 20,
-                        overflow: 'hidden'
+                        marginTop: 10
                       }}
                     >
-                      <AutoHeightImage
-                        resizeMode='cover'
-                        source={{ uri: like.photoURL }}
-                        width={(width / 2) - 10}
+                      <Text
+                        numberOfLines={2}
                         style={{
-                          maxHeight: 250
-                        }}
-                      />
-
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate('UserProfile', { user: like })}
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '100%',
-                          height: '100%'
-                        }}
-                      />
-
-                      <View
-                        style={{
-                          position: 'absolute',
-                          bottom: 0,
-                          left: 0,
-                          width: '100%',
-                          flexDirection: 'row',
-                          justifyContent: 'space-evenly',
-                          marginBottom: 10,
-                          zIndex: 10
+                          fontFamily: 'text',
+                          color: theme == 'light' ? color.dark : color.white
                         }}
                       >
-                        <TouchableOpacity
-                          onPress={() => swipeLeft(like)}
-                          style={{
-                            backgroundColor: color.white,
-                            width: 40,
-                            height: 40,
-                            borderRadius: 50,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <Feather name='x' size={24} color={color.red} />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                          onPress={() => swipeRight(like)}
-                          style={{
-                            backgroundColor: color.white,
-                            width: 40,
-                            height: 40,
-                            borderRadius: 50,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <AntDesign name='heart' size={24} color={color.lightGreen} />
-                        </TouchableOpacity>
-                      </View>
+                        {like?.about}
+                      </Text>
                     </View>
-                  )
-                })
-              }
-            </View>
-          </ScrollView> :
+                  }
 
+                  <View
+                    style={{
+                      marginTop: 10,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Feather name='home' size={12} color={theme == 'light' ? color.dark : color.white} />
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        marginLeft: 10
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: 'text',
+                          fontSize: 14,
+                          color: theme == 'light' ? color.dark : color.white,
+                          marginLeft: 5
+                        }}
+                      >
+                        Lives in
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'boldText',
+                          fontSize: 14,
+                          color: theme == 'light' ? color.dark : color.white,
+                          marginLeft: 5
+                        }}
+                      >
+                        {like?.city}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {
+                    like?.job != '' &&
+                    <View
+                      style={{
+                        marginTop: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Feather name='briefcase' size={14} color={theme == 'light' ? color.dark : color.white} />
+
+                      <Text
+                        style={{
+                          fontFamily: 'text',
+                          fontSize: 16,
+                          color: theme == 'dark' ? color.white : color.dark,
+                          marginLeft: 10
+                        }}
+                      >
+                        {like?.job} {like?.job ? 'at' : null} {like?.company}
+                      </Text>
+                    </View>
+                  }
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
+                      marginTop: 10
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => swipeLeft(like)}
+                      style={{
+                        backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                        paddingHorizontal: 10,
+                        height: 35,
+                        borderRadius: 8,
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginRight: 10
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: color.red,
+                          fontFamily: 'text'
+                        }}
+                      >
+                        Nope
+                      </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => swipeRight(like)}
+                      style={{
+                        backgroundColor: color.goldDark,
+                        paddingHorizontal: 10,
+                        height: 35,
+                        borderRadius: 8,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: color.white,
+                          fontFamily: 'text'
+                        }}
+                      >
+                        Match
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            )}
+          />
+          :
           <View
             style={{
               flex: 1,

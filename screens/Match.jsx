@@ -94,7 +94,7 @@ const Match = () => {
   }
 
   const swipeRight = async cardIndex => {
-    if(profiles?.length >= 20) setStackSize(stackSize + 10)
+    if (profiles?.length >= 20) setStackSize(stackSize + 10)
     if (!profiles[cardIndex]) return
 
     const userSwiped = profiles[cardIndex]
@@ -120,10 +120,10 @@ const Match = () => {
           })
         } else {
           setDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped?.id), userSwiped)
+          setDoc(doc(db, 'users', userSwiped?.id, 'pendingSwipes', userProfile?.id), userProfile)
         }
       })
 
-    setDoc(doc(db, 'users', userSwiped?.id, 'pendingSwipes', userProfile?.id), userProfile)
     setDoc(doc(db, 'users', userProfile?.id, 'swipes', userSwiped?.id), userSwiped)
   }
 

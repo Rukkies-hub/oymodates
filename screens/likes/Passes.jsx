@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, TouchableOpacity, SafeAreaView, Dimensions, ScrollView } from 'react-native'
+import { View, TouchableOpacity, SafeAreaView, FlatList, Text } from 'react-native'
 
 import useAuth from '../../hooks/useAuth'
 
@@ -12,10 +12,9 @@ import { useNavigation } from '@react-navigation/native'
 
 import { Feather } from '@expo/vector-icons'
 
-import AutoHeightImage from 'react-native-auto-height-image'
 import LoadingIndicator from '../../components/LoadingIndicator'
-
-const { width } = Dimensions.get('window')
+import Avatar from './Avatar'
+import Username from './Username'
 
 const Passes = () => {
   const { user, userProfile, theme } = useAuth()
@@ -38,7 +37,7 @@ const Passes = () => {
     , [])
 
   const undoPass = async pass =>
-    await deleteDoc(doc(db, "users", user?.uid == undefined ? user?.user?.uid : user?.uid, 'passes', pass?.id))
+    await deleteDoc(doc(db, "users", userProfile?.id, 'passes', pass?.id))
 
   const disabled = () => navigation.navigate('SetupModal')
 
@@ -54,7 +53,8 @@ const Passes = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: color.transparent
+        backgroundColor: color.transparent,
+        padding: 10
       }}
     >
       {
@@ -68,85 +68,150 @@ const Passes = () => {
             }}
           >
             <LoadingIndicator size={50} theme={theme} />
-            {/* <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <ActivityIndicator size='large' color={color.red} />
-            </View> */}
           </View> :
-          <ScrollView
-            style={{
-              flex: 1,
-              backgroundColor: color.transparent,
-              marginTop: 20
-            }}
-          >
-            <View
-              style={{
-                paddingHorizontal: 10,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                flexWrap: 'wrap'
-              }}
-            >
-              {
-                passes?.map((pass, index) => {
-                  return (
+          <FlatList
+            data={passes}
+            keyExtractor={item => item?.id}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item: pass }) => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginBottom: 20
+                }}
+              >
+                <TouchableOpacity onPress={() => navigation.navigate('UserProfile', { user: pass })}>
+                  <Avatar user={pass?.id} />
+                </TouchableOpacity>
+
+                <View
+                  style={{
+                    flex: 1,
+                    marginLeft: 10
+                  }}
+                >
+                  <TouchableOpacity onPress={() => navigation.navigate('UserProfile', { user: pass })}>
+                    <Username user={pass?.id} />
+                  </TouchableOpacity>
+                  {
+                    pass?.about && pass?.about != '' &&
                     <View
-                      key={index}
                       style={{
-                        width: (width / 2) - 18,
-                        position: 'relative',
-                        borderRadius: 20,
-                        overflow: 'hidden'
+                        marginTop: 10
                       }}
                     >
-                      <AutoHeightImage
-                        resizeMode='cover'
-                        source={{ uri: pass?.photoURL }}
-                        width={(width / 2) - 10}
+                      <Text
+                        numberOfLines={2}
                         style={{
-                          maxHeight: 250
-                        }}
-                      />
-
-                      <View
-                        style={{
-                          position: 'absolute',
-                          bottom: 0,
-                          left: 0,
-                          width: '100%',
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          marginBottom: 10
+                          fontFamily: 'text',
+                          color: theme == 'light' ? color.dark : color.white
                         }}
                       >
-                        <TouchableOpacity
-                          onPress={() => userProfile ? undoPass(pass) : disabled()}
-                          style={{
-                            backgroundColor: color.white,
-                            width: 40,
-                            height: 40,
-                            borderRadius: 50,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginRight: 10
-                          }}
-                        >
-                          <Feather name='x' size={24} color={color.red} />
-                        </TouchableOpacity>
-                      </View>
+                        {pass?.about}
+                      </Text>
                     </View>
-                  )
-                })
-              }
-            </View>
-          </ScrollView>
+                  }
+
+                  <View
+                    style={{
+                      marginTop: 10,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Feather name='home' size={12} color={theme == 'light' ? color.dark : color.white} />
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        marginLeft: 10
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: 'text',
+                          fontSize: 14,
+                          color: theme == 'light' ? color.dark : color.white,
+                          marginLeft: 5
+                        }}
+                      >
+                        Lives in
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'boldText',
+                          fontSize: 14,
+                          color: theme == 'light' ? color.dark : color.white,
+                          marginLeft: 5
+                        }}
+                      >
+                        {pass?.city}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {
+                    pass?.job != '' &&
+                    <View
+                      style={{
+                        marginTop: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Feather name='briefcase' size={14} color={theme == 'light' ? color.dark : color.white} />
+
+                      <Text
+                        style={{
+                          fontFamily: 'text',
+                          fontSize: 16,
+                          color: theme == 'dark' ? color.white : color.dark,
+                          marginLeft: 10
+                        }}
+                      >
+                        {pass?.job} {pass?.job ? 'at' : null} {pass?.company}
+                      </Text>
+                    </View>
+                  }
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
+                      marginTop: 10
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => userProfile ? undoPass(pass) : disabled()}
+                      style={{
+                        backgroundColor: color.red,
+                        height: 35,
+                        borderRadius: 8,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginRight: 10,
+                        paddingHorizontal: 10
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: color.white,
+                          fontFamily: 'text'
+                        }}
+                      >
+                        Delete pass
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            )}
+          />
       }
     </SafeAreaView>
   )
