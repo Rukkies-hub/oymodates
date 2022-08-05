@@ -311,7 +311,7 @@ const Header = ({
                 alignItems: 'center'
               }}
             >
-              <MaterialCommunityIcons name="dots-vertical" size={24} color={theme == 'dark' ? color.white : color.dark} />
+              <MaterialCommunityIcons name='dots-vertical' size={24} color={theme == 'dark' ? color.white : color.dark} />
             </TouchableOpacity>
           }
         </View>

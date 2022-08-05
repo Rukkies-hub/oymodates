@@ -22,7 +22,7 @@ import UserInfo from './components/UserInfo'
 import UserAvatar from './components/UserAvatar'
 
 const wait = timeout => {
-  return new Promise(resolve => setTimeout(resolve, timeout));
+  return new Promise(resolve => setTimeout(resolve, timeout))
 }
 
 const Reels = () => {
@@ -61,7 +61,7 @@ const Reels = () => {
       getReels()
       setRefreshing(false)
     })
-  }, []);
+  }, [])
 
   const disabled = () => navigation.navigate('SetupModal')
 

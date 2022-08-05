@@ -86,7 +86,7 @@ const ChatList = () => {
           }]
         }
       >
-        <Feather name="trash-2" size={20} color={color.red} />
+        <Feather name='trash-2' size={20} color={color.red} />
       </TouchableOpacity>
     </View >
   )
