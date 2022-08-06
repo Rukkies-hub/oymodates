@@ -33,7 +33,6 @@ import { collection, doc, getDocs, limit, onSnapshot, orderBy, query, where } fr
 import { useNavigation } from '@react-navigation/native'
 
 import { webClientId, facebookClientId, appToken } from '@env'
-import { ToastAndroid } from 'react-native'
 
 const AuthContext = createContext({})
 
@@ -54,6 +53,7 @@ export const AuthProvider = ({ children }) => {
   const [company, setCompany] = useState('')
   const [image, setImage] = useState(null)
   const [username, setUsername] = useState('')
+  const [phone, setPhone] = useState('')
   const [displayName, setDisplayName] = useState('')
   const [school, setSchool] = useState('')
   const [city, setCity] = useState('')
@@ -207,6 +207,7 @@ export const AuthProvider = ({ children }) => {
         setJob('')
         setCompany('')
         setUsername('')
+        setPhone('')
         setSchool('')
         setCity('')
         setScreen('default')
@@ -216,6 +217,7 @@ export const AuthProvider = ({ children }) => {
         if (profile?.job) setJob(profile?.job)
         if (profile?.company) setCompany(profile?.company)
         if (profile?.username) setUsername(profile?.username)
+        if (profile?.phone) setPhone(profile?.phone)
         if (profile?.displayName) setDisplayName(profile?.displayName)
         if (profile?.school) setSchool(profile?.school)
         if (profile?.city) setCity(profile?.city)
@@ -253,6 +255,8 @@ export const AuthProvider = ({ children }) => {
     image,
     job,
     username,
+    phone,
+    setPhone,
     displayName,
     setDisplayName,
     school,

@@ -75,7 +75,6 @@ export default class Rave extends Component {
       case 'cancelled':
         this.setState({ showModal: false }, () => {
           this.props.onCancel()
-          this.props.navigation.goBack()
         })
         break
 

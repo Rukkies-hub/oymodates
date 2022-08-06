@@ -61,6 +61,8 @@ const EditProfile = () => {
     setImage,
     username,
     setUsername,
+    phone,
+    setPhone,
     displayName,
     setDisplayName,
     school,
@@ -99,7 +101,7 @@ const EditProfile = () => {
     })
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response)
+      // console.log(response)
     })
 
     return () => {
@@ -113,10 +115,10 @@ const EditProfile = () => {
       setDisabled(false)
     }
     else {
-      if (username != '' && displayName != '' && city != '')
+      if (username != '' && phone && displayName != '' && city != '')
         setDisabled(false)
     }
-  }, [username, displayName, job, company, school, city])
+  }, [username, displayName, job, company, school, city, phone])
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -211,7 +213,8 @@ const EditProfile = () => {
           username,
           school,
           city,
-          about
+          about,
+          phone
         })
         schedulePushNotification('Update successful', 'Your profile has been updated successfully')
         setUpdateLoading(false)
@@ -236,6 +239,7 @@ const EditProfile = () => {
           company,
           school,
           city,
+          phone,
           theme: 'light',
           timestamp: serverTimestamp()
         })
@@ -404,6 +408,24 @@ const EditProfile = () => {
               }}
             />
           }
+
+          <TextInput
+            value={phone}
+            placeholder='(Country code) Phone'
+            autoCapitalize='none'
+            autoCorrect={false}
+            placeholderTextColor={theme == 'dark' ? color.white : color.dark}
+            onChangeText={setPhone}
+            style={{
+              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+              paddingHorizontal: 10,
+              borderRadius: 12,
+              height: 45,
+              fontFamily: 'text',
+              marginBottom: 20,
+              color: theme == 'dark' ? color.white : color.dark
+            }}
+          />
 
           {
             userProfile &&
@@ -618,7 +640,48 @@ const EditProfile = () => {
 
           {userProfile && <AppTheme />}
 
-          {userProfile && <Payment />}
+          {/* {userProfile && <Payment user={user} userProfile={userProfile} theme={theme} />} */}
+          {/* {
+            userProfile &&
+            <TouchableOpacity
+              onPress={() => {
+                if (!userProfile?.phone) alert('please update you phone number')
+                else
+                  navigation.navigate('Payment', {
+                    email: user?.email,
+                    phone: userProfile?.phone,
+                    amount: 5,
+                    name: userProfile?.displayName
+                  })
+              }}
+              style={{
+                flex: 1,
+                backgroundColor: theme == 'dark' ? color.white : color.offWhite,
+                height: 50,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 12,
+                marginTop: 20
+              }}
+            >
+              <Image
+                source={require('../../assets/icon.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  marginRight: 10
+                }}
+              />
+              <Text
+                style={{
+                  fontFamily: 'text'
+                }}
+              >
+                Oymo Plus ($5)
+              </Text>
+            </TouchableOpacity>
+          } */}
 
           <TouchableOpacity
             onPress={updateUserProfile}
@@ -729,7 +792,7 @@ async function registerForPushNotificationsAsync () {
       return
     }
     token = (await Notifications.getExpoPushTokenAsync()).data
-    console.log(token)
+    // console.log(token)
   } else {
     alert('Must use physical device for Push Notifications')
   }

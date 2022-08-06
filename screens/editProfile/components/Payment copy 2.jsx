@@ -75,6 +75,7 @@ const Payment = () => {
                     var resp = {event:'error'}
                     postMessage(JSON.stringify(resp))
                   }
+                  
                   x.close()
                 }
               })

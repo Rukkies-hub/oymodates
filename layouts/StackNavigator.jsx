@@ -32,6 +32,7 @@ import color from '../style/color'
 import Gender from '../screens/editProfile/components/Gender'
 import GoogleAuth from '../screens/auth/GoogleAuth'
 import Overlay from '../screens/editProfile/components/Overlay'
+import Payment from '../screens/editProfile/components/Payment'
 
 const StackNavigator = () => {
   const { user, theme } = useAuth()
@@ -133,6 +134,18 @@ const StackNavigator = () => {
               <Stack.Screen name='ViewReel' component={ViewReel} />
               <Stack.Screen name='UserProfile' component={UserProfile} />
               <Stack.Screen name='Passion' component={Passion} />
+              <Stack.Screen
+                name='Payment'
+                component={Payment}
+                options={{
+                  gestureEnabled: false,
+                  animationEnabled: true,
+                  ...TransitionPresets.FadeFromBottomAndroid,
+                  cardStyle: {
+                    backgroundColor: color.transparent
+                  }
+                }}
+              />
             </Stack.Group>
           </>
         ) : (

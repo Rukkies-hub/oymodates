@@ -6,10 +6,11 @@ import { WebView } from 'react-native-webview'
 import { publicKey } from '@env'
 
 import uuid from 'uuid-random'
+import Bar from '../../../components/StatusBar'
 import color from '../../../style/color'
 import useAuth from '../../../hooks/useAuth'
 
-const { width, height } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const Payment = () => {
   const { user, userProfile, theme } = useAuth()
@@ -39,7 +40,7 @@ const Payment = () => {
           <title>SUBSCRIPTION</title>
         </head>
           <body  onload="payWithRave()" style="background-color: #fff; height:100vh; padding-top: 1em">
-            <form style="background-color:#fff; height: ${height}px; width: ${width}px">
+            <form style="background-color:#fffheight: 1024px width: 1024px">
               <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
             </form>
           
@@ -69,8 +70,8 @@ const Payment = () => {
                     response.tx.chargeResponseCode == "00" ||
                     response.tx.chargeResponseCode == "0"
                   ) {
-                      var resp = {event:'successful', transactionRef:txref}
-                      postMessage(JSON.stringify(resp))
+                    var resp = {event:'successful', transactionRef:txref}
+                    postMessage(JSON.stringify(resp))
                   } else {
                     var resp = {event:'error'}
                     postMessage(JSON.stringify(resp))
@@ -88,11 +89,6 @@ const Payment = () => {
     let webResponse = JSON.parse(data)
     console.log(webResponse)
     console.log(webViewRef?.current)
-  }
-
-  const onMessage = data => {
-    let webResponse = JSON.parse(data)
-    console.log('data', webResponse)
   }
 
   return (
