@@ -148,7 +148,8 @@ const ViewReel = () => {
               borderRadius: 50,
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: 20
+              marginTop: 20,
+              marginBottom: 70
             }}
           >
             <LikeReels reel={reel} />

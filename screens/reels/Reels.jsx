@@ -167,7 +167,7 @@ const Reels = () => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginTop: 20,
-                  marginBottom: 50
+                  marginBottom: 70
                 }}
               >
                 <LikeReels reel={item} />
