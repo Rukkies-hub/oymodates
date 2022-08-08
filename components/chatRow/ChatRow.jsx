@@ -36,7 +36,11 @@ const ChatRow = ({ matchDetails }) => {
           setLastMessage(
             snapshot?.docs[0]?.data()?.voiceNote ?
               `${matchedUserInfo?.username} Sent you a voice note...` :
-              snapshot?.docs[0]?.data()?.message || snapshot?.docs[0]?.data()?.caption
+              snapshot?.docs[0]?.data()?.mediaType == 'video' ?
+                `${snapshot?.docs[0]?.data()?.username != userProfile?.username ? snapshot?.docs[0]?.data().username : 'You'} ${snapshot?.docs[0]?.data()?.username == userProfile?.username ? 'sent a video' : 'Sent you a video'}...` :
+              snapshot?.docs[0]?.data()?.mediaType == 'image' ?
+                `${snapshot?.docs[0]?.data()?.username != userProfile?.username ? snapshot?.docs[0]?.data().username : 'You'} ${snapshot?.docs[0]?.data()?.username == userProfile?.username ? 'sent a image' : 'Sent you a image'}...` :
+                snapshot?.docs[0]?.data()?.message || snapshot?.docs[0]?.data()?.caption
           )
       )
     })()
