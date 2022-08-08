@@ -273,7 +273,7 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 </Pressable>
 
                 {
-                  messages?.caption &&
+                  messages?.caption != '' &&
                   <>
                     <View
                       style={{

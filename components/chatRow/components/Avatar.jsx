@@ -11,10 +11,9 @@ const Avatar = ({ user }) => {
   const [userInfo, setUserInfo] = useState(null)
 
   useEffect(() => {
-    (() => {
-      onSnapshot(doc(db, 'users', user),
-        doc => setUserInfo(doc?.data()))
-    })()
+    const unsub = onSnapshot(doc(db, 'users', user),
+      doc => setUserInfo(doc?.data()))
+    return unsub
   }, [])
 
   return (

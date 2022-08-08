@@ -36,7 +36,10 @@ const ChatList = () => {
     , [user, db])
 
   const fetchMatches = () => {
-    onSnapshot(query(collection(db, 'matches'), where('usersMatched', 'array-contains', userProfile?.id), orderBy('timestamp', 'desc')),
+    const unsub = onSnapshot(query(collection(db, 'matches'),
+      where('usersMatched', 'array-contains', userProfile?.id),
+      orderBy('timestamp', 'desc')
+    ),
       snapshot => {
         setMatches(
           snapshot?.docs?.map(doc => ({
@@ -52,6 +55,7 @@ const ChatList = () => {
         )
       }
     )
+    return unsub
   }
 
   const onRowDidOpen = rowKey => {
