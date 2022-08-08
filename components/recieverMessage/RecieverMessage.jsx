@@ -62,7 +62,19 @@ const RecieverMessage = ({ messages, matchDetails }) => {
   }, [sound])
 
   return (
-    <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+    <Pressable
+      onPress={() => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+        setShowTime(!showTime)
+        setNumberOfLines(numberOfLines == 10 ? 1000 : 10)
+      }}
+      delayLongPress={500}
+      onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
+      style={{
+        flexDirection: 'row',
+        marginBottom: 10
+      }}
+    >
       <Avatar user={messages?.userId} />
       <View
         style={{
@@ -216,7 +228,13 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left' }}>
+                    <Text
+                      style={{
+                        color: theme == 'light' ? color.dark : color.white,
+                        fontSize: 8,
+                        textAlign: 'left',
+                        marginLeft: 10
+                      }}>
                       {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                     </Text>
                   }
@@ -224,71 +242,74 @@ const RecieverMessage = ({ messages, matchDetails }) => {
               }
             </View>
           }
+
           {
             messages?.mediaType == 'image' &&
-            <View
-              style={{
-                position: 'relative',
-                backgroundColor: messages?.mediaType == 'image' ? (theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
-                borderRadius: 20,
-                overflow: 'hidden'
-              }}
-            >
-              <Pressable
-                delayLongPress={500}
-                style={{ maxHeight: 250 }}
-                onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
-                onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvatar', { avatar: messages?.media }) : null}
+            <View>
+              <View
+                style={{
+                  position: 'relative',
+                  backgroundColor: messages?.mediaType == 'image' ? (theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
+                  borderRadius: 20,
+                  overflow: 'hidden'
+                }}
               >
-                <Image
-                  source={{ uri: messages?.media }}
-                  resizeMode='cover'
-                  style={{
-                    minWidth: 250,
-                    minHeight: 250,
-                    borderRadius: 20
-                  }}
-                />
-              </Pressable>
-              {
-                messages?.caption &&
-                <>
-                  <View
+                <Pressable
+                  delayLongPress={500}
+                  style={{ maxHeight: 250 }}
+                  onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
+                  onPress={() => messages?.mediaType == 'image' ? navigation.navigate('ViewAvatar', { avatar: messages?.media }) : null}
+                >
+                  <Image
+                    source={{ uri: messages?.media }}
+                    resizeMode='cover'
                     style={{
-                      flex: 1,
-                      height: 30,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'flex-start',
-                      padding: 5,
-                      margin: 5,
-                      backgroundColor: theme == 'dark' ? color.black : color.white,
-                      borderRadius: 4,
-                      borderBottomLeftRadius: 20,
-                      borderBottomRightRadius: 20
+                      minWidth: 250,
+                      minHeight: 250,
+                      borderRadius: 20
                     }}
-                  >
-                    <Text
-                      numberOfLines={numberOfLines}
+                  />
+                </Pressable>
+                {
+                  messages?.caption &&
+                  <>
+                    <View
                       style={{
-                        color: theme == 'light' ? color.dark : color.white,
-                        fontSize: 16,
-                        textAlign: 'left'
+                        flex: 1,
+                        height: 30,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'flex-start',
+                        padding: 5,
+                        margin: 5,
+                        backgroundColor: theme == 'dark' ? color.black : color.white,
+                        borderRadius: 4,
+                        borderBottomLeftRadius: 20,
+                        borderBottomRightRadius: 20
                       }}
                     >
-                      {messages?.caption}
-                    </Text>
-                  </View>
+                      <Text
+                        numberOfLines={numberOfLines}
+                        style={{
+                          color: theme == 'light' ? color.dark : color.white,
+                          fontSize: 16,
+                          textAlign: 'left'
+                        }}
+                      >
+                        {messages?.caption}
+                      </Text>
+                    </View>
+                  </>
+                }
+              </View>
+              {
+                messages?.timestamp &&
+                <>
                   {
-                    messages?.timestamp &&
-                    <>
-                      {
-                        showTime &&
-                        <Text style={{ color: theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left', marginLeft: 10, marginBottom: 10 }}>
-                          {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
-                        </Text>
-                      }
-                    </>
+                    showTime &&
+                    <Text style={{ color: theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left', marginLeft: 10, marginBottom: 10 }}>
+                      {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                    </Text>
                   }
                 </>
               }
@@ -297,77 +318,79 @@ const RecieverMessage = ({ messages, matchDetails }) => {
 
           {
             messages?.mediaType == 'video' &&
-            <View
-              style={{
-                position: 'relative',
-                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-                borderRadius: 20,
-                overflow: 'hidden'
-              }}
-            >
-              <Pressable
-                style={{ flex: 1 }}
-                delayLongPress={500}
-                onPress={() => messages?.mediaType == 'video' ? navigation.navigate('ViewVideo', { video: messages?.media }) : null}
-                onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
+            <View>
+              <View
+                style={{
+                  position: 'relative',
+                  backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                  borderRadius: 20,
+                  overflow: 'hidden'
+                }}
               >
-                <Image
-                  source={{ uri: messages?.thumbnail }}
-                  resizeMode='cover'
-                  style={{
-                    minWidth: 250,
-                    minHeight: 250,
-                    borderRadius: 20
-                  }}
-                />
-              </Pressable>
-              {
-                messages?.caption != '' &&
-                <>
-                  <View
+                <Pressable
+                  style={{ flex: 1 }}
+                  delayLongPress={500}
+                  onPress={() => messages?.mediaType == 'video' ? navigation.navigate('ViewVideo', { video: messages?.media }) : null}
+                  onLongPress={() => navigation.navigate('MessageOptions', { messages, matchDetails })}
+                >
+                  <Image
+                    source={{ uri: messages?.thumbnail }}
+                    resizeMode='cover'
                     style={{
-                      flex: 1,
-                      height: 30,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'flex-start',
-                      padding: 5,
-                      margin: 5,
-                      backgroundColor: theme == 'dark' ? color.black : color.white,
-                      borderRadius: 4,
-                      borderBottomLeftRadius: 20,
-                      borderBottomRightRadius: 20
+                      minWidth: 250,
+                      minHeight: 250,
+                      borderRadius: 20
                     }}
-                  >
-                    <Text
-                      numberOfLines={numberOfLines}
+                  />
+                </Pressable>
+                {
+                  messages?.caption != '' &&
+                  <>
+                    <View
                       style={{
-                        color: theme == 'light' ? color.dark : color.white,
-                        fontSize: 16,
-                        textAlign: 'left'
+                        flex: 1,
+                        height: 30,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'flex-start',
+                        padding: 5,
+                        margin: 5,
+                        backgroundColor: theme == 'dark' ? color.black : color.white,
+                        borderRadius: 4,
+                        borderBottomLeftRadius: 20,
+                        borderBottomRightRadius: 20
                       }}
                     >
-                      {messages?.caption}
-                    </Text>
-                  </View>
+                      <Text
+                        numberOfLines={numberOfLines}
+                        style={{
+                          color: theme == 'light' ? color.dark : color.white,
+                          fontSize: 16,
+                          textAlign: 'left'
+                        }}
+                      >
+                        {messages?.caption}
+                      </Text>
+                    </View>
+                  </>
+                }
+              </View>
+              {
+                messages?.timestamp &&
+                <>
                   {
-                    messages?.timestamp &&
-                    <>
-                      {
-                        showTime &&
-                        <Text
-                          style={{
-                            color: color.white,
-                            fontSize: 8,
-                            textAlign: 'left',
-                            marginLeft: 10,
-                            marginBottom: 10
-                          }}
-                        >
-                          {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
-                        </Text>
-                      }
-                    </>
+                    showTime &&
+                    <Text
+                      style={{
+                        color: color.white,
+                        fontSize: 8,
+                        textAlign: 'left',
+                        marginLeft: 10,
+                        marginBottom: 10
+                      }}
+                    >
+                      {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                    </Text>
                   }
                 </>
               }
@@ -376,52 +399,73 @@ const RecieverMessage = ({ messages, matchDetails }) => {
 
           {
             messages?.voiceNote &&
-            <View
-              style={{
-                position: 'relative',
-                width: 200,
-                height: 35,
-                borderRadius: 20,
-                overflow: 'hidden',
-                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingHorizontal: 2,
-                paddingRight: 10
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => !isPlaying ? playVoicenote(messages?.voiceNote) : pauseVoicenote(messages?.voiceNote)}
+            <View>
+              <View
                 style={{
-                  backgroundColor: color.blue,
-                  width: 30,
-                  height: 30,
-                  borderRadius: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  position: 'relative',
+                  width: 200,
+                  height: 35,
+                  borderRadius: 20,
+                  overflow: 'hidden',
+                  backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 2,
+                  paddingRight: 10
                 }}
               >
-                {
-                  !isPlaying ?
-                    <AntDesign name='caretright' size={20} color={color.white} /> :
-                    <AntDesign name='pause' size={20} color={color.white} />
-                }
-              </TouchableOpacity>
-              <Slider
-                style={{ width: 150 }}
-                value={Value}
-                minimumValue={0}
-                maximumValue={100}
-                minimumTrackTintColor={color.blue}
-                maximumTrackTintColor={color.blue}
-                thumbTintColor={color.blue}
-              />
+                <TouchableOpacity
+                  onPress={() => !isPlaying ? playVoicenote(messages?.voiceNote) : pauseVoicenote(messages?.voiceNote)}
+                  style={{
+                    backgroundColor: color.blue,
+                    width: 30,
+                    height: 30,
+                    borderRadius: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  {
+                    !isPlaying ?
+                      <AntDesign name='caretright' size={20} color={color.white} /> :
+                      <AntDesign name='pause' size={20} color={color.white} />
+                  }
+                </TouchableOpacity>
+                <Slider
+                  style={{ width: 150 }}
+                  value={Value}
+                  minimumValue={0}
+                  maximumValue={100}
+                  minimumTrackTintColor={color.blue}
+                  maximumTrackTintColor={color.blue}
+                  thumbTintColor={color.blue}
+                />
+              </View>
+              {
+                messages?.timestamp &&
+                <>
+                  {
+                    showTime &&
+                    <Text
+                      style={{
+                        color: color.white,
+                        fontSize: 8,
+                        textAlign: 'left',
+                        marginLeft: 10,
+                        marginBottom: 10
+                      }}
+                    >
+                      {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                    </Text>
+                  }
+                </>
+              }
             </View>
           }
         </Pressable>
       </View>
-    </View>
+    </Pressable>
   )
 }
 
