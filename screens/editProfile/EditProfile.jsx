@@ -2,122 +2,90 @@ import React, { useEffect, useState, useRef } from 'react'
 import {
   View,
   Text,
-  Image,
   ScrollView,
+  Image,
   TouchableOpacity,
-  TextInput,
-  ActivityIndicator
+  ActivityIndicator,
+  TextInput
 } from 'react-native'
-
-import Header from '../../components/Header'
-
 import color from '../../style/color'
-
 import useAuth from '../../hooks/useAuth'
-
+import Bar from '../../components/StatusBar'
+import Header from '../../components/Header'
+import { AntDesign, SimpleLineIcons } from '@expo/vector-icons'
 import { useFonts } from 'expo-font'
-
-import * as ImagePicker from 'expo-image-picker'
-
-import { useNavigation, useRoute } from '@react-navigation/native'
-
+import { useNavigation } from '@react-navigation/native'
+import LookingFor from './components/LookingFor'
+import AppTheme from './components/AppTheme'
+import Constants from 'expo-constants'
+import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
-
-import { serverTimestamp, setDoc, doc, updateDoc } from 'firebase/firestore'
-
-import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
+import * as ImagePicker from 'expo-image-picker'
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device'
-
-import { SimpleLineIcons, AntDesign } from '@expo/vector-icons'
-
-import Bar from '../../components/StatusBar'
-
 import uuid from 'uuid-random'
-
-import Constants from 'expo-constants'
-import AppTheme from './components/AppTheme'
-import SnackBar from 'rukkiecodes-expo-snackbar'
-import Payment from './components/Payment'
-import LookingFor from './components/LookingFor'
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-})
 
 const EditProfile = () => {
   const {
     user,
-    logout,
     userProfile,
-    job,
-    setJob,
-    image,
-    setImage,
-    username,
-    setUsername,
-    phone,
-    setPhone,
-    displayName,
-    setDisplayName,
-    school,
-    setSchool,
-    company,
-    setCompany,
-    city,
-    setCity,
-    about,
-    setAbout,
-    passions,
     theme,
-    overlay,
-    setOverlay
+    setOverlay,
+    logout
   } = useAuth()
-
   const storage = getStorage()
   const navigation = useNavigation()
 
   const notificationListener = useRef()
   const responseListener = useRef()
 
-  const [height, setHeight] = useState(50)
   const [uploadLoading, setUploadLoading] = useState(false)
-  const [updateLoading, setUpdateLoading] = useState(false)
+  const [height, setHeight] = useState(50)
   const [disabled, setDisabled] = useState(true)
-
+  const [updateLoading, setUpdateLoading] = useState(false)
   const [expoPushToken, setExpoPushToken] = useState('')
   const [notification, setNotification] = useState(false)
 
+  // INPUTS
+  const [displayName, setDisplayName] = useState(user?.displayName || userProfile?.displayName)
+  const [username, setUsername] = useState(userProfile?.username)
+  const [phone, setPhone] = useState(userProfile?.phone)
+  const [job, setJob] = useState(userProfile?.job)
+  const [company, setCompany] = useState(userProfile?.company)
+  const [school, setSchool] = useState(userProfile?.school)
+  const [about, setAbout] = useState(userProfile?.about)
+  const [_passions, setPassions] = useState(userProfile?.passions)
+  const [city, setCity] = useState(userProfile?.city)
+
+
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+    const unsub = (() => {
+      registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification)
-    })
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        setNotification(notification)
+      })
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      // console.log(response)
-    })
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => { })
 
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current)
-      Notifications.removeNotificationSubscription(responseListener.current)
-    }
+      return () => {
+        Notifications.removeNotificationSubscription(notificationListener.current)
+        Notifications.removeNotificationSubscription(responseListener.current)
+      }
+    })()
+    return unsub
   }, [])
 
   useEffect(() => {
-    if (userProfile) {
-      setDisabled(false)
-    }
-    else {
-      if (username != '' && phone && displayName != '' && city != '')
-        setDisabled(false)
-    }
+    const unsub = (() => {
+      if (userProfile) setDisabled(false)
+      else
+        if (username != '' && phone && displayName != '' && city != '')
+          setDisabled(false)
+    })()
+    return unsub
   }, [username, displayName, job, company, school, city, phone])
 
   const pickImage = async () => {
@@ -138,61 +106,48 @@ const EditProfile = () => {
         xhr.send(null)
       })
 
-      const link = `avatars/${user?.uid == undefined ? user?.user?.uid : user?.uid}/${uuid()}`
+      const link = `avatars/${userProfile?.id}/${uuid()}`
 
       const photoRef = ref(storage, link)
 
       const uploadTask = uploadBytesResumable(photoRef, blob)
 
-      if (result?.uri) {
+      if (result?.uri && result?.type == 'image') {
         if (userProfile?.photoURL) {
           setUploadLoading(true)
           const desertRef = ref(storage, userProfile?.photoLink)
 
           deleteObject(desertRef)
             .then(() => {
-              uploadTask.on('state_changed',
-                snapshot => {
-                  const progress = (snapshot?.bytesTransferred / snapshot?.totalBytes) * 100
-                },
-                error => setUploadLoading(false),
-                () => {
-                  getDownloadURL(uploadTask?.snapshot?.ref)
+              uploadBytes(photoRef, blob)
+                .then(snapshot => {
+                  getDownloadURL(snapshot?.ref)
                     .then(downloadURL => {
-                      setImage(downloadURL)
-                      updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+                      updateDoc(doc(db, 'users', userProfile?.id), {
                         photoURL: downloadURL,
                         photoLink: link
-                      }).finally(async () => {
+                      }).then(() => {
                         schedulePushNotification('Update successful', 'Your display picture has been updated successfully')
                         setUploadLoading(false)
-                      })
+                      }).catch(() => setUploadLoading(false))
                     })
-                }
-              )
-            }).catch(() => setUploadLoading(false))
-            .finally(() => setUploadLoading(false))
+                })
+            })
         } else {
           setUploadLoading(true)
-          uploadTask.on('state_changed',
-            snapshot => {
-              const progress = (snapshot?.bytesTransferred / snapshot?.totalBytes) * 100
-            },
-            error => setUploadLoading(false),
-            () => {
-              getDownloadURL(uploadTask?.snapshot?.ref)
+          uploadBytes(photoRef, blob)
+            .then(snapshot => {
+              getDownloadURL(snapshot?.ref)
                 .then(downloadURL => {
-                  setImage(downloadURL)
-                  updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+                  updateDoc(doc(db, 'users', userProfile?.id), {
                     photoURL: downloadURL,
                     photoLink: link
-                  }).finally(async () => {
+                  }).then(() => {
                     schedulePushNotification('Update successful', 'Your display picture has been updated successfully')
                     setUploadLoading(false)
-                  })
+                  }).catch(() => setUploadLoading(false))
                 })
-            }
-          )
+            })
         }
       }
     }
@@ -205,12 +160,11 @@ const EditProfile = () => {
       navigation.navigate('Overlay')
 
       try {
-        await updateDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-          id: user?.uid == undefined ? user?.user?.uid : user?.uid,
+        await updateDoc(doc(db, 'users', userProfile?.id), {
+          username,
           displayName,
           job,
           company,
-          username,
           school,
           city,
           about,
@@ -234,13 +188,13 @@ const EditProfile = () => {
         await setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
           id: user?.uid == undefined ? user?.user?.uid : user?.uid,
           username,
-          displayName: user?.user?.displayName ? user?.user?.displayName : displayName,
+          displayName,
           job,
           company,
           school,
           city,
           phone,
-          theme: 'light',
+          theme: 'dark',
           timestamp: serverTimestamp()
         })
         schedulePushNotification('Update successful', 'Your profile has been updated successfully')
@@ -272,99 +226,97 @@ const EditProfile = () => {
 
       <Header showBack showTitle showAratar title='Edit Profile' />
 
-      <ScrollView style={{ flex: 1 }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginHorizontal: 10,
-            marginVertical: 20
-          }}
-        >
-          {
-            userProfile?.photoURL || user?.photoURL ?
-              <Image
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 100
-                }}
-                source={{ uri: image ? image : userProfile?.photoURL || user?.photoURL }}
-              /> :
-              <View
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 100,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: theme == 'dark' ? color.black : color.offWhite
-                }}
-              >
-                <SimpleLineIcons name='user' size={30} color={theme == 'dark' ? color.white : color.lightText} />
-              </View>
-          }
-
-          <View
-            style={{
-              flex: 1,
-              paddingLeft: 20,
-              justifyContent: 'center'
-            }}
-          >
-
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginHorizontal: 10,
+          marginVertical: 20
+        }}
+      >
+        {
+          userProfile?.photoURL ?
+            <Image
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 100
+              }}
+              source={{ uri: userProfile?.photoURL }}
+            /> :
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center'
-              }}
-            >
-              <Text
-                style={{
-                  color: theme == 'dark' ? (userProfile?.username ? color.white : color.offWhite) : (userProfile?.username ? color.dark : color.lightText),
-                  fontFamily: 'boldText',
-                  fontSize: 20
-                }}
-              >
-                {userProfile?.username ? userProfile?.username : 'username'}
-              </Text>
-            </View>
-
-            <Text
-              style={{
-                fontFamily: 'text',
-                fontSize: !userProfile?.username ? 18 : null,
-                color: theme == 'dark' ? color.white : color.dark
-              }}
-            >
-              {userProfile?.displayName ? userProfile?.displayName : user?.displayName ? user?.displayName : 'Display name'}
-            </Text>
-          </View>
-
-          {
-            userProfile &&
-            <TouchableOpacity
-              onPress={pickImage}
-              style={{
-                width: 40,
-                height: 40,
+                width: 80,
+                height: 80,
+                borderRadius: 100,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-                borderRadius: 12,
-                marginLeft: 10
+                backgroundColor: theme == 'dark' ? color.black : color.offWhite
               }}
             >
-              {
-                uploadLoading ?
-                  <ActivityIndicator size='small' color={theme == 'dark' ? color.white : color.dark} /> :
-                  <AntDesign name='picture' size={24} color={theme == 'dark' ? color.white : color.dark} />
-              }
-            </TouchableOpacity>
-          }
+              <SimpleLineIcons name='user' size={30} color={theme == 'dark' ? color.white : color.lightText} />
+            </View>
+        }
+
+        <View
+          style={{
+            flex: 1,
+            paddingLeft: 20,
+            justifyContent: 'center'
+          }}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center'
+            }}
+          >
+            <Text
+              style={{
+                color: theme == 'dark' ? (userProfile?.username ? color.white : color.offWhite) : (userProfile?.username ? color.dark : color.lightText),
+                fontFamily: 'boldText',
+                fontSize: 20
+              }}
+            >
+              {userProfile?.username ? userProfile?.username : 'username'}
+            </Text>
+          </View>
+          <Text
+            style={{
+              fontFamily: 'text',
+              fontSize: !userProfile?.username ? 18 : null,
+              color: theme == 'dark' ? color.white : color.dark
+            }}
+          >
+            {userProfile?.displayName ? userProfile?.displayName : user?.displayName ? user?.displayName : 'Display name'}
+          </Text>
         </View>
 
+        {
+          userProfile &&
+          <TouchableOpacity
+            onPress={pickImage}
+            style={{
+              width: 40,
+              height: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+              borderRadius: 12,
+              marginLeft: 10
+            }}
+          >
+            {
+              uploadLoading ?
+                <ActivityIndicator size='small' color={theme == 'dark' ? color.white : color.dark} /> :
+                <AntDesign name='picture' size={24} color={theme == 'dark' ? color.white : color.dark} />
+            }
+          </TouchableOpacity>
+        }
+      </View>
+
+      <ScrollView style={{ flex: 1 }}>
         <View
           style={{
             marginTop: 40,
@@ -540,7 +492,7 @@ const EditProfile = () => {
             userProfile &&
             <>
               {
-                !userProfile?.gender &&
+                !userProfile.gender &&
                 <View
                   style={{
                     minHeight: 45,
@@ -596,7 +548,7 @@ const EditProfile = () => {
                   justifyContent: 'flex-start',
                   alignItems: 'center',
                   flexWrap: 'wrap',
-                  backgroundColor: passions?.length < 1 ? (theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
+                  backgroundColor: _passions?.length < 1 ? (theme == 'dark' ? color.dark : color.offWhite) : color.transparent,
                   borderRadius: 12,
                   height: 45,
                   marginBottom: 20,
@@ -604,84 +556,38 @@ const EditProfile = () => {
                 }}
               >
                 {
-                  passions?.map((passion, index) => {
-                    return (
-                      <View
-                        key={index}
+                  _passions?.map((passion, index) => (
+                    <View
+                      key={index}
+                      style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                        backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                        borderRadius: 100,
+                        marginBottom: 10,
+                        marginRight: 10
+                      }}
+                    >
+                      <Text
                         style={{
-                          paddingHorizontal: 10,
-                          paddingVertical: 5,
-                          backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-                          borderRadius: 100,
-                          marginBottom: 10,
-                          marginRight: 10
+                          color: theme == 'dark' ? color.white : color.lightText,
+                          fontSize: 12,
+                          fontFamily: 'text',
+                          textTransform: 'capitalize'
                         }}
                       >
-                        <Text
-                          style={{
-                            color: theme == 'dark' ? color.white : color.lightText,
-                            fontSize: 12,
-                            fontFamily: 'text',
-                            textTransform: 'capitalize'
-                          }}
-                        >
-                          {passion}
-                        </Text>
-                      </View>
-                    )
-                  })
+                        {passion}
+                      </Text>
+                    </View>
+                  ))
                 }
               </View>
             </TouchableOpacity>
           }
 
-
           {userProfile && <LookingFor />}
 
           {userProfile && <AppTheme />}
-
-          {/* {userProfile && <Payment user={user} userProfile={userProfile} theme={theme} />} */}
-          {/* {
-            userProfile &&
-            <TouchableOpacity
-              onPress={() => {
-                if (!userProfile?.phone) alert('please update you phone number')
-                else
-                  navigation.navigate('Payment', {
-                    email: user?.email,
-                    phone: userProfile?.phone,
-                    amount: 5,
-                    name: userProfile?.displayName
-                  })
-              }}
-              style={{
-                flex: 1,
-                backgroundColor: theme == 'dark' ? color.white : color.offWhite,
-                height: 50,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 12,
-                marginTop: 20
-              }}
-            >
-              <Image
-                source={require('../../assets/icon.png')}
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginRight: 10
-                }}
-              />
-              <Text
-                style={{
-                  fontFamily: 'text'
-                }}
-              >
-                Oymo Plus ($5)
-              </Text>
-            </TouchableOpacity>
-          } */}
 
           <TouchableOpacity
             onPress={updateUserProfile}
@@ -810,4 +716,3 @@ async function registerForPushNotificationsAsync () {
 }
 
 export default EditProfile
-// in use

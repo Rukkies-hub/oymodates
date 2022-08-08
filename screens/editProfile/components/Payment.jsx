@@ -1,145 +1,229 @@
-import React, { useRef, useState } from 'react'
-import { View, Text, Dimensions, Image, TouchableOpacity, Modal, BackHandler } from 'react-native'
-
-import { WebView } from 'react-native-webview'
-
-import { publicKey } from '@env'
-
-import uuid from 'uuid-random'
-import color from '../../../style/color'
+import { View, Text, Dimensions, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
+import React, { useState } from 'react'
 import useAuth from '../../../hooks/useAuth'
+import color from '../../../style/color'
+import { useFonts } from 'expo-font'
+import AutoHeightImage from 'react-native-auto-height-image'
 
-const { width, height } = Dimensions.get('window')
+import SelectDropdown from 'react-native-select-dropdown'
+
+const { width } = Dimensions.get('window')
+
+import currency_code from './currencies'
+import axios from 'axios'
 
 const Payment = () => {
-  const { user, userProfile, theme } = useAuth()
+  const { user, userProfile } = useAuth()
+  const [name, setName] = useState(userProfile?.displayName)
+  const [accountNumber, setAccountNumber] = useState('')
+  const [currency, setCurrency] = useState('')
+  const [email, setEmail] = useState(user?.email)
+  const [phone, setPhone] = useState(userProfile?.phone)
+  const [loading, setLoading] = useState(false)
+  const [disable, setDisable] = useState(false)
 
-  BackHandler.addEventListener('hardwareBackPress', () => {
-    setVisible(false)
+  const makePayment = async () => {
+    setLoading(true)
+    const response = await axios({
+      method: 'post',
+      url: 'https://oymo.herokuapp.com',
+      data: {
+        account_bank: '070',
+        account_number: accountNumber,
+        currency,
+        email,
+        phone_number: phone,
+        fullname: name
+      }
+    })
+    setLoading(false)
+    console.log('response: ', response)
+  }
+
+  const [loaded] = useFonts({
+    text: require('../../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
-  const webViewRef = useRef(null)
-  const [visible, setVisible] = useState(false)
-
-  const close = () => {
-    setVisible(false)
-  }
-
-  const Rave = {
-    html: `  
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta http-equiv="X-UA-Compatible" content="ie=edge">
-          <meta name="viewport" content="width=${width}">
-          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-          <link rel="dns-prefetch" href="//fonts.gstatic.com">
-          <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-          <title>SUBSCRIPTION</title>
-        </head>
-          <body  onload="payWithRave()" style="background-color: #fff; height:100vh; padding-top: 1em">
-            <form style="background-color:#fff; height: ${height}px; width: ${width}px">
-              <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
-            </form>
-          
-          <script>
-            const API_publicKey = "${publicKey}"
-            window.onload = payWithRave
-            function payWithRave() {
-              var x = getpaidSetup({
-                PBFPubKey: API_publicKey,
-                customer_email: "${user?.email}",
-                amount: 5,
-                customer_phone: "${userProfile?.phone}",
-                currency: "USD",
-                payment_options: "card, mobilemoneyghana, ussd",
-                txref: "${uuid()}",
-                meta: [{
-                  metaname: "${userProfile?.displayName}",
-                  metavalue: "${userProfile?.phone}"
-                }],
-                onclose: function() {
-                  var resp = {event:'cancelled'}
-                  postMessage(JSON.stringify(resp))
-                },
-                callback: function(response) {
-                  var txref = response.tx.txRef 
-                  if (
-                    response.tx.chargeResponseCode == "00" ||
-                    response.tx.chargeResponseCode == "0"
-                  ) {
-                      var resp = {event:'successful', transactionRef:txref}
-                      postMessage(JSON.stringify(resp))
-                  } else {
-                    var resp = {event:'error'}
-                    postMessage(JSON.stringify(resp))
-                  }
-                  x.close()
-                }
-              })
-            }
-          </script>
-        </body>
-      </html>`
-  }
-
-  const messageRecived = data => {
-    let webResponse = JSON.parse(data)
-    console.log(webResponse)
-    console.log(webViewRef?.current)
-  }
-
-  const onMessage = data => {
-    let webResponse = JSON.parse(data)
-    console.log('data', webResponse)
-  }
+  if (!loaded) return null
 
   return (
-    <View>
-      <Modal
-        visible={visible}
-        animationType='slide'
-        transparent={false}
-      >
-        <WebView
-          source={Rave}
-          ref={webViewRef}
-          originWhitelist={['*']}
-          javaScriptEnabled={true}
-          javaScriptEnabledAndroid={true}
-          onMessage={e => messageRecived(e.nativeEvent.data)}
-        />
-      </Modal>
-      <TouchableOpacity
-        onPress={() => setVisible(true)}
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: color.faintBlack,
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+      }}
+    >
+      <View
         style={{
-          flex: 1,
-          backgroundColor: theme == 'dark' ? color.white : color.offWhite,
-          height: 50,
+          width: width - 20,
+          minHeight: 1,
+          overflow: 'hidden',
+          borderRadius: 20,
+          backgroundColor: color.white,
           flexDirection: 'row',
-          justifyContent: 'center',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          borderRadius: 12,
-          marginTop: 20
+          padding: 10,
         }}
       >
-        <Image
-          source={require('../../../assets/icon.png')}
+        <View
           style={{
-            width: 30,
-            height: 30,
-            marginRight: 10
-          }}
-        />
-        <Text
-          style={{
-            fontFamily: 'text'
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 10
           }}
         >
-          Oymo Plus ($5)
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              fontFamily: 'text',
+              marginRight: 10
+            }}
+          >
+            Payment secured by
+          </Text>
+          <AutoHeightImage
+            source={require('../../../assets/fw.png')}
+            width={100}
+          />
+        </View>
+        <TextInput
+          placeholder='Account name'
+          placeholderTextColor={color.dark}
+          value={name}
+          onChangeText={setName}
+          style={{
+            backgroundColor: color.offWhite,
+            width: '100%',
+            height: 50,
+            fontFamily: 'text',
+            color: color.dark,
+            fontSize: 16,
+            borderRadius: 8,
+            paddingHorizontal: 10
+          }}
+        />
+        <TextInput
+          placeholder='Account number'
+          placeholderTextColor={color.dark}
+          value={accountNumber}
+          onChangeText={setAccountNumber}
+          style={{
+            backgroundColor: color.offWhite,
+            width: '100%',
+            height: 50,
+            fontFamily: 'text',
+            color: color.dark,
+            fontSize: 16,
+            borderRadius: 8,
+            marginTop: 10,
+            paddingHorizontal: 10
+          }}
+        />
+
+        <View
+          style={{
+            backgroundColor: color.offWhite,
+            width: '100%',
+            height: 50,
+            borderRadius: 8,
+            marginTop: 10,
+            paddingHorizontal: 10,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center'
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'text',
+              color: color.dark,
+              fontSize: 16
+            }}
+          >
+            Currency
+          </Text>
+          <SelectDropdown
+            data={currency_code}
+            buttonStyle={{
+              backgroundColor: color.transparent
+            }}
+            buttonTextStyle={{
+              fontFamily: 'text',
+              color: color.dark,
+              fontSize: 14
+            }}
+            onSelect={(selectedItem, index) => {
+              console.log(selectedItem, index)
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => selectedItem}
+            rowTextForSelection={(item, index) => item}
+          />
+        </View>
+        <TextInput
+          placeholder='Email'
+          placeholderTextColor={color.dark}
+          value={email}
+          onChangeText={setEmail}
+          style={{
+            backgroundColor: color.offWhite,
+            width: '100%',
+            height: 50,
+            fontFamily: 'text',
+            color: color.dark,
+            fontSize: 16,
+            borderRadius: 8,
+            marginTop: 10,
+            paddingHorizontal: 10
+          }}
+        />
+        <TextInput
+          placeholder='Phone'
+          placeholderTextColor={color.dark}
+          value={phone}
+          onChangeText={setPhone}
+          style={{
+            backgroundColor: color.offWhite,
+            width: '100%',
+            height: 50,
+            fontFamily: 'text',
+            color: color.dark,
+            fontSize: 16,
+            borderRadius: 8,
+            marginTop: 10,
+            paddingHorizontal: 10
+          }}
+        />
+        <TouchableOpacity
+          onPress={makePayment}
+          disabled={disable}
+          style={{
+            height: 50,
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 12,
+            backgroundColor: color.dark
+          }}
+        >
+          {
+            loading ?
+              <ActivityIndicator color={color.white} size='small' /> :
+              <Text
+                style={{
+                  fontFamily: 'text',
+                  color: color.white
+                }}
+              >
+                Pay now
+              </Text>
+          }
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }

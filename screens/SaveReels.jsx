@@ -246,7 +246,7 @@ async function schedulePushNotification () {
   await Notifications.scheduleNotificationAsync({
     content: {
       title: 'Post saved',
-      body: 'Yippee!! Your post has been saved successfully',
+      body: 'Yippee!! Your post has been saved successfully.\nPull to refresh',
       data: { data: 'goes here' },
     },
     trigger: { seconds: 1 },

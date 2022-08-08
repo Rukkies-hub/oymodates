@@ -128,17 +128,10 @@ const StackNavigator = () => {
                   }
                 }}
               />
-            </Stack.Group>
-
-            <Stack.Group screenOptions={{ presentation: 'modal' }}>
-              <Stack.Screen name='ViewReel' component={ViewReel} />
-              <Stack.Screen name='UserProfile' component={UserProfile} />
-              <Stack.Screen name='Passion' component={Passion} />
               <Stack.Screen
                 name='Payment'
                 component={Payment}
                 options={{
-                  gestureEnabled: false,
                   animationEnabled: true,
                   ...TransitionPresets.FadeFromBottomAndroid,
                   cardStyle: {
@@ -146,6 +139,12 @@ const StackNavigator = () => {
                   }
                 }}
               />
+            </Stack.Group>
+
+            <Stack.Group screenOptions={{ presentation: 'modal' }}>
+              <Stack.Screen name='ViewReel' component={ViewReel} />
+              <Stack.Screen name='UserProfile' component={UserProfile} />
+              <Stack.Screen name='Passion' component={Passion} />
             </Stack.Group>
           </>
         ) : (

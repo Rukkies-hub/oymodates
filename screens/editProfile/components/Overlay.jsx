@@ -1,4 +1,4 @@
-import { Text } from 'react-native'
+import { ActivityIndicator, Text } from 'react-native'
 import React, { useEffect } from 'react'
 import useAuth from '../../../hooks/useAuth'
 import { BlurView } from 'expo-blur'
@@ -45,7 +45,7 @@ const Overlay = () => {
         Updating your profile
       </Text>
 
-      <LoadingIndicator size={50} theme={theme} />
+      <ActivityIndicator size='large' color={color.red} />
     </BlurView>
   )
 }

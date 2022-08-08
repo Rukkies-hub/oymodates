@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useFonts } from 'expo-font'
 import color from '../../../style/color'
 import useAuth from '../../../hooks/useAuth'
@@ -8,9 +8,11 @@ import { db } from '../../../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 
 const LookingFor = () => {
-  const { lookingFor, setLookingFor, userProfile, theme, setOverlay } = useAuth()
+  const { userProfile, theme, setOverlay } = useAuth()
 
   const navigation = useNavigation()
+
+  const [lookingFor, setLookingFor] = useState(userProfile?.lookingFor)
 
   const lookingForMen = async () => {
     setLookingFor('male')
