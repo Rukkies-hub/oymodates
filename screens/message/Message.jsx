@@ -69,11 +69,12 @@ const Message = () => {
   const [height, setHeight] = useState(50)
   const [mediaVidiblity, setMediaVidiblity] = useState(true)
   const [showRecording, setShowRecording] = useState(false)
-  const [showSend, setShowSend] = useState(true)
+  const [showSend, setShowSend] = useState(false)
   const [recording, setRecording] = useState()
   const [recordings, setRecordings] = useState([])
   const [recordingLoading, setRecordingLoading] = useState(false)
   const [showMedia, setShowMedia] = useState(false)
+  const [showRecord, setShowRecord] = useState(true)
 
   useLayoutEffect(() =>
     (() => {
@@ -107,6 +108,17 @@ const Message = () => {
       })
     })()
     , [])
+
+  useEffect(() => {
+    if (input.length >= 1) {
+      setShowSend(true)
+      setShowRecord(false)
+    }
+    else {
+      setShowSend(false)
+      setShowRecord(true)
+    }
+  }, [input])
 
   const updateSeen = async () => {
     const snapshot = await getDocs(query(collection(db, 'matches', matchDetails?.id, 'messages'),
@@ -662,33 +674,36 @@ const Message = () => {
                   </TouchableOpacity>
                 }
 
-                <TouchableOpacity
-                  onLongPress={() => {
-                    setShowRecording(true)
-                    setShowSend(false)
-                    startRecording()
-                  }}
-                  onPressOut={() => {
-                    setShowRecording(false)
-                    setShowSend(true)
-                    stopRecording()
-                  }}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}>
-                  {
-                    recordingLoading ?
-                      <ActivityIndicator size='small' color={theme == 'light' ? color.lightText : color.white} /> :
-                      <FontAwesome5
-                        size={20}
-                        name='microphone-alt'
-                        color={theme == 'light' ? color.lightText : color.white}
-                      />
-                  }
-                </TouchableOpacity>
+                {
+                  showRecord &&
+                  <TouchableOpacity
+                    onLongPress={() => {
+                      setShowRecording(true)
+                      setShowSend(false)
+                      startRecording()
+                    }}
+                    onPressOut={() => {
+                      setShowRecording(false)
+                      setShowSend(true)
+                      stopRecording()
+                    }}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}>
+                    {
+                      recordingLoading ?
+                        <ActivityIndicator size='small' color={theme == 'light' ? color.lightText : color.white} /> :
+                        <FontAwesome5
+                          size={20}
+                          name='microphone-alt'
+                          color={theme == 'light' ? color.lightText : color.white}
+                        />
+                    }
+                  </TouchableOpacity>
+                }
               </View>
             </View>
           </KeyboardAvoidingView>
