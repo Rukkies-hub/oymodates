@@ -132,7 +132,7 @@ const Message = () => {
     })
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     updateSeen()
   }, [])
 
