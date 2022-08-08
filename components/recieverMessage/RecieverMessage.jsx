@@ -307,7 +307,15 @@ const RecieverMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'left', marginLeft: 10, marginBottom: 10 }}>
+                    <Text
+                      style={{
+                        color: theme == 'light' ? color.dark : color.white,
+                        fontSize: 8,
+                        textAlign: 'left',
+                        marginLeft: 10,
+                        marginBottom: 10
+                      }}
+                    >
                       {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
                     </Text>
                   }

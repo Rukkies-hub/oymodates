@@ -9,6 +9,7 @@ import Slider from '@react-native-community/slider'
 
 import { Audio, Video } from 'expo-av'
 import { useNavigation } from '@react-navigation/native'
+import { useFonts } from 'expo-font'
 
 if (
   Platform.OS === 'android' &&
@@ -60,6 +61,12 @@ const SenderMessage = ({ messages, matchDetails }) => {
   useEffect(() => {
     return sound ? () => sound?.unloadAsync() : undefined
   }, [sound])
+
+  const [loaded] = useFonts({
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+  })
+
+  if (!loaded) return null
 
   return (
     <Pressable
@@ -235,9 +242,55 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text style={{ color: theme == 'light' ? color.dark : color.white, fontSize: 8, textAlign: 'right', marginRight: 10, marginBottom: 10 }}>
-                      {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
-                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: color.white,
+                          fontSize: 8,
+                          textAlign: 'right',
+                          marginRight: 10,
+                          marginBottom: 10,
+                          marginTop: 10
+                        }}
+                      >
+                        {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                      </Text>
+                      {
+                        messages?.seen ?
+                          <Text
+                            style={{
+                              color: color.white,
+                              fontSize: 8,
+                              textAlign: 'right',
+                              fontFamily: 'text',
+                              marginRight: 10,
+                              marginBottom: 10,
+                              marginTop: 10
+                            }}
+                          >
+                            Seen
+                          </Text> :
+                          <Text
+                            style={{
+                              color: color.white,
+                              fontSize: 8,
+                              textAlign: 'right',
+                              fontFamily: 'text',
+                              marginRight: 10,
+                              marginBottom: 10,
+                              marginTop: 10
+                            }}
+                          >
+                            Sent
+                          </Text>
+                      }
+                    </View>
                   }
                 </>
               }
@@ -309,18 +362,55 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text
+                    <View
                       style={{
-                        color: color.white,
-                        fontSize: 8,
-                        textAlign: 'right',
-                        marginRight: 10,
-                        marginBottom: 10,
-                        marginTop: 10
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center'
                       }}
                     >
-                      {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
-                    </Text>
+                      <Text
+                        style={{
+                          color: color.white,
+                          fontSize: 8,
+                          textAlign: 'right',
+                          marginRight: 10,
+                          marginBottom: 10,
+                          marginTop: 10
+                        }}
+                      >
+                        {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                      </Text>
+                      {
+                        messages?.seen ?
+                          <Text
+                            style={{
+                              color: color.white,
+                              fontSize: 8,
+                              textAlign: 'right',
+                              fontFamily: 'text',
+                              marginRight: 10,
+                              marginBottom: 10,
+                              marginTop: 10
+                            }}
+                          >
+                            Seen
+                          </Text> :
+                          <Text
+                            style={{
+                              color: color.white,
+                              fontSize: 8,
+                              textAlign: 'right',
+                              fontFamily: 'text',
+                              marginRight: 10,
+                              marginBottom: 10,
+                              marginTop: 10
+                            }}
+                          >
+                            Sent
+                          </Text>
+                      }
+                    </View>
                   }
                 </>
               }
@@ -394,17 +484,55 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text
+                    <View
                       style={{
-                        color: color.white,
-                        fontSize: 8,
-                        textAlign: 'right',
-                        marginRight: 10,
-                        marginTop: 5
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center'
                       }}
                     >
-                      {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
-                    </Text>
+                      <Text
+                        style={{
+                          color: color.white,
+                          fontSize: 8,
+                          textAlign: 'right',
+                          marginRight: 10,
+                          marginBottom: 10,
+                          marginTop: 10
+                        }}
+                      >
+                        {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                      </Text>
+                      {
+                        messages?.seen ?
+                          <Text
+                            style={{
+                              color: color.white,
+                              fontSize: 8,
+                              textAlign: 'right',
+                              fontFamily: 'text',
+                              marginRight: 10,
+                              marginBottom: 10,
+                              marginTop: 10
+                            }}
+                          >
+                            Seen
+                          </Text> :
+                          <Text
+                            style={{
+                              color: color.white,
+                              fontSize: 8,
+                              textAlign: 'right',
+                              fontFamily: 'text',
+                              marginRight: 10,
+                              marginBottom: 10,
+                              marginTop: 10
+                            }}
+                          >
+                            Sent
+                          </Text>
+                      }
+                    </View>
                   }
                 </>
               }
@@ -462,17 +590,55 @@ const SenderMessage = ({ messages, matchDetails }) => {
                 <>
                   {
                     showTime &&
-                    <Text
+                    <View
                       style={{
-                        color: color.white,
-                        fontSize: 8,
-                        textAlign: 'right',
-                        marginRight: 10,
-                        marginTop: 5
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center'
                       }}
                     >
-                      {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
-                    </Text>
+                      <Text
+                        style={{
+                          color: color.white,
+                          fontSize: 8,
+                          textAlign: 'right',
+                          marginRight: 10,
+                          marginBottom: 10,
+                          marginTop: 10
+                        }}
+                      >
+                        {new Date(messages?.timestamp?.seconds * 1000 + messages?.timestamp?.nanoseconds / 1000000).toDateString()}
+                      </Text>
+                      {
+                        messages?.seen ?
+                          <Text
+                            style={{
+                              color: color.white,
+                              fontSize: 8,
+                              textAlign: 'right',
+                              fontFamily: 'text',
+                              marginRight: 10,
+                              marginBottom: 10,
+                              marginTop: 10
+                            }}
+                          >
+                            Seen
+                          </Text> :
+                          <Text
+                            style={{
+                              color: color.white,
+                              fontSize: 8,
+                              textAlign: 'right',
+                              fontFamily: 'text',
+                              marginRight: 10,
+                              marginBottom: 10,
+                              marginTop: 10
+                            }}
+                          >
+                            Sent
+                          </Text>
+                      }
+                    </View>
                   }
                 </>
               }
