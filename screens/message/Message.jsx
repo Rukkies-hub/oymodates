@@ -133,9 +133,7 @@ const Message = () => {
   }
 
   useLayoutEffect(() => {
-    setInterval(() => {
-      updateSeen()
-    }, 1000)
+    updateSeen()
   }, [])
 
   const pickImage = async () => {
