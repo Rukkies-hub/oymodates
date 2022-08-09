@@ -182,14 +182,15 @@ const ViewReelsComments = () => {
             marginBottom: 10,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            paddingHorizontal: 10
           }}
         >
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{
-              width: 30,
-              height: 30,
+              width: 40,
+              height: 40,
               justifyContent: 'center',
               alignItems: 'center'
             }}
