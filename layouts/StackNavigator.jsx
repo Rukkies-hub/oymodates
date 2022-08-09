@@ -5,7 +5,7 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 const Stack = createStackNavigator()
 
 import BottomNavigation from './BottomNavigation'
-import Login from '../screens/auth/Login'
+import Login from '../screens/Login'
 import EditProfile from '../screens/editProfile/EditProfile'
 import NewMatch from '../screens/modal/NewMatch'
 import Message from '../screens/message/Message'
@@ -30,7 +30,6 @@ import ReelsOption from '../screens/modal/ReelsOption'
 
 import color from '../style/color'
 import Gender from '../screens/editProfile/components/Gender'
-import GoogleAuth from '../screens/auth/GoogleAuth'
 import Overlay from '../screens/editProfile/components/Overlay'
 import Payment from '../screens/editProfile/components/Payment'
 
@@ -148,12 +147,7 @@ const StackNavigator = () => {
             </Stack.Group>
           </>
         ) : (
-          <>
-            <Stack.Screen name='Login' component={Login} />
-            <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
-              <Stack.Screen name='GoogleAuth' component={GoogleAuth} />
-            </Stack.Group>
-          </>
+          <Stack.Screen name='Login' component={Login} />
         )
       }
     </Stack.Navigator>

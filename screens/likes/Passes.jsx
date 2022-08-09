@@ -198,14 +198,7 @@ const Passes = () => {
                         paddingHorizontal: 10
                       }}
                     >
-                      <Text
-                        style={{
-                          color: color.white,
-                          fontFamily: 'text'
-                        }}
-                      >
-                        Delete pass
-                      </Text>
+                      <Feather name='trash-2' size={20} color={color.white} />
                     </TouchableOpacity>
                   </View>
                 </View>

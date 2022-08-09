@@ -3,6 +3,7 @@
     "name": "oymo",
     "slug": "oymo",
     "version": "1.0.0",
+    "scheme": "oymo",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,14 +19,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.rukkiecodes.oymo"
+      "package": "com.rukkiecodes.oymo",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -41,7 +44,8 @@
             "./assets/newMessage.mp3"
           ]
         }
-      ]
+      ],
+      "@react-native-google-signin/google-signin"
     ]
   }
 }

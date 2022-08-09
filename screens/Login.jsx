@@ -11,11 +11,11 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback
 } from 'react-native'
-import useAuth from '../../hooks/useAuth'
+import useAuth from '../hooks/useAuth'
 
-import color from '../../style/color'
+import color from '../style/color'
 
-import Bar from '../../components/StatusBar'
+import Bar from '../components/StatusBar'
 
 import { useFonts } from 'expo-font'
 
@@ -24,8 +24,6 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 import * as NavigationBar from 'expo-navigation-bar'
-
-import SnackBar from 'rukkiecodes-expo-snackbar'
 
 const Login = () => {
   const {
@@ -42,16 +40,10 @@ const Login = () => {
     signin,
     recoverPassword,
     googlePromptAsync,
-    fbPromptAsync,
     googleLoadng,
     setGoogleLoading,
-    facebookLoadng,
-    setFacebookLoading,
     showError,
-    setShowError,
-    signInSnack,
-    setSignInSnack,
-    signInSnackMessage
+    setShowError
   } = useAuth()
 
   const isFocused = useIsFocused()
@@ -78,15 +70,15 @@ const Login = () => {
   }, [signinEmail])
 
   const [loaded] = useFonts({
-    logo: require('../../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
-    text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
+    logo: require('../assets/fonts/Pacifico/Pacifico-Regular.ttf'),
+    text: require('../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
   })
 
   if (!loaded) return null
 
   return (
     <ImageBackground
-      source={require('../../assets/background.jpg')}
+      source={require('../assets/background.jpg')}
       resizeMode='cover'
       blurRadius={10}
       style={{
@@ -99,11 +91,6 @@ const Login = () => {
       }}
     >
       <Bar color='light' />
-      <SnackBar
-        visible={signInSnack}
-        textColor={color.black}
-        message={signInSnackMessage}
-      />
 
       <KeyboardAvoidingView
         style={{
@@ -247,59 +234,6 @@ const Login = () => {
                       </Text>
                   }
                 </TouchableOpacity>
-
-                {/* <TouchableOpacity 
-                  onPress={() => navigation.navigate('GoogleAuth')}
-                  style={{
-                    width: 45,
-                    height: 45,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: color.white,
-                    borderRadius: 12,
-                    marginLeft: 20
-                  }}
-                >
-                  {
-                    googleLoadng ?
-                      <ActivityIndicator size='small' color={color.red} /> :
-                      <Image
-                        source={require('../../assets/google.png')}
-                        style={{
-                          width: 25,
-                          height: 25
-                        }}
-                      />
-                  }
-                </TouchableOpacity> */}
-
-                {/* <TouchableOpacity
-                  onPress={() => {
-                    setFacebookLoading(true)
-                    fbPromptAsync()
-                  }}
-                  style={{
-                    width: 45,
-                    height: 45,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: color.white,
-                    borderRadius: 12,
-                    marginLeft: 20
-                  }}
-                >
-                  {
-                    facebookLoadng ?
-                      <ActivityIndicator size='small' color={color.blue} /> :
-                      <Image
-                        source={require('../assets/facebook.png')}
-                        style={{
-                          width: 25,
-                          height: 25
-                        }}
-                      />
-                  }
-                </TouchableOpacity> */}
 
                 {/* <TouchableOpacity
                   onPress={() => {

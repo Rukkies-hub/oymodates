@@ -15,10 +15,11 @@ const LikeReels = ({ reel, navigation }) => {
   const { user, userProfile } = useAuth()
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: reel?.likesCount })
+  const [disable, setDisable] = useState(false)
 
   useEffect(() =>
     (() => {
-      getLikesById(reel?.id, user?.uid == undefined ? user?.user?.uid : user?.uid)
+      getLikesById(reel?.id, userProfile?.id)
         .then(res => {
           setCurrentLikesState({
             ...currentLikesState,
@@ -30,15 +31,18 @@ const LikeReels = ({ reel, navigation }) => {
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
-      await deleteDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid == undefined ? user?.user?.uid : user?.uid))
+      setDisable(true)
+      await deleteDoc(doc(db, 'reels', reel?.id, 'likes', userProfile?.id))
       await updateDoc(doc(db, 'reels', reel?.id), {
         likesCount: increment(-1)
       })
       await updateDoc(doc(db, 'users', reel?.user?.id), {
         likesCount: increment(-1)
       })
+      setDisable(false)
     } else {
-      await setDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid == undefined ? user?.user?.uid : user?.uid), {
+      setDisable(true)
+      await setDoc(doc(db, 'reels', reel?.id, 'likes', userProfile?.id), {
         id: userProfile?.id,
         photoURL: userProfile?.photoURL,
         displayName: userProfile?.displayName,
@@ -50,7 +54,8 @@ const LikeReels = ({ reel, navigation }) => {
       await updateDoc(doc(db, 'users', reel?.user?.id), {
         likesCount: increment(1)
       })
-      if (reel?.user?.id != user?.uid == undefined ? user?.user?.uid : user?.uid)
+      setDisable(false)
+      if (reel?.user?.id != userProfile?.id)
         await addDoc(collection(db, 'users', reel?.user?.id, 'notifications'), {
           action: 'reel',
           activity: 'likes',
@@ -74,7 +79,7 @@ const LikeReels = ({ reel, navigation }) => {
   })
 
   const getLikesById = () => new Promise(async (resolve, reject) => {
-    getDoc(doc(db, 'reels', reel?.id, 'likes', user?.uid == undefined ? user?.user?.uid : user?.uid))
+    getDoc(doc(db, 'reels', reel?.id, 'likes', userProfile?.id))
       .then(res => resolve(res?.exists()))
   })
 
@@ -91,6 +96,7 @@ const LikeReels = ({ reel, navigation }) => {
   return (
     <TouchableOpacity
       onPress={() => userProfile ? handleUpdateLikes() : disabled()}
+      disabled={disable}
       style={{
         width: 40,
         height: 40,

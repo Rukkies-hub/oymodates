@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 
 import * as Google from 'expo-auth-session/providers/google'
+import * as Facebook from 'expo-auth-session/providers/facebook'
 import { ResponseType } from 'expo-auth-session'
 import * as WebBrowser from 'expo-web-browser'
 
@@ -22,6 +23,7 @@ import {
   signInWithCredential,
   signInWithEmailAndPassword,
   signOut,
+  FacebookAuthProvider
 } from 'firebase/auth'
 
 import { auth, db } from './firebase'
@@ -30,7 +32,7 @@ import { collection, doc, getDocs, limit, onSnapshot, orderBy, query, where } fr
 
 import { useNavigation } from '@react-navigation/native'
 
-import { webClientId, appToken } from '@env'
+import { webClientId, facebookClientId, appToken } from '@env'
 
 const AuthContext = createContext({})
 
@@ -75,6 +77,7 @@ export const AuthProvider = ({ children }) => {
   const [reel, setReel] = useState(null)
   const [thumbnail, setThumbnail] = useState(null)
   const [googleLoadng, setGoogleLoading] = useState(false)
+  const [facebookLoadng, setFacebookLoading] = useState(false)
   const [reels, setReels] = useState([])
   const [reelsLimit, setReelsLimit] = useState(20)
   const [viewUser, setViewUser] = useState(null)
@@ -101,8 +104,25 @@ export const AuthProvider = ({ children }) => {
       signInWithCredential(auth, credential)
     } else {
       setGoogleLoading(false)
+      setFacebookLoading(false)
     }
   }, [googleResponse])
+
+  const [fbRequest, fbResponse, fbPromptAsync] = Facebook.useAuthRequest({
+    responseType: ResponseType.Token,
+    clientId: facebookClientId,
+  })
+
+  useEffect(() => {
+    if (fbResponse?.type === 'success') {
+      const { access_token } = fbResponse?.params
+      const credential = FacebookAuthProvider?.credential(access_token)
+      signInWithCredential(auth, credential)
+    } else {
+      setGoogleLoading(false)
+      setFacebookLoading(false)
+    }
+  }, [fbResponse])
 
   let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
@@ -208,6 +228,10 @@ export const AuthProvider = ({ children }) => {
       })
 
     registerIndieID(user?.uid == undefined ? user?.user?.uid : user?.uid, 3167, appToken)
+
+    // setGoogleLoading(false)
+    // setFacebookLoading(false)
+    // return unsub
   }
 
   const logout = () => {
@@ -296,6 +320,7 @@ export const AuthProvider = ({ children }) => {
     signin,
     recoverPassword,
     googlePromptAsync,
+    fbPromptAsync,
     showExpand,
     setShowExpand,
     reel,
@@ -304,6 +329,8 @@ export const AuthProvider = ({ children }) => {
     setThumbnail,
     googleLoadng,
     setGoogleLoading,
+    facebookLoadng,
+    setFacebookLoading,
     reels,
     setReels,
     reelsLimit,
