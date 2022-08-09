@@ -1,13 +1,13 @@
 import { useFonts } from 'expo-font'
-import React, { useState } from 'react'
-import { View, Text, SafeAreaView, FlatList, Pressable, Image, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native'
 
 import Header from '../../components/Header'
 import useAuth from '../../hooks/useAuth'
 import color from '../../style/color'
 
-import { AntDesign, MaterialCommunityIcons, Fontisto, Feather, Ionicons } from '@expo/vector-icons'
-import { collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import { AntDesign, Fontisto, Feather, Ionicons } from '@expo/vector-icons'
+import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import { useNavigation } from '@react-navigation/native'
 
@@ -21,7 +21,7 @@ const wait = (timeout) => {
 
 const Notifications = () => {
   const navigation = useNavigation()
-  const { userProfile, notifications, user, setNotificationCount, theme } = useAuth()
+  const { userProfile, notifications, theme } = useAuth()
 
   const viewNotification = async notification => {
     if (!notification?.seen) {
