@@ -22,7 +22,7 @@ const ReelsCommentReplies = ({ comment, background }) => {
   const route = useRoute()
 
   useEffect(() => {
-    (() => {
+    const unsub = (() => {
       onSnapshot(query(collection(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'replies'), orderBy('timestamp', 'asc')),
         snapshot =>
           setReplies(
@@ -33,6 +33,7 @@ const ReelsCommentReplies = ({ comment, background }) => {
           )
       )
     })()
+    return unsub
   }, [user, db])
 
   const [loaded] = useFonts({

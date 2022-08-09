@@ -91,7 +91,7 @@ const ViewReelsComments = () => {
             subID: comment?.reel?.user?.id,
             appId: 3167,
             appToken,
-            title: '💬💬💬💬',
+            title: 'Oymo',
             message: `@${userProfile?.username} replied to your comment (${_comment.slice(0, 100)})`
           })
         }
@@ -138,7 +138,7 @@ const ViewReelsComments = () => {
             subID: comment?.reel?.user?.id,
             appId: 3167,
             appToken,
-            title: '💬💬💬💬',
+            title: 'Oymo',
             message: `@${userProfile?.username} replied to your comment (${_comment.slice(0, 100)})`
           })
         }

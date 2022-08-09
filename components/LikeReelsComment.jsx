@@ -11,6 +11,7 @@ const LikeReelsComment = ({ comment, reelId }) => {
   const { user, userProfile } = useAuth()
 
   const [currentLikesState, setCurrentLikesState] = useState({ state: false, counter: comment?.likesCount })
+  const [disable, setDisable] = useState(false)
 
   useEffect(() => {
     (() => {
@@ -31,11 +32,14 @@ const LikeReelsComment = ({ comment, reelId }) => {
 
   const updateLike = () => new Promise(async (resolve, reject) => {
     if (currentLikesState.state) {
+      setDisable(true)
       await deleteDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.uid == undefined ? user?.user?.uid : user?.uid))
       await updateDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id), {
         likesCount: increment(-1)
       })
+      setDisable(false)
     } else {
+      setDisable(true)
       await setDoc(doc(db, 'reels', comment?.reel?.id, 'comments', comment?.id, 'likes', user?.uid == undefined ? user?.user?.uid : user?.uid), {
         id: userProfile?.id,
         photoURL: userProfile?.photoURL,
@@ -46,6 +50,8 @@ const LikeReelsComment = ({ comment, reelId }) => {
         likesCount: increment(1)
       })
     }
+
+    setDisable(false)
 
     if (comment?.user?.id != userProfile?.id) {
       const reel = await (await getDoc(doc(db, 'reels', comment?.reel?.id))).data()
@@ -81,6 +87,7 @@ const LikeReelsComment = ({ comment, reelId }) => {
   return (
     <TouchableOpacity
       onPress={handleUpdateLikes}
+      disabled={disable}
       style={{
         paddingHorizontal: 10,
         paddingVertical: 2,

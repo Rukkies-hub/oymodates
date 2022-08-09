@@ -19,16 +19,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.rukkiecodes.oymo",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.rukkiecodes.oymo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -44,8 +42,7 @@
             "./assets/newMessage.mp3"
           ]
         }
-      ],
-      "@react-native-google-signin/google-signin"
+      ]
     ]
   }
 }

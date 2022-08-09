@@ -71,7 +71,7 @@ const LikeReels = ({ reel, navigation }) => {
             subID: reel?.user?.id,
             appId: 3167,
             appToken,
-            title: '❤️❤️❤️❤️',
+            title: 'Oymo',
             message: `@${userProfile?.username} likes to your comment (${reel?.description?.slice(0, 100)})`
           })
         })

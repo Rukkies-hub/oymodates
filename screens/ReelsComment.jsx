@@ -82,7 +82,7 @@ const ReelsComment = () => {
             subID: item?.user?.id,
             appId: 3167,
             appToken,
-            title: '💬💬💬💬',
+            title: 'Oymo',
             message: `@${userProfile?.username} commented on your video \n ${comment.slice(0, 100)}`
           })
         })
@@ -124,7 +124,7 @@ const ReelsComment = () => {
               subID: item?.user?.id,
               appId: 3167,
               appToken,
-              title: '💬💬💬💬',
+              title: 'Oymo',
               message: `@${userProfile?.username} replied to your comment \n ${comment.slice(0, 100)}`
             })
           })
@@ -158,7 +158,7 @@ const ReelsComment = () => {
           subID: item?.user?.id,
           appId: 3167,
           appToken,
-          title: '💬💬💬💬',
+          title: 'Oymo',
           message: `@${userProfile?.username} replied to your comment \n ${comment.slice(0, 100)}`
         })
       })

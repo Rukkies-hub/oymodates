@@ -6,7 +6,8 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   Keyboard,
-  Dimensions
+  Dimensions,
+  TouchableOpacity
 } from 'react-native'
 
 import { collection, onSnapshot } from 'firebase/firestore'
@@ -22,15 +23,20 @@ import ReelsCommentReply from '../ReelsCommentReply'
 import UserAvatar from './components/UserAvatar'
 import UserInfo from './components/UserInfo'
 import useAuth from '../../hooks/useAuth'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { Octicons } from '@expo/vector-icons'
 
 const { width } = Dimensions.get('window')
 
 const ReelsComments = ({ reel, background }) => {
   const { user } = useAuth()
+  const route = useRoute()
+  const navigation = useNavigation()
+
   const [comments, setComments] = useState([])
 
   useLayoutEffect(() => {
-    (() => {
+    const unsub = (() => {
       onSnapshot(collection(db, 'reels', reel?.id, 'comments'),
         snapshot =>
           setComments(
@@ -41,7 +47,8 @@ const ReelsComments = ({ reel, background }) => {
           )
       )
     })()
-  }, [user, db])
+    return unsub
+  }, [user])
 
   const [loaded] = useFonts({
     text: require('../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf'),
@@ -55,6 +62,7 @@ const ReelsComments = ({ reel, background }) => {
       <FlatList
         data={comments}
         keyExtractor={item => item?.id}
+        showsVerticalScrollIndicator={false}
         style={{
           flex: 1,
           marginHorizontal: 10
@@ -116,7 +124,35 @@ const ReelsComments = ({ reel, background }) => {
                   <ReelsCommentReply comment={comment} />
                 </View>
 
-                <ReelsCommentReplies comment={comment} background={background} />
+                {
+                  route.name != 'ReelsComment' &&
+                  <ReelsCommentReplies comment={comment} background={background} />
+                }
+                {
+                  comment?.repliesCount >= 1 &&
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('ViewReelsComments', { comment, background })}
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      marginTop: 5,
+                      marginBottom: 10
+                    }}
+                  >
+                    <Octicons name='reply' size={18} color={color.white} />
+                    <Text
+                      style={{
+                        fontFamily: 'text',
+                        marginLeft: 5,
+                        fontSize: 14,
+                        color: color.white
+                      }}
+                    >
+                        {comment?.repliesCount} {comment?.repliesCount <= 1 ? 'Reply' : 'Replies' }
+                    </Text>
+                  </TouchableOpacity>
+                }
               </View>
             </View>
           </View>
