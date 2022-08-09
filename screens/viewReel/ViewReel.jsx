@@ -157,7 +157,7 @@ const ViewReel = () => {
             <TouchableOpacity
               onPress={() => {
                 userProfile ? setReelsProps(reel) : null
-                userProfile ? navigation.navigate('ReelsComment') : disabled()
+                userProfile ? navigation.navigate('ReelsComment', { item: reel }) : disabled()
               }}
               style={{
                 width: 40,
