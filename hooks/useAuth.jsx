@@ -178,36 +178,38 @@ export const AuthProvider = ({ children }) => {
   }
 
   const getUserProfile = user => {
-    // const unsub =
     onSnapshot(doc(db, 'users', user?.uid),
       doc => {
         let profile = doc?.data()
         setUserProfile(profile)
-
-        setJob('')
-        setCompany('')
-        setUsername('')
-        setPhone('')
-        setSchool('')
-        setCity('')
-        setScreen('default')
-        setAbout('')
-        setPassions([])
-
-        if (profile?.job) setJob(profile?.job)
-        if (profile?.company) setCompany(profile?.company)
-        if (profile?.username) setUsername(profile?.username)
-        if (profile?.phone) setPhone(profile?.phone)
-        if (profile?.displayName) setDisplayName(profile?.displayName)
-        if (profile?.school) setSchool(profile?.school)
-        if (profile?.city) setCity(profile?.city)
-        if (profile?.about) setAbout(profile?.about)
-        if (profile?.passions) setPassions([...profile?.passions])
-        if (profile?.theme) setTheme(profile?.theme)
-        if (profile?.lookingFor) setLookingFor(profile?.lookingFor)
+        resetUserProfile(profile)
       })
 
     registerIndieID(user?.uid == undefined ? user?.user?.uid : user?.uid, 3167, appToken)
+  }
+
+  const resetUserProfile = profile => {
+    setJob('')
+    setCompany('')
+    setUsername('')
+    setPhone('')
+    setSchool('')
+    setCity('')
+    setScreen('default')
+    setAbout('')
+    setPassions([])
+
+    if (profile?.job) setJob(profile?.job)
+    if (profile?.company) setCompany(profile?.company)
+    if (profile?.username) setUsername(profile?.username)
+    if (profile?.phone) setPhone(profile?.phone)
+    if (profile?.displayName) setDisplayName(profile?.displayName)
+    if (profile?.school) setSchool(profile?.school)
+    if (profile?.city) setCity(profile?.city)
+    if (profile?.about) setAbout(profile?.about)
+    if (profile?.passions) setPassions([...profile?.passions])
+    if (profile?.theme) setTheme(profile?.theme)
+    if (profile?.lookingFor) setLookingFor(profile?.lookingFor)
   }
 
   const logout = () => {

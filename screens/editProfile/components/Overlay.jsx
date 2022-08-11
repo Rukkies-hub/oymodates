@@ -1,10 +1,9 @@
-import { ActivityIndicator, Text } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import useAuth from '../../../hooks/useAuth'
 import { BlurView } from 'expo-blur'
 import { useFonts } from 'expo-font'
 
-import LoadingIndicator from '../../../components/LoadingIndicator'
 import color from '../../../style/color'
 import { useNavigation } from '@react-navigation/native'
 
@@ -24,28 +23,37 @@ const Overlay = () => {
 
   return (
     <BlurView
-      intensity={100}
+      intensity={10}
       tint={theme == 'dark' ? 'dark' : 'light'}
       style={{
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center'
       }}
     >
-      <Text
+      <View
         style={{
-          fontFamily: 'text',
-          color: theme == 'dark' ? color.white : color.dark,
-          marginBottom: 30,
-          fontSize: 20,
-          position: 'absolute',
-          top: '40%'
+          backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+          minHeight: 40,
+          width: '98%',
+          borderRadius: 20,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: 20
         }}
       >
-        Updating your profile
-      </Text>
-
-      <ActivityIndicator size='large' color={color.red} />
+        <Text
+          style={{
+            fontFamily: 'text',
+            color: theme == 'dark' ? color.white : color.dark,
+            fontSize: 20
+          }}
+        >
+          Updating your profile
+        </Text>
+        <ActivityIndicator size='large' color={color.red} />
+      </View>
     </BlurView>
   )
 }

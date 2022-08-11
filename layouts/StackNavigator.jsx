@@ -56,7 +56,13 @@ const StackNavigator = () => {
             <Stack.Group>
               <Stack.Screen name='Main' component={BottomNavigation} />
               <Stack.Screen name='Message' component={Message} />
-              <Stack.Screen name='EditProfile' component={EditProfile} />
+              <Stack.Screen
+                name='EditProfile'
+                component={EditProfile}
+                options={{
+                  gestureEnabled: false
+                }}
+              />
               <Stack.Screen name='AddReels' component={AddReels} />
               <Stack.Screen name='SaveReels' component={SaveReels} />
               <Stack.Screen name='Profile' component={Profile} />
