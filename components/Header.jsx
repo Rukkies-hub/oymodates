@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import {
   View,
   Text,
@@ -48,7 +48,7 @@ const Header = ({
 
   const [notificationCount, setNotificationCount] = useState([])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     (async () => {
       if (userProfile) {
         onSnapshot(query(collection(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'notifications'), orderBy('timestamp', 'desc')),
@@ -65,7 +65,7 @@ const Header = ({
     })()
   }, [])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     (async () => {
       if (userProfile) {
         onSnapshot(query(collection(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid, 'notifications'), where('seen', '==', false)),
