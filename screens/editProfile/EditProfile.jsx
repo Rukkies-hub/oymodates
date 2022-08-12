@@ -24,11 +24,10 @@ import Constants from 'expo-constants'
 import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../hooks/firebase'
 import * as ImagePicker from 'expo-image-picker'
-import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage'
+import { getStorage } from 'firebase/storage'
 
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device'
-import uuid from 'uuid-random'
 
 const EditProfile = () => {
   const {
@@ -44,7 +43,6 @@ const EditProfile = () => {
   const notificationListener = useRef()
   const responseListener = useRef()
 
-  const [uploadLoading, setUploadLoading] = useState(false)
   const [height, setHeight] = useState(50)
   const [disabled, setDisabled] = useState(true)
   const [updateLoading, setUpdateLoading] = useState(false)
@@ -120,61 +118,8 @@ const EditProfile = () => {
       aspect: [9, 16]
     })
 
-    if (!result?.cancelled && result?.type == 'image') {
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest()
-        xhr.onload = () => resolve(xhr.response)
-
-        xhr.responseType = 'blob'
-        xhr.open('GET', result?.uri, true)
-        xhr.send(null)
-      })
-
-      const link = `avatars/${userProfile?.id}/${uuid()}`
-
-      const photoRef = ref(storage, link)
-
-      const uploadTask = uploadBytesResumable(photoRef, blob)
-
-      if (result?.uri && result?.type == 'image') {
-        if (userProfile?.photoURL) {
-          setUploadLoading(true)
-          const desertRef = ref(storage, userProfile?.photoLink)
-
-          deleteObject(desertRef)
-            .then(() => {
-              uploadBytes(photoRef, blob)
-                .then(snapshot => {
-                  getDownloadURL(snapshot?.ref)
-                    .then(downloadURL => {
-                      updateDoc(doc(db, 'users', userProfile?.id), {
-                        photoURL: downloadURL,
-                        photoLink: link
-                      }).then(() => {
-                        schedulePushNotification('Update successful', 'Your display picture has been updated successfully')
-                        setUploadLoading(false)
-                      }).catch(() => setUploadLoading(false))
-                    })
-                })
-            })
-        } else {
-          setUploadLoading(true)
-          uploadBytes(photoRef, blob)
-            .then(snapshot => {
-              getDownloadURL(snapshot?.ref)
-                .then(downloadURL => {
-                  updateDoc(doc(db, 'users', userProfile?.id), {
-                    photoURL: downloadURL,
-                    photoLink: link
-                  }).then(() => {
-                    schedulePushNotification('Update successful', 'Your display picture has been updated successfully')
-                    setUploadLoading(false)
-                  }).catch(() => setUploadLoading(false))
-                })
-            })
-        }
-      }
-    }
+    if (!result?.cancelled && result?.type == 'image')
+      navigation.navigate('SaveAvatar', { result })
   }
 
   const setupUser = async () => {
@@ -318,12 +263,8 @@ const EditProfile = () => {
                 borderRadius: 12,
                 marginLeft: 10
               }}
-            >
-              {
-                uploadLoading ?
-                  <ActivityIndicator size='small' color={theme == 'dark' ? color.white : color.dark} /> :
-                  <AntDesign name='picture' size={24} color={theme == 'dark' ? color.white : color.dark} />
-              }
+            > 
+              <AntDesign name='picture' size={24} color={theme == 'dark' ? color.white : color.dark} />
             </TouchableOpacity>
           }
         </View>

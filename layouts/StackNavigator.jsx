@@ -32,6 +32,7 @@ import color from '../style/color'
 import Gender from '../screens/editProfile/components/Gender'
 import Overlay from '../screens/editProfile/components/Overlay'
 import Payment from '../screens/editProfile/components/Payment'
+import SaveAvatar from '../screens/editProfile/SaveAvatar'
 
 const StackNavigator = () => {
   const { user, theme } = useAuth()
@@ -150,6 +151,14 @@ const StackNavigator = () => {
               <Stack.Screen name='ViewReel' component={ViewReel} />
               <Stack.Screen name='UserProfile' component={UserProfile} />
               <Stack.Screen name='Passion' component={Passion} />
+              <Stack.Screen
+                name='SaveAvatar'
+                component={SaveAvatar}
+                options={{
+                  animationEnabled: true,
+                  ...TransitionPresets.FadeFromBottomAndroid
+                }}
+              />
             </Stack.Group>
           </>
         ) : (

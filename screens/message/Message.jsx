@@ -89,7 +89,7 @@ const Message = () => {
     })()
     , [matchDetails, db])
 
-  useEffect(() =>
+  useEffect(() => {
     (() => {
       Keyboard.addListener('keyboardDidShow', () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
@@ -97,9 +97,9 @@ const Message = () => {
         setShowMedia(false)
       })
     })()
-    , [])
+  }, [Keyboard])
 
-  useEffect(() =>
+  useEffect(() => {
     (() => {
       Keyboard.addListener('keyboardDidHide', () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
@@ -107,7 +107,7 @@ const Message = () => {
         setShowMedia(false)
       })
     })()
-    , [])
+  }, [Keyboard])
 
   useEffect(() => {
     if (input.length >= 1) {
@@ -525,6 +525,7 @@ const Message = () => {
                   }
                 </TouchableOpacity>
               }
+
               <View
                 style={{
                   flexDirection: 'row',
@@ -544,69 +545,36 @@ const Message = () => {
                   mediaVidiblity &&
                   <View
                     style={{
-                      position: 'relative',
-                      width: 40,
-                      height: 50,
-                      backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-                      borderBottomLeftRadius: 12,
-                      borderTopLeftRadius: showMedia ? 0 : 12
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center'
                     }}
                   >
-                    {
-                      showMedia &&
-                      <View
-                        style={{
-                          position: 'absolute',
-                          zIndex: 100,
-                          backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
-                          bottom: 50,
-                          left: 0,
-                          borderTopLeftRadius: 12,
-                          borderTopRightRadius: 12
-                        }}
-                      >
-                        <TouchableOpacity
-                          onPress={() => {
-                            setMediaVidiblity(false)
-                            setShowMedia(false)
-                            Keyboard.dismiss
-                            navigation.navigate('MessageCamera', { matchDetails })
-                          }}
-                          style={{
-                            width: 50,
-                            height: 50,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}>
-                          <MaterialCommunityIcons name='camera-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                          onPress={pickImage}
-                          style={{
-                            width: 50,
-                            height: 50,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}>
-                          <MaterialCommunityIcons name='image-outline' color={theme == 'light' ? color.lightText : color.white} size={26} />
-                        </TouchableOpacity>
-                      </View>
-                    }
-
                     <TouchableOpacity
                       onPress={() => {
-                        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-                        setShowMedia(!showMedia)
+                        setMediaVidiblity(false)
+                        setShowMedia(false)
+                        Keyboard.dismiss
+                        navigation.navigate('MessageCamera', { matchDetails })
                       }}
                       style={{
-                        width: 50,
+                        width: 40,
                         height: 50,
                         justifyContent: 'center',
                         alignItems: 'center'
-                      }}
-                    >
-                      <SimpleLineIcons name="paper-clip" size={20} color={theme == 'light' ? color.lightText : color.white} />
+                      }}>
+                      <MaterialCommunityIcons name='camera-outline' color={theme == 'light' ? color.lightText : color.white} size={20} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={pickImage}
+                      style={{
+                        width: 40,
+                        height: 50,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}>
+                      <MaterialCommunityIcons name='image-outline' color={theme == 'light' ? color.lightText : color.white} size={20} />
                     </TouchableOpacity>
                   </View>
                 }

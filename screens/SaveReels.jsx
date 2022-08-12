@@ -188,7 +188,7 @@ const SaveReels = () => {
             justifyContent: 'center',
             alignItems: 'center',
             flex: 1,
-            borderColor: theme == 'light' ? color.borderColor : color.lightBorderColor,
+            borderColor: theme == 'dark' ? color.lightBorderColor : color.borderColor,
             borderWidth: 1,
             borderRadius: 8,
             height: 45,
@@ -198,7 +198,7 @@ const SaveReels = () => {
           <Text
             style={{
               fontFamily: 'text',
-              color: theme == 'light' ? color.dark : color.white
+              color: theme == 'dark' ? color.white : color.dark
             }}
           >
             Cancel
