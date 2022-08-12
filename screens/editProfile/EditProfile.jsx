@@ -90,21 +90,6 @@ const EditProfile = () => {
   }, [username, displayName, job, company, school, city, phone])
 
   useEffect(() => {
-    if (
-      username == userProfile?.username &&
-      displayName == userProfile?.displayName &&
-      phone == userProfile?.phone &&
-      job == userProfile?.job &&
-      company == userProfile?.company &&
-      school == userProfile?.school &&
-      city == userProfile?.city &&
-      about == userProfile?.about
-    ) {
-      setDisabled(true)
-    }
-  }, [username, displayName, phone, job, company, city, school, about])
-
-  useEffect(() => {
     Keyboard.addListener('keyboardDidHide', () => {
       Keyboard.dismiss()
     })
