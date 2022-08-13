@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, Modal, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState, useRef } from 'react'
+import { View, Text, TouchableOpacity, Image, Modal, ActivityIndicator, Platform } from 'react-native'
 
 import { Paystack } from 'react-native-paystack-webview'
 
@@ -11,11 +11,46 @@ import uuid from 'uuid-random'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../hooks/firebase'
 
+import * as Device from 'expo-device'
+import * as Notifications from 'expo-notifications'
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true
+  })
+})
+
+let date = new Date()
+date.setMonth(date.getMonth() + 2)
+let newDate = new Date(date)
+
 const Payment = () => {
   const { user, userProfile } = useAuth()
   const [modalVisible, setModalVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [transaction, setTransaction] = useState(null)
+
+  const [expoPushToken, setExpoPushToken] = useState('')
+  const [notification, setNotification] = useState(false)
+  const notificationListener = useRef()
+  const responseListener = useRef()
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification)
+    })
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => { })
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current)
+      Notifications.removeNotificationSubscription(responseListener.current)
+    }
+  }, [])
 
   useEffect(() => {
     if (transaction) goPro()
@@ -25,9 +60,6 @@ const Payment = () => {
   const goPro = async () => {
     if (transaction?.message === 'Approved') {
       setLoading(true)
-      let date = new Date()
-      date.setMonth(date.getMonth() + 2)
-      let newDate = new Date(date)
       await updateDoc(doc(db, 'users', userProfile?.id), {
         paid: true,
         transaction: transaction?.transaction,
@@ -35,6 +67,7 @@ const Payment = () => {
         expires: newDate
       })
       setLoading(false)
+      schedulePushNotification()
     }
   }
 
@@ -52,7 +85,7 @@ const Payment = () => {
           paystackKey={testpPaystackPublic}
           amount={'2500.00'}
           billingEmail={user?.email}
-          activityIndicatorColor="green"
+          activityIndicatorColor='green'
           channels={['card', 'bank', 'ussd']}
           refNumber={`Oymo-${uuid()}`}
           billingName={userProfile?.displayName || userProfile?.username}
@@ -105,6 +138,47 @@ const Payment = () => {
       </TouchableOpacity>
     </View>
   )
+}
+
+async function schedulePushNotification () {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: 'Oymo',
+      body: `Account upgraded successfully\n expires on ${new Date(date).toISOString()}`,
+      data: { data: 'goes here' },
+    },
+    trigger: { seconds: 1 },
+  })
+}
+
+async function registerForPushNotificationsAsync () {
+  let token
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync()
+    let finalStatus = existingStatus
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync()
+      finalStatus = status
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!')
+      return
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data
+  } else {
+    alert('Must use physical device for Push Notifications')
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    })
+  }
+
+  return token
 }
 
 export default Payment
