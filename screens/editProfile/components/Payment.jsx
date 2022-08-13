@@ -1,229 +1,108 @@
-import { View, Text, Dimensions, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
-import useAuth from '../../../hooks/useAuth'
+import React, { useEffect, useState } from 'react'
+import { View, Text, TouchableOpacity, Image, Modal, ActivityIndicator } from 'react-native'
+
+import { Paystack } from 'react-native-paystack-webview'
+
+import { paystackPublic, testpPaystackPublic } from '@env'
 import color from '../../../style/color'
-import { useFonts } from 'expo-font'
-import AutoHeightImage from 'react-native-auto-height-image'
+import useAuth from '../../../hooks/useAuth'
 
-import SelectDropdown from 'react-native-select-dropdown'
-
-const { width } = Dimensions.get('window')
-
-import currency_code from './currencies'
-import axios from 'axios'
+import uuid from 'uuid-random'
+import { doc, updateDoc } from 'firebase/firestore'
+import { db } from '../../../hooks/firebase'
 
 const Payment = () => {
   const { user, userProfile } = useAuth()
-  const [name, setName] = useState(userProfile?.displayName)
-  const [accountNumber, setAccountNumber] = useState('')
-  const [currency, setCurrency] = useState('')
-  const [email, setEmail] = useState(user?.email)
-  const [phone, setPhone] = useState(userProfile?.phone)
+  const [modalVisible, setModalVisible] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [disable, setDisable] = useState(false)
+  const [transaction, setTransaction] = useState(null)
 
-  const makePayment = async () => {
-    setLoading(true)
-    const response = await axios({
-      method: 'post',
-      url: 'https://oymo.herokuapp.com',
-      data: {
-        account_bank: '070',
-        account_number: accountNumber,
-        currency,
-        email,
-        phone_number: phone,
-        fullname: name
-      }
-    })
-    setLoading(false)
-    console.log('response: ', response)
+  useEffect(() => {
+    if (transaction) goPro()
+  }, [transaction])
+
+
+  const goPro = async () => {
+    if (transaction?.message === 'Approved') {
+      setLoading(true)
+      let date = new Date()
+      date.setMonth(date.getMonth() + 2)
+      let newDate = new Date(date)
+      await updateDoc(doc(db, 'users', userProfile?.id), {
+        paid: true,
+        transaction: transaction?.transaction,
+        trxref: transaction?.trxref,
+        expires: newDate
+      })
+      setLoading(false)
+    }
   }
 
-  const [loaded] = useFonts({
-    text: require('../../../assets/fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf')
-  })
-
-  if (!loaded) return null
-
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: color.faintBlack,
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-      }}
-    >
-      <View
-        style={{
-          width: width - 20,
-          minHeight: 1,
-          overflow: 'hidden',
-          borderRadius: 20,
-          backgroundColor: color.white,
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: 10,
+    <View>
+      <Modal
+        visible={modalVisible}
+        animationType='slide'
+        transparent={true}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible)
         }}
       >
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 10
+        <Paystack
+          paystackKey={testpPaystackPublic}
+          amount={'2500.00'}
+          billingEmail={user?.email}
+          activityIndicatorColor="green"
+          channels={['card', 'bank', 'ussd']}
+          refNumber={`Oymo-${uuid()}`}
+          billingName={userProfile?.displayName || userProfile?.username}
+          onCancel={(e) => {
+            setModalVisible(false)
           }}
-        >
-          <Text
-            style={{
-              fontFamily: 'text',
-              marginRight: 10
-            }}
-          >
-            Payment secured by
-          </Text>
-          <AutoHeightImage
-            source={require('../../../assets/fw.png')}
-            width={100}
-          />
-        </View>
-        <TextInput
-          placeholder='Account name'
-          placeholderTextColor={color.dark}
-          value={name}
-          onChangeText={setName}
-          style={{
-            backgroundColor: color.offWhite,
-            width: '100%',
-            height: 50,
-            fontFamily: 'text',
-            color: color.dark,
-            fontSize: 16,
-            borderRadius: 8,
-            paddingHorizontal: 10
+          onSuccess={(res) => {
+            setTransaction(res?.data?.transactionRef)
+            setModalVisible(false)
           }}
+          autoStart={true}
         />
-        <TextInput
-          placeholder='Account number'
-          placeholderTextColor={color.dark}
-          value={accountNumber}
-          onChangeText={setAccountNumber}
-          style={{
-            backgroundColor: color.offWhite,
-            width: '100%',
-            height: 50,
-            fontFamily: 'text',
-            color: color.dark,
-            fontSize: 16,
-            borderRadius: 8,
-            marginTop: 10,
-            paddingHorizontal: 10
-          }}
-        />
-
-        <View
-          style={{
-            backgroundColor: color.offWhite,
-            width: '100%',
-            height: 50,
-            borderRadius: 8,
-            marginTop: 10,
-            paddingHorizontal: 10,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center'
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'text',
-              color: color.dark,
-              fontSize: 16
-            }}
-          >
-            Currency
-          </Text>
-          <SelectDropdown
-            data={currency_code}
-            buttonStyle={{
-              backgroundColor: color.transparent
-            }}
-            buttonTextStyle={{
-              fontFamily: 'text',
-              color: color.dark,
-              fontSize: 14
-            }}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index)
-            }}
-            buttonTextAfterSelection={(selectedItem, index) => selectedItem}
-            rowTextForSelection={(item, index) => item}
-          />
-        </View>
-        <TextInput
-          placeholder='Email'
-          placeholderTextColor={color.dark}
-          value={email}
-          onChangeText={setEmail}
-          style={{
-            backgroundColor: color.offWhite,
-            width: '100%',
-            height: 50,
-            fontFamily: 'text',
-            color: color.dark,
-            fontSize: 16,
-            borderRadius: 8,
-            marginTop: 10,
-            paddingHorizontal: 10
-          }}
-        />
-        <TextInput
-          placeholder='Phone'
-          placeholderTextColor={color.dark}
-          value={phone}
-          onChangeText={setPhone}
-          style={{
-            backgroundColor: color.offWhite,
-            width: '100%',
-            height: 50,
-            fontFamily: 'text',
-            color: color.dark,
-            fontSize: 16,
-            borderRadius: 8,
-            marginTop: 10,
-            paddingHorizontal: 10
-          }}
-        />
-        <TouchableOpacity
-          onPress={makePayment}
-          disabled={disable}
-          style={{
-            height: 50,
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 12,
-            backgroundColor: color.dark
-          }}
-        >
-          {
-            loading ?
-              <ActivityIndicator color={color.white} size='small' /> :
+      </Modal>
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={{
+          marginTop: 20,
+          backgroundColor: color.transparent,
+          borderWidth: 2,
+          borderColor: color.goldDark,
+          height: 50,
+          borderRadius: 12,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row'
+        }}
+      >
+        {
+          !loading ?
+            <>
+              <Image
+                source={require('../../../assets/vip.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  marginRight: 10
+                }}
+              />
               <Text
                 style={{
-                  fontFamily: 'text',
-                  color: color.white
+                  color: color.goldDark,
+                  fontFamily: 'text'
                 }}
               >
-                Pay now
+                Go Premium
               </Text>
-          }
-        </TouchableOpacity>
-      </View>
+            </> :
+            <ActivityIndicator color={color.goldDark} size='small' />
+        }
+      </TouchableOpacity>
     </View>
   )
 }

@@ -28,6 +28,7 @@ import { getStorage } from 'firebase/storage'
 
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device'
+import Payment from './components/Payment'
 
 const EditProfile = () => {
   const {
@@ -248,7 +249,7 @@ const EditProfile = () => {
                 borderRadius: 12,
                 marginLeft: 10
               }}
-            > 
+            >
               <AntDesign name='picture' size={24} color={theme == 'dark' ? color.white : color.dark} />
             </TouchableOpacity>
           }
@@ -528,6 +529,8 @@ const EditProfile = () => {
             {userProfile && <LookingFor />}
 
             {userProfile && <AppTheme />}
+
+            {userProfile && <Payment />}
 
             <TouchableOpacity
               onPress={() => userProfile ? updateUserProfile() : setupUser()}

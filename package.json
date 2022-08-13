@@ -71,6 +71,7 @@
     "react-native-gesture-handler": "~2.2.1",
     "react-native-pager-view": "5.4.15",
     "react-native-paper": "^4.12.2",
+    "react-native-paystack-webview": "^4.0.3",
     "react-native-popup-menu": "^0.15.12",
     "react-native-rave-webview": "^1.0.0",
     "react-native-raw-bottom-sheet": "^2.2.0",
