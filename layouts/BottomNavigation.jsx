@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Image, SafeAreaView } from 'react-native'
+import { Image, SafeAreaView, View } from 'react-native'
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 
@@ -127,14 +127,41 @@ const BottomNavigation = () => {
                 <>
                   {
                     userProfile?.photoURL &&
-                    <Image
-                      source={{ uri: userProfile?.photoURL }}
-                      style={{
-                        width: 30,
-                        height: 30,
-                        borderRadius: 50
-                      }}
-                    />
+                    <View style={{ position: 'relative' }}>
+                      {
+                        userProfile?.paid &&
+                          <View
+                            style={{
+                              position: 'absolute',
+                              zIndex: 1,
+                              top: -4,
+                              right: -4,
+                              width: 15,
+                              height: 15,
+                              borderRadius: 50,
+                              backgroundColor: theme == 'dark' ? color.dark : color.offWhite,
+                              justifyContent: 'center',
+                              alignItems: 'center'
+                            }}
+                          >
+                            <Image
+                              source={require('../assets/vip.png')}
+                              style={{
+                                width: 10,
+                                height: 10
+                              }}
+                            />
+                          </View>
+                        }
+                      <Image
+                        source={{ uri: userProfile?.photoURL }}
+                        style={{
+                          width: 30,
+                          height: 30,
+                          borderRadius: 50
+                        }}
+                      />
+                    </View>
                   }
                   {
                     !userProfile?.photoURL &&

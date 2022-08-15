@@ -39,7 +39,7 @@ const Login = () => {
     signup,
     signin,
     recoverPassword,
-    googlePromptAsync,
+    promptAsync,
     googleLoadng,
     setGoogleLoading,
     showError,
@@ -235,10 +235,10 @@ const Login = () => {
                   }
                 </TouchableOpacity>
 
-                {/* <TouchableOpacity
+                <TouchableOpacity
                   onPress={() => {
                     setGoogleLoading(true)
-                    googlePromptAsync()
+                    promptAsync()
                   }}
                   style={{
                     width: 45,
@@ -261,7 +261,7 @@ const Login = () => {
                         }}
                       />
                   }
-                </TouchableOpacity> */}
+                </TouchableOpacity>
               </View>
 
               <View

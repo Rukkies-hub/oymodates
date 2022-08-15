@@ -30,7 +30,7 @@ import { collection, doc, getDocs, limit, onSnapshot, orderBy, query, where } fr
 
 import { useNavigation } from '@react-navigation/native'
 
-import { webClientId, appToken } from '@env'
+import { webClientId, iosClientId, androidClientId, appToken } from '@env'
 
 const AuthContext = createContext({})
 
@@ -90,19 +90,21 @@ export const AuthProvider = ({ children }) => {
   const [lookingFor, setLookingFor] = useState()
   const [overlay, setOverlay] = useState(false)
 
-  const [googleRequest, googleResponse, googlePromptAsync] = Google.useIdTokenAuthRequest({
-    clientId: webClientId
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: webClientId,
+    iosClientId: iosClientId,
+    androidClientId: androidClientId
   })
 
   useEffect(() => {
-    if (googleResponse?.type === 'success') {
-      const { id_token } = googleResponse?.params
+    if (response?.type === 'success') {
+      const { id_token } = response?.params
       const credential = GoogleAuthProvider.credential(id_token)
       signInWithCredential(auth, credential)
     } else {
       setGoogleLoading(false)
     }
-  }, [googleResponse])
+  }, [response])
 
   let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
@@ -297,7 +299,7 @@ export const AuthProvider = ({ children }) => {
     signup,
     signin,
     recoverPassword,
-    googlePromptAsync,
+    promptAsync,
     showExpand,
     setShowExpand,
     reel,
