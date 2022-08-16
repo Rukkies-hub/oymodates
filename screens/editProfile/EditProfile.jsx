@@ -81,14 +81,13 @@ const EditProfile = () => {
   }, [])
 
   useEffect(() => {
-    const unsub = (() => {
+    (() => {
       if (userProfile) setDisabled(false)
       else
-        if (username != '' && phone && displayName != '' && city != '')
+        if (username != undefined && phone != undefined && city != undefined)
           setDisabled(false)
     })()
-    return unsub
-  }, [username, displayName, job, company, school, city, phone])
+  }, [username, city, phone])
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidHide', () => {
@@ -113,13 +112,9 @@ const EditProfile = () => {
     setOverlay(true)
     navigation.navigate('Overlay')
 
-    await setDoc(doc(db, 'users', user?.uid == undefined ? user?.user?.uid : user?.uid), {
-      id: user?.uid == undefined ? user?.user?.uid : user?.uid,
+    await setDoc(doc(db, 'users', user?.uid), {
+      id: user?.uid,
       username,
-      displayName,
-      job,
-      company,
-      school,
       city,
       phone,
       theme: 'dark',

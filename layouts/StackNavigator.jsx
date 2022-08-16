@@ -55,7 +55,7 @@ const StackNavigator = () => {
         user ? (
           <>
             <Stack.Group>
-              <Stack.Screen name='Main' component={BottomNavigation} />
+              <Stack.Screen name='MainNavigation' component={BottomNavigation} />
               <Stack.Screen name='Message' component={Message} />
               <Stack.Screen
                 name='EditProfile'
